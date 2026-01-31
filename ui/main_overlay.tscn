@@ -18,20 +18,21 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 4
 script = ExtResource("1_mmsv4")
 
 [node name="ImportantInfoPanel" type="Panel" parent="." unique_id=541526941]
-layout_mode = 0
-offset_right = 233.0
-offset_bottom = 147.0
+layout_mode = 1
+offset_right = 357.0
+offset_bottom = 245.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_aqpnj")
 
 [node name="SuspiciousLabel" type="Label" parent="ImportantInfoPanel" unique_id=2018269662]
 layout_mode = 0
-offset_left = 32.0
-offset_top = 71.0
-offset_right = 185.0
-offset_bottom = 100.0
+offset_left = 94.0
+offset_top = 145.0
+offset_right = 247.0
+offset_bottom = 180.0
 theme = ExtResource("1_n4vjp")
 text = "SUSPICION"
 horizontal_alignment = 1
@@ -39,20 +40,20 @@ vertical_alignment = 1
 
 [node name="ProgressBar" type="ProgressBar" parent="ImportantInfoPanel/SuspiciousLabel" unique_id=138893329]
 layout_mode = 0
-offset_left = 10.0
-offset_top = 32.0
-offset_right = 147.0
-offset_bottom = 57.0
+offset_left = -38.0
+offset_top = 46.0
+offset_right = 197.0
+offset_bottom = 80.0
 theme = ExtResource("1_n4vjp")
 value = 24.0
 rounded = true
 
 [node name="TrashCollectedLabel" type="Label" parent="ImportantInfoPanel" unique_id=572737843]
 layout_mode = 0
-offset_left = 4.0
-offset_top = 39.0
-offset_right = 157.0
-offset_bottom = 68.0
+offset_left = 13.0
+offset_top = 82.0
+offset_right = 249.0
+offset_bottom = 117.0
 theme = ExtResource("1_n4vjp")
 text = "TRASH COLLECTED:"
 horizontal_alignment = 1
@@ -60,19 +61,19 @@ vertical_alignment = 1
 
 [node name="TrashCountLabel" type="Label" parent="ImportantInfoPanel" unique_id=1474003517]
 layout_mode = 0
-offset_left = 168.0
-offset_top = 43.0
-offset_right = 208.0
-offset_bottom = 66.0
+offset_left = 275.0
+offset_top = 82.0
+offset_right = 326.0
+offset_bottom = 117.0
 theme = ExtResource("1_n4vjp")
 text = "0/5"
 
 [node name="LinesLabel" type="Label" parent="ImportantInfoPanel" unique_id=18615380]
 layout_mode = 0
-offset_left = 6.0
-offset_top = 7.0
-offset_right = 159.0
-offset_bottom = 36.0
+offset_left = 13.0
+offset_top = 26.0
+offset_right = 249.0
+offset_bottom = 61.0
 theme = ExtResource("1_n4vjp")
 text = "LINES COMPLETED:"
 horizontal_alignment = 1
@@ -80,26 +81,30 @@ vertical_alignment = 1
 
 [node name="LinesDoneCountLabel" type="Label" parent="ImportantInfoPanel" unique_id=1041031836]
 layout_mode = 0
-offset_left = 166.0
-offset_top = 11.0
-offset_right = 206.0
-offset_bottom = 34.0
+offset_left = 275.0
+offset_top = 26.0
+offset_right = 326.0
+offset_bottom = 61.0
 theme = ExtResource("1_n4vjp")
 text = "0/5"
 
 [node name="ObjectivePanel" type="Panel" parent="." unique_id=34179774]
-layout_mode = 0
-offset_left = 382.0
-offset_right = 739.0
-offset_bottom = 58.0
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -312.0
+offset_right = 318.0
+offset_bottom = 93.0
+grow_horizontal = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_aqpnj")
 
 [node name="ObjectiveLabel" type="Label" parent="ObjectivePanel" unique_id=1588478658]
 layout_mode = 0
-offset_left = 18.0
-offset_top = 12.0
-offset_right = 136.0
-offset_bottom = 41.0
+offset_left = 15.0
+offset_top = 21.0
+offset_right = 200.0
+offset_bottom = 78.0
 theme = ExtResource("1_n4vjp")
 text = "OBJECTIVE:"
 horizontal_alignment = 1
@@ -107,12 +112,12 @@ vertical_alignment = 1
 
 [node name="ObjectiveContentLabel" type="RichTextLabel" parent="ObjectivePanel" unique_id=1021120287]
 layout_mode = 0
-offset_left = 122.0
-offset_top = 12.0
-offset_right = 337.0
-offset_bottom = 39.0
+offset_left = 189.0
+offset_top = 26.0
+offset_right = 584.0
+offset_bottom = 70.0
 theme = ExtResource("1_n4vjp")
-theme_override_font_sizes/normal_font_size = 20
+theme_override_font_sizes/normal_font_size = 36
 theme_override_font_sizes/bold_font_size = 20
 theme_override_font_sizes/bold_italics_font_size = 20
 theme_override_font_sizes/italics_font_size = 20
@@ -124,18 +129,21 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="StolenStuffPanel" type="Panel" parent="." unique_id=400237934]
-layout_mode = 0
-offset_left = 918.0
-offset_right = 1151.0
-offset_bottom = 127.0
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -362.0
+offset_bottom = 245.0
+grow_horizontal = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_aqpnj")
 
 [node name="MoneyLostCountLabel" type="Label" parent="StolenStuffPanel" unique_id=1528092050]
 layout_mode = 0
-offset_left = 108.0
-offset_top = 81.0
-offset_right = 221.0
-offset_bottom = 108.0
+offset_left = 213.0
+offset_top = 156.0
+offset_right = 326.0
+offset_bottom = 191.0
 theme = ExtResource("1_n4vjp")
 theme_override_colors/font_color = Color(0.8352941, 0, 0.16470589, 1)
 text = "-9999$"
@@ -144,10 +152,10 @@ vertical_alignment = 1
 
 [node name="MoneyLostLabel" type="Label" parent="StolenStuffPanel" unique_id=381116173]
 layout_mode = 0
-offset_left = 9.0
-offset_top = 80.0
-offset_right = 162.0
-offset_bottom = 109.0
+offset_left = 46.0
+offset_top = 156.0
+offset_right = 203.0
+offset_bottom = 191.0
 theme = ExtResource("1_n4vjp")
 text = "MONEY LOST:"
 horizontal_alignment = 1
@@ -155,10 +163,10 @@ vertical_alignment = 1
 
 [node name="StolenLabel" type="Label" parent="StolenStuffPanel" unique_id=466509713]
 layout_mode = 0
-offset_left = 37.0
-offset_top = 12.0
-offset_right = 190.0
-offset_bottom = 41.0
+offset_left = 81.0
+offset_top = 38.0
+offset_right = 271.0
+offset_bottom = 73.0
 theme = ExtResource("1_n4vjp")
 text = "THINGS STOLEN"
 horizontal_alignment = 1
@@ -166,10 +174,10 @@ vertical_alignment = 1
 
 [node name="ProgressBar" type="ProgressBar" parent="StolenStuffPanel/StolenLabel" unique_id=2066987411]
 layout_mode = 0
-offset_left = 10.0
-offset_top = 32.0
-offset_right = 147.0
-offset_bottom = 57.0
+offset_left = -17.0
+offset_top = 49.0
+offset_right = 221.0
+offset_bottom = 81.0
 theme = ExtResource("1_n4vjp")
 theme_override_styles/fill = SubResource("StyleBoxFlat_n4vjp")
 max_value = 20.0
