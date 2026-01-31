@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://ok87eomdw64l"]
+
+[ext_resource type="Script" uid="uid://dlwcghwbq2y6b" path="res://scripts/DoableObject.gd" id="1_mkuuf"]
+[ext_resource type="Texture2D" uid="uid://4q335xxs2p" path="res://sprites/icon.svg" id="2_mkuuf"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_enn7p"]
+size = Vector2(163.5, 130.5)
+
+[node name="InteractableObject" type="Node2D" unique_id=659652577 node_paths=PackedStringArray("interactionSprite", "objectSprite")]
+script = ExtResource("1_mkuuf")
+interactionSprite = NodePath("ObjectSprite/InteractionKey")
+objectSprite = NodePath("ObjectSprite")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=1433082396]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1122523408]
+position = Vector2(85.25, 68.75)
+shape = SubResource("RectangleShape2D_enn7p")
+
+[node name="ObjectSprite" type="Sprite2D" parent="." unique_id=1750835028]
+position = Vector2(85.00001, 72)
+scale = Vector2(0.9296875, 0.67968756)
+texture = ExtResource("2_mkuuf")
+
+[node name="InteractionKey" type="Sprite2D" parent="ObjectSprite" unique_id=749872540]
+position = Vector2(-4.7683716e-06, -58.850563)
+scale = Vector2(0.5639978, 0.68348694)
+texture = ExtResource("2_mkuuf")
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]

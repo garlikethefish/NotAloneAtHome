@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://crwv82npj7bvy"]
+
+[ext_resource type="PackedScene" uid="uid://dfdiuox7wslrn" path="res://objects/Item.tscn" id="1_n77mx"]
+[ext_resource type="PackedScene" uid="uid://ok87eomdw64l" path="res://objects/InteractableObject.tscn" id="1_rlkm5"]
+[ext_resource type="PackedScene" uid="uid://be8qbmt0fe144" path="res://objects/Player.tscn" id="2_n77mx"]
+
+[node name="Node2D" type="Node2D" unique_id=129267035 groups=["mask_overlay"]]
+
+[node name="Item" parent="." unique_id=1473760491 instance=ExtResource("1_n77mx")]
+position = Vector2(584, 334)
+
+[node name="InteractibleObject" parent="." unique_id=659652577 instance=ExtResource("1_rlkm5")]
+position = Vector2(164, 95)
+
+[node name="Player" parent="." unique_id=1993068751 groups=["player"] instance=ExtResource("2_n77mx")]
+position = Vector2(584, 334)

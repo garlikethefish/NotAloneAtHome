@@ -1,0 +1,57 @@
+[gd_scene format=3 uid="uid://2yvq6yiiep7y"]
+
+[ext_resource type="Script" uid="uid://bsuygxhr05tam" path="res://scripts/Main_menu.gd" id="1_l6cm7"]
+
+[node name="Main Menu" type="Control" unique_id=212980581]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Button_manager" type="Node" parent="." unique_id=387076492]
+script = ExtResource("1_l6cm7")
+
+[node name="StartButton" type="Button" parent="." unique_id=1635750413]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.40500003
+anchor_top = 0.231
+anchor_right = 0.595
+anchor_bottom = 0.386
+offset_left = -0.5600281
+offset_top = 0.31199646
+offset_right = 0.5599365
+offset_bottom = -0.12800598
+text = "Start game"
+
+[node name="OptionsButton" type="Button" parent="." unique_id=946701625]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.40500003
+anchor_top = 0.46300003
+anchor_right = 0.595
+anchor_bottom = 0.61700004
+offset_left = -0.5600281
+offset_top = -0.024017334
+offset_right = 0.5599365
+offset_bottom = 0.18395996
+text = "Option"
+
+[node name="ExitButton" type="Button" parent="." unique_id=1662439747]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.40500003
+anchor_top = 0.694
+anchor_right = 0.595
+anchor_bottom = 0.84900004
+offset_left = -0.5600281
+offset_top = 0.28799438
+offset_right = 0.5599365
+offset_bottom = -0.15203857
+text = "Quit"
+
+[connection signal="pressed" from="StartButton" to="Button_manager" method="_on_start_button_pressed"]
+[connection signal="pressed" from="OptionsButton" to="Button_manager" method="_on_options_button_pressed"]
+[connection signal="pressed" from="ExitButton" to="Button_manager" method="_on_exit_button_pressed"]

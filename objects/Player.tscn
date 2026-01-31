@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://be8qbmt0fe144"]
+
+[ext_resource type="Script" uid="uid://dgemna2cprj7k" path="res://scripts/Player.gd" id="1_v6fml"]
+[ext_resource type="Texture2D" uid="uid://4q335xxs2p" path="res://sprites/icon.svg" id="2_3li8b"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5ixxa"]
+size = Vector2(127, 130)
+
+[node name="Player" type="CharacterBody2D" unique_id=1993068751]
+collision_mask = 2
+script = ExtResource("1_v6fml")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1807232928]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1767608192]
+visibility_layer = 15
+position = Vector2(-0.5, 0)
+shape = SubResource("RectangleShape2D_5ixxa")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=858713789]
+texture = ExtResource("2_3li8b")
+
+[node name="MaskOverlay" type="CanvasLayer" parent="." unique_id=167265925 groups=["mask_overlay"]]
+
+[node name="ColorRect" type="ColorRect" parent="MaskOverlay" unique_id=427046387]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.4)
+metadata/_edit_use_anchors_ = true
