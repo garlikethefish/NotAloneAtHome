@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://5wyn8ac16y4c"]
+
+[node name="MainOverlay" type="Control" unique_id=1661248365]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="." unique_id=541526941]
+layout_mode = 0
+offset_right = 299.0
+offset_bottom = 75.0
