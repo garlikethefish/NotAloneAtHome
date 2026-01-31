@@ -2,8 +2,12 @@ extends Node
 enum GameDifficulty { Easy, Medium, Hard }
 var interactableObjectPrefab: PackedScene = preload("res://objects/InteractableObject.tscn")
 
+var chairSprite: Sprite2D
+
 var gameDificulty: GameDifficulty = GameDifficulty.Easy
 var objectSpawners: Array[ObjectSpawner] = []
+var valuableSpawners: Array[ObjectSpawner] = []
+
 var trashAtHome: int = 0
 var areAllTrashCollected: bool = false
 var suspicion : int = 0
@@ -20,13 +24,13 @@ var objective_list : Array = [
 var current_objective_int : int = 0
 var stolen_stuff_amount : int = 0
 var money_lost : int = 0
-var cost_dictionary : Dictionary = {
-	"table": 35,
-	"chair": 15,
-	"tv": 200,
-	"sofa": 100,
-	"dresser": 50,
-	"closet": 40
+var cost_dictionary : Dictionary[Valuable.ValuableType, Valuable] = {
+	Valuable.ValuableType.Table: Valuable.new(preload("res://sprites/tv.png"), 70),
+	Valuable.ValuableType.Chair: Valuable.new(preload("res://sprites/tv.png"), 40),
+	Valuable.ValuableType.TV: Valuable.new(preload("res://sprites/tv.png"), 400),
+	Valuable.ValuableType.Sofa: Valuable.new(preload("res://sprites/tv.png"), 300),
+	Valuable.ValuableType.Dresser: Valuable.new(preload("res://sprites/tv.png"), 100),
+	Valuable.ValuableType.Closet: Valuable.new(preload("res://sprites/tv.png"), 50),
 }
 signal on_objective_changed()
 

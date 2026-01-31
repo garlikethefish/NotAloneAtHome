@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://bsj88242exujb"]
+
+[ext_resource type="Script" uid="uid://khcy1rbiah63" path="res://singletons/GameManager.gd" id="1_elqsu"]
+
+[node name="GameManagerPefab" type="Node2D" unique_id=972985758]
+script = ExtResource("1_elqsu")
