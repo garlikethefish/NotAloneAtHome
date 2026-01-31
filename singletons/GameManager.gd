@@ -10,12 +10,12 @@ var suspicion : int = 0
 var linesCompleted : int = 0
 var current_objective : String = "None"
 var objective_list : Array = [
-	"GRAB THIEFS' MASK",
-	"HIDE THE DEAD THIEF",
-	"CLEAN ROOM",
-	"FEED KITTY",
-	"WRITE CODE",
-	"ESCAPE"
+	"[wave amp=50.0 freq=5.0 connected=1]GRAB THIEFS' MASK[/wave]",
+	"[wave amp=50.0 freq=5.0 connected=1]HIDE THE DEAD THIEF[/wave]",
+	"[wave amp=50.0 freq=5.0 connected=1]CLEAN ROOM[/wave]",
+	"[wave amp=50.0 freq=5.0 connected=1]FEED KITTY[/wave]",
+	"[wave amp=50.0 freq=5.0 connected=1]WRITE CODE[/wave]",
+	"[wave amp=50.0 freq=5.0 connected=1]ESCAPE[/wave]"
 ]
 var current_objective_int : int = 0
 var stolen_stuff_amount : int = 0
