@@ -5,3 +5,4 @@
 [node name="UIOverlay" type="CanvasLayer" unique_id=466827575]
 
 [node name="MainOverlay" parent="." unique_id=1661248365 instance=ExtResource("1_sq8m6")]
+anchors_preset = -1

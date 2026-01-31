@@ -10,6 +10,7 @@ bg_color = Color(0.8971613, 0.696105, 0.15591028, 1)
 
 [resource]
 Button/fonts/font = ExtResource("1_mlkpy")
+Label/font_sizes/font_size = 28
 Label/fonts/font = ExtResource("1_mlkpy")
 ProgressBar/fonts/font = ExtResource("1_mlkpy")
 ProgressBar/styles/background = SubResource("StyleBoxFlat_het5a")
