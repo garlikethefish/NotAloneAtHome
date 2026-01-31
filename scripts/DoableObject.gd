@@ -13,6 +13,8 @@ var interactionKeyEndPos:
 		return interactionKeyStartPos / 2
 var player: PlayerCharacter
 
+signal onDestroy()
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	interactionSprite.visible = false
@@ -23,11 +25,10 @@ func _process(_delta: float) -> void:
 	if player and Input.is_action_just_pressed("interact"):
 		tweenAnimation()
 		tapsTillDone -= 1
-		print("Interact key pressed!")
+		#print("Interact key pressed!")
 		
 	if tapsTillDone <= 0 and !isCompleteTriggered:
 		onComplete()
-
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if body is PlayerCharacter:
@@ -63,5 +64,6 @@ func tweenAnimation():
 	
 func onComplete():
 	isCompleteTriggered = true
-	print('task done!')
+	GameManager.collectTrash()
+	emit_signal("onDestroy")
 	queue_free() # Destroys itself 

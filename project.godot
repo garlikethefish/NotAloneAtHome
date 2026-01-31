@@ -11,9 +11,13 @@ config_version=5
 [application]
 
 config/name="New Game Project"
-run/main_scene="uid://2yvq6yiiep7y"
+run/main_scene="uid://crwv82npj7bvy"
 config/features=PackedStringArray("4.6", "GL Compatibility")
 config/icon="uid://4q335xxs2p"
+
+[autoload]
+
+GameManager="*uid://khcy1rbiah63"
 
 [display]
 
@@ -22,6 +26,7 @@ window/size/mode=3
 [global_group]
 
 mask_overlay=""
+DoableObjectGroup=""
 
 [input]
 

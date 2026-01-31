@@ -3,6 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://dfdiuox7wslrn" path="res://objects/Item.tscn" id="1_n77mx"]
 [ext_resource type="PackedScene" uid="uid://ok87eomdw64l" path="res://objects/InteractableObject.tscn" id="1_rlkm5"]
 [ext_resource type="PackedScene" uid="uid://be8qbmt0fe144" path="res://objects/Player.tscn" id="2_n77mx"]
+[ext_resource type="Script" uid="uid://kwly6sj4obv1" path="res://scripts/ObjectSpawner.gd" id="4_nb1wl"]
 
 [node name="Node2D" type="Node2D" unique_id=129267035 groups=["mask_overlay"]]
 
@@ -11,6 +12,27 @@ position = Vector2(584, 334)
 
 [node name="InteractibleObject" parent="." unique_id=659652577 instance=ExtResource("1_rlkm5")]
 position = Vector2(164, 95)
+tapsTillDone = 5
 
 [node name="Player" parent="." unique_id=1993068751 groups=["player"] instance=ExtResource("2_n77mx")]
 position = Vector2(584, 334)
+
+[node name="ObjectSpawner2" type="Node2D" parent="." unique_id=690365316]
+position = Vector2(874, 148)
+script = ExtResource("4_nb1wl")
+metadata/_custom_type_script = "uid://kwly6sj4obv1"
+
+[node name="ObjectSpawner" type="Node2D" parent="." unique_id=1662803240]
+position = Vector2(132, 328)
+script = ExtResource("4_nb1wl")
+metadata/_custom_type_script = "uid://kwly6sj4obv1"
+
+[node name="ObjectSpawner3" type="Node2D" parent="." unique_id=279702867]
+position = Vector2(369, 506)
+script = ExtResource("4_nb1wl")
+metadata/_custom_type_script = "uid://kwly6sj4obv1"
+
+[node name="ObjectSpawner4" type="Node2D" parent="." unique_id=1562798424]
+position = Vector2(892, 360)
+script = ExtResource("4_nb1wl")
+metadata/_custom_type_script = "uid://kwly6sj4obv1"

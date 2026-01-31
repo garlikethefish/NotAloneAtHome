@@ -6,7 +6,7 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_enn7p"]
 size = Vector2(163.5, 130.5)
 
-[node name="InteractableObject" type="Node2D" unique_id=659652577 node_paths=PackedStringArray("interactionSprite", "objectSprite")]
+[node name="InteractableObject" type="Node2D" unique_id=659652577 node_paths=PackedStringArray("interactionSprite", "objectSprite") groups=["DoableObjectGroup"]]
 script = ExtResource("1_mkuuf")
 interactionSprite = NodePath("ObjectSprite/InteractionKey")
 objectSprite = NodePath("ObjectSprite")
