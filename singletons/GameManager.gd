@@ -24,9 +24,10 @@ var objective_list : Array = [
 var current_objective_int : int = 0
 var stolen_stuff_amount : int = 0
 var money_lost : int = 0
-var cost_dictionary : Dictionary[Valuable.ValuableType, Valuable] = {
+var trashRes = preload("res://sprites/trashOng.jpg")
+var valuables : Dictionary[Valuable.ValuableType, Valuable] = {
 	Valuable.ValuableType.Table: Valuable.new(preload("res://sprites/tv.png"), 70),
-	Valuable.ValuableType.Chair: Valuable.new(preload("res://sprites/tv.png"), 40),
+	Valuable.ValuableType.Chair: Valuable.new(preload("res://sprites/bum.jpg"), 40),
 	Valuable.ValuableType.TV: Valuable.new(preload("res://sprites/tv.png"), 400),
 	Valuable.ValuableType.Sofa: Valuable.new(preload("res://sprites/tv.png"), 300),
 	Valuable.ValuableType.Dresser: Valuable.new(preload("res://sprites/tv.png"), 100),
@@ -59,6 +60,8 @@ func _ready() -> void:
 	current_objective = objective_list[0]
 	await get_tree().process_frame
 	startTrashCollectionTask()
+	spawnInValuables()
+	print("Im retarded!")
 
 func changeObjective(): # display next objective
 	current_objective_int += 1
@@ -83,8 +86,15 @@ func startTrashCollectionTask() -> void:
 	
 	# spawn at random spawner
 	for i in range(howManyTrashWillBeSpawned):
-		spawnerPool[i].spawObject(interactableObjectPrefab)
+		spawnerPool[i].spawObject(interactableObjectPrefab, true)
 		
 	areAllTrashCollected = false
 	trashAtHome = howManyTrashWillBeSpawned
 	emit_signal("spawnTrash")
+	
+func spawnInValuables():
+	print("valuable spawners: ", valuableSpawners.size())
+	for spawner in valuableSpawners:
+		spawner.spawObject(interactableObjectPrefab, true)
+		
+	

@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://cah3urn1fwd1d"]
+
+[ext_resource type="Script" uid="uid://b4sx80lvls4xv" path="res://scripts/SellZone.gd" id="1_xejtw"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rthd4"]
+size = Vector2(116, 111)
+
+[node name="SellZone" type="Node2D" unique_id=377854475]
+script = ExtResource("1_xejtw")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=835376287]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=2042731810]
+position = Vector2(0, 0.5)
+shape = SubResource("RectangleShape2D_rthd4")
+debug_color = Color(0.57736975, 0.9028676, 0.3533695, 0.41960785)
+
+[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]

@@ -14,6 +14,7 @@ class_name PlayerCharacter
 var current_radius := 0.35
 var has_mask := false
 var mask_on := false
+var isCarringObject := false
 
 @onready var anim: AnimatedSprite2D = $AnimatedSprite2D
 @onready var overlay_rect: ColorRect = $MaskOverlay/ColorRect

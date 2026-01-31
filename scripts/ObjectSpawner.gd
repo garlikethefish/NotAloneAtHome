@@ -1,20 +1,22 @@
 extends Node2D
 class_name ObjectSpawner
 
-var predifinedValuableSpawner = Valuable.ValuableType.None
+@export var predifinedValuableSpawner = Valuable.ValuableType.None
+var isValuableSpawner: bool:
+	get: return predifinedValuableSpawner != Valuable.ValuableType.None
 var instantiatedObject: Node2D = null
 var isObjecSpawned: bool:
 	get: return instantiatedObject != null
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	if predifinedValuableSpawner != Valuable.ValuableType.None:
+	if isValuableSpawner:
 		GameManager.valuableSpawners.append(self)
 	else:
 		GameManager.objectSpawners.append(self)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	pass
 	
 func spawObject(prefab: PackedScene, isCarriable: bool) -> void:
@@ -31,11 +33,29 @@ func spawObject(prefab: PackedScene, isCarriable: bool) -> void:
 	print("in pos: ", self.position)
 	
 	# Cast to InteractableObject safely
-	if instantiatedObject.is_in_group("DoableObjectGroup"):
-		instantiatedObject.connect(
-			"onDestroy", 
-			Callable(self, "onObjectDestroy")
-		)
+	if instantiatedObject is InteractableObject:
+		if isValuableSpawner:
+			instantiatedObject.objectSprite.texture = GameManager.valuables[predifinedValuableSpawner].sprite.texture
+			instantiatedObject.valuable = predifinedValuableSpawner
+			instantiatedObject.isCarriable = true
 			
+			print("sprite: ", GameManager.valuables[predifinedValuableSpawner].sprite)
+		else:
+			# Suppose you want it to fit within 64x64 units
+			var target_size = Vector2(16, 16)
+
+			# Get the texture size
+			var tex_size = instantiatedObject.objectSprite.texture.get_size()
+
+			# Calculate scale factor
+			instantiatedObject.objectSprite.scale = Vector2(
+				target_size.x / tex_size.x,
+				target_size.y / tex_size.y
+			)
+			instantiatedObject.objectSprite.texture = GameManager.trashRes
+			instantiatedObject.connect(
+				"onComplete", 
+				Callable(self, "onObjectDestroy")
+			)
 func onObjectDestroy(): 
 	instantiatedObject = null

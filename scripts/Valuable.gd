@@ -14,8 +14,8 @@ enum ValuableType {
 var sprite: Sprite2D
 var value: int
 
-func _init(texture: Texture2D, value: int):
+func _init(texture: Texture2D, itemValue: int):
 	var tempSprite = Sprite2D.new()
 	tempSprite.texture = texture
 	self.sprite = tempSprite
-	self.value = value
+	self.value = itemValue
