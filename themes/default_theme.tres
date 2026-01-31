@@ -1,0 +1,21 @@
+[gd_resource type="Theme" format=3 uid="uid://c68li1l2cs3o4"]
+
+[ext_resource type="FontFile" uid="uid://m4c4ejijque2" path="res://fonts/Karma Suture.otf" id="1_mlkpy"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_het5a"]
+bg_color = Color(0.17785347, 0.17785347, 0.17785335, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mlkpy"]
+bg_color = Color(0.8971613, 0.696105, 0.15591028, 1)
+
+[resource]
+Button/fonts/font = ExtResource("1_mlkpy")
+Label/fonts/font = ExtResource("1_mlkpy")
+ProgressBar/fonts/font = ExtResource("1_mlkpy")
+ProgressBar/styles/background = SubResource("StyleBoxFlat_het5a")
+ProgressBar/styles/fill = SubResource("StyleBoxFlat_mlkpy")
+RichTextLabel/fonts/bold_font = ExtResource("1_mlkpy")
+RichTextLabel/fonts/bold_italics_font = ExtResource("1_mlkpy")
+RichTextLabel/fonts/italics_font = ExtResource("1_mlkpy")
+RichTextLabel/fonts/mono_font = ExtResource("1_mlkpy")
+RichTextLabel/fonts/normal_font = ExtResource("1_mlkpy")
