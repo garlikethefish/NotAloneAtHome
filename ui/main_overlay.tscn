@@ -176,5 +176,3 @@ max_value = 20.0
 value = 7.0
 rounded = true
 show_percentage = false
-
-[connection signal="changed" from="ImportantInfoPanel/SuspiciousLabel/ProgressBar" to="." method="_on_progress_bar_changed"]

@@ -18,6 +18,17 @@ var objective_list : Array = [
 	"ESCAPE"
 ]
 var current_objective_int : int = 0
+var stolen_stuff_amount : int = 0
+var money_lost : int = 0
+var cost_dictionary : Dictionary = {
+	"table": 35,
+	"chair": 15,
+	"tv": 200,
+	"sofa": 100,
+	"dresser": 50,
+	"closet": 40
+}
+signal on_objective_changed()
 
 var trashAmountFromDifficulty: int:
 	get: 
@@ -48,6 +59,7 @@ func _ready() -> void:
 func changeObjective(): # display next objective
 	current_objective_int += 1
 	current_objective = objective_list[current_objective_int]
+	on_objective_changed.emit()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:

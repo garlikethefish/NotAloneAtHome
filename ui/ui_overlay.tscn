@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://cbcifivthchns"]
+
+[ext_resource type="PackedScene" uid="uid://5wyn8ac16y4c" path="res://ui/main_overlay.tscn" id="1_sq8m6"]
+
+[node name="UIOverlay" type="CanvasLayer" unique_id=466827575]
+
+[node name="MainOverlay" parent="." unique_id=1661248365 instance=ExtResource("1_sq8m6")]
