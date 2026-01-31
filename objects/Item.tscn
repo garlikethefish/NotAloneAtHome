@@ -1,21 +1,21 @@
 [gd_scene format=3 uid="uid://dfdiuox7wslrn"]
 
 [ext_resource type="Script" uid="uid://cno0dvuatlaqa" path="res://scripts/Item.gd" id="1_2oiv6"]
-[ext_resource type="Texture2D" uid="uid://dhri57q178b2f" path="res://sprites/TestMask.png" id="2_08o4a"]
+[ext_resource type="Texture2D" uid="uid://by710rpm7kobn" path="res://sprites/MaskItem.png" id="2_sioqs"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_t7cc2"]
-size = Vector2(49, 62)
+size = Vector2(49, 49.99997)
 
 [node name="Item" type="Area2D" unique_id=1473760491]
 script = ExtResource("1_2oiv6")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=468663048]
-position = Vector2(80.5, 181)
-scale = Vector2(0.2525773, 0.23938227)
-texture = ExtResource("2_08o4a")
+position = Vector2(80.5, 175)
+scale = Vector2(3.0624998, 3.125)
+texture = ExtResource("2_sioqs")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1005837441]
-position = Vector2(80.5, 181.00003)
+position = Vector2(80.5, 175.00002)
 shape = SubResource("RectangleShape2D_t7cc2")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

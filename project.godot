@@ -18,6 +18,9 @@ config/icon="uid://4q335xxs2p"
 [autoload]
 
 GameManager="*uid://khcy1rbiah63"
+<<<<<<<UpdatedupstreamGameManager="*uid://khcy1rbiah63"
+
+window/size/mode=3
 
 [global_group]
 

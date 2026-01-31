@@ -9,3 +9,6 @@
 
 [node name="Item" parent="." unique_id=1473760491 instance=ExtResource("2_pbw6q")]
 position = Vector2(129, 237)
+
+[node name="Item2" parent="." unique_id=1055269152 instance=ExtResource("2_pbw6q")]
+position = Vector2(120, 466)
