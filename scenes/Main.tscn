@@ -2,6 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://be8qbmt0fe144" path="res://objects/Player.tscn" id="1_rgh2o"]
 [ext_resource type="PackedScene" uid="uid://dfdiuox7wslrn" path="res://objects/Item.tscn" id="2_pbw6q"]
+[ext_resource type="PackedScene" uid="uid://bmvgwyelxjr6q" path="res://objects/Bandit.tscn" id="3_0bbpv"]
 
 [node name="Main" type="Node2D" unique_id=1023568212]
 
@@ -10,5 +11,4 @@
 [node name="Item" parent="." unique_id=1473760491 instance=ExtResource("2_pbw6q")]
 position = Vector2(129, 237)
 
-[node name="Item2" parent="." unique_id=1055269152 instance=ExtResource("2_pbw6q")]
-position = Vector2(120, 466)
+[node name="Bandit" parent="." unique_id=136410527 instance=ExtResource("3_0bbpv")]

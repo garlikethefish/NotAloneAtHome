@@ -1,0 +1,43 @@
+[gd_scene format=3 uid="uid://bmvgwyelxjr6q"]
+
+[ext_resource type="Script" uid="uid://bflx038o74dvh" path="res://scripts/Bandit.gd" id="1_nuupm"]
+[ext_resource type="Texture2D" uid="uid://by710rpm7kobn" path="res://sprites/MaskItem.png" id="2_bragx"]
+[ext_resource type="AudioStream" uid="uid://d1w6ghitekdav" path="res://sounds/Mag_Unload_Sound.wav" id="3_1v8oq"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bragx"]
+size = Vector2(16, 16)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_1v8oq"]
+
+[node name="Bandit" type="CharacterBody2D" unique_id=136410527]
+script = ExtResource("1_nuupm")
+speed = 80.0
+chase_speed = 120.0
+suspicion_distance = 200.0
+alert_distance = 100.0
+investigate_speed = 500.0
+patrol_points = Array[Vector2]([Vector2(200, 300), Vector2(500, 300), Vector2(500, 600), Vector2(200, 600)])
+follow_buffer = 40.0
+suspicion_buffer = 25.0
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=324389714]
+modulate = Color(0.76206994, 0.17606321, 0.008382548, 1)
+rotation = 1.5707964
+texture = ExtResource("2_bragx")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=36144933]
+shape = SubResource("RectangleShape2D_bragx")
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="." unique_id=1940221389]
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=88663116]
+stream = ExtResource("3_1v8oq")
+volume_db = 24.0
+pitch_scale = 4.0
+
+[node name="VisionArea" type="Area2D" parent="." unique_id=885876066]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="VisionArea" unique_id=555588942]
+position = Vector2(0, 5)
+scale = Vector2(-100, 100)
+shape = SubResource("CircleShape2D_1v8oq")
