@@ -1,0 +1,41 @@
+[gd_scene format=3 uid="uid://b616l27c571oh"]
+
+[ext_resource type="PackedScene" uid="uid://ok87eomdw64l" path="res://objects/InteractableObject.tscn" id="1_01qht"]
+[ext_resource type="Script" uid="uid://csje0lqoac68q" path="res://scripts/cat_brain.gd" id="1_6x4st"]
+[ext_resource type="SpriteFrames" uid="uid://bbgi5m2tnk3tb" path="res://animations/cat.tres" id="1_rsrf8"]
+[ext_resource type="AudioStream" uid="uid://bc8edy7he1anw" path="res://sounds/meow.mp3" id="4_rsrf8"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_rsrf8"]
+radius = 22.0
+
+[node name="Cat" type="AnimatedSprite2D" unique_id=292962050]
+top_level = true
+sprite_frames = ExtResource("1_rsrf8")
+animation = &"front_idle"
+
+[node name="InteractableObject" parent="." unique_id=659652577 instance=ExtResource("1_01qht")]
+objectSpriteTexture = null
+isKitty = true
+
+[node name="CharacterBody2D" type="CharacterBody2D" parent="." unique_id=1638606484]
+script = ExtResource("1_6x4st")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D" unique_id=1658157954]
+position = Vector2(0, -7)
+shape = SubResource("CircleShape2D_rsrf8")
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="." unique_id=2125825739]
+unique_name_in_owner = true
+target_desired_distance = 20.0
+path_max_distance = 20.0
+avoidance_enabled = true
+radius = 500.0
+neighbor_distance = 7763.51
+debug_enabled = true
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=823144154]
+unique_name_in_owner = true
+stream = ExtResource("4_rsrf8")
+
+[node name="MeowTimer" type="Timer" parent="." unique_id=41868590]
+unique_name_in_owner = true

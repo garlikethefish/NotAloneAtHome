@@ -1,0 +1,43 @@
+[gd_scene format=3 uid="uid://ckwnp346yqoti"]
+
+[ext_resource type="Script" uid="uid://csje0lqoac68q" path="res://scripts/cat_brain.gd" id="1_7jxut"]
+[ext_resource type="SpriteFrames" uid="uid://bbgi5m2tnk3tb" path="res://animations/cat.tres" id="2_7jxut"]
+[ext_resource type="PackedScene" uid="uid://ok87eomdw64l" path="res://objects/InteractableObject.tscn" id="3_nfwan"]
+[ext_resource type="AudioStream" uid="uid://bc8edy7he1anw" path="res://sounds/meow.mp3" id="4_0m5c4"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_rsrf8"]
+radius = 8.0
+
+[node name="Cat" type="CharacterBody2D" unique_id=722993762]
+top_level = true
+collision_layer = 3
+collision_mask = 3
+script = ExtResource("1_7jxut")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1296469098]
+position = Vector2(0, 3)
+shape = SubResource("CircleShape2D_rsrf8")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1132424505]
+sprite_frames = ExtResource("2_7jxut")
+animation = &"front_idle"
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=397726023]
+scale = Vector2(0.4, 0.4)
+stream = ExtResource("4_0m5c4")
+volume_db = 12.03
+
+[node name="MeowTimer" type="Timer" parent="." unique_id=1096035267]
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="." unique_id=2102087505]
+target_desired_distance = 20.0
+path_max_distance = 20.0
+avoidance_enabled = true
+debug_enabled = true
+
+[node name="InteractableObject" parent="." unique_id=659652577 instance=ExtResource("3_nfwan")]
+objectSpriteTexture = null
+isKitty = true
+
+[connection signal="finished" from="AudioStreamPlayer2D" to="." method="_on_audio_stream_player_2d_finished"]
+[connection signal="timeout" from="MeowTimer" to="." method="_on_meow_timer_timeout"]
