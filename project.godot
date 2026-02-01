@@ -23,11 +23,6 @@ GameManager="*uid://khcy1rbiah63"
 window/size/mode=3
 <<<<<<<Updatedupstreamrun/main_scene="uid://bkt2ik2qfjdp"
 
-[autoload]
-
-GameManager="*uid://khcy1rbiah63"
-window/size/mode=3
-
 [display]
 
 window/size/viewport_width=1920
