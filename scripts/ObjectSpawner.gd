@@ -9,10 +9,6 @@ var isObjecSpawned: bool:
 func _ready() -> void:
 	GameManager.objectSpawners.append(self)
 	pass # Replace with function body.
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
 	
 func spawObject(prefab: PackedScene) -> void:
 	if isObjecSpawned:

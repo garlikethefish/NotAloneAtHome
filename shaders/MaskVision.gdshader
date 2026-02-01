@@ -1,6 +1,6 @@
 shader_type canvas_item;
 
-uniform vec2 center = vec2(0.5, 0.5);
+uniform vec2 center = vec2(1, 0.5);
 uniform float radius = 0.35;
 uniform float softness = 0.2;
 
