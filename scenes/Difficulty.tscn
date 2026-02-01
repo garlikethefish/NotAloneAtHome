@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://bqkxmcgfowtt1"]
+[gd_scene format=3 uid="uid://brto81ffvcavq"]
 
 [ext_resource type="Script" uid="uid://rm3lollcgcdi" path="res://scenes/DifficultyScreen.gd" id="1_flr8e"]
 [ext_resource type="Theme" uid="uid://c68li1l2cs3o4" path="res://themes/default_theme.tres" id="2_ll5ts"]
@@ -11,6 +11,11 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_flr8e")
+
+[node name="Panel2" type="Panel" parent="." unique_id=356564814]
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
 
 [node name="Panel" type="Panel" parent="." unique_id=1195815958]
 layout_mode = 1
