@@ -7,6 +7,8 @@ var isValuable: bool:
 
 @export var interactionSprite: Sprite2D
 @export var objectSprite: Sprite2D
+@export var interactionSpriteTexture: Texture2D
+@export var objectSpriteTexture: Texture2D
 
 @export var tapsTillDone: int = 10
 @export var isCarriable = false
@@ -38,6 +40,9 @@ func _ready() -> void:
 	if isDeadThief:
 		isCarriable = true
 		
+	# set sprites
+	interactionSprite.texture = interactionSpriteTexture
+	objectSprite.texture = objectSpriteTexture
 	interactionSprite.visible = false
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

@@ -67,14 +67,16 @@ var objective_list : Dictionary[ObjectiveModel.ObjectiveName, ObjectiveModel] = 
 var current_objective_int : int = 0
 var stolen_stuff_amount : int = 0
 var money_lost: int = 0
-var trashRes = preload("res://sprites/shift_button_ui.png")
+var trashRes = preload("res://sprites/trash.png")
 var valuables : Dictionary[Valuable.ValuableType, Valuable] = {
-	Valuable.ValuableType.Table: Valuable.new(preload("res://sprites/tv.png"), 70),
-	Valuable.ValuableType.Chair: Valuable.new(preload("res://sprites/bum.jpg"), 40),
-	Valuable.ValuableType.TV: Valuable.new(preload("res://sprites/tv.png"), 400),
-	Valuable.ValuableType.Sofa: Valuable.new(preload("res://sprites/tv.png"), 300),
-	Valuable.ValuableType.Dresser: Valuable.new(preload("res://sprites/tv.png"), 100),
-	Valuable.ValuableType.Closet: Valuable.new(preload("res://sprites/tv.png"), 50),
+	Valuable.ValuableType.TV: Valuable.new(preload("res://sprites/tv.png"), 70),
+	Valuable.ValuableType.Bed: Valuable.new(preload("res://sprites/bed.png"), 40),
+	Valuable.ValuableType.Chair1: Valuable.new(preload("res://sprites/chair1.png"), 400),
+	Valuable.ValuableType.Chair2: Valuable.new(preload("res://sprites/chair2.png"), 300),
+	Valuable.ValuableType.Closet: Valuable.new(preload("res://sprites/closet.png"), 100),
+	Valuable.ValuableType.Sofa: Valuable.new(preload("res://sprites/sofa.png"), 50),
+	Valuable.ValuableType.Table: Valuable.new(preload("res://sprites/table.png"), 50),
+	Valuable.ValuableType.Vase: Valuable.new(preload("res://sprites/vase.png"), 50),
 }
 
 var maxStealableItems = 10

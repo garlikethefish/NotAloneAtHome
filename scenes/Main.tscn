@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://be8qbmt0fe144" path="res://objects/Player.tscn" id="1_rgh2o"]
 [ext_resource type="PackedScene" uid="uid://cbcifivthchns" path="res://ui/ui_overlay.tscn" id="1_vcsgt"]
 [ext_resource type="PackedScene" uid="uid://dfdiuox7wslrn" path="res://objects/Item.tscn" id="2_pbw6q"]
-[ext_resource type="PackedScene" path="res://objects/Bandit.tscn" id="3_0bbpv"]
+[ext_resource type="PackedScene" uid="uid://bmvgwyelxjr6q" path="res://objects/Bandit.tscn" id="3_0bbpv"]
 
 [node name="Main" type="Node2D" unique_id=1023568212]
 metadata/_edit_horizontal_guides_ = [690.0, 1085.0, -197.0, 667.0]

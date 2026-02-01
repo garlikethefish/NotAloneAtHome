@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dlwcghwbq2y6b" path="res://scripts/DoableObject.gd" id="1_mkuuf"]
 [ext_resource type="Texture2D" uid="uid://drlnlgvgspjqk" path="res://sprites/e_button_ui.png" id="2_3am46"]
-[ext_resource type="Texture2D" uid="uid://dni3rtkfhmv6h" path="res://sprites/cat_throw.png" id="2_dd85i"]
+[ext_resource type="Texture2D" uid="uid://4q335xxs2p" path="res://sprites/icon.svg" id="3_dd85i"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_enn7p"]
 size = Vector2(163.5, 130.5)
@@ -11,6 +11,8 @@ size = Vector2(163.5, 130.5)
 script = ExtResource("1_mkuuf")
 interactionSprite = NodePath("InteractionKey")
 objectSprite = NodePath("ObjectSprite")
+interactionSpriteTexture = ExtResource("2_3am46")
+objectSpriteTexture = ExtResource("3_dd85i")
 
 [node name="Area2D" type="Area2D" parent="." unique_id=1433082396]
 
@@ -21,12 +23,10 @@ shape = SubResource("RectangleShape2D_enn7p")
 [node name="ObjectSprite" type="Sprite2D" parent="." unique_id=1750835028]
 position = Vector2(84, 70)
 scale = Vector2(4.201172, 2.2599218)
-texture = ExtResource("2_dd85i")
 
 [node name="InteractionKey" type="Sprite2D" parent="." unique_id=749872540]
 position = Vector2(83.99999, 17)
 scale = Vector2(2.8736641, 2.7187502)
-texture = ExtResource("2_3am46")
 
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
 [connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]

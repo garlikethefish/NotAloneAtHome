@@ -2,12 +2,14 @@ extends Node
 class_name Valuable
 
 enum ValuableType {
-	Table,
-	Chair,
 	TV,
-	Sofa,
-	Dresser,
+	Bed,
+	Chair1,
+	Chair2,
 	Closet,
+	Sofa,
+	Table,
+	Vase,
 	None
 }
 
