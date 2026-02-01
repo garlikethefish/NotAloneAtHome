@@ -23,3 +23,4 @@ func _init(
 	self.isCompleted = isCompleted
 	self.text = text
 	self.nextObjective = nextObjective
+	

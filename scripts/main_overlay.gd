@@ -47,6 +47,13 @@ func _ready() -> void:
 		"onCodeWritten",
 		Callable(self, "doneWritingCode")
 	)
+	GameManager.connect(
+		"onSuspicionCnage",
+		Callable(self, "updateSuspision")
+	)
+	
+func updateSuspision():
+	suspicious_progress_bar.value = GameManager.suspicion
 	
 func doneThiefHidden():
 	GameManager.objective_list[ObjectiveModel.ObjectiveName.HideThief].isCompleted = true

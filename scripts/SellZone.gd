@@ -25,3 +25,7 @@ func _on_area_2d_area_entered(area: Area2D) -> void:
 		parent.dropItem()
 		parent.destroy(self)
 		GameManager.onItemStealed.emit()
+		GameManager.suspicion = clamp(GameManager.suspicion - 10, 0, 100)
+		
+		if GameManager.stolen_stuff_amount >= GameManager.maxStealableItems:
+			GameManager.onEnoughItemsStolen.emit()

@@ -4,6 +4,10 @@ signal on_objective_changed()
 signal onItemStealed()
 signal onTrashCollected()
 signal spawnTrash()
+signal onSuspicionCnage()
+
+signal onMaxSuspicion()
+signal onEnoughItemsStolen()
 
 #quest signals
 signal onThiefHidden()
@@ -25,10 +29,11 @@ var valuableSpawners: Array[ObjectSpawner] = []
 var player_can_move : bool = true
 var trashAtHome: int = 0
 var areAllTrashCollected: bool = false
-var suspicion : int = 0
+var suspicion : float = 0
+var suspicionMultiplier := 0
 var linesCompleted : int = 0
 var current_objective : ObjectiveModel.ObjectiveName = ObjectiveModel.ObjectiveName.TakeThiefsMask
-var objective_list : Dictionary[ObjectiveModel.ObjectiveName, ObjectiveModel] = {
+var objectiveDictionaryTemplate : Dictionary[ObjectiveModel.ObjectiveName, ObjectiveModel] = {
 	ObjectiveModel.ObjectiveName.TakeThiefsMask: ObjectiveModel.new(
 		false, 
 		"[wave amp=50.0 freq=5.0 connected=1]GRAB THIEFS' MASK[/wave]", 
@@ -65,6 +70,8 @@ var objective_list : Dictionary[ObjectiveModel.ObjectiveName, ObjectiveModel] = 
 			ObjectiveModel.ObjectiveName.Finish
 		),
 }
+
+var objective_list = objectiveDictionaryTemplate.duplicate_deep()
 var current_objective_int : int = 0
 var stolen_stuff_amount : int = 0
 var money_lost: int = 0
@@ -80,7 +87,7 @@ var valuables : Dictionary[Valuable.ValuableType, Valuable] = {
 	Valuable.ValuableType.Vase: Valuable.new(preload("res://sprites/vase.png"), 50),
 }
 
-var maxStealableItems = 10
+var maxStealableItems := 10
 var trashAmountFromDifficulty: int:
 	get: 
 		if gameDificulty == GameDifficulty.Easy:
@@ -102,25 +109,62 @@ func addTrash() -> void:
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	pass
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(_delta: float) -> void:
+	suspicion += _delta * suspicionMultiplier
+	onSuspicionCnage.emit()
+	#print("sus: ", suspicion)
+	
+	if suspicion >= 100:
+		onMaxSuspicion.emit()
+		
+	if (trashAtHome <= 0 && !areAllTrashCollected):
+		areAllTrashCollected = true
+		print("Collected all trash")
+		onAllTrashFinished.emit()
+		changeObjective()
+		
+func start(difficulty: GameDifficulty):
+	clearAll()
 	await get_tree().process_frame
+	await get_tree().process_frame
+	
+	await get_tree().process_frame
+	await get_tree().process_frame
+	await get_tree().process_frame
+	await get_tree().process_frame
+	await get_tree().process_frame
+	
+	if difficulty == GameDifficulty.Easy:
+		suspicionMultiplier = 1
+
+	if difficulty == GameDifficulty.Medium:
+		suspicionMultiplier = 2
+		
+	if difficulty == GameDifficulty.Hard:
+		suspicionMultiplier = 3
+	
 	startTrashCollectionTask()
 	spawnInValuables()
-	print("Im retarded!")
-
+	
+	print("Started again!")
+	
+func clearAll():
+	objectSpawners = []
+	valuableSpawners = []
+	trashAtHome = 0
+	suspicion = 0
+	linesCompleted = 0
+	current_objective = ObjectiveModel.ObjectiveName.TakeThiefsMask
+	objective_list = objectiveDictionaryTemplate.duplicate_deep()
+	
 func changeObjective(): # display next objective
 	# go to next uncompleted
 	if objective_list[current_objective].isCompleted:
 		while objective_list[current_objective].isCompleted:
 			current_objective = objective_list[current_objective].nextObjective
 	on_objective_changed.emit()
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta: float) -> void:
-	if (trashAtHome <= 0 && !areAllTrashCollected):
-		areAllTrashCollected = true
-		print("Collected all trash")
-		onAllTrashFinished.emit()
-		changeObjective()
 		
 func startTrashCollectionTask() -> void:
 	var howManyTrashWillBeSpawned: int = clamp(trashAmountFromDifficulty, 0, objectSpawners.size())
