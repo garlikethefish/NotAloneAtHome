@@ -96,9 +96,10 @@ func update_animation(dir: Vector2):
 func add_mask():
 	has_mask = true
 
-func show_defeat_screen():
+func show_defeat_screen(reason: String):
 	var defeat_scene = preload("res://scenes/DefeatScreen.tscn").instantiate()
 	get_tree().current_scene.add_child(defeat_scene)
+	defeat_scene.set_defeat_reason(reason)
 
 func die():
 	if is_dead:
@@ -115,7 +116,7 @@ func die():
 	await get_tree().create_timer(0.6).timeout
 	Engine.time_scale = 1.0
 
-	show_defeat_screen()
+	show_defeat_screen("YOU WERE SHOT")
 
 func toggle_mask():
 	if not has_mask:

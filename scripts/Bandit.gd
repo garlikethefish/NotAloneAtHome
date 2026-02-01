@@ -27,12 +27,15 @@ var last_facing := "down"
 var is_shooting := false
 var player_eliminated := false
 var look_direction := Vector2.RIGHT
+var is_global_alert := false
 
 @onready var anim: AnimatedSprite2D = $AnimatedSprite2D
 @onready var sight_ray: RayCast2D = $SightRay
 @onready var gunshot_sound: AudioStreamPlayer2D = $AudioStreamPlayer2D
 
 func _ready():
+	GameManager.onMaxSuspicion.connect(_on_global_alert)
+	GameManager.onEnoughItemsStolen.connect(_on_global_alert)
 	player = get_tree().get_first_node_in_group("player")
 	nav_agent = $NavigationAgent2D
 	add_to_group("bandits")
@@ -45,15 +48,15 @@ func _process(_delta):
 func _physics_process(delta):
 	shoot_timer -= delta
 
-	# ===== PLAYER DEAD STATE =====
 	if player_eliminated:
 		velocity = Vector2.ZERO
 		move_and_slide()
 		update_animation()
 		return
 
-	# ===== AI STATES =====
-	if player and can_see_player() and not player.mask_on:
+	if is_global_alert and player and not player.is_dead:
+		chase_player_globally()
+	elif player and can_see_player() and not player.mask_on:
 		is_investigating = false
 		chase_and_attack()
 	elif player and can_hear_player() and not player.mask_on:
@@ -63,6 +66,8 @@ func _physics_process(delta):
 	else:
 		roam(delta)
 
+
+
 	# Update look direction for vision
 	if velocity.length() > 5:
 		look_direction = velocity.normalized()
@@ -70,6 +75,29 @@ func _physics_process(delta):
 	velocity = nav_agent.get_velocity()
 	move_and_slide()
 	update_animation()
+
+func _on_global_alert():
+	is_global_alert = true
+	is_investigating = false
+	has_target = false
+	print("BANDIT IS NOW ASS MAD")
+
+func chase_player_globally():
+	nav_agent.target_position = player.global_position
+
+	if nav_agent.is_navigation_finished():
+		return
+
+	var next_pos = nav_agent.get_next_path_position()
+	var dir = global_position.direction_to(next_pos)
+
+	var desired_velocity = dir * chase_speed * 1.3  # faster when mad
+	velocity = velocity.move_toward(desired_velocity, 1100 * get_physics_process_delta_time())
+
+	nav_agent.set_velocity(velocity)
+	velocity = nav_agent.get_velocity()
+
+	try_shoot_player()
 
 func roam(delta):
 	if not has_target:
