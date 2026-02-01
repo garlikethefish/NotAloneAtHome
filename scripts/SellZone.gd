@@ -24,3 +24,4 @@ func _on_area_2d_area_entered(area: Area2D) -> void:
 		# destroy object
 		parent.dropItem()
 		parent.destroy(self)
+		GameManager.onItemStealed.emit()

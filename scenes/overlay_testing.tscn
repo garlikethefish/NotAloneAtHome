@@ -2,9 +2,36 @@
 
 [ext_resource type="PackedScene" uid="uid://be8qbmt0fe144" path="res://objects/Player.tscn" id="1_vq1bx"]
 [ext_resource type="PackedScene" uid="uid://cbcifivthchns" path="res://ui/ui_overlay.tscn" id="2_l3cgb"]
+[ext_resource type="PackedScene" uid="uid://4pir8t8pfsok" path="res://objects/ObjectSpawner.tscn" id="3_km2sj"]
+[ext_resource type="PackedScene" uid="uid://cah3urn1fwd1d" path="res://objects/SellZone.tscn" id="4_v1lbj"]
 
 [node name="OverlayTesting" type="Node2D" unique_id=1145812360]
 
 [node name="Player" parent="." unique_id=1993068751 instance=ExtResource("1_vq1bx")]
 
 [node name="UIOverlay" parent="." unique_id=466827575 instance=ExtResource("2_l3cgb")]
+
+[node name="ObjectSpawner" parent="." unique_id=390438769 instance=ExtResource("3_km2sj")]
+position = Vector2(592, 146)
+
+[node name="ObjectSpawner2" parent="." unique_id=1272329670 instance=ExtResource("3_km2sj")]
+position = Vector2(382, 626)
+
+[node name="ObjectSpawner3" parent="." unique_id=888909650 instance=ExtResource("3_km2sj")]
+position = Vector2(1407, 208)
+
+[node name="ObjectSpawner4" parent="." unique_id=773342669 instance=ExtResource("3_km2sj")]
+position = Vector2(387, 322)
+predifinedValuableSpawner = 0
+
+[node name="ObjectSpawner5" parent="." unique_id=1293989547 instance=ExtResource("3_km2sj")]
+position = Vector2(574, 706)
+predifinedValuableSpawner = 1
+
+[node name="ObjectSpawner6" parent="." unique_id=1653139872 instance=ExtResource("3_km2sj")]
+position = Vector2(1255, 554)
+predifinedValuableSpawner = 2
+
+[node name="SellZone" parent="." unique_id=377854475 instance=ExtResource("4_v1lbj")]
+position = Vector2(839, 525)
+scale = Vector2(1.71, 1.71)

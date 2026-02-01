@@ -15,6 +15,7 @@ var current_radius := 0.35
 var has_mask := false
 var mask_on := false
 var isCarringObject := false
+var carriableObject: InteractableObject
 
 @onready var anim: AnimatedSprite2D = $AnimatedSprite2D
 @onready var overlay_rect: ColorRect = $MaskOverlay/ColorRect

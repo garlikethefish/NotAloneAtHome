@@ -1,4 +1,18 @@
 extends Node
+
+signal on_objective_changed()
+signal onItemStealed()
+signal onTrashCollected()
+signal spawnTrash()
+
+#quest signals
+signal onThiefHidden()
+signal onMaskTaken()
+signal onKittyFed()
+signal onAllTrashFinished()
+signal onCodeWritten()
+signal onEscape()
+
 enum GameDifficulty { Easy, Medium, Hard }
 var interactableObjectPrefab: PackedScene = preload("res://objects/InteractableObject.tscn")
 
@@ -12,20 +26,47 @@ var trashAtHome: int = 0
 var areAllTrashCollected: bool = false
 var suspicion : int = 0
 var linesCompleted : int = 0
-var current_objective : String = "None"
-var objective_list : Array = [
-	"[wave amp=50.0 freq=5.0 connected=1]GRAB THIEFS' MASK[/wave]",
-	"[wave amp=50.0 freq=5.0 connected=1]HIDE THE DEAD THIEF[/wave]",
-	"[wave amp=50.0 freq=5.0 connected=1]CLEAN ROOM[/wave]",
-	"[wave amp=50.0 freq=5.0 connected=1]FEED KITTY[/wave]",
-	"[wave amp=50.0 freq=5.0 connected=1]PICK UP {ITEM}[/wave]",
-	"[wave amp=50.0 freq=5.0 connected=1]DROP {ITEM} OFF AT DOOR[/wave]",
-	"[wave amp=50.0 freq=5.0 connected=1]WRITE CODE[/wave]",
-	"[wave amp=50.0 freq=5.0 connected=1]ESCAPE[/wave]"
-]
+var current_objective : ObjectiveModel.ObjectiveName = ObjectiveModel.ObjectiveName.TakeThiefsMask
+var objective_list : Dictionary[ObjectiveModel.ObjectiveName, ObjectiveModel] = {
+	ObjectiveModel.ObjectiveName.TakeThiefsMask: ObjectiveModel.new(
+		false, 
+		"[wave amp=50.0 freq=5.0 connected=1]GRAB THIEFS' MASK[/wave]", 
+		ObjectiveModel.ObjectiveName.HideThief
+	),
+	ObjectiveModel.ObjectiveName.HideThief: 
+		ObjectiveModel.new(
+			false, 
+			"[wave amp=50.0 freq=5.0 connected=1]HIDE THE DEAD THIEF[/wave]",
+			ObjectiveModel.ObjectiveName.CleanHome
+		),
+	ObjectiveModel.ObjectiveName.CleanHome: 
+		ObjectiveModel.new(
+			false, 
+			"[wave amp=50.0 freq=5.0 connected=1]CLEAN ROOM[/wave]",
+			ObjectiveModel.ObjectiveName.FeedKitty
+		),
+	ObjectiveModel.ObjectiveName.FeedKitty:
+		ObjectiveModel.new(
+			false, 
+			"[wave amp=50.0 freq=5.0 connected=1]FEED KITTY[/wave]",
+			ObjectiveModel.ObjectiveName.WriteCode
+		),
+	ObjectiveModel.ObjectiveName.WriteCode:
+		ObjectiveModel.new(
+			false, 
+			"[wave amp=50.0 freq=5.0 connected=1]WRITE CODE[/wave]",
+			ObjectiveModel.ObjectiveName.Escape
+		),
+	ObjectiveModel.ObjectiveName.Escape: 
+		ObjectiveModel.new(
+			false, 
+			"[wave amp=50.0 freq=5.0 connected=1]ESCAPE[/wave]",
+			ObjectiveModel.ObjectiveName.Finish
+		),
+}
 var current_objective_int : int = 0
 var stolen_stuff_amount : int = 0
-var money_lost : int = 0
+var money_lost: int = 0
 var trashRes = preload("res://sprites/shift_button_ui.png")
 var valuables : Dictionary[Valuable.ValuableType, Valuable] = {
 	Valuable.ValuableType.Table: Valuable.new(preload("res://sprites/tv.png"), 70),
@@ -35,8 +76,8 @@ var valuables : Dictionary[Valuable.ValuableType, Valuable] = {
 	Valuable.ValuableType.Dresser: Valuable.new(preload("res://sprites/tv.png"), 100),
 	Valuable.ValuableType.Closet: Valuable.new(preload("res://sprites/tv.png"), 50),
 }
-signal on_objective_changed()
 
+var maxStealableItems = 10
 var trashAmountFromDifficulty: int:
 	get: 
 		if gameDificulty == GameDifficulty.Easy:
@@ -48,10 +89,9 @@ var trashAmountFromDifficulty: int:
 		else:
 			return 0
 
-signal spawnTrash()
-
 func collectTrash() -> void:
 	trashAtHome -= 1
+	onTrashCollected.emit()
 	print("Collected one trash")
 	
 func addTrash() -> void:
@@ -59,15 +99,16 @@ func addTrash() -> void:
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	current_objective = objective_list[0]
 	await get_tree().process_frame
 	startTrashCollectionTask()
 	spawnInValuables()
 	print("Im retarded!")
 
 func changeObjective(): # display next objective
-	current_objective_int += 1
-	current_objective = objective_list[current_objective_int]
+	# go to next uncompleted
+	if objective_list[current_objective].isCompleted:
+		while objective_list[current_objective].isCompleted:
+			current_objective = objective_list[current_objective].nextObjective
 	on_objective_changed.emit()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -75,6 +116,7 @@ func _process(_delta: float) -> void:
 	if (trashAtHome <= 0 && !areAllTrashCollected):
 		areAllTrashCollected = true
 		print("Collected all trash")
+		onAllTrashFinished.emit()
 		changeObjective()
 		
 func startTrashCollectionTask() -> void:

@@ -10,6 +10,12 @@ var isValuable: bool:
 
 @export var tapsTillDone: int = 10
 @export var isCarriable = false
+
+@export var isCustom = false
+@export var isKitty = false
+@export var isDeadThief = false
+@export var isThiefsCloset = false
+
 var isCarried = false
 var isCompleteTriggered: bool = false
 var tween
@@ -26,22 +32,49 @@ signal onComplete()
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	if isKitty and isThiefsCloset:
+		isCarriable = false
+		
+	if isDeadThief:
+		isCarriable = true
+		
 	interactionSprite.visible = false
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
-	allowInteraction = player and !player.isCarringObject and !player.mask_on and !isKillingItself
+	allowInteraction = (
+		isThiefsCloset and player and player.carriableObject and player.carriableObject.isDeadThief
+		or
+		player and !player.isCarringObject and !player.mask_on and !isKillingItself
+	)
 	interactionSprite.visible = allowInteraction
 	
 	if isKillingItself: return
 	var isInteractPressed = Input.is_action_just_pressed("interact")
 	
+	# destroy dead thief in closet
+	if (
+		isThiefsCloset and 
+		player and 
+		player.carriableObject and 
+		player.carriableObject.isDeadThief and 
+		isInteractPressed
+	):
+		isCarried = false
+		#global_position = player.global_position #+ player.direction
+		interactionSprite.visible = true
+
+		player.carriableObject.destroy(self)
+		player.isCarringObject = false
+		player.carriableObject = null
+		GameManager.onThiefHidden.emit()
+		return
 		
 	if isCarried:
 		stickToPlayer()
 		
 		# drop item
-		if player and (isInteractPressed or player.mask_on):
+		if player and (isInteractPressed or player.mask_on) and !isDeadThief:
 			isInteractPressed = false
 			dropItem()
 	
@@ -51,11 +84,12 @@ func _process(_delta: float) -> void:
 		# pick up
 		if isCarriable and allowInteraction:
 			player.isCarringObject = true
+			player.carriableObject = self
 			interactionSprite.visible = false
 			isCarried = true
 		
 		# 
-		if !isCarriable:
+		if !isCarriable and !isThiefsCloset:
 			tapsTillDone -= 1
 		#print("Interact key pressed!")
 		
@@ -67,6 +101,8 @@ func dropItem():
 	global_position = player.global_position #+ player.direction
 	interactionSprite.visible = true
 	player.isCarringObject = false
+	player.carriableObject = null
+	
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if body is PlayerCharacter:
@@ -103,6 +139,9 @@ func complete():
 	isCompleteTriggered = true
 	GameManager.collectTrash()
 	emit_signal("onComplete")
+	if isKitty:
+		GameManager.onKittyFed.emit()
+		
 	destroy(self)
 	
 func destroy(caller: Node2D):
