@@ -8,6 +8,7 @@
 size = Vector2(163.5, 130.5)
 
 [node name="InteractableObject" type="Node2D" unique_id=659652577 node_paths=PackedStringArray("interactionSprite", "objectSprite") groups=["DoableObjectGroup"]]
+scale = Vector2(0.4, 0.4)
 script = ExtResource("1_mkuuf")
 interactionSprite = NodePath("InteractionKey")
 objectSprite = NodePath("ObjectSprite")
@@ -15,17 +16,17 @@ interactionSpriteTexture = ExtResource("2_3am46")
 objectSpriteTexture = ExtResource("3_dd85i")
 
 [node name="Area2D" type="Area2D" parent="." unique_id=1433082396]
+position = Vector2(-85, -69.99999)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1122523408]
 position = Vector2(85.25, 68.75)
 shape = SubResource("RectangleShape2D_enn7p")
 
 [node name="ObjectSprite" type="Sprite2D" parent="." unique_id=1750835028]
-position = Vector2(84, 70)
-scale = Vector2(4.201172, 2.2599218)
+position = Vector2(0, 7.6293945e-06)
 
 [node name="InteractionKey" type="Sprite2D" parent="." unique_id=749872540]
-position = Vector2(83.99999, 17)
+position = Vector2(-7.6293945e-06, -55)
 scale = Vector2(2.8736641, 2.7187502)
 
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]

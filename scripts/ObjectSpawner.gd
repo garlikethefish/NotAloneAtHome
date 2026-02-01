@@ -25,6 +25,7 @@ func spawObject(prefab: PackedScene, isCarriable: bool) -> void:
 	
 	instantiatedObject = prefab.instantiate()
 	instantiatedObject.global_position = self.position
+	instantiatedObject.top_level = true
 	
 	# Adds to current scene
 	get_tree().current_scene.add_child(instantiatedObject)
@@ -41,6 +42,7 @@ func spawObject(prefab: PackedScene, isCarriable: bool) -> void:
 			
 			print("sprite: ", GameManager.valuables[predifinedValuableSpawner].sprite)
 		else:
+			instantiatedObject.objectSprite.texture = GameManager.trashRes
 			instantiatedObject.connect(
 				"onComplete", 
 				Callable(self, "onObjectDestroy")
