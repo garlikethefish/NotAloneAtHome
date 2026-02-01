@@ -3,12 +3,15 @@
 [ext_resource type="PackedScene" uid="uid://be8qbmt0fe144" path="res://objects/Player.tscn" id="1_vq1bx"]
 [ext_resource type="PackedScene" uid="uid://cbcifivthchns" path="res://ui/ui_overlay.tscn" id="2_l3cgb"]
 [ext_resource type="PackedScene" uid="uid://dfbnrpvmioq7g" path="res://objects/laptop.tscn" id="3_km2sj"]
+[ext_resource type="PackedScene" uid="uid://kii0qs3xbrod" path="res://ui/programming_minigame.tscn" id="3_v1lbj"]
 
 [node name="OverlayTesting" type="Node2D" unique_id=1145812360]
 
 [node name="Player" parent="." unique_id=1993068751 instance=ExtResource("1_vq1bx")]
 
 [node name="UIOverlay" parent="." unique_id=466827575 instance=ExtResource("2_l3cgb")]
+
+[node name="ProgrammingMinigame" parent="." unique_id=409070707 instance=ExtResource("3_v1lbj")]
 
 [node name="Laptop" parent="." unique_id=537660455 instance=ExtResource("3_km2sj")]
 position = Vector2(906, 417)

@@ -49,12 +49,12 @@ text = "hey boss, gimme a million dollar idea for a program"
 [node name="ReplyTextLabel3" type="RichTextLabel" parent="UIImage" unique_id=90607355]
 layout_mode = 0
 offset_left = 1032.0
-offset_top = 328.0
+offset_top = 301.0
 offset_right = 1746.0
-offset_bottom = 710.0
+offset_bottom = 683.0
 theme = ExtResource("2_41l7i")
 theme_override_font_sizes/normal_font_size = 36
-text = "
+text = "sure thing bro:
 
 
 
@@ -75,17 +75,16 @@ text = "sure thing bro:"
 
 [node name="ReplyTextLabel" type="RichTextLabel" parent="UIImage" unique_id=869451594]
 layout_mode = 0
-offset_left = 1023.0
-offset_top = 381.0
-offset_right = 1770.0
-offset_bottom = 619.0
+offset_left = 1032.0
+offset_top = 387.0
+offset_right = 1746.0
+offset_bottom = 589.0
 theme = ExtResource("2_41l7i")
 theme_override_font_sizes/normal_font_size = 36
 text = "a = input(\"First number: \")
 b = input(\"Second number: \")
 op = input(\"Operation (+ - * /): \")
-print(eval(a + op + b))
-# very important comment that must be kept"
+print(eval(a + op + b))"
 
 [node name="BossTextLabel" type="RichTextLabel" parent="UIImage" unique_id=1358232252]
 layout_mode = 0
