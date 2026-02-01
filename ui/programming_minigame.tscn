@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://kii0qs3xbrod"]
+
+[ext_resource type="Texture2D" uid="uid://ci7d80g6ejfja" path="res://sprites/programming_minigame.png" id="1_71074"]
+
+[node name="ProgrammingMinigame" type="CanvasLayer" unique_id=409070707]
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=288589367]
+offset_right = 517.0
+offset_bottom = 298.0
+texture = ExtResource("1_71074")
