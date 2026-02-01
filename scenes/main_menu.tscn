@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bsuygxhr05tam" path="res://scripts/Main_menu.gd" id="1_l6cm7"]
 [ext_resource type="Theme" uid="uid://c68li1l2cs3o4" path="res://themes/default_theme.tres" id="2_ekxnf"]
+[ext_resource type="AudioStream" uid="uid://eipix70ilsb4" path="res://scenes/creepy-atmosphere-145465.mp3" id="3_bqqt6"]
 
 [node name="Main Menu" type="Control" unique_id=212980581]
 layout_mode = 3
@@ -59,6 +60,11 @@ theme_override_font_sizes/normal_font_size = 58
 text = "Not Alone At Home"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=262798702]
+stream = ExtResource("3_bqqt6")
+autoplay = true
+parameters/looping = true
 
 [connection signal="pressed" from="VBoxContainer/StartButton" to="Button_manager" method="_on_start_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/OptionsButton" to="Button_manager" method="_on_options_button_pressed"]

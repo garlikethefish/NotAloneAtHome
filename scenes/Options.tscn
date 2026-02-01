@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bh8p25dyaobls" path="res://scripts/Options.gd" id="1_qqnya"]
 [ext_resource type="Theme" uid="uid://c68li1l2cs3o4" path="res://themes/default_theme.tres" id="2_ckjey"]
+[ext_resource type="AudioStream" uid="uid://eipix70ilsb4" path="res://scenes/creepy-atmosphere-145465.mp3" id="3_nmn1p"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ckjey"]
 bg_color = Color(0.24985075, 0.24985075, 0.24985069, 1)
@@ -77,5 +78,10 @@ layout_mode = 2
 theme = ExtResource("2_ckjey")
 theme_override_font_sizes/font_size = 27
 text = "Back"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=103638069]
+stream = ExtResource("3_nmn1p")
+autoplay = true
+parameters/looping = true
 
 [connection signal="pressed" from="Panel/VBoxContainer/VBoxContainer/BackButton" to="." method="_on_back_button_pressed"]

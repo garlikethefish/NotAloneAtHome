@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://c3i10nd3v2myj" path="res://scripts/DefeatScreen.gd" id="1_d4dv2"]
 [ext_resource type="Texture2D" uid="uid://by710rpm7kobn" path="res://sprites/MaskItem.png" id="2_yvgvb"]
 [ext_resource type="Theme" uid="uid://c68li1l2cs3o4" path="res://themes/default_theme.tres" id="3_tp7al"]
+[ext_resource type="AudioStream" uid="uid://eipix70ilsb4" path="res://scenes/creepy-atmosphere-145465.mp3" id="4_vrsgx"]
 
 [node name="DefeatScreen" type="CanvasLayer" unique_id=1356816678]
 script = ExtResource("1_d4dv2")
@@ -50,3 +51,8 @@ layout_mode = 2
 theme = ExtResource("3_tp7al")
 theme_override_font_sizes/font_size = 32
 text = "Retry"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=655202211]
+stream = ExtResource("4_vrsgx")
+autoplay = true
+parameters/looping = true
