@@ -19,7 +19,7 @@ var isCarringObject := false
 var carriableObject: InteractableObject
 var can_move := true
 
-var direction: Vector2 = Vector2.ZERO
+var direction: Vector2 = Vector2.ZERO 
 
 @onready var anim: AnimatedSprite2D = $AnimatedSprite2D
 @onready var overlay_rect: ColorRect = $MaskOverlay/ColorRect

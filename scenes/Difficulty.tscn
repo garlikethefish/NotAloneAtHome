@@ -1,6 +1,6 @@
-[gd_scene format=3 uid="uid://brto81ffvcavq"]
+[gd_scene format=3 uid="uid://bqkxmcgfowtt1"]
 
-[ext_resource type="Script" uid="uid://rm3lollcgcdi" path="res://scenes/DifficultyScreen.gd" id="1_flr8e"]
+[ext_resource type="Script" uid="uid://rm3lollcgcdi" path="res://scripts/DifficultyScreen.gd" id="1_flr8e"]
 [ext_resource type="Theme" uid="uid://c68li1l2cs3o4" path="res://themes/default_theme.tres" id="2_ll5ts"]
 [ext_resource type="AudioStream" uid="uid://eipix70ilsb4" path="res://scenes/creepy-atmosphere-145465.mp3" id="3_ll5ts"]
 
