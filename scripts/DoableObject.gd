@@ -16,6 +16,7 @@ var isValuable: bool:
 @export var isKitty = false
 @export var isDeadThief = false
 @export var isThiefsCloset = false
+@export var isPc = false
 
 var isCarried = false
 var isCompleteTriggered: bool = false
@@ -55,6 +56,9 @@ func _process(_delta: float) -> void:
 	
 	if isKillingItself: return
 	var isInteractPressed = Input.is_action_just_pressed("interact")
+	
+	if isPc && isInteractPressed:
+		GameManager.laptop.show_overlay()
 	
 	# destroy dead thief in closet
 	if (

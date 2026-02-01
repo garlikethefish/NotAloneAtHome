@@ -21,6 +21,7 @@ enum GameDifficulty { Easy, Medium, Hard }
 var interactableObjectPrefab: PackedScene = preload("res://objects/InteractableObject.tscn")
 
 var chairSprite: Sprite2D
+var laptop: Laptop
 
 var gameDificulty: GameDifficulty = GameDifficulty.Easy
 var objectSpawners: Array[ObjectSpawner] = []
@@ -135,6 +136,8 @@ func start(difficulty: GameDifficulty):
 	await get_tree().process_frame
 	await get_tree().process_frame
 	await get_tree().process_frame
+	
+	gameDificulty = difficulty
 	
 	if difficulty == GameDifficulty.Easy:
 		suspicionMultiplier = 1

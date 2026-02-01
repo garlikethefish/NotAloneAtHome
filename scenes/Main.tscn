@@ -11,6 +11,8 @@
 [ext_resource type="PackedScene" uid="uid://ok87eomdw64l" path="res://objects/InteractableObject.tscn" id="9_q8u5g"]
 [ext_resource type="Texture2D" uid="uid://buk6rjmqtl5xo" path="res://sprites/closet.png" id="10_wp0k4"]
 [ext_resource type="Texture2D" uid="uid://dni3rtkfhmv6h" path="res://sprites/cat_throw.png" id="11_bjd11"]
+[ext_resource type="Texture2D" uid="uid://d1u4stp3o8b5e" path="res://sprites/laptop.png" id="12_bjd11"]
+[ext_resource type="PackedScene" uid="uid://dfbnrpvmioq7g" path="res://objects/laptop.tscn" id="13_qmy6f"]
 
 [node name="Main" type="Node2D" unique_id=1023568212]
 script = ExtResource("1_nxtc6")
@@ -145,5 +147,15 @@ top_level = true
 position = Vector2(516, 146)
 objectSpriteTexture = ExtResource("11_bjd11")
 isDeadThief = true
+
+[node name="Laptop" parent="." unique_id=289683089 instance=ExtResource("9_q8u5g")]
+top_level = true
+position = Vector2(720, 14)
+objectSpriteTexture = ExtResource("12_bjd11")
+isPc = true
+
+[node name="Laptop" parent="Laptop" unique_id=2105277080 instance=ExtResource("13_qmy6f")]
+position = Vector2(537, 295)
+texture = null
 
 [editable path="Tilemaps"]
