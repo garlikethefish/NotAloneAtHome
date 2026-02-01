@@ -344,7 +344,7 @@ speed = 120.0
 mask_speed_multiplier = 0.5
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1807232928]
-zoom = Vector2(2, 2)
+zoom = Vector2(3.49, 3.49)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1767608192]
 visibility_layer = 15
@@ -363,7 +363,7 @@ layer = 0
 
 [node name="ColorRect" type="ColorRect" parent="MaskOverlay" unique_id=427046387]
 material = SubResource("ShaderMaterial_f6j3j")
-anchors_preset = -1
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
