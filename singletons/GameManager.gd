@@ -22,6 +22,7 @@ var gameDificulty: GameDifficulty = GameDifficulty.Easy
 var objectSpawners: Array[ObjectSpawner] = []
 var valuableSpawners: Array[ObjectSpawner] = []
 
+var player_can_move : bool = true
 var trashAtHome: int = 0
 var areAllTrashCollected: bool = false
 var suspicion : int = 0

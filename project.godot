@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="NotAloneAtHome"
-run/main_scene="uid://leb3c1ugsal7"
+run/main_scene="uid://duk5kvmt3ssme"
 config/features=PackedStringArray("4.6", "GL Compatibility")
 config/icon="uid://4q335xxs2p"
 

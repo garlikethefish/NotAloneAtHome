@@ -1,5 +1,6 @@
 extends CanvasLayer
 
+signal minigame_failed
 # =========================
 # CONFIG
 # =========================
@@ -104,11 +105,13 @@ func _register_mistake() -> void:
 # END STATES
 # =========================
 func _kick_player() -> void:
-	queue_free()
+	self.get_parent().connect("minigame_failed", Callable(self, "_on_programming_minigame_minigame_failed"))
 
 
 func _on_success() -> void:
 	print("Typing minigame completed")
+	
+	
 
 
 # =========================

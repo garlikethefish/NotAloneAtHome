@@ -17,6 +17,7 @@ var has_mask := false
 var mask_on := false
 var isCarringObject := false
 var carriableObject: InteractableObject
+var can_move := true
 
 var direction: Vector2 = Vector2.ZERO
 
@@ -26,6 +27,7 @@ var direction: Vector2 = Vector2.ZERO
 var last_facing := "down"
 
 func _ready():
+	can_move = GameManager.player_can_move
 	add_to_group("player")
 	
 	if overlay_rect:
@@ -35,6 +37,7 @@ func _ready():
 			overlay_rect.material.set_shader_parameter("radius", atmosphere_radius)
 
 func _process(delta):
+	can_move = GameManager.player_can_move
 	if overlay_rect and overlay_rect.material:
 		var mat = overlay_rect.material
 		mat.set_shader_parameter("center", Vector2(0.5, 0.5))
