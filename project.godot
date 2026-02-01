@@ -10,18 +10,14 @@ config_version=5
 
 [application]
 
-config/name="New Game Project"
+config/name="NotAloneAtHome"
 run/main_scene="uid://leb3c1ugsal7"
 config/features=PackedStringArray("4.6", "GL Compatibility")
 config/icon="uid://4q335xxs2p"
-<<<<<<<Updatedupstreamrun/main_scene="uid://bkt2ik2qfjdp"
-window/size/mode=3
 
 [autoload]
 
 GameManager="*uid://khcy1rbiah63"
-window/size/mode=3
-<<<<<<<Updatedupstreamrun/main_scene="uid://bkt2ik2qfjdp"
 
 [display]
 
