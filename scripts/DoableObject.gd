@@ -19,7 +19,7 @@ var isKillingItself: bool
 @onready var interactionKeyStartScale: Vector2 = interactionSprite.scale
 var interactionKeyEndPos:
 	get:
-		return interactionKeyStartPos / 2
+		return interactionKeyStartPos - Vector2(0, -20)
 var player: PlayerCharacter
 
 signal onComplete()

@@ -26,7 +26,7 @@ var objective_list : Array = [
 var current_objective_int : int = 0
 var stolen_stuff_amount : int = 0
 var money_lost : int = 0
-var trashRes = preload("res://sprites/trashOng.jpg")
+var trashRes = preload("res://sprites/shift_button_ui.png")
 var valuables : Dictionary[Valuable.ValuableType, Valuable] = {
 	Valuable.ValuableType.Table: Valuable.new(preload("res://sprites/tv.png"), 70),
 	Valuable.ValuableType.Chair: Valuable.new(preload("res://sprites/bum.jpg"), 40),

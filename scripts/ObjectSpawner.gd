@@ -41,18 +41,6 @@ func spawObject(prefab: PackedScene, isCarriable: bool) -> void:
 			
 			print("sprite: ", GameManager.valuables[predifinedValuableSpawner].sprite)
 		else:
-			# Suppose you want it to fit within 64x64 units
-			var target_size = Vector2(16, 16)
-
-			# Get the texture size
-			var tex_size = instantiatedObject.objectSprite.texture.get_size()
-
-			# Calculate scale factor
-			instantiatedObject.objectSprite.scale = Vector2(
-				target_size.x / tex_size.x,
-				target_size.y / tex_size.y
-			)
-			instantiatedObject.objectSprite.texture = GameManager.trashRes
 			instantiatedObject.connect(
 				"onComplete", 
 				Callable(self, "onObjectDestroy")
