@@ -2,8 +2,12 @@ extends Node
 enum GameDifficulty { Easy, Medium, Hard }
 var interactableObjectPrefab: PackedScene = preload("res://objects/InteractableObject.tscn")
 
+var chairSprite: Sprite2D
+
 var gameDificulty: GameDifficulty = GameDifficulty.Easy
 var objectSpawners: Array[ObjectSpawner] = []
+var valuableSpawners: Array[ObjectSpawner] = []
+
 var trashAtHome: int = 0
 var areAllTrashCollected: bool = false
 var suspicion : int = 0
@@ -14,19 +18,22 @@ var objective_list : Array = [
 	"[wave amp=50.0 freq=5.0 connected=1]HIDE THE DEAD THIEF[/wave]",
 	"[wave amp=50.0 freq=5.0 connected=1]CLEAN ROOM[/wave]",
 	"[wave amp=50.0 freq=5.0 connected=1]FEED KITTY[/wave]",
+	"[wave amp=50.0 freq=5.0 connected=1]PICK UP {ITEM}[/wave]",
+	"[wave amp=50.0 freq=5.0 connected=1]DROP {ITEM} OFF AT DOOR[/wave]",
 	"[wave amp=50.0 freq=5.0 connected=1]WRITE CODE[/wave]",
 	"[wave amp=50.0 freq=5.0 connected=1]ESCAPE[/wave]"
 ]
 var current_objective_int : int = 0
 var stolen_stuff_amount : int = 0
 var money_lost : int = 0
-var cost_dictionary : Dictionary = {
-	"table": 35,
-	"chair": 15,
-	"tv": 200,
-	"sofa": 100,
-	"dresser": 50,
-	"closet": 40
+var trashRes = preload("res://sprites/shift_button_ui.png")
+var valuables : Dictionary[Valuable.ValuableType, Valuable] = {
+	Valuable.ValuableType.Table: Valuable.new(preload("res://sprites/tv.png"), 70),
+	Valuable.ValuableType.Chair: Valuable.new(preload("res://sprites/bum.jpg"), 40),
+	Valuable.ValuableType.TV: Valuable.new(preload("res://sprites/tv.png"), 400),
+	Valuable.ValuableType.Sofa: Valuable.new(preload("res://sprites/tv.png"), 300),
+	Valuable.ValuableType.Dresser: Valuable.new(preload("res://sprites/tv.png"), 100),
+	Valuable.ValuableType.Closet: Valuable.new(preload("res://sprites/tv.png"), 50),
 }
 signal on_objective_changed()
 
@@ -55,6 +62,8 @@ func _ready() -> void:
 	current_objective = objective_list[0]
 	await get_tree().process_frame
 	startTrashCollectionTask()
+	spawnInValuables()
+	print("Im retarded!")
 
 func changeObjective(): # display next objective
 	current_objective_int += 1
@@ -79,8 +88,15 @@ func startTrashCollectionTask() -> void:
 	
 	# spawn at random spawner
 	for i in range(howManyTrashWillBeSpawned):
-		spawnerPool[i].spawObject(interactableObjectPrefab)
+		spawnerPool[i].spawObject(interactableObjectPrefab, true)
 		
 	areAllTrashCollected = false
 	trashAtHome = howManyTrashWillBeSpawned
 	emit_signal("spawnTrash")
+	
+func spawnInValuables():
+	print("valuable spawners: ", valuableSpawners.size())
+	for spawner in valuableSpawners:
+		spawner.spawObject(interactableObjectPrefab, true)
+		
+	

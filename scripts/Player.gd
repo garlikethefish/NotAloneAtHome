@@ -15,6 +15,7 @@ var current_radius := 0.35
 var is_dead := false
 var has_mask := false
 var mask_on := false
+var isCarringObject := false
 
 var direction: Vector2 = Vector2.ZERO
 

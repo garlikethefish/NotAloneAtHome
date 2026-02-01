@@ -2,9 +2,13 @@
 
 [ext_resource type="PackedScene" uid="uid://be8qbmt0fe144" path="res://objects/Player.tscn" id="1_vq1bx"]
 [ext_resource type="PackedScene" uid="uid://cbcifivthchns" path="res://ui/ui_overlay.tscn" id="2_l3cgb"]
+[ext_resource type="PackedScene" uid="uid://dfbnrpvmioq7g" path="res://objects/laptop.tscn" id="3_km2sj"]
 
 [node name="OverlayTesting" type="Node2D" unique_id=1145812360]
 
 [node name="Player" parent="." unique_id=1993068751 instance=ExtResource("1_vq1bx")]
 
 [node name="UIOverlay" parent="." unique_id=466827575 instance=ExtResource("2_l3cgb")]
+
+[node name="Laptop" parent="." unique_id=537660455 instance=ExtResource("3_km2sj")]
+position = Vector2(906, 417)
