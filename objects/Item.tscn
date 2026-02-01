@@ -4,16 +4,17 @@
 [ext_resource type="Texture2D" uid="uid://by710rpm7kobn" path="res://sprites/MaskItem.png" id="2_sioqs"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_t7cc2"]
-size = Vector2(49, 49.99997)
+size = Vector2(13, 15)
 
 [node name="Item" type="Area2D" unique_id=1473760491]
 script = ExtResource("1_2oiv6")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=468663048]
-scale = Vector2(3.0624998, 3.125)
+scale = Vector2(1.0312499, 1.0522959)
 texture = ExtResource("2_sioqs")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1005837441]
+position = Vector2(0.5, 0.5)
 shape = SubResource("RectangleShape2D_t7cc2")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

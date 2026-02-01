@@ -3,7 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://d1u4stp3o8b5e" path="res://sprites/laptop.png" id="1_wu6ei"]
 [ext_resource type="PackedScene" uid="uid://ok87eomdw64l" path="res://objects/InteractableObject.tscn" id="2_1snf0"]
 [ext_resource type="Script" uid="uid://de4186bnvdg8l" path="res://objects/laptop.gd" id="2_j6x1g"]
-[ext_resource type="PackedScene" uid="uid://kii0qs3xbrod" path="res://ui/programming_minigame.tscn" id="4_j6x1g"]
+[ext_resource type="PackedScene" uid="uid://djb26f6ndxg4d" path="res://ui/programming_minigame.tscn" id="4_j6x1g"]
 
 [node name="Laptop" type="Sprite2D" unique_id=2105277080]
 texture = ExtResource("1_wu6ei")
@@ -15,4 +15,5 @@ objectSprite = NodePath("..")
 [node name="ProgrammingMinigame" parent="." unique_id=409070707 instance=ExtResource("4_j6x1g")]
 visible = false
 
+[connection signal="ready" from="." to="." method="_on_ready"]
 [connection signal="minigame_failed" from="ProgrammingMinigame" to="." method="_on_programming_minigame_minigame_failed"]

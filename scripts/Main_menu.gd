@@ -2,7 +2,7 @@ extends Node
 # fuck
 
 func _on_start_button_pressed() -> void:
-	get_tree().change_scene_to_file("res://scenes/Difficulty.tscn") #ievada lokciju
+	get_tree().change_scene_to_file("res://scenes/intro.tscn") #ievada lokciju
 
 
 func _on_options_button_pressed() -> void:

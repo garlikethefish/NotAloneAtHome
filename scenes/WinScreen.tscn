@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://bpy6utsbi0xao"]
 
 [ext_resource type="Texture2D" uid="uid://3rcysfimbpcd" path="res://sprites/win_screen.png" id="1_ulig0"]
+[ext_resource type="AudioStream" uid="uid://caddxrps3p2ie" path="res://scenes/coin-spill-105867.mp3" id="2_okh34"]
 
 [node name="WinScreen" type="Control" unique_id=1035638417]
 layout_mode = 3
@@ -15,6 +16,11 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = -1880.0
-offset_bottom = -1040.0
+grow_horizontal = 2
+grow_vertical = 2
 texture = ExtResource("1_ulig0")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1287065263]
+stream = ExtResource("2_okh34")
+autoplay = true
+parameters/looping = true

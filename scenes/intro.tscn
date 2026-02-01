@@ -1,0 +1,56 @@
+[gd_scene format=3 uid="uid://u4y08dxh6vwp"]
+
+[ext_resource type="Script" uid="uid://drj7xmx6kib6w" path="res://scripts/intro.gd" id="1_es01l"]
+[ext_resource type="Texture2D" uid="uid://y6mlvblo32eb" path="res://sprites/story1.png" id="1_wfs7u"]
+[ext_resource type="Texture2D" uid="uid://bccbdrx0f4m0a" path="res://sprites/story2.png" id="2_es01l"]
+[ext_resource type="Texture2D" uid="uid://djacvx0qllhk6" path="res://sprites/strory3.png" id="3_0naf5"]
+[ext_resource type="Texture2D" uid="uid://2v8ema0u2imw" path="res://sprites/story4.png" id="4_bu1yb"]
+[ext_resource type="Texture2D" uid="uid://iynpto8j82e3" path="res://sprites/story5.png" id="5_t1qkj"]
+[ext_resource type="AudioStream" uid="uid://b22p2o6rsa18v" path="res://scenes/creepy-woods-152004.mp3" id="7_0naf5"]
+
+[node name="Intro" type="Control" unique_id=1029431244]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_es01l")
+
+[node name="Story1" type="TextureRect" parent="." unique_id=1821766851]
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+texture = ExtResource("1_wfs7u")
+
+[node name="Story2" type="TextureRect" parent="." unique_id=749658560]
+visible = false
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+texture = ExtResource("2_es01l")
+
+[node name="Story3" type="TextureRect" parent="." unique_id=1867648120]
+visible = false
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+texture = ExtResource("3_0naf5")
+
+[node name="Story4" type="TextureRect" parent="." unique_id=1698303208]
+visible = false
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+texture = ExtResource("4_bu1yb")
+
+[node name="Story5" type="TextureRect" parent="." unique_id=1335423987]
+visible = false
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+texture = ExtResource("5_t1qkj")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=478413239]
+stream = ExtResource("7_0naf5")
+autoplay = true

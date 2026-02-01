@@ -33,9 +33,9 @@ volume_db = 12.03
 target_desired_distance = 20.0
 path_max_distance = 20.0
 avoidance_enabled = true
-debug_enabled = true
 
 [node name="InteractableObject" parent="." unique_id=659652577 instance=ExtResource("3_nfwan")]
+scale = Vector2(0.4, 0.4)
 objectSpriteTexture = null
 isKitty = true
 
