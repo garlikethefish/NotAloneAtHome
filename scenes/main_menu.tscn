@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://2yvq6yiiep7y"]
 
 [ext_resource type="Script" uid="uid://bsuygxhr05tam" path="res://scripts/Main_menu.gd" id="1_l6cm7"]
+[ext_resource type="Theme" uid="uid://c68li1l2cs3o4" path="res://themes/default_theme.tres" id="2_ekxnf"]
 
 [node name="Main Menu" type="Control" unique_id=212980581]
 layout_mode = 3
@@ -10,48 +11,55 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
+[node name="Panel" type="Panel" parent="." unique_id=18107416]
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+
 [node name="Button_manager" type="Node" parent="." unique_id=387076492]
 script = ExtResource("1_l6cm7")
 
-[node name="StartButton" type="Button" parent="." unique_id=1635750413]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.40500003
-anchor_top = 0.231
-anchor_right = 0.595
-anchor_bottom = 0.386
-offset_left = -0.5600281
-offset_top = 0.31199646
-offset_right = 0.5599365
-offset_bottom = -0.12800598
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=573799521]
+layout_mode = 0
+offset_left = 755.0
+offset_top = 409.0
+offset_right = 1155.0
+offset_bottom = 737.0
+theme_override_constants/separation = 31
+
+[node name="StartButton" type="Button" parent="VBoxContainer" unique_id=1635750413]
+custom_minimum_size = Vector2(100, 60)
+layout_mode = 2
+theme = ExtResource("2_ekxnf")
+theme_override_font_sizes/font_size = 32
 text = "Start game"
 
-[node name="OptionsButton" type="Button" parent="." unique_id=946701625]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.40500003
-anchor_top = 0.46300003
-anchor_right = 0.595
-anchor_bottom = 0.61700004
-offset_left = -0.5600281
-offset_top = -0.024017334
-offset_right = 0.5599365
-offset_bottom = 0.18395996
-text = "Option"
+[node name="OptionsButton" type="Button" parent="VBoxContainer" unique_id=946701625]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+theme = ExtResource("2_ekxnf")
+theme_override_font_sizes/font_size = 32
+text = "Options"
 
-[node name="ExitButton" type="Button" parent="." unique_id=1662439747]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.40500003
-anchor_top = 0.694
-anchor_right = 0.595
-anchor_bottom = 0.84900004
-offset_left = -0.5600281
-offset_top = 0.28799438
-offset_right = 0.5599365
-offset_bottom = -0.15203857
+[node name="ExitButton" type="Button" parent="VBoxContainer" unique_id=1662439747]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+theme = ExtResource("2_ekxnf")
+theme_override_font_sizes/font_size = 32
 text = "Quit"
 
-[connection signal="pressed" from="StartButton" to="Button_manager" method="_on_start_button_pressed"]
-[connection signal="pressed" from="OptionsButton" to="Button_manager" method="_on_options_button_pressed"]
-[connection signal="pressed" from="ExitButton" to="Button_manager" method="_on_exit_button_pressed"]
+[node name="RichTextLabel" type="RichTextLabel" parent="." unique_id=260945019]
+layout_mode = 0
+offset_left = 658.0
+offset_top = 201.0
+offset_right = 1263.0
+offset_bottom = 387.0
+theme = ExtResource("2_ekxnf")
+theme_override_font_sizes/normal_font_size = 58
+text = "Not Alone At Home"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="pressed" from="VBoxContainer/StartButton" to="Button_manager" method="_on_start_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/OptionsButton" to="Button_manager" method="_on_options_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/ExitButton" to="Button_manager" method="_on_exit_button_pressed"]
