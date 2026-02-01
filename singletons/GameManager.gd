@@ -18,6 +18,8 @@ var objective_list : Array = [
 	"[wave amp=50.0 freq=5.0 connected=1]HIDE THE DEAD THIEF[/wave]",
 	"[wave amp=50.0 freq=5.0 connected=1]CLEAN ROOM[/wave]",
 	"[wave amp=50.0 freq=5.0 connected=1]FEED KITTY[/wave]",
+	"[wave amp=50.0 freq=5.0 connected=1]PICK UP {ITEM}[/wave]",
+	"[wave amp=50.0 freq=5.0 connected=1]DROP {ITEM} OFF AT DOOR[/wave]",
 	"[wave amp=50.0 freq=5.0 connected=1]WRITE CODE[/wave]",
 	"[wave amp=50.0 freq=5.0 connected=1]ESCAPE[/wave]"
 ]
