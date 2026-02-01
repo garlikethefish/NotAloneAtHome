@@ -6,12 +6,14 @@ extends CharacterBody2D
 @export var vision_range := 220.0
 @export var shoot_distance := 200.0
 @export var shoot_cooldown := 1.2
+@export var roam_wait_time := 1.5
+@export var hearing_radius := 160.0
+@export var investigate_time := 2.0
 
 @export var min_x := -100.0
 @export var max_x := 800.0
 @export var min_y := -100.0
 @export var max_y := 600.0
-@export var roam_wait_time := 1.5
 
 var dir: Vector2
 var player
@@ -19,6 +21,9 @@ var nav_agent: NavigationAgent2D
 var roam_timer := 0.0
 var has_target := false
 var shoot_timer := 0.0
+var investigate_timer := 0.0
+var investigate_target := Vector2.ZERO
+var is_investigating := false
 
 @onready var sprite: Sprite2D = $Sprite2D
 @onready var sight_ray: RayCast2D = $SightRay
@@ -38,9 +43,18 @@ func _physics_process(delta):
 	shoot_timer -= delta
 
 	if player and can_see_player() and not player.mask_on:
+		is_investigating = false
 		chase_and_attack()
+
+	elif player and can_hear_player() and not player.mask_on:
+		start_investigating(player.global_position)
+
+	elif is_investigating:
+		investigate(delta)
+
 	else:
 		roam(delta)
+
 
 	if velocity.length() > 5:
 		rotation = velocity.angle()
@@ -71,6 +85,46 @@ func roam(delta):
 	nav_agent.set_velocity(velocity)
 	velocity = nav_agent.get_velocity()
 
+func start_investigating(pos: Vector2):
+	investigate_target = pos
+	nav_agent.target_position = pos
+	is_investigating = true
+	investigate_timer = investigate_time
+
+func investigate(delta):
+	var distance_to_target = global_position.distance_to(investigate_target)
+
+	if distance_to_target < 12:
+		velocity = Vector2.ZERO
+		investigate_timer -= delta
+
+		rotation += deg_to_rad(60) * delta
+
+		if investigate_timer <= 0:
+			is_investigating = false
+		return
+
+	var next_pos = nav_agent.get_next_path_position()
+	dir = global_position.direction_to(next_pos)
+
+	var desired_velocity = dir * speed * 0.7
+	velocity = velocity.move_toward(desired_velocity, 600 * delta)
+
+	nav_agent.set_velocity(velocity)
+	velocity = nav_agent.get_velocity()
+
+func can_hear_player() -> bool:
+	if not player:
+		return false
+	
+	var player_speed = player.velocity.length()
+	if player_speed < 160:
+		return false
+	
+	if global_position.distance_to(player.global_position) <= hearing_radius:
+		return true
+		
+	return false
 
 func set_new_roam_target():
 	var random_point = Vector2(
