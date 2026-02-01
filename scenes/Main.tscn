@@ -11,7 +11,6 @@ metadata/_edit_horizontal_guides_ = [690.0, 1085.0, -197.0, 667.0]
 metadata/_edit_vertical_guides_ = [-1302.0, -145.0, 887.0, -3874.0]
 
 [node name="UIOverlay" parent="." unique_id=466827575 instance=ExtResource("1_vcsgt")]
-visible = false
 
 [node name="Tilemaps" parent="." unique_id=34827215 instance=ExtResource("1_rarhs")]
 
