@@ -50,6 +50,7 @@ value = 24.0
 rounded = true
 
 [node name="TrashCollectedLabel" type="Label" parent="ImportantInfoPanel" unique_id=572737843]
+unique_name_in_owner = true
 layout_mode = 0
 offset_left = 13.0
 offset_top = 82.0
@@ -183,6 +184,6 @@ offset_bottom = 81.0
 theme = ExtResource("1_n4vjp")
 theme_override_styles/fill = SubResource("StyleBoxFlat_n4vjp")
 max_value = 20.0
-value = 7.0
+value = 8.0
 rounded = true
 show_percentage = false
