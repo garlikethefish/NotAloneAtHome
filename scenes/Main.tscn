@@ -6,11 +6,11 @@
 [ext_resource type="PackedScene" uid="uid://cbcifivthchns" path="res://ui/ui_overlay.tscn" id="1_vcsgt"]
 [ext_resource type="PackedScene" uid="uid://dfdiuox7wslrn" path="res://objects/Item.tscn" id="2_pbw6q"]
 [ext_resource type="PackedScene" uid="uid://bmvgwyelxjr6q" path="res://objects/Bandit.tscn" id="3_0bbpv"]
-[ext_resource type="PackedScene" uid="uid://4pir8t8pfsok" path="res://objects/ObjectSpawner.tscn" id="6_c01mt"]
+[ext_resource type="PackedScene" path="res://objects/ObjectSpawner.tscn" id="6_c01mt"]
 [ext_resource type="PackedScene" uid="uid://cah3urn1fwd1d" path="res://objects/SellZone.tscn" id="8_jlsqs"]
 [ext_resource type="PackedScene" uid="uid://ok87eomdw64l" path="res://objects/InteractableObject.tscn" id="9_q8u5g"]
 [ext_resource type="Texture2D" uid="uid://buk6rjmqtl5xo" path="res://sprites/closet.png" id="10_wp0k4"]
-[ext_resource type="Texture2D" uid="uid://dni3rtkfhmv6h" path="res://sprites/cat_throw.png" id="11_bjd11"]
+[ext_resource type="Texture2D" uid="uid://cthin8wf24dcc" path="res://sprites/bandit_dead.png" id="11_wp0k4"]
 
 [node name="Main" type="Node2D" unique_id=1023568212]
 script = ExtResource("1_nxtc6")
@@ -137,13 +137,15 @@ position = Vector2(710, 240)
 [node name="DeadGuyCloset" parent="." unique_id=659652577 instance=ExtResource("9_q8u5g")]
 top_level = true
 position = Vector2(396, 84)
+scale = Vector2(0.4, 0.4)
 objectSpriteTexture = ExtResource("10_wp0k4")
 isThiefsCloset = true
 
 [node name="DeadGuy" parent="." unique_id=451255797 instance=ExtResource("9_q8u5g")]
 top_level = true
 position = Vector2(516, 146)
-objectSpriteTexture = ExtResource("11_bjd11")
+scale = Vector2(0.4, 0.4)
+objectSpriteTexture = ExtResource("11_wp0k4")
 isDeadThief = true
 
 [editable path="Tilemaps"]
