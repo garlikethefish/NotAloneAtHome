@@ -15,7 +15,6 @@ extends CharacterBody2D
 @export var min_y := -100.0
 @export var max_y := 600.0
 
-var dir: Vector2
 var player
 var nav_agent: NavigationAgent2D
 var roam_timer := 0.0
@@ -24,8 +23,12 @@ var shoot_timer := 0.0
 var investigate_timer := 0.0
 var investigate_target := Vector2.ZERO
 var is_investigating := false
+var last_facing := "down"
+var is_shooting := false
+var player_eliminated := false
+var look_direction := Vector2.RIGHT
 
-@onready var sprite: Sprite2D = $Sprite2D
+@onready var anim: AnimatedSprite2D = $AnimatedSprite2D
 @onready var sight_ray: RayCast2D = $SightRay
 @onready var gunshot_sound: AudioStreamPlayer2D = $AudioStreamPlayer2D
 
@@ -34,7 +37,7 @@ func _ready():
 	nav_agent = $NavigationAgent2D
 	add_to_group("bandits")
 	randomize()
-
+	update_animation()
 
 func _process(_delta):
 	queue_redraw()
@@ -42,26 +45,32 @@ func _process(_delta):
 func _physics_process(delta):
 	shoot_timer -= delta
 
+	# ===== PLAYER DEAD STATE =====
+	if player_eliminated:
+		velocity = Vector2.ZERO
+		move_and_slide()
+		update_animation()
+		return
+
+	# ===== AI STATES =====
 	if player and can_see_player() and not player.mask_on:
 		is_investigating = false
 		chase_and_attack()
-
 	elif player and can_hear_player() and not player.mask_on:
 		start_investigating(player.global_position)
-
 	elif is_investigating:
 		investigate(delta)
-
 	else:
 		roam(delta)
 
-
+	# Update look direction for vision
 	if velocity.length() > 5:
-		rotation = velocity.angle()
-		
+		look_direction = velocity.normalized()
+
 	velocity = nav_agent.get_velocity()
 	move_and_slide()
-	
+	update_animation()
+
 func roam(delta):
 	if not has_target:
 		roam_timer -= delta
@@ -77,8 +86,7 @@ func roam(delta):
 		return
 
 	var next_pos = nav_agent.get_next_path_position()
-	dir = global_position.direction_to(next_pos)
-
+	var dir = global_position.direction_to(next_pos)
 	var desired_velocity = dir * speed
 	velocity = velocity.move_toward(desired_velocity, 800 * delta)
 
@@ -94,19 +102,17 @@ func start_investigating(pos: Vector2):
 func investigate(delta):
 	var distance_to_target = global_position.distance_to(investigate_target)
 
-	if distance_to_target < 12:
+	if distance_to_target < 14:
 		velocity = Vector2.ZERO
+		nav_agent.set_velocity(Vector2.ZERO)
+		nav_agent.target_position = global_position
 		investigate_timer -= delta
-
-		rotation += deg_to_rad(60) * delta
-
 		if investigate_timer <= 0:
 			is_investigating = false
 		return
 
 	var next_pos = nav_agent.get_next_path_position()
-	dir = global_position.direction_to(next_pos)
-
+	var dir = global_position.direction_to(next_pos)
 	var desired_velocity = dir * speed * 0.7
 	velocity = velocity.move_toward(desired_velocity, 600 * delta)
 
@@ -116,22 +122,16 @@ func investigate(delta):
 func can_hear_player() -> bool:
 	if not player:
 		return false
-	
-	var player_speed = player.velocity.length()
-	if player_speed < 160:
+	if player.velocity.length() < 160:
 		return false
-	
-	if global_position.distance_to(player.global_position) <= hearing_radius:
-		return true
-		
-	return false
+	return global_position.distance_to(player.global_position) <= hearing_radius
 
 func set_new_roam_target():
 	var random_point = Vector2(
 		randf_range(min_x, max_x),
 		randf_range(min_y, max_y)
 	)
-	nav_agent.set_target_position(random_point)
+	nav_agent.target_position = random_point
 	has_target = true
 
 func chase_and_attack():
@@ -141,8 +141,7 @@ func chase_and_attack():
 		return
 
 	var next_pos = nav_agent.get_next_path_position()
-	dir = global_position.direction_to(next_pos)
-
+	var dir = global_position.direction_to(next_pos)
 	var desired_velocity = dir * chase_speed
 	velocity = velocity.move_toward(desired_velocity, 900 * get_physics_process_delta_time())
 
@@ -153,34 +152,25 @@ func chase_and_attack():
 
 func has_line_of_sight_to_player() -> bool:
 	var space_state = get_world_2d().direct_space_state
-	var from = global_position
-	var to = player.global_position
-
-	var query = PhysicsRayQueryParameters2D.create(from, to)
+	var query = PhysicsRayQueryParameters2D.create(global_position, player.global_position)
 	query.exclude = [self]
 	query.collide_with_areas = false
 	query.collide_with_bodies = true
-
 	var result = space_state.intersect_ray(query)
-
-	if result and result.collider != player:
-		return false  # wall in the way
-
-	return true
+	return not (result and result.collider != player)
 
 func try_shoot_player():
 	if shoot_timer > 0:
 		return
-	
 	if not has_line_of_sight_to_player():
 		return
-
 	if global_position.distance_to(player.global_position) <= shoot_distance:
 		shoot_timer = shoot_cooldown
-
+		player_eliminated = true
+		is_shooting = true
+		anim.play("shoot_anim")
 		if gunshot_sound:
 			gunshot_sound.play()
-
 		player.die()
 
 func can_see_player() -> bool:
@@ -188,56 +178,61 @@ func can_see_player() -> bool:
 		return false
 
 	var to_player = player.global_position - global_position
-	var dist = to_player.length()
-
-	if dist > vision_range:
+	if to_player.length() > vision_range:
 		return false
 
-	var forward = Vector2.RIGHT.rotated(rotation)
-	var angle_to_player = rad_to_deg(forward.angle_to(to_player.normalized()))
+	var angle_to_player = rad_to_deg(look_direction.angle_to(to_player.normalized()))
 	if abs(angle_to_player) > vision_angle * 0.5:
 		return false
 
 	sight_ray.target_position = to_player
 	sight_ray.force_raycast_update()
 
-	if sight_ray.is_colliding():
-		var hit = sight_ray.get_collider()
-
-		if hit != player:
-			return false
+	if sight_ray.is_colliding() and sight_ray.get_collider() != player:
+		return false
 
 	return true
 
 func _draw():
 	var cone_color = Color(1, 0, 0, 0.15)
 	var half_angle = deg_to_rad(vision_angle * 0.5)
-
 	var points = [Vector2.ZERO]
-
 	var rays := 20
+
 	for i in range(rays + 1):
 		var angle = lerp(-half_angle, half_angle, float(i) / rays)
-		dir = Vector2.RIGHT.rotated(angle + rotation)
-		var end_point = cast_vision_ray(dir)
-		points.append(end_point)
+		var dir = look_direction.rotated(angle)
+		points.append(cast_vision_ray(dir))
 
 	draw_polygon(points, [cone_color])
 
 func cast_vision_ray(direction: Vector2) -> Vector2:
 	var space_state = get_world_2d().direct_space_state
-	
 	var from = global_position
 	var to = from + direction * vision_range
-	
 	var query = PhysicsRayQueryParameters2D.create(from, to)
 	query.exclude = [self]
 	query.collide_with_areas = false
 	query.collide_with_bodies = true
-	
 	var result = space_state.intersect_ray(query)
+	return to_local(result.position if result else to)
 
-	if result:
-		return to_local(result.position)
+func update_animation():
+	if is_shooting:
+		if not anim.is_playing():
+			is_shooting = false
+			anim.play("idle_" + last_facing)
+		else:
+			return
+
+	var moving = velocity.length() > 10
+
+	if abs(velocity.y) > abs(velocity.x):
+		last_facing = "up" if velocity.y < 0 else "down"
+
+	if moving:
+		anim.play("walk_" + last_facing)
 	else:
-		return to_local(to)
+		anim.play("idle_" + last_facing)
+
+	anim.flip_h = velocity.x < 0

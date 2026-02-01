@@ -16,6 +16,7 @@ var is_dead := false
 var has_mask := false
 var mask_on := false
 var isCarringObject := false
+var carriableObject: InteractableObject
 
 var direction: Vector2 = Vector2.ZERO
 

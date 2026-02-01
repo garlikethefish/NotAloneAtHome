@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://be8qbmt0fe144" path="res://objects/Player.tscn" id="2_n77mx"]
 [ext_resource type="Script" uid="uid://kwly6sj4obv1" path="res://scripts/ObjectSpawner.gd" id="4_nb1wl"]
 [ext_resource type="PackedScene" uid="uid://cah3urn1fwd1d" path="res://objects/SellZone.tscn" id="5_m5dm6"]
+[ext_resource type="PackedScene" uid="uid://cbcifivthchns" path="res://ui/ui_overlay.tscn" id="6_fws1a"]
 
 [node name="Node2D" type="Node2D" unique_id=129267035 groups=["mask_overlay"]]
 
@@ -24,7 +25,7 @@ script = ExtResource("4_nb1wl")
 metadata/_custom_type_script = "uid://kwly6sj4obv1"
 
 [node name="ObjectSpawner" type="Node2D" parent="." unique_id=1662803240]
-position = Vector2(132, 328)
+position = Vector2(684, -275)
 script = ExtResource("4_nb1wl")
 predifinedValuableSpawner = 1
 metadata/_custom_type_script = "uid://kwly6sj4obv1"
@@ -65,7 +66,7 @@ script = ExtResource("4_nb1wl")
 metadata/_custom_type_script = "uid://kwly6sj4obv1"
 
 [node name="ObjectSpawner10" type="Node2D" parent="." unique_id=1969090796]
-position = Vector2(552, 200)
+position = Vector2(1869, -273)
 script = ExtResource("4_nb1wl")
 predifinedValuableSpawner = 0
 metadata/_custom_type_script = "uid://kwly6sj4obv1"
@@ -77,3 +78,20 @@ metadata/_custom_type_script = "uid://kwly6sj4obv1"
 
 [node name="SellZone" parent="." unique_id=377854475 instance=ExtResource("5_m5dm6")]
 position = Vector2(927, 135)
+
+[node name="InteractableObject" parent="." unique_id=1853829989 instance=ExtResource("1_rlkm5")]
+position = Vector2(171, 723)
+isKitty = true
+
+[node name="InteractableObject2" parent="." unique_id=626622171 instance=ExtResource("1_rlkm5")]
+position = Vector2(715, 689)
+isDeadThief = true
+
+[node name="InteractableObject3" parent="." unique_id=1085448779 instance=ExtResource("1_rlkm5")]
+position = Vector2(423, 716)
+isThiefsCloset = true
+
+[node name="Item2" parent="." unique_id=629644649 instance=ExtResource("1_n77mx")]
+position = Vector2(1154, 634)
+
+[node name="UIOverlay" parent="." unique_id=466827575 instance=ExtResource("6_fws1a")]
