@@ -13,7 +13,6 @@ var isValuable: bool:
 @export var tapsTillDone: int = 10
 @export var isCarriable = false
 
-@export var isCustom = false
 @export var isKitty = false
 @export var isDeadThief = false
 @export var isThiefsCloset = false

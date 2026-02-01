@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://5wyn8ac16y4c"]
 
-[ext_resource type="Script" path="res://scripts/main_overlay.gd" id="1_mmsv4"]
+[ext_resource type="Script" uid="uid://cndhrmbrn5v4v" path="res://scripts/main_overlay.gd" id="1_mmsv4"]
 [ext_resource type="Theme" uid="uid://c68li1l2cs3o4" path="res://themes/default_theme.tres" id="1_n4vjp"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_aqpnj"]
