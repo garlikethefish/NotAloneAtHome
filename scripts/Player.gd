@@ -12,9 +12,12 @@ class_name PlayerCharacter
 @export var vision_expand_speed := 0.25
 
 var current_radius := 0.35
+var is_dead := false
 var has_mask := false
 var mask_on := false
 var isCarringObject := false
+
+var direction: Vector2 = Vector2.ZERO
 
 @onready var anim: AnimatedSprite2D = $AnimatedSprite2D
 @onready var overlay_rect: ColorRect = $MaskOverlay/ColorRect
@@ -22,6 +25,8 @@ var isCarringObject := false
 var last_facing := "down"
 
 func _ready():
+	add_to_group("player")
+	
 	if overlay_rect:
 		overlay_rect.visible = true
 		if overlay_rect.material:
@@ -40,11 +45,8 @@ func _process(delta):
 
 		mat.set_shader_parameter("radius", current_radius)
 
-
-
-
 func _physics_process(_delta):
-	var direction = Vector2.ZERO
+	direction = Vector2.ZERO
 	direction.x = Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
 	direction.y = Input.get_action_strength("move_down") - Input.get_action_strength("move_up")
 	direction = direction.normalized()
@@ -65,18 +67,20 @@ func _physics_process(_delta):
 	if Input.is_action_just_pressed("toggle_mask"):
 		toggle_mask()
 
+	if is_dead:
+		return
 
-func update_animation(direction: Vector2):
-	var moving = direction.length() > 0
+func update_animation(dir: Vector2):
+	var moving = dir.length() > 0
 
-	if direction.x > 0:
+	if dir.x > 0:
 		anim.flip_h = false
-	elif direction.x < 0:
+	elif dir.x < 0:
 		anim.flip_h = true
 
 	if moving:
-		if abs(direction.y) > abs(direction.x):
-			last_facing = "up" if direction.y < 0 else "down"
+		if abs(dir.y) > abs(dir.x):
+			last_facing = "up" if dir.y < 0 else "down"
 
 	var mask_suffix = "_mask" if mask_on else ""
 
@@ -88,6 +92,27 @@ func update_animation(direction: Vector2):
 func add_mask():
 	has_mask = true
 
+func show_defeat_screen():
+	var defeat_scene = preload("res://scenes/DefeatScreen.tscn").instantiate()
+	get_tree().current_scene.add_child(defeat_scene)
+
+func die():
+	if is_dead:
+		return
+
+	is_dead = true
+	print("You were shot!")
+
+	velocity = Vector2.ZERO
+	set_physics_process(false)
+	set_process(false)
+
+	Engine.time_scale = 0.4
+	await get_tree().create_timer(0.6).timeout
+	Engine.time_scale = 1.0
+
+	show_defeat_screen()
+
 func toggle_mask():
 	if not has_mask:
 		return
@@ -96,7 +121,3 @@ func toggle_mask():
 
 	if mask_on:
 		current_radius = max_vision_radius
-
-func update_mask_visual():
-	if overlay_rect:
-		overlay_rect.visible = mask_on

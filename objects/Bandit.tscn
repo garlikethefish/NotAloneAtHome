@@ -1,0 +1,47 @@
+[gd_scene format=3 uid="uid://bmvgwyelxjr6q"]
+
+[ext_resource type="Script" uid="uid://bflx038o74dvh" path="res://scripts/Bandit.gd" id="1_nuupm"]
+[ext_resource type="Texture2D" uid="uid://by710rpm7kobn" path="res://sprites/MaskItem.png" id="2_bragx"]
+[ext_resource type="AudioStream" uid="uid://d1w6ghitekdav" path="res://sounds/Mag_Unload_Sound.wav" id="3_1v8oq"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_so3fp"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_1v8oq"]
+
+[node name="Bandit" type="CharacterBody2D" unique_id=136410527]
+safe_margin = 0.2
+script = ExtResource("1_nuupm")
+roam_wait_time = 0.001
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=324389714]
+modulate = Color(0.76206994, 0.17606321, 0.008382548, 1)
+rotation = 1.5707964
+texture = ExtResource("2_bragx")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=36144933]
+top_level = true
+shape = SubResource("CircleShape2D_so3fp")
+debug_color = Color(0.96862745, 0, 0.4627451, 0.41960785)
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="." unique_id=1940221389]
+target_desired_distance = 20.0
+path_max_distance = 20.0
+avoidance_enabled = true
+radius = 500.0
+neighbor_distance = 7763.51
+debug_enabled = true
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=88663116]
+stream = ExtResource("3_1v8oq")
+volume_db = 24.0
+pitch_scale = 4.0
+
+[node name="SightRay" type="RayCast2D" parent="." unique_id=112610399]
+visible = false
+collision_mask = 3
+
+[node name="VisionArea" type="Area2D" parent="." unique_id=885876066]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="VisionArea" unique_id=555588942]
+scale = Vector2(-100, 100)
+shape = SubResource("CircleShape2D_1v8oq")

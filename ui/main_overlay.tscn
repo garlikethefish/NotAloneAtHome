@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://5wyn8ac16y4c"]
 
-[ext_resource type="Script" uid="uid://cndhrmbrn5v4v" path="res://scripts/main_overlay.gd" id="1_mmsv4"]
+[ext_resource type="Script" path="res://scripts/main_overlay.gd" id="1_mmsv4"]
 [ext_resource type="Theme" uid="uid://c68li1l2cs3o4" path="res://themes/default_theme.tres" id="1_n4vjp"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_aqpnj"]
@@ -26,6 +26,7 @@ layout_mode = 1
 offset_right = 357.0
 offset_bottom = 245.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_aqpnj")
+metadata/_edit_use_anchors_ = true
 
 [node name="SuspiciousLabel" type="Label" parent="ImportantInfoPanel" unique_id=2018269662]
 layout_mode = 0
@@ -98,6 +99,7 @@ offset_right = 318.0
 offset_bottom = 93.0
 grow_horizontal = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_aqpnj")
+metadata/_edit_use_anchors_ = true
 
 [node name="ObjectiveLabel" type="Label" parent="ObjectivePanel" unique_id=1588478658]
 layout_mode = 0

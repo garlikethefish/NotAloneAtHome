@@ -9,7 +9,7 @@ extends Control
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	objective_content_label.text = GameManager.current_objective
+	#objective_content_label.text = GameManager.current_objective
 	GameManager.connect(
 		"on_objective_changed", 
 		Callable(self, "new_objective")
@@ -27,4 +27,5 @@ func update_money_lost():
 	pass
 
 func new_objective():
-	objective_content_label.text = GameManager.current_objective
+	#objective_content_label.text = GameManager.current_objective
+	pass

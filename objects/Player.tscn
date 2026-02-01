@@ -2,10 +2,10 @@
 
 [ext_resource type="Script" uid="uid://dgemna2cprj7k" path="res://scripts/Player.gd" id="1_v6fml"]
 [ext_resource type="Texture2D" uid="uid://d16fbhghe53wp" path="res://sprites/Player-Sheet.png" id="2_gndvh"]
-[ext_resource type="Shader" path="res://shaders/MaskVision.gdshader" id="3_6vqvp"]
+[ext_resource type="Shader" uid="uid://dkftmq20sgy7t" path="res://shaders/MaskVision.gdshader" id="3_6vqvp"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5ixxa"]
-size = Vector2(58, 22)
+size = Vector2(17, 28)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_6vqvp"]
 atlas = ExtResource("2_gndvh")
@@ -340,17 +340,20 @@ shader_parameter/softness = 0.15
 position = Vector2(576, 324)
 collision_mask = 2
 script = ExtResource("1_v6fml")
+speed = 120.0
+mask_speed_multiplier = 0.5
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1807232928]
+zoom = Vector2(2, 2)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1767608192]
 visibility_layer = 15
-position = Vector2(-4, 56)
+position = Vector2(-0.5, 2)
 shape = SubResource("RectangleShape2D_5ixxa")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=110831436]
-position = Vector2(-0.4999981, -0.5)
-scale = Vector2(3.96875, 4.09375)
+position = Vector2(1.9073486e-06, 0)
+scale = Vector2(1, 1.031)
 sprite_frames = SubResource("SpriteFrames_jp248")
 animation = &"idle_down"
 frame_progress = 0.8579534
@@ -360,10 +363,12 @@ layer = 0
 
 [node name="ColorRect" type="ColorRect" parent="MaskOverlay" unique_id=427046387]
 material = SubResource("ShaderMaterial_f6j3j")
-anchors_preset = 15
+anchors_preset = -1
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 color = Color(0, 0, 0, 0.8509804)
 metadata/_edit_use_anchors_ = true
