@@ -73,7 +73,7 @@ var objectiveDictionaryTemplate : Dictionary[ObjectiveModel.ObjectiveName, Objec
 }
 
 var objective_list = objectiveDictionaryTemplate.duplicate_deep()
-var current_objective_int : int = 0
+
 var stolen_stuff_amount : int = 0
 var money_lost: int = 0
 var trashRes = preload("res://sprites/trash.png")
@@ -154,19 +154,61 @@ func start(difficulty: GameDifficulty):
 	print("Started again!")
 	
 func clearAll():
+	print("Cleared all")
 	objectSpawners = []
 	valuableSpawners = []
 	trashAtHome = 0
 	suspicion = 0
 	linesCompleted = 0
 	current_objective = ObjectiveModel.ObjectiveName.TakeThiefsMask
-	objective_list = objectiveDictionaryTemplate.duplicate_deep()
+	objective_list = {
+	ObjectiveModel.ObjectiveName.TakeThiefsMask: ObjectiveModel.new(
+		false, 
+		"[wave amp=50.0 freq=5.0 connected=1]GRAB THIEFS' MASK[/wave]", 
+		ObjectiveModel.ObjectiveName.HideThief
+	),
+	ObjectiveModel.ObjectiveName.HideThief: 
+		ObjectiveModel.new(
+			false, 
+			"[wave amp=50.0 freq=5.0 connected=1]HIDE THE DEAD THIEF[/wave]",
+			ObjectiveModel.ObjectiveName.CleanHome
+		),
+	ObjectiveModel.ObjectiveName.CleanHome: 
+		ObjectiveModel.new(
+			false, 
+			"[wave amp=50.0 freq=5.0 connected=1]CLEAN ROOM[/wave]",
+			ObjectiveModel.ObjectiveName.FeedKitty
+		),
+	ObjectiveModel.ObjectiveName.FeedKitty:
+		ObjectiveModel.new(
+			false, 
+			"[wave amp=50.0 freq=5.0 connected=1]FEED KITTY[/wave]",
+			ObjectiveModel.ObjectiveName.WriteCode
+		),
+	ObjectiveModel.ObjectiveName.WriteCode:
+		ObjectiveModel.new(
+			false, 
+			"[wave amp=50.0 freq=5.0 connected=1]WRITE CODE[/wave]",
+			ObjectiveModel.ObjectiveName.Escape
+		),
+	ObjectiveModel.ObjectiveName.Escape: 
+		ObjectiveModel.new(
+			false, 
+			"[wave amp=50.0 freq=5.0 connected=1]ESCAPE[/wave]",
+			ObjectiveModel.ObjectiveName.Finish
+		),
+	}
+	
+	for key in objective_list.keys():
+		print(objective_list[key].isCompleted)
+
+	stolen_stuff_amount = 0
+	money_lost = 0
 	
 func changeObjective(): # display next objective
 	# go to next uncompleted
-	if objective_list[current_objective].isCompleted:
-		while objective_list[current_objective].isCompleted:
-			current_objective = objective_list[current_objective].nextObjective
+	while objective_list[current_objective].isCompleted:
+		current_objective = objective_list[current_objective].nextObjective
 	on_objective_changed.emit()
 		
 func startTrashCollectionTask() -> void:
