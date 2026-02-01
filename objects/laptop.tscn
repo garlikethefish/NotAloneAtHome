@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://dfbnrpvmioq7g"]
+
+[ext_resource type="Texture2D" uid="uid://d1u4stp3o8b5e" path="res://sprites/laptop.png" id="1_vjbl8"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wu6ei"]
+size = Vector2(31, 26)
+
+[node name="Laptop" type="Node2D" unique_id=537660455]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1283617023]
+texture = ExtResource("1_vjbl8")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=1427735190]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1391115547]
+position = Vector2(-0.5, 5)
+shape = SubResource("RectangleShape2D_wu6ei")

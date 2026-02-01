@@ -1,4 +1,4 @@
-[gd_resource type="TileSet" format=3 uid="uid://dxwwmwcsppumm"]
+[gd_resource type="TileSet" format=3 uid="uid://dtse53chvk1wb"]
 
 [ext_resource type="Texture2D" uid="uid://dpbi0vuv43hty" path="res://sprites/walls.png" id="1_84sub"]
 
@@ -68,7 +68,7 @@ texture_region_size = Vector2i(32, 32)
 12:1/0 = 0
 12:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(5.0891724, -16, 16, -16, 16, 16, 5.397606, 16)
 13:1/0 = 0
-13:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, -5.7060394, -16, -5.397602, 16, -16, 16)
+13:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, -5.397602, -16, -4.780735, 16, -16, 16)
 14:1/0 = 0
 14:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(5.0891724, -16, 16, -16, 16, 16, 5.397606, 16)
 15:1/0 = 0
@@ -208,5 +208,5 @@ texture_region_size = Vector2i(32, 32)
 
 [resource]
 tile_size = Vector2i(32, 32)
-physics_layer_0/collision_layer = 1
+physics_layer_0/collision_layer = 2
 sources/2 = SubResource("TileSetAtlasSource_84sub")
