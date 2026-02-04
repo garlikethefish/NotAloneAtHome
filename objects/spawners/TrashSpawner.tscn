@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://k3vopc6l88my"]
+
+[ext_resource type="Script" uid="uid://cdibmgeblvb5r" path="res://scripts/trash_spawner.gd" id="1_vi2mq"]
+[ext_resource type="PackedScene" uid="uid://cj3n0evy767qs" path="res://objects/helpers/ISpawner.tscn" id="2_ft26g"]
+
+[node name="TrashSpawner" type="Node2D" unique_id=1832572310]
+script = ExtResource("1_vi2mq")
+
+[node name="ISpawner" parent="." unique_id=66854138 instance=ExtResource("2_ft26g")]

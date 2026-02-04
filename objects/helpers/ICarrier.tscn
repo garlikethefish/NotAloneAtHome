@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://d1lv148xxd5ec"]
+
+[ext_resource type="Script" uid="uid://drbaby8qmd0hd" path="res://scripts/interfaces/i_carrier.gd" id="1_aegmc"]
+
+[node name="ICarrier" type="Node2D" unique_id=1421703381]
+script = ExtResource("1_aegmc")

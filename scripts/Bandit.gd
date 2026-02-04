@@ -34,8 +34,8 @@ var is_global_alert := false
 @onready var gunshot_sound: AudioStreamPlayer2D = $AudioStreamPlayer2D
 
 func _ready():
-	GameManager.onMaxSuspicion.connect(_on_global_alert)
-	GameManager.onEnoughItemsStolen.connect(_on_global_alert)
+	GameManager.on_max_suspicion.connect(_on_global_alert)
+	GameManager.on_max_items_stolen.connect(_on_global_alert)
 	player = get_tree().get_first_node_in_group("player")
 	nav_agent = $NavigationAgent2D
 	add_to_group("bandits")

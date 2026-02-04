@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://ywha5uwa0e62"]
+
+[ext_resource type="Script" uid="uid://c4kvpwbpq765x" path="res://scripts/trash.gd" id="1_5vgct"]
+[ext_resource type="PackedScene" uid="uid://ikk1afwypstd" path="res://objects/helpers/ISpawnable.tscn" id="3_si7bq"]
+[ext_resource type="PackedScene" uid="uid://k2k1j0y25ebx" path="res://objects/helpers/IInteractable.tscn" id="4_johhi"]
+
+[node name="Trash" type="Node2D" unique_id=189504567]
+top_level = true
+script = ExtResource("1_5vgct")
+
+[node name="ISpawnable" parent="." unique_id=1455092539 instance=ExtResource("3_si7bq")]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1195771060]
+
+[node name="IInteractable" parent="." unique_id=1999549239 instance=ExtResource("4_johhi")]
+
+[connection signal="on_spawn" from="ISpawnable" to="." method="_on_i_spawnable_on_spawn"]
+[connection signal="on_interaction" from="IInteractable" to="." method="_on_i_interactable_on_interaction"]

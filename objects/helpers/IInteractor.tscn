@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://cim6i6h44jpj3"]
+
+[ext_resource type="Script" uid="uid://1i0gcn1g873c" path="res://scripts/interfaces/i_interactor.gd" id="1_1c3mi"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_1c3mi"]
+
+[node name="IInteractor" type="Node2D" unique_id=688399906]
+script = ExtResource("1_1c3mi")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=234000923]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1006579262]
+shape = SubResource("CircleShape2D_1c3mi")
+debug_color = Color(0.8666667, 0.09803922, 0.5568628, 1)
+
+[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
+[connection signal="area_exited" from="Area2D" to="." method="_on_area_2d_area_exited"]

@@ -1,31 +1,25 @@
 extends Node
 
-signal on_objective_changed()
-signal onItemStealed()
-signal onTrashCollected()
+signal on_item_steal()
+signal on_trash_collected()
 signal spawnTrash()
-signal onSuspicionCnage()
+signal on_suspicion_change()
 
-signal onMaxSuspicion()
-signal onEnoughItemsStolen()
+signal on_max_suspicion()
+signal on_max_items_stolen()
 
-#quest signals
-signal onThiefHidden()
-signal onMaskTaken()
-signal onKittyFed()
-signal onAllTrashFinished()
-signal onCodeWritten()
-signal onEscape()
+signal on_objective_completed(objective: ObjectiveModel.Objective)
+signal on_objective_update(objective: ObjectiveModel.Objective)
+signal on_start()
 
 enum GameDifficulty { Easy, Medium, Hard }
-var interactableObjectPrefab: PackedScene = preload("res://objects/InteractableObject.tscn")
 
 var chairSprite: Sprite2D
 var laptop: Laptop
 
 var gameDificulty: GameDifficulty = GameDifficulty.Easy
-var objectSpawners: Array[ObjectSpawner] = []
-var valuableSpawners: Array[ObjectSpawner] = []
+var trashSpawners: Array[ISpawner] = []
+var valuableSpawners: Array[ISpawner] = []
 
 var player_can_move : bool = true
 var trashAtHome: int = 0
@@ -33,188 +27,103 @@ var areAllTrashCollected: bool = false
 var suspicion : float = 0
 var suspicionMultiplier := 0
 var linesCompleted : int = 0
-var current_objective : ObjectiveModel.ObjectiveName = ObjectiveModel.ObjectiveName.TakeThiefsMask
-var objectiveDictionaryTemplate : Dictionary[ObjectiveModel.ObjectiveName, ObjectiveModel] = {
-	ObjectiveModel.ObjectiveName.TakeThiefsMask: ObjectiveModel.new(
-		false, 
-		"[wave amp=50.0 freq=5.0 connected=1]GRAB THIEFS' MASK[/wave]", 
-		ObjectiveModel.ObjectiveName.HideThief
-	),
-	ObjectiveModel.ObjectiveName.HideThief: 
-		ObjectiveModel.new(
-			false, 
-			"[wave amp=50.0 freq=5.0 connected=1]HIDE THE DEAD THIEF[/wave]",
-			ObjectiveModel.ObjectiveName.CleanHome
-		),
-	ObjectiveModel.ObjectiveName.CleanHome: 
-		ObjectiveModel.new(
-			false, 
-			"[wave amp=50.0 freq=5.0 connected=1]CLEAN ROOM[/wave]",
-			ObjectiveModel.ObjectiveName.FeedKitty
-		),
-	ObjectiveModel.ObjectiveName.FeedKitty:
-		ObjectiveModel.new(
-			false, 
-			"[wave amp=50.0 freq=5.0 connected=1]FEED KITTY[/wave]",
-			ObjectiveModel.ObjectiveName.WriteCode
-		),
-	ObjectiveModel.ObjectiveName.WriteCode:
-		ObjectiveModel.new(
-			false, 
-			"[wave amp=50.0 freq=5.0 connected=1]WRITE CODE[/wave]",
-			ObjectiveModel.ObjectiveName.Escape
-		),
-	ObjectiveModel.ObjectiveName.Escape: 
-		ObjectiveModel.new(
-			false, 
-			"[wave amp=50.0 freq=5.0 connected=1]ESCAPE[/wave]",
-			ObjectiveModel.ObjectiveName.Finish
-		),
-}
-
-var objective_list = objectiveDictionaryTemplate.duplicate_deep()
+var current_objective: ObjectiveModel.Objective
+var game_objectives := create_game_objectives()
 
 var stolen_stuff_amount : int = 0
 var money_lost: int = 0
-var trashRes = preload("res://sprites/trash.png")
-var valuables : Dictionary[Valuable.ValuableType, Valuable] = {
-	Valuable.ValuableType.TV: Valuable.new(preload("res://sprites/tv.png"), 70),
-	Valuable.ValuableType.Bed: Valuable.new(preload("res://sprites/bed.png"), 40),
-	Valuable.ValuableType.Chair1: Valuable.new(preload("res://sprites/chair1.png"), 400),
-	Valuable.ValuableType.Chair2: Valuable.new(preload("res://sprites/chair2.png"), 300),
-	Valuable.ValuableType.Closet: Valuable.new(preload("res://sprites/closet.png"), 100),
-	Valuable.ValuableType.Sofa: Valuable.new(preload("res://sprites/sofa.png"), 50),
-	Valuable.ValuableType.Table: Valuable.new(preload("res://sprites/table.png"), 50),
-	Valuable.ValuableType.Vase: Valuable.new(preload("res://sprites/vase.png"), 50),
+var valuables : Dictionary[ValuableModel.Valuable, ValuableModel] = {
+	ValuableModel.Valuable.TV:     ValuableModel.new(preload("res://sprites/tv.png"), 70),
+	ValuableModel.Valuable.Bed:    ValuableModel.new(preload("res://sprites/bed.png"), 40),
+	ValuableModel.Valuable.Chair1: ValuableModel.new(preload("res://sprites/chair1.png"), 400),
+	ValuableModel.Valuable.Chair2: ValuableModel.new(preload("res://sprites/chair2.png"), 300),
+	ValuableModel.Valuable.Closet: ValuableModel.new(preload("res://sprites/closet.png"), 100),
+	ValuableModel.Valuable.Sofa:   ValuableModel.new(preload("res://sprites/sofa.png"), 50),
+	ValuableModel.Valuable.Table:  ValuableModel.new(preload("res://sprites/table.png"), 50),
+	ValuableModel.Valuable.Vase:   ValuableModel.new(preload("res://sprites/vase.png"), 50),
 }
 
 var maxStealableItems := 10
-var trashAmountFromDifficulty: int:
-	get: 
-		if gameDificulty == GameDifficulty.Easy:
-			return 3
-		elif gameDificulty == GameDifficulty.Medium:
-			return 5
-		elif gameDificulty == GameDifficulty.Hard:
-			return 6
-		else:
-			return 0
+var maxTrashAmount := 0
 
-func collectTrash() -> void:
-	trashAtHome -= 1
-	onTrashCollected.emit()
-	print("Collected one trash")
-	
-func addTrash() -> void:
-	trashAtHome += 1
-
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
-	suspicion += _delta * suspicionMultiplier
-	onSuspicionCnage.emit()
-	#print("sus: ", suspicion)
+	handle_suspicion(_delta)
+	check_if_all_trash_collected()
+	
+func handle_suspicion(timeDelta: float):
+	suspicion += timeDelta * suspicionMultiplier
+	on_suspicion_change.emit()
 	
 	if suspicion >= 100:
-		onMaxSuspicion.emit()
+		on_max_suspicion.emit()
 		
+func check_if_all_trash_collected():
 	if (trashAtHome <= 0 && !areAllTrashCollected):
 		areAllTrashCollected = true
+		complete_objective(ObjectiveModel.Objective.CleanHome)
 		print("Collected all trash")
-		onAllTrashFinished.emit()
-		changeObjective()
 		
+func complete_objective(objective: ObjectiveModel.Objective):
+	game_objectives[objective].isCompleted = true
+	on_objective_completed.emit(objective)
+	
+	var tempObjective = current_objective
+	# loop to next uncompleted objective
+	while game_objectives[current_objective].isCompleted:
+		current_objective = game_objectives[current_objective].nextObjective
+		
+	if tempObjective != current_objective:
+		on_objective_update.emit(current_objective)
+	
+func collectTrash() -> void:
+	trashAtHome -= 1
+	on_trash_collected.emit()
+
 func start(difficulty: GameDifficulty):
-	clearAll()
+	reset_game_values()
 	await get_tree().process_frame
 	await get_tree().process_frame
 	
-	await get_tree().process_frame
-	await get_tree().process_frame
-	await get_tree().process_frame
-	await get_tree().process_frame
-	await get_tree().process_frame
+	set_difficulty_values(difficulty)
+	current_objective = ObjectiveModel.Objective.TakeThiefsMask
+	on_start.emit()
 	
+	spawn_in_trash()
+	spawn_in_ValuableModels()
+	
+func set_difficulty_values(difficulty: GameDifficulty):
 	gameDificulty = difficulty
 	
 	if difficulty == GameDifficulty.Easy:
 		suspicionMultiplier = 1
-
+		maxTrashAmount = 3
 	if difficulty == GameDifficulty.Medium:
-		suspicionMultiplier = 2
+		suspicionMultiplier = 1.25
+		maxTrashAmount = 6
 		
 	if difficulty == GameDifficulty.Hard:
-		suspicionMultiplier = 3
-	
-	startTrashCollectionTask()
-	spawnInValuables()
-	
-	print("Started again!")
-	
-func clearAll():
-	print("Cleared all")
-	objectSpawners = []
+		suspicionMultiplier = 1.5
+		maxTrashAmount = 12
+		
+func reset_game_values():
+	trashSpawners = []
 	valuableSpawners = []
 	trashAtHome = 0
 	suspicion = 0
 	linesCompleted = 0
-	current_objective = ObjectiveModel.ObjectiveName.TakeThiefsMask
-	objective_list = {
-	ObjectiveModel.ObjectiveName.TakeThiefsMask: ObjectiveModel.new(
-		false, 
-		"[wave amp=50.0 freq=5.0 connected=1]GRAB THIEFS' MASK[/wave]", 
-		ObjectiveModel.ObjectiveName.HideThief
-	),
-	ObjectiveModel.ObjectiveName.HideThief: 
-		ObjectiveModel.new(
-			false, 
-			"[wave amp=50.0 freq=5.0 connected=1]HIDE THE DEAD THIEF[/wave]",
-			ObjectiveModel.ObjectiveName.CleanHome
-		),
-	ObjectiveModel.ObjectiveName.CleanHome: 
-		ObjectiveModel.new(
-			false, 
-			"[wave amp=50.0 freq=5.0 connected=1]CLEAN ROOM[/wave]",
-			ObjectiveModel.ObjectiveName.FeedKitty
-		),
-	ObjectiveModel.ObjectiveName.FeedKitty:
-		ObjectiveModel.new(
-			false, 
-			"[wave amp=50.0 freq=5.0 connected=1]FEED KITTY[/wave]",
-			ObjectiveModel.ObjectiveName.WriteCode
-		),
-	ObjectiveModel.ObjectiveName.WriteCode:
-		ObjectiveModel.new(
-			false, 
-			"[wave amp=50.0 freq=5.0 connected=1]WRITE CODE[/wave]",
-			ObjectiveModel.ObjectiveName.Escape
-		),
-	ObjectiveModel.ObjectiveName.Escape: 
-		ObjectiveModel.new(
-			false, 
-			"[wave amp=50.0 freq=5.0 connected=1]ESCAPE[/wave]",
-			ObjectiveModel.ObjectiveName.Finish
-		),
-	}
-	
-	for key in objective_list.keys():
-		print(objective_list[key].isCompleted)
-
+	current_objective = ObjectiveModel.Objective.TakeThiefsMask
+	game_objectives = create_game_objectives()
 	stolen_stuff_amount = 0
 	money_lost = 0
-	
-func changeObjective(): # display next objective
-	# go to next uncompleted
-	while objective_list[current_objective].isCompleted:
-		current_objective = objective_list[current_objective].nextObjective
-	on_objective_changed.emit()
-		
-func startTrashCollectionTask() -> void:
-	var howManyTrashWillBeSpawned: int = clamp(trashAmountFromDifficulty, 0, objectSpawners.size())
+	print("Game values reset")
+
+func spawn_in_trash() -> void:
+	print("# Start Trash")
+	print("Trash from difficulty: ", maxTrashAmount)
+	print("Trash from clamp: ", clamp(maxTrashAmount, 0, trashSpawners.size()))
+	var howManyTrashWillBeSpawned: int = clamp(maxTrashAmount, 0, trashSpawners.size())
 	# copies spawners
-	var spawnerPool: Array[ObjectSpawner] = objectSpawners.duplicate()
+	var spawnerPool: Array[ISpawner] = trashSpawners.duplicate()
 	print("spawners:", spawnerPool.size())
 	print("spawning items: ", howManyTrashWillBeSpawned)
 	# shuffles array
@@ -222,15 +131,52 @@ func startTrashCollectionTask() -> void:
 	
 	# spawn at random spawner
 	for i in range(howManyTrashWillBeSpawned):
-		spawnerPool[i].spawObject(interactableObjectPrefab, true)
+		spawnerPool[i].spawn(spawnerPool[i].packedScene)
 		
 	areAllTrashCollected = false
 	trashAtHome = howManyTrashWillBeSpawned
 	emit_signal("spawnTrash")
-	
-func spawnInValuables():
-	print("valuable spawners: ", valuableSpawners.size())
+
+func spawn_in_ValuableModels():
+	print("ValuableModel spawners: ", valuableSpawners.size())
 	for spawner in valuableSpawners:
-		spawner.spawObject(interactableObjectPrefab, true)
-		
-	
+		spawner.spawn(spawner.packedScene)
+
+func create_game_objectives() -> Dictionary[ObjectiveModel.Objective, ObjectiveModel]: 
+	return {
+		ObjectiveModel.Objective.TakeThiefsMask: ObjectiveModel.new(
+			false, 
+			"[wave amp=50.0 freq=5.0 connected=1]GRAB THIEFS' MASK[/wave]", 
+			ObjectiveModel.Objective.HideThief
+		),
+		ObjectiveModel.Objective.HideThief: 
+			ObjectiveModel.new(
+				false, 
+				"[wave amp=50.0 freq=5.0 connected=1]HIDE THE DEAD THIEF[/wave]",
+				ObjectiveModel.Objective.CleanHome
+			),
+		ObjectiveModel.Objective.CleanHome: 
+			ObjectiveModel.new(
+				false, 
+				"[wave amp=50.0 freq=5.0 connected=1]CLEAN ROOM[/wave]",
+				ObjectiveModel.Objective.FeedKitty
+			),
+		ObjectiveModel.Objective.FeedKitty:
+			ObjectiveModel.new(
+				false, 
+				"[wave amp=50.0 freq=5.0 connected=1]FEED KITTY[/wave]",
+				ObjectiveModel.Objective.WriteCode
+			),
+		ObjectiveModel.Objective.WriteCode:
+			ObjectiveModel.new(
+				false, 
+				"[wave amp=50.0 freq=5.0 connected=1]WRITE CODE[/wave]",
+				ObjectiveModel.Objective.Escape
+			),
+		ObjectiveModel.Objective.Escape: 
+			ObjectiveModel.new(
+				false, 
+				"[wave amp=50.0 freq=5.0 connected=1]ESCAPE[/wave]",
+				ObjectiveModel.Objective.Finish
+			)
+	}

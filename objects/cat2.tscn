@@ -1,9 +1,9 @@
 [gd_scene format=3 uid="uid://ckwnp346yqoti"]
 
 [ext_resource type="Script" uid="uid://csje0lqoac68q" path="res://scripts/cat_brain.gd" id="1_7jxut"]
-[ext_resource type="SpriteFrames" uid="uid://bbgi5m2tnk3tb" path="res://animations/cat.tres" id="2_7jxut"]
-[ext_resource type="PackedScene" uid="uid://ok87eomdw64l" path="res://objects/InteractableObject.tscn" id="3_nfwan"]
+[ext_resource type="SpriteFrames" uid="uid://ekbo6oovgxb0" path="res://animations/cat.tres" id="2_7jxut"]
 [ext_resource type="AudioStream" uid="uid://bc8edy7he1anw" path="res://sounds/meow.mp3" id="4_0m5c4"]
+[ext_resource type="PackedScene" uid="uid://k2k1j0y25ebx" path="res://objects/helpers/IInteractable.tscn" id="4_7jxut"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_rsrf8"]
 radius = 8.0
@@ -34,10 +34,8 @@ target_desired_distance = 20.0
 path_max_distance = 20.0
 avoidance_enabled = true
 
-[node name="InteractableObject" parent="." unique_id=659652577 instance=ExtResource("3_nfwan")]
-scale = Vector2(0.4, 0.4)
-objectSpriteTexture = null
-isKitty = true
+[node name="IInteractable" parent="." unique_id=1999549239 instance=ExtResource("4_7jxut")]
 
 [connection signal="finished" from="AudioStreamPlayer2D" to="." method="_on_audio_stream_player_2d_finished"]
 [connection signal="timeout" from="MeowTimer" to="." method="_on_meow_timer_timeout"]
+[connection signal="on_interaction" from="IInteractable" to="." method="_on_i_interactable_on_interaction"]

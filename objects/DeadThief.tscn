@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://b2xpj2tshxe1h"]
+
+[ext_resource type="Script" uid="uid://c804i4ectvde1" path="res://scripts/dead_thief.gd" id="1_dpbei"]
+[ext_resource type="PackedScene" uid="uid://bfxah7yut2ec0" path="res://objects/helpers/ICariable.tscn" id="2_gqoa0"]
+[ext_resource type="PackedScene" uid="uid://v2kc0hxagcr" path="res://objects/helpers/IDestroyable.tscn" id="2_hk8yd"]
+[ext_resource type="PackedScene" uid="uid://k2k1j0y25ebx" path="res://objects/helpers/IInteractable.tscn" id="3_hk8yd"]
+[ext_resource type="Texture2D" uid="uid://cthin8wf24dcc" path="res://sprites/bandit_dead.png" id="4_gqoa0"]
+
+[node name="DeadThief" type="Node2D" unique_id=995744829]
+script = ExtResource("1_dpbei")
+
+[node name="IDestroyable" parent="." unique_id=701682887 instance=ExtResource("2_hk8yd")]
+
+[node name="ICariable" parent="." unique_id=1908233245 instance=ExtResource("2_gqoa0")]
+
+[node name="IInteractable" parent="." unique_id=1999549239 instance=ExtResource("3_hk8yd")]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1299734846]
+texture = ExtResource("4_gqoa0")
+
+[connection signal="on_drop" from="ICariable" to="." method="_on_i_cariable_on_drop"]
+[connection signal="on_pick_up" from="ICariable" to="." method="_on_i_cariable_on_pick_up"]

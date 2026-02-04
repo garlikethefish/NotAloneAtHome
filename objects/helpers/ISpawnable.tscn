@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://ikk1afwypstd"]
+
+[ext_resource type="Script" uid="uid://cmdapnwbvevp4" path="res://scripts/interfaces/i_spawnable.gd" id="1_kc060"]
+
+[node name="ISpawnable" type="Node" unique_id=1455092539]
+script = ExtResource("1_kc060")

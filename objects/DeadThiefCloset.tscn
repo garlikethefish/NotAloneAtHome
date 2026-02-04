@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://blm3resaadrtl"]
+
+[ext_resource type="Script" uid="uid://btk6kqboue2nu" path="res://scripts/dead_thief_closet.gd" id="1_px37c"]
+[ext_resource type="PackedScene" uid="uid://k2k1j0y25ebx" path="res://objects/helpers/IInteractable.tscn" id="2_gm45k"]
+[ext_resource type="Texture2D" uid="uid://buk6rjmqtl5xo" path="res://sprites/closet.png" id="3_i50dx"]
+
+[node name="DeadGuyCloset" type="Node2D" unique_id=1749090602]
+script = ExtResource("1_px37c")
+
+[node name="IInteractable" parent="." unique_id=1999549239 instance=ExtResource("2_gm45k")]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1286432353]
+texture = ExtResource("3_i50dx")
+
+[connection signal="on_interaction" from="IInteractable" to="." method="_on_i_interactable_on_interaction"]

@@ -22,6 +22,8 @@ var can_move := true
 var direction: Vector2 = Vector2.ZERO 
 
 @onready var anim: AnimatedSprite2D = $AnimatedSprite2D
+@onready var carrier: ICarrier = $ICarrier
+@onready var interactor: IInteractor = $IInteractor
 @onready var overlay_rect: ColorRect = $MaskOverlay/ColorRect
 
 var last_facing := "down"
@@ -38,6 +40,18 @@ func _ready():
 
 func _process(delta):
 	can_move = GameManager.player_can_move
+	
+	if Input.is_action_just_pressed("interact"):
+		var interactable: IInteractible = interactor.iInteractable
+		var carriable: ICariable = null
+		interactor.interact()
+		
+		if interactable:
+			var parent := interactor.iInteractable.get_parent()
+			carriable = Utils.try_get_child_of_type(parent, ICariable)
+			
+		carrier.try_to_carry(carriable)
+	
 	if overlay_rect and overlay_rect.material:
 		var mat = overlay_rect.material
 		mat.set_shader_parameter("center", Vector2(0.5, 0.5))
@@ -125,4 +139,22 @@ func toggle_mask():
 	mask_on = !mask_on
 
 	if mask_on:
+		carrier.carry_stop()
 		current_radius = max_vision_radius
+	
+	interactor.on_interactor_status_update.emit()
+
+
+func _on_i_interactor_on_interactable_change(_iInteractable: IInteractible):
+	if !_iInteractable: return
+	
+func can_carry(_cariable: ICariable) -> bool:
+	return !mask_on and !carrier.isCarrying
+
+func can_interact(_interactable: IInteractible):
+	var carriable: ICariable = Utils.try_get_child_of_type(_interactable.get_parent(), ICariable)
+	
+	if Utils.try_get_parent_of_type(_interactable, DeadThiefCloset):
+		return !mask_on 
+		
+	return can_carry(carriable)

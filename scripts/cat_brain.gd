@@ -8,6 +8,8 @@ extends CharacterBody2D
 @export var min_y := -100.0
 @export var max_y := 600.0
 
+@export var doCatTimes := 5
+
 var nav_agent: NavigationAgent2D
 var roam_timer := 0.0
 var has_target := false
@@ -18,6 +20,8 @@ var rng = RandomNumberGenerator.new()
 @onready var anim: AnimatedSprite2D = $AnimatedSprite2D
 @onready var meow_sound: AudioStreamPlayer2D = $AudioStreamPlayer2D
 @onready var meow_timer : Timer = $MeowTimer
+@onready var interactable: IInteractible = $IInteractable
+
 func _ready():
 	nav_agent = $NavigationAgent2D
 	randomize()
@@ -84,3 +88,17 @@ func roam(delta):
 func _on_meow_timer_timeout() -> void:
 	meow_sound.play()
 	start_meow_timer()
+
+func _on_interactable_object_on_interact_finish():
+	GameManager.complete_objective(ObjectiveModel.Objective.FeedKitty)
+
+
+func _on_i_interactable_on_interaction(iInteractor):
+	doCatTimes -= 1
+	
+	if doCatTimes <= 0:
+		GameManager.complete_objective(ObjectiveModel.Objective.FeedKitty)
+		interactable.update_can_interact_status()
+
+func can_interact(_interactor: IInteractor):
+	return doCatTimes > 0

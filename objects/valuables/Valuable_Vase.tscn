@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://ccoqy3cvndo7p"]
+
+[ext_resource type="PackedScene" uid="uid://hnye7wtm1w0e" path="res://objects/valuables/Valuable.tscn" id="1_2fm6i"]
+
+[node name="Valuable" unique_id=2061310895 instance=ExtResource("1_2fm6i")]
+type = 7

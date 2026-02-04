@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://bfxah7yut2ec0"]
+
+[ext_resource type="Script" uid="uid://bywk5vfv1ddqd" path="res://scripts/interfaces/i_cariable.gd" id="1_2qpxv"]
+
+[node name="ICariable" type="Node" unique_id=1908233245]
+script = ExtResource("1_2qpxv")

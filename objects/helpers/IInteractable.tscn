@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://k2k1j0y25ebx"]
+
+[ext_resource type="Script" uid="uid://cr75j7qeq8xmw" path="res://scripts/interfaces/i_interactable.gd" id="1_v5mih"]
+[ext_resource type="Texture2D" uid="uid://drlnlgvgspjqk" path="res://sprites/e_button_ui.png" id="2_3arj4"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_v5mih"]
+
+[node name="IInteractable" type="Node2D" unique_id=1999549239]
+script = ExtResource("1_v5mih")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=438757159]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=450257425]
+shape = SubResource("CircleShape2D_v5mih")
+debug_color = Color(0.3137255, 0.49411765, 1, 1)
+
+[node name="InteractionKey" type="Sprite2D" parent="." unique_id=1457446261]
+z_index = 1
+position = Vector2(0, -30)
+texture = ExtResource("2_3arj4")
