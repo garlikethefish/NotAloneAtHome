@@ -44,8 +44,13 @@ func _physics_process(delta: float) -> void:
 	var moving = velocity.length() > 10
 	
 	
-	if abs(velocity.y) > abs(velocity.x):
-		last_facing = "back" if velocity.y < 0 else "front"
+	if moving:
+		if velocity.y < 0:
+			last_facing = "back"
+		elif velocity.y > 0:
+			last_facing = "front"
+		else:
+			last_facing = "side"
 	
 	if not anim.is_playing():
 		anim.play(last_facing + "_idle")

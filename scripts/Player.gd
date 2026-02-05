@@ -81,10 +81,14 @@ func update_animation(dir: Vector2):
 		anim.flip_h = false
 	elif dir.x < 0:
 		anim.flip_h = true
-
+		
 	if moving:
-		if abs(dir.y) > abs(dir.x):
-			last_facing = "up" if dir.y < 0 else "down"
+		if dir.y < 0:
+			last_facing = "up"
+		elif dir.y > 0:
+			last_facing = "down"
+		else:
+			last_facing = "side"
 
 	var mask_suffix = "_mask" if mask_on else ""
 

@@ -255,8 +255,13 @@ func update_animation():
 
 	var moving = velocity.length() > 10
 
-	if abs(velocity.y) > abs(velocity.x):
-		last_facing = "up" if velocity.y < 0 else "down"
+	if moving:
+		if velocity.y < 0:
+			last_facing = "up"
+		elif velocity.y > 0:
+			last_facing = "down"
+		else:
+			last_facing = "side"
 
 	if moving:
 		anim.play("walk_" + last_facing)
