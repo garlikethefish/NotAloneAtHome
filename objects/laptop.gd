@@ -5,7 +5,6 @@ class_name Laptop
 func _process(delta: float) -> void:
 	hide_overlay()
 
-
 func show_overlay():
 	# if press interact, then show this
 	GameManager.player_can_move = false
@@ -22,3 +21,10 @@ func _on_programming_minigame_minigame_failed() -> void:
 
 func _on_ready() -> void:
 	GameManager.laptop = self
+
+
+func _on_i_interactable_on_interaction(iInteractor):
+	show_overlay()
+
+func can_interact(_interactor):
+	return true

@@ -1,18 +1,19 @@
 [gd_scene format=3 uid="uid://dfbnrpvmioq7g"]
 
 [ext_resource type="Texture2D" uid="uid://d1u4stp3o8b5e" path="res://sprites/laptop.png" id="1_wu6ei"]
-[ext_resource type="PackedScene" uid="uid://ok87eomdw64l" path="res://objects/InteractableObject.tscn" id="2_1snf0"]
 [ext_resource type="Script" uid="uid://de4186bnvdg8l" path="res://objects/laptop.gd" id="2_j6x1g"]
 [ext_resource type="PackedScene" uid="uid://kii0qs3xbrod" path="res://ui/programming_minigame.tscn" id="4_j6x1g"]
+[ext_resource type="PackedScene" uid="uid://k2k1j0y25ebx" path="res://objects/helpers/IInteractable.tscn" id="4_ni5dh"]
 
 [node name="Laptop" type="Sprite2D" unique_id=2105277080]
 texture = ExtResource("1_wu6ei")
 script = ExtResource("2_j6x1g")
 
-[node name="InteractableObject" parent="." unique_id=659652577 instance=ExtResource("2_1snf0")]
-
 [node name="ProgrammingMinigame" parent="." unique_id=409070707 instance=ExtResource("4_j6x1g")]
 visible = false
 
+[node name="IInteractable" parent="." unique_id=1999549239 instance=ExtResource("4_ni5dh")]
+
 [connection signal="ready" from="." to="." method="_on_ready"]
 [connection signal="minigame_failed" from="ProgrammingMinigame" to="." method="_on_programming_minigame_minigame_failed"]
+[connection signal="on_interaction" from="IInteractable" to="." method="_on_i_interactable_on_interaction"]
