@@ -14,6 +14,7 @@
 [ext_resource type="PackedScene" uid="uid://blm3resaadrtl" path="res://objects/DeadThiefCloset.tscn" id="13_mwfav"]
 [ext_resource type="PackedScene" uid="uid://dfbnrpvmioq7g" path="res://objects/laptop.tscn" id="13_qmy6f"]
 [ext_resource type="PackedScene" uid="uid://b2xpj2tshxe1h" path="res://objects/DeadThief.tscn" id="14_3p2gp"]
+[ext_resource type="AudioStream" uid="uid://cnk2deqtcg6p1" path="res://scenes/main_bg_music.mp3" id="15_3p2gp"]
 
 [node name="Main" type="Node2D" unique_id=1023568212]
 script = ExtResource("1_nxtc6")
@@ -125,5 +126,9 @@ position = Vector2(351, 90)
 [node name="DeadThief" parent="." unique_id=995744829 instance=ExtResource("14_3p2gp")]
 top_level = true
 position = Vector2(441, 171)
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1737393139]
+stream = ExtResource("15_3p2gp")
+autoplay = true
+parameters/looping = true
 
 [editable path="Tilemaps"]
