@@ -1,6 +1,10 @@
 [gd_scene format=3 uid="uid://djmsje8kmaa6o"]
 
 [ext_resource type="PackedScene" uid="uid://hnye7wtm1w0e" path="res://objects/valuables/Valuable.tscn" id="1_kgp05"]
+[ext_resource type="Texture2D" uid="uid://bnqljd5rd5fr8" path="res://sprites/bed.png" id="2_w746c"]
 
 [node name="Valuable" unique_id=2061310895 instance=ExtResource("1_kgp05")]
 type = 1
+
+[node name="Sprite2D" parent="." index="1" unique_id=2054388301]
+texture = ExtResource("2_w746c")

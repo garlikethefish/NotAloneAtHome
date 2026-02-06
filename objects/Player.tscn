@@ -498,6 +498,16 @@ shader_parameter/center = Vector2(0.5, 0.5)
 shader_parameter/radius = 0.35
 shader_parameter/softness = 0.15
 
+[sub_resource type="Gradient" id="Gradient_seukq"]
+offsets = PackedFloat32Array(0, 0.42771083, 0.52409637, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0.31431594, 0.31431618, 0.31431603, 1, 0.28784722, 0.28784746, 0.2878473, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_sderm"]
+gradient = SubResource("Gradient_seukq")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.8086957, 0.07826087)
+
 [node name="Player" type="CharacterBody2D" unique_id=1993068751]
 position = Vector2(576, 324)
 collision_mask = 2
@@ -537,6 +547,11 @@ metadata/_edit_use_anchors_ = true
 [node name="ICarrier" parent="." unique_id=1243835926 instance=ExtResource("4_f6j3j")]
 
 [node name="IInteractor" parent="." unique_id=350301088 instance=ExtResource("5_sderm")]
+
+[node name="PointLight2D" type="PointLight2D" parent="." unique_id=465774789]
+energy = 0.25
+shadow_enabled = true
+texture = SubResource("GradientTexture2D_sderm")
 
 [connection signal="on_interactable_change" from="IInteractor" to="." method="_on_i_interactor_on_interactable_change"]
 [connection signal="ready" from="IInteractor" to="." method="_on_i_interactor_ready"]

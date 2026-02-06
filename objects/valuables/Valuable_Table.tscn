@@ -4,3 +4,6 @@
 
 [node name="Valuable" unique_id=2061310895 instance=ExtResource("1_f831p")]
 type = 6
+
+[node name="Sprite2D" parent="." index="1" unique_id=2054388301]
+texture = null

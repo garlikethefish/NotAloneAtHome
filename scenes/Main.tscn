@@ -6,15 +6,48 @@
 [ext_resource type="PackedScene" uid="uid://cbcifivthchns" path="res://ui/ui_overlay.tscn" id="1_vcsgt"]
 [ext_resource type="PackedScene" uid="uid://dfdiuox7wslrn" path="res://objects/Item.tscn" id="2_pbw6q"]
 [ext_resource type="PackedScene" uid="uid://bmvgwyelxjr6q" path="res://objects/Bandit.tscn" id="3_0bbpv"]
+[ext_resource type="Texture2D" uid="uid://brf0nnjvb6xuc" path="res://lighting/light1.tres" id="3_cvmbd"]
 [ext_resource type="PackedScene" uid="uid://ckwnp346yqoti" path="res://objects/cat2.tscn" id="4_nxtc6"]
 [ext_resource type="PackedScene" uid="uid://cah3urn1fwd1d" path="res://objects/SellZone.tscn" id="8_jlsqs"]
 [ext_resource type="PackedScene" uid="uid://k3vopc6l88my" path="res://objects/spawners/TrashSpawner.tscn" id="8_wp0k4"]
 [ext_resource type="PackedScene" uid="uid://dl3gkkwgtjq5f" path="res://objects/spawners/ValuableSpawner.tscn" id="9_qmy6f"]
 [ext_resource type="PackedScene" uid="uid://ceom8536eev0a" path="res://objects/valuables/Valuable_Table.tscn" id="10_qmy6f"]
+[ext_resource type="PackedScene" uid="uid://djmsje8kmaa6o" path="res://objects/valuables/valuable_Bed.tscn" id="11_1iba3"]
+[ext_resource type="PackedScene" uid="uid://dfttis2qx6job" path="res://objects/valuables/Valuable_Chair1.tscn" id="12_yxlcp"]
+[ext_resource type="PackedScene" uid="uid://3pms5s3tmqpj" path="res://objects/valuables/Valuable_Chair2.tscn" id="13_ebg2g"]
 [ext_resource type="PackedScene" uid="uid://blm3resaadrtl" path="res://objects/DeadThiefCloset.tscn" id="13_mwfav"]
 [ext_resource type="PackedScene" uid="uid://dfbnrpvmioq7g" path="res://objects/laptop.tscn" id="13_qmy6f"]
+[ext_resource type="PackedScene" uid="uid://d3rn5wbx4px5w" path="res://objects/valuables/Valuable_Closet.tscn" id="14_2ofn6"]
 [ext_resource type="PackedScene" uid="uid://b2xpj2tshxe1h" path="res://objects/DeadThief.tscn" id="14_3p2gp"]
 [ext_resource type="AudioStream" uid="uid://cnk2deqtcg6p1" path="res://scenes/main_bg_music.mp3" id="15_3p2gp"]
+[ext_resource type="PackedScene" uid="uid://dyuyf26s3aqqs" path="res://objects/valuables/Valuable_Sofa.tscn" id="15_xa025"]
+
+[sub_resource type="Gradient" id="Gradient_3p2gp"]
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_cvmbd"]
+gradient = SubResource("Gradient_3p2gp")
+width = 248
+height = 174
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.8565217, 0.14782609)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ft6cd"]
+gradient = SubResource("Gradient_3p2gp")
+width = 266
+height = 251
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.8565217, 0.14782609)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_bb450"]
+gradient = SubResource("Gradient_3p2gp")
+width = 87
+height = 87
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.8565217, 0.14782609)
 
 [node name="Main" type="Node2D" unique_id=1023568212]
 script = ExtResource("1_nxtc6")
@@ -22,6 +55,87 @@ metadata/_edit_horizontal_guides_ = [690.0, 1085.0, -197.0, 667.0]
 metadata/_edit_vertical_guides_ = [-1302.0, -145.0, 887.0, -3874.0]
 
 [node name="UIOverlay" parent="." unique_id=466827575 instance=ExtResource("1_vcsgt")]
+
+[node name="Lights" type="Node" parent="." unique_id=1159113441]
+
+[node name="DirectionalLight2D" type="DirectionalLight2D" parent="Lights" unique_id=1073051661]
+energy = 0.72
+blend_mode = 1
+
+[node name="PointLight2D3" type="PointLight2D" parent="Lights" unique_id=695049637]
+position = Vector2(785, 504)
+energy = 0.3
+shadow_enabled = true
+texture = SubResource("GradientTexture2D_cvmbd")
+
+[node name="PointLight2D2" type="PointLight2D" parent="Lights" unique_id=1701780100]
+position = Vector2(526, 457)
+energy = 0.3
+shadow_enabled = true
+texture = SubResource("GradientTexture2D_cvmbd")
+
+[node name="PointLight2D9" type="PointLight2D" parent="Lights" unique_id=1823448778]
+position = Vector2(77, -42)
+energy = 0.55
+shadow_enabled = true
+shadow_filter_smooth = 8.2
+texture = SubResource("GradientTexture2D_ft6cd")
+
+[node name="PointLight2D8" type="PointLight2D" parent="Lights" unique_id=1993685618]
+position = Vector2(614, -116)
+energy = 0.55
+shadow_enabled = true
+shadow_filter_smooth = 8.2
+texture = SubResource("GradientTexture2D_ft6cd")
+
+[node name="PointLight2D7" type="PointLight2D" parent="Lights" unique_id=29756303]
+position = Vector2(622, 109)
+energy = 0.55
+shadow_enabled = true
+shadow_filter_smooth = 8.2
+texture = ExtResource("3_cvmbd")
+
+[node name="PointLight2D4" type="PointLight2D" parent="Lights" unique_id=2098613476]
+position = Vector2(385, 451)
+energy = 0.55
+shadow_enabled = true
+texture = ExtResource("3_cvmbd")
+
+[node name="PointLight2D10" type="PointLight2D" parent="Lights" unique_id=1050318]
+position = Vector2(388, 53)
+energy = 0.55
+shadow_enabled = true
+texture = ExtResource("3_cvmbd")
+
+[node name="PointLight2D10" type="PointLight2D" parent="Lights/PointLight2D10" unique_id=1935020172]
+position = Vector2(-305, 77)
+energy = 0.55
+shadow_enabled = true
+texture = ExtResource("3_cvmbd")
+
+[node name="PointLight2D10" type="PointLight2D" parent="Lights/PointLight2D10/PointLight2D10" unique_id=1408526919]
+position = Vector2(-168, 156)
+energy = 0.55
+shadow_enabled = true
+texture = SubResource("GradientTexture2D_bb450")
+
+[node name="PointLight2D6" type="PointLight2D" parent="Lights" unique_id=570377251]
+position = Vector2(207, 250)
+energy = 0.55
+shadow_enabled = true
+texture = ExtResource("3_cvmbd")
+
+[node name="PointLight2D5" type="PointLight2D" parent="Lights" unique_id=747696830]
+position = Vector2(119, 487)
+energy = 0.55
+shadow_enabled = true
+texture = ExtResource("3_cvmbd")
+
+[node name="PointLight2D" type="PointLight2D" parent="Lights" unique_id=52733188]
+position = Vector2(639, 300)
+energy = 0.55
+shadow_enabled = true
+texture = ExtResource("3_cvmbd")
 
 [node name="Tilemaps" parent="." unique_id=34827215 instance=ExtResource("1_rarhs")]
 
@@ -87,23 +201,23 @@ position = Vector2(392, 305)
 
 [node name="ValuableSpawner" parent="ValuableSpawners" unique_id=1799986873 instance=ExtResource("9_qmy6f")]
 position = Vector2(526, 257)
-spawnableScene = ExtResource("10_qmy6f")
+spawnableScene = ExtResource("11_1iba3")
 
 [node name="ValuableSpawner3" parent="ValuableSpawners" unique_id=72103695 instance=ExtResource("9_qmy6f")]
 position = Vector2(163, 578)
-spawnableScene = ExtResource("10_qmy6f")
+spawnableScene = ExtResource("12_yxlcp")
 
 [node name="ValuableSpawner2" parent="ValuableSpawners" unique_id=1387090579 instance=ExtResource("9_qmy6f")]
 position = Vector2(581, 524)
-spawnableScene = ExtResource("10_qmy6f")
+spawnableScene = ExtResource("13_ebg2g")
 
 [node name="ValuableSpawner4" parent="ValuableSpawners" unique_id=465862513 instance=ExtResource("9_qmy6f")]
 position = Vector2(28, 279)
-spawnableScene = ExtResource("10_qmy6f")
+spawnableScene = ExtResource("14_2ofn6")
 
 [node name="ValuableSpawner5" parent="ValuableSpawners" unique_id=1454301278 instance=ExtResource("9_qmy6f")]
 position = Vector2(134, -23)
-spawnableScene = ExtResource("10_qmy6f")
+spawnableScene = ExtResource("15_xa025")
 
 [node name="ValuableSpawner6" parent="ValuableSpawners" unique_id=1305782228 instance=ExtResource("9_qmy6f")]
 position = Vector2(545, -25)
