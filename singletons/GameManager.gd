@@ -35,14 +35,14 @@ var game_objectives := create_game_objectives()
 var stolen_stuff_amount : int = 0
 var money_lost: int = 0
 var valuables : Dictionary[ValuableModel.Valuable, ValuableModel] = {
-	ValuableModel.Valuable.TV:     ValuableModel.new(preload("res://sprites/tv.png"), 70),
-	ValuableModel.Valuable.Bed:    ValuableModel.new(preload("res://sprites/bed.png"), 40),
-	ValuableModel.Valuable.Chair1: ValuableModel.new(preload("res://sprites/chair1.png"), 400),
-	ValuableModel.Valuable.Chair2: ValuableModel.new(preload("res://sprites/chair2.png"), 300),
-	ValuableModel.Valuable.Closet: ValuableModel.new(preload("res://sprites/closet.png"), 100),
-	ValuableModel.Valuable.Sofa:   ValuableModel.new(preload("res://sprites/sofa.png"), 50),
-	ValuableModel.Valuable.Table:  ValuableModel.new(preload("res://sprites/table.png"), 50),
-	ValuableModel.Valuable.Vase:   ValuableModel.new(preload("res://sprites/vase.png"), 50),
+	ValuableModel.Valuable.TV:     ValuableModel.new(preload("res://canvas_textures/tv_texture.tres"), 70),
+	ValuableModel.Valuable.Bed:    ValuableModel.new(preload("res://canvas_textures/bed_texture.tres"), 40),
+	ValuableModel.Valuable.Chair1: ValuableModel.new(preload("res://canvas_textures/chair1_texture.tres"), 400),
+	ValuableModel.Valuable.Chair2: ValuableModel.new(preload("res://canvas_textures/chair2_texture.tres"), 300),
+	ValuableModel.Valuable.Closet: ValuableModel.new(preload("res://canvas_textures/closet_open_texture.tres"), 100),
+	ValuableModel.Valuable.Sofa:   ValuableModel.new(preload("res://canvas_textures/sofa_texture.tres"), 50),
+	ValuableModel.Valuable.Table:  ValuableModel.new(preload("res://canvas_textures/table_texture.tres"), 50),
+	ValuableModel.Valuable.Vase:   ValuableModel.new(preload("res://canvas_textures/vase1_texture.tres"), 50),
 }
 
 var maxStealableItems := 10

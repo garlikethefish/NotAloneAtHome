@@ -1,0 +1,8 @@
+[gd_resource type="CanvasTexture" format=3 uid="uid://cn0p0280eval7"]
+
+[ext_resource type="Texture2D" uid="uid://eo3s3l4uaxlc" path="res://sprites/chair.png" id="1_1hv2a"]
+[ext_resource type="Texture2D" uid="uid://kovi1ch5uriv" path="res://sprites/normal maps/chair_n.png" id="2_lrrxv"]
+
+[resource]
+diffuse_texture = ExtResource("1_1hv2a")
+normal_texture = ExtResource("2_lrrxv")

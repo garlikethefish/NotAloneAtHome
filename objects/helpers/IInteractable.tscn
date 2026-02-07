@@ -21,8 +21,11 @@ shader_parameter/blockSize = 14.2490006768275
 shader_parameter/color = SubResource("GradientTexture1D_haqum")
 shader_parameter/gradientResolution = 15
 shader_parameter/tolerance = 0.4950000235125
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_3arj4"]
+light_mode = 1
 
 [node name="IInteractable" type="Node2D" unique_id=1999549239]
+light_mask = 2
 script = ExtResource("1_v5mih")
 
 [node name="Area2D" type="Area2D" parent="." unique_id=438757159]
@@ -33,5 +36,8 @@ debug_color = Color(0.3137255, 0.49411765, 1, 1)
 
 [node name="InteractionKey" type="Sprite2D" parent="." unique_id=1457446261]
 material = SubResource("ShaderMaterial_haqum")
+light_mask = 2
+z_index = 5
+material = SubResource("CanvasItemMaterial_3arj4")
 position = Vector2(0, -30)
 texture = ExtResource("2_3arj4")

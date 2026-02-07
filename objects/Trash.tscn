@@ -1,8 +1,12 @@
 [gd_scene format=3 uid="uid://ywha5uwa0e62"]
 
 [ext_resource type="Script" uid="uid://c4kvpwbpq765x" path="res://scripts/trash.gd" id="1_5vgct"]
+[ext_resource type="Texture2D" uid="uid://crdi4vojlev1e" path="res://canvas_textures/trash1_texture.tres" id="3_johhi"]
 [ext_resource type="PackedScene" uid="uid://ikk1afwypstd" path="res://objects/helpers/ISpawnable.tscn" id="3_si7bq"]
 [ext_resource type="PackedScene" uid="uid://k2k1j0y25ebx" path="res://objects/helpers/IInteractable.tscn" id="4_johhi"]
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_johhi"]
+polygon = PackedVector2Array(-5, -10, -3, -4, -11, 1, -12, 5, -9, 10, -6, 13, 5, 13, 11, 6, 11, 3, 8, 0, 3, -3, 3, -7, 5, -10)
 
 [node name="Trash" type="Node2D" unique_id=189504567]
 top_level = true
@@ -11,6 +15,10 @@ script = ExtResource("1_5vgct")
 [node name="ISpawnable" parent="." unique_id=1455092539 instance=ExtResource("3_si7bq")]
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1195771060]
+texture = ExtResource("3_johhi")
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="Sprite2D" unique_id=371352591]
+occluder = SubResource("OccluderPolygon2D_johhi")
 
 [node name="IInteractable" parent="." unique_id=1999549239 instance=ExtResource("4_johhi")]
 
