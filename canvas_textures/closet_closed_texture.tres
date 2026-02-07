@@ -1,0 +1,8 @@
+[gd_resource type="CanvasTexture" format=3 uid="uid://lamt53jrhfh6"]
+
+[ext_resource type="Texture2D" uid="uid://dgckttbr4ei3d" path="res://sprites/closet_closed.png" id="1_qnck7"]
+[ext_resource type="Texture2D" uid="uid://0inysxxobe0d" path="res://sprites/normal maps/closet_closed_n.png" id="2_8b353"]
+
+[resource]
+diffuse_texture = ExtResource("1_qnck7")
+normal_texture = ExtResource("2_8b353")

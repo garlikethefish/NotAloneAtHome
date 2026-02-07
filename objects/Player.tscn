@@ -7,7 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://cim6i6h44jpj3" path="res://objects/helpers/IInteractor.tscn" id="5_sderm"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5ixxa"]
-size = Vector2(17, 28)
+size = Vector2(8, 26)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_6vqvp"]
 atlas = ExtResource("2_gndvh")
@@ -518,7 +518,7 @@ zoom = Vector2(3.49, 3.49)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1767608192]
 visibility_layer = 15
-position = Vector2(-0.5, 2)
+position = Vector2(0, 3)
 shape = SubResource("RectangleShape2D_5ixxa")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=110831436]

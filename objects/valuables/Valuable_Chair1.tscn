@@ -1,6 +1,16 @@
 [gd_scene format=3 uid="uid://dfttis2qx6job"]
 
 [ext_resource type="PackedScene" uid="uid://hnye7wtm1w0e" path="res://objects/valuables/Valuable.tscn" id="1_0rbls"]
+[ext_resource type="Texture2D" uid="uid://cn0p0280eval7" path="res://canvas_textures/chair1_texture.tres" id="2_1hafo"]
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_el860"]
+polygon = PackedVector2Array(-9, -13, -9, 15, -3, 15, -3, 6, 2, 6, 2, 15, 8, 15, 8, -13)
 
 [node name="Valuable" unique_id=2061310895 instance=ExtResource("1_0rbls")]
 type = 2
+
+[node name="Sprite2D" parent="." index="1" unique_id=2054388301]
+texture = ExtResource("2_1hafo")
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="Sprite2D" index="0" unique_id=950685507]
+occluder = SubResource("OccluderPolygon2D_el860")
