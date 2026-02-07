@@ -29,6 +29,7 @@ var direction: Vector2 = Vector2.ZERO
 var last_facing := "down"
 
 func _ready():
+	GameManager.player = self
 	can_move = GameManager.player_can_move
 	add_to_group("player")
 	
@@ -40,6 +41,9 @@ func _ready():
 
 func _process(delta):
 	can_move = GameManager.player_can_move
+	
+	if direction != Vector2.ZERO:
+		carrier.facingDirection = velocity.normalized()
 	
 	if Input.is_action_just_pressed("interact"):
 		var interactable: IInteractible = interactor.iInteractable

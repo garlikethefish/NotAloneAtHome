@@ -6,8 +6,8 @@
 [ext_resource type="PackedScene" uid="uid://d1lv148xxd5ec" path="res://objects/helpers/ICarrier.tscn" id="4_f6j3j"]
 [ext_resource type="PackedScene" uid="uid://cim6i6h44jpj3" path="res://objects/helpers/IInteractor.tscn" id="5_sderm"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_5ixxa"]
-size = Vector2(17, 28)
+[sub_resource type="CircleShape2D" id="CircleShape2D_seukq"]
+radius = 6.0
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_6vqvp"]
 atlas = ExtResource("2_gndvh")
@@ -515,11 +515,12 @@ script = ExtResource("1_v6fml")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1807232928]
 zoom = Vector2(3.49, 3.49)
+process_callback = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1767608192]
 visibility_layer = 15
-position = Vector2(-0.5, 2)
-shape = SubResource("RectangleShape2D_5ixxa")
+position = Vector2(-0.5, 10.645)
+shape = SubResource("CircleShape2D_seukq")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=110831436]
 position = Vector2(1.9073486e-06, 0)

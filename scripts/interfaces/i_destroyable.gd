@@ -13,12 +13,11 @@ func destroy(goToNode: Node2D):
 		tween.kill()
 		tween = create_tween()
 
-	var endPos = goToNode.global_position
 	tween.tween_property(parent, "scale", Vector2(0,0), .5)
 	tween.set_parallel()
 	tween.tween_property(parent, "rotation", 20, .5)
 	tween.set_parallel()
-	tween.tween_property(parent, "global_position", endPos, .5)
+	tween.tween_property(parent, "global_position", goToNode.global_position, .5)
 	
 	tween.finished.connect(func():
 		parent.queue_free()

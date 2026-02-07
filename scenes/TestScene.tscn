@@ -1,20 +1,14 @@
 [gd_scene format=3 uid="uid://crwv82npj7bvy"]
 
 [ext_resource type="PackedScene" uid="uid://dfdiuox7wslrn" path="res://objects/Item.tscn" id="1_n77mx"]
-[ext_resource type="PackedScene" uid="uid://ok87eomdw64l" path="res://objects/InteractableObject.tscn" id="1_rlkm5"]
 [ext_resource type="PackedScene" uid="uid://be8qbmt0fe144" path="res://objects/Player.tscn" id="2_n77mx"]
 [ext_resource type="Script" uid="uid://kwly6sj4obv1" path="res://scripts/ObjectSpawner.gd" id="4_nb1wl"]
-[ext_resource type="PackedScene" uid="uid://cah3urn1fwd1d" path="res://objects/SellZone.tscn" id="5_m5dm6"]
 [ext_resource type="PackedScene" uid="uid://cbcifivthchns" path="res://ui/ui_overlay.tscn" id="6_fws1a"]
 
 [node name="Node2D" type="Node2D" unique_id=129267035 groups=["mask_overlay"]]
 
 [node name="Item" parent="." unique_id=1473760491 instance=ExtResource("1_n77mx")]
 position = Vector2(584, 334)
-
-[node name="InteractibleObject" parent="." unique_id=659652577 instance=ExtResource("1_rlkm5")]
-position = Vector2(164, 95)
-tapsTillDone = 5
 
 [node name="Player" parent="." unique_id=1993068751 groups=["player"] instance=ExtResource("2_n77mx")]
 position = Vector2(584, 334)
@@ -75,21 +69,6 @@ metadata/_custom_type_script = "uid://kwly6sj4obv1"
 position = Vector2(704, 89)
 script = ExtResource("4_nb1wl")
 metadata/_custom_type_script = "uid://kwly6sj4obv1"
-
-[node name="SellZone" parent="." unique_id=377854475 instance=ExtResource("5_m5dm6")]
-position = Vector2(927, 135)
-
-[node name="InteractableObject" parent="." unique_id=1853829989 instance=ExtResource("1_rlkm5")]
-position = Vector2(171, 723)
-isKitty = true
-
-[node name="InteractableObject2" parent="." unique_id=626622171 instance=ExtResource("1_rlkm5")]
-position = Vector2(715, 689)
-isDeadThief = true
-
-[node name="InteractableObject3" parent="." unique_id=1085448779 instance=ExtResource("1_rlkm5")]
-position = Vector2(423, 716)
-isThiefsCloset = true
 
 [node name="Item2" parent="." unique_id=629644649 instance=ExtResource("1_n77mx")]
 position = Vector2(1154, 634)

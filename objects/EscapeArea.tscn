@@ -1,0 +1,48 @@
+[gd_scene format=3 uid="uid://4qlmy32o1i1f"]
+
+[ext_resource type="Script" uid="uid://dynmmpad0nil0" path="res://scripts/escape_area.gd" id="1_3cl51"]
+[ext_resource type="Shader" uid="uid://bp4xal8jmdr6p" path="res://shaders/dashed_outline.gdshader" id="2_8hd4h"]
+[ext_resource type="Texture2D" uid="uid://dc28r33w4yiik" path="res://sprites/whiteCube.png" id="3_ljbf8"]
+[ext_resource type="Theme" uid="uid://c68li1l2cs3o4" path="res://themes/default_theme.tres" id="4_ljbf8"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4ed3n"]
+size = Vector2(122.25, 118)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ljbf8"]
+shader = ExtResource("2_8hd4h")
+shader_parameter/radius = 42.3470020114825
+shader_parameter/thickness = 17.562000834195
+shader_parameter/color = Color(0.6745098, 0.8235294, 0.43137255, 0.54901963)
+shader_parameter/dash_count = 26.0000011875
+shader_parameter/dash_ratio = 0.582000027645
+shader_parameter/speed = 0.8
+
+[node name="EscapeArea" type="Node2D" unique_id=1530702801]
+script = ExtResource("1_3cl51")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=2053223582]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1865226446]
+scale = Vector2(0.8, 0.8)
+shape = SubResource("RectangleShape2D_4ed3n")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1076841292]
+material = SubResource("ShaderMaterial_ljbf8")
+scale = Vector2(0.244, 0.236)
+texture = ExtResource("3_ljbf8")
+
+[node name="Label" type="Label" parent="." unique_id=312556809]
+offset_left = -54.0
+offset_top = -51.0
+offset_right = 55.0
+offset_bottom = 52.0
+theme = ExtResource("4_ljbf8")
+theme_override_colors/font_color = Color(1.1625998, 1.3187493, 0.56070834, 0.90588236)
+theme_override_colors/font_shadow_color = Color(0.46887064, 0.5370987, 0.21136464, 0.90588236)
+theme_override_font_sizes/font_size = 24
+text = "Escape"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]

@@ -1,18 +1,49 @@
 [gd_scene format=3 uid="uid://cah3urn1fwd1d"]
 
 [ext_resource type="Script" uid="uid://b4sx80lvls4xv" path="res://scripts/SellZone.gd" id="1_xejtw"]
+[ext_resource type="Shader" uid="uid://bp4xal8jmdr6p" path="res://shaders/dashed_outline.gdshader" id="2_ug3yy"]
+[ext_resource type="Texture2D" uid="uid://dc28r33w4yiik" path="res://sprites/whiteCube.png" id="3_ug3yy"]
+[ext_resource type="Theme" uid="uid://c68li1l2cs3o4" path="res://themes/default_theme.tres" id="4_2m5ol"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rthd4"]
-size = Vector2(116, 111)
+size = Vector2(108, 105.5)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ug3yy"]
+shader = ExtResource("2_ug3yy")
+shader_parameter/radius = 28.8890013722275
+shader_parameter/thickness = 14.9450007098875
+shader_parameter/color = Color(0.8, 0.654902, 0.30980393, 0.54901963)
+shader_parameter/dash_count = 33.69200155287
+shader_parameter/dash_ratio = 0.5550000263625
+shader_parameter/speed = 0.8
 
 [node name="SellZone" type="Node2D" unique_id=377854475]
+scale = Vector2(0.08, 0.08)
 script = ExtResource("1_xejtw")
 
 [node name="Area2D" type="Area2D" parent="." unique_id=835376287]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=2042731810]
-position = Vector2(0, 0.5)
 shape = SubResource("RectangleShape2D_rthd4")
 debug_color = Color(0.57736975, 0.9028676, 0.3533695, 0.41960785)
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1133269796]
+material = SubResource("ShaderMaterial_ug3yy")
+scale = Vector2(0.255, 0.255)
+texture = ExtResource("3_ug3yy")
+
+[node name="Label" type="Label" parent="." unique_id=604949690]
+texture_filter = 1
+offset_left = -50.0
+offset_top = -50.0
+offset_right = 50.0
+offset_bottom = 50.0
+theme = ExtResource("4_2m5ol")
+theme_override_colors/font_color = Color(0.987071, 0.7993509, 0.36641434, 1)
+theme_override_colors/font_shadow_color = Color(0.42352942, 0.32156864, 0.29803923, 0.6039216)
+text = "Steal Zone"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
 
 [connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]

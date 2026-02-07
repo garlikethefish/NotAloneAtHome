@@ -1,8 +1,21 @@
 extends Node2D
 
+class_name SellZone
+
+var hasApeared = true
+var tween: Tween
+var startingScale: Vector2
+var startingPos: Vector2
+@onready var sprite: Sprite2D = $Sprite2D
+
+@export var expandToPos: Vector2 = Vector2(0,0)
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass # Replace with function body.
+	print("start this")
+	startingScale = scale
+	startingPos = global_position
+	disapear()
+	GameManager.sellZone = self
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -26,3 +39,30 @@ func _on_area_2d_area_entered(area: Area2D) -> void:
 	
 	if GameManager.stolen_stuff_amount >= GameManager.maxStealableItems:
 		GameManager.on_max_items_stolen.emit()
+
+func apear():
+	if hasApeared: return
+	print("Apear")
+	hasApeared = true
+	if tween:
+		tween.kill()
+		
+	tween = create_tween()
+	tween.set_parallel()
+	tween.tween_property(self, "scale", startingScale, .5).set_trans(Tween.TRANS_CUBIC) # fade out
+	tween.tween_property(self, "global_position", startingPos + expandToPos, .5).set_trans(Tween.TRANS_CUBIC) # fade out
+
+	
+func disapear():
+	if !hasApeared: return
+	print("no apear")
+	hasApeared = false
+	if tween:
+		tween.kill()
+		
+	tween = create_tween()
+	tween.set_parallel()
+	tween.tween_property(self, "scale", Vector2(0, 0), .5).set_trans(Tween.TRANS_CUBIC) # fade out
+	tween.tween_property(self, "global_position", startingPos, .5).set_trans(Tween.TRANS_CUBIC) # fade out
+
+	

@@ -16,6 +16,8 @@ enum GameDifficulty { Easy, Medium, Hard }
 
 var chairSprite: Sprite2D
 var laptop: Laptop
+var player: PlayerCharacter
+var sellZone: SellZone
 
 var gameDificulty: GameDifficulty = GameDifficulty.Easy
 var trashSpawners: Array[ISpawner] = []
@@ -49,6 +51,13 @@ var maxTrashAmount := 0
 func _process(_delta: float) -> void:
 	handle_suspicion(_delta)
 	check_if_all_trash_collected()
+	
+	var playerCarrier: ICarrier = Utils.try_get_child_of_type(player, ICarrier)
+	if playerCarrier and playerCarrier.iCariable and playerCarrier.isCarrying and Utils.try_get_parent_of_type(playerCarrier.iCariable, ValuableObject) and sellZone and !sellZone.hasApeared:
+		sellZone.apear()
+		
+	if playerCarrier and !playerCarrier.iCariable and !playerCarrier.isCarrying and sellZone and sellZone.hasApeared:
+		sellZone.disapear()
 	
 func handle_suspicion(timeDelta: float):
 	suspicion += timeDelta * suspicionMultiplier

@@ -1,6 +1,5 @@
 [gd_scene format=3 uid="uid://leb3c1ugsal7"]
 
-[ext_resource type="Script" uid="uid://b4sx80lvls4xv" path="res://scripts/SellZone.gd" id="1_nxtc6"]
 [ext_resource type="PackedScene" uid="uid://bn8gn6s3ge12a" path="res://objects/tilemaps.tscn" id="1_rarhs"]
 [ext_resource type="PackedScene" uid="uid://be8qbmt0fe144" path="res://objects/Player.tscn" id="1_rgh2o"]
 [ext_resource type="PackedScene" uid="uid://cbcifivthchns" path="res://ui/ui_overlay.tscn" id="1_vcsgt"]
@@ -21,6 +20,7 @@
 [ext_resource type="PackedScene" uid="uid://b2xpj2tshxe1h" path="res://objects/DeadThief.tscn" id="14_3p2gp"]
 [ext_resource type="AudioStream" uid="uid://cnk2deqtcg6p1" path="res://scenes/main_bg_music.mp3" id="15_3p2gp"]
 [ext_resource type="PackedScene" uid="uid://dyuyf26s3aqqs" path="res://objects/valuables/Valuable_Sofa.tscn" id="15_xa025"]
+[ext_resource type="PackedScene" uid="uid://4qlmy32o1i1f" path="res://objects/EscapeArea.tscn" id="21_1iba3"]
 
 [sub_resource type="Gradient" id="Gradient_3p2gp"]
 colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
@@ -49,8 +49,9 @@ fill = 1
 fill_from = Vector2(0.5, 0.5)
 fill_to = Vector2(0.8565217, 0.14782609)
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1iba3"]
+
 [node name="Main" type="Node2D" unique_id=1023568212]
-script = ExtResource("1_nxtc6")
 metadata/_edit_horizontal_guides_ = [690.0, 1085.0, -197.0, 667.0]
 metadata/_edit_vertical_guides_ = [-1302.0, -145.0, 887.0, -3874.0]
 
@@ -223,13 +224,9 @@ spawnableScene = ExtResource("15_xa025")
 position = Vector2(545, -25)
 spawnableScene = ExtResource("10_qmy6f")
 
-[node name="SellZone" parent="." unique_id=377854475 instance=ExtResource("8_jlsqs")]
-top_level = true
-position = Vector2(676, 240)
-scale = Vector2(0.51, 1)
-
 [node name="DeadGuyCloset" parent="." unique_id=1749090602 instance=ExtResource("13_mwfav")]
 top_level = true
+material = SubResource("ShaderMaterial_1iba3")
 position = Vector2(351, 90)
 
 [node name="DeadThief" parent="." unique_id=995744829 instance=ExtResource("14_3p2gp")]
@@ -244,5 +241,16 @@ parameters/looping = true
 [node name="Laptop" parent="." unique_id=2105277080 instance=ExtResource("13_qmy6f")]
 top_level = true
 position = Vector2(663, -15)
+
+[node name="SellZone" parent="." unique_id=377854475 instance=ExtResource("8_jlsqs")]
+top_level = true
+position = Vector2(690, 240.99998)
+scale = Vector2(0.48266658, 0.5516835)
+expandToPos = Vector2(-20, 0)
+
+[node name="EscapeArea" parent="." unique_id=1530702801 instance=ExtResource("21_1iba3")]
+top_level = true
+position = Vector2(44, 562.00006)
+scale = Vector2(0.5201229, 0.5640759)
 
 [editable path="Tilemaps"]

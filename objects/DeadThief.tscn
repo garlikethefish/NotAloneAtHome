@@ -11,7 +11,8 @@ script = ExtResource("1_dpbei")
 
 [node name="IDestroyable" parent="." unique_id=701682887 instance=ExtResource("2_hk8yd")]
 
-[node name="ICariable" parent="." unique_id=1908233245 instance=ExtResource("2_gqoa0")]
+[node name="ICariable" parent="." unique_id=1908233245 node_paths=PackedStringArray("sprite") instance=ExtResource("2_gqoa0")]
+sprite = NodePath("../Sprite2D")
 
 [node name="IInteractable" parent="." unique_id=1999549239 instance=ExtResource("3_hk8yd")]
 
