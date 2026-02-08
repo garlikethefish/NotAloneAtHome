@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://hnye7wtm1w0e"]
 
-[ext_resource type="Script" uid="uid://4n3fc0ulnkpp" path="res://scripts/valuable.gd" id="1_4gmkr"]
+[ext_resource type="Script" uid="uid://4n3fc0ulnkpp" path="res://scripts/Valuable.gd" id="1_4gmkr"]
 [ext_resource type="PackedScene" uid="uid://ikk1afwypstd" path="res://objects/helpers/ISpawnable.tscn" id="2_64t4u"]
 [ext_resource type="PackedScene" uid="uid://k2k1j0y25ebx" path="res://objects/helpers/IInteractable.tscn" id="4_24yf3"]
 [ext_resource type="PackedScene" uid="uid://bfxah7yut2ec0" path="res://objects/helpers/ICariable.tscn" id="5_d04w0"]
@@ -14,6 +14,7 @@ script = ExtResource("1_4gmkr")
 [node name="ISpawnable" parent="." unique_id=1455092539 instance=ExtResource("2_64t4u")]
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=2054388301]
+z_index = 3
 
 [node name="ICariable" parent="." unique_id=1908233245 node_paths=PackedStringArray("sprite") instance=ExtResource("5_d04w0")]
 sprite = NodePath("../Sprite2D")

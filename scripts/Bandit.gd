@@ -28,10 +28,13 @@ var is_shooting := false
 var player_eliminated := false
 var look_direction := Vector2.RIGHT
 var is_global_alert := false
+var wait := false
+var sprinting := false
 
 @onready var anim: AnimatedSprite2D = $AnimatedSprite2D
 @onready var sight_ray: RayCast2D = $SightRay
 @onready var gunshot_sound: AudioStreamPlayer2D = $AudioStreamPlayer2D
+@onready var footstep_sound: AudioStreamPlayer2D = $FootstepSound
 
 func _ready():
 	GameManager.on_max_suspicion.connect(_on_global_alert)
@@ -80,7 +83,6 @@ func _on_global_alert():
 	is_global_alert = true
 	is_investigating = false
 	has_target = false
-	print("BANDIT IS NOW ASS MAD")
 
 func chase_player_globally():
 	nav_agent.target_position = player.global_position
@@ -113,6 +115,8 @@ func roam(delta):
 		velocity = Vector2.ZERO
 		return
 
+	if footstep_sound.playing == false and wait == false:
+			play_footstep_sound()
 	var next_pos = nav_agent.get_next_path_position()
 	var dir = global_position.direction_to(next_pos)
 	var desired_velocity = dir * speed
@@ -233,6 +237,15 @@ func _draw():
 		points.append(cast_vision_ray(dir))
 
 	draw_polygon(points, [cone_color])
+
+func play_footstep_sound():
+	footstep_sound.play()
+	wait = true
+	if sprinting:
+		await get_tree().create_timer(0.3).timeout
+	else:
+		await get_tree().create_timer(0.4).timeout
+	wait = false
 
 func cast_vision_ray(direction: Vector2) -> Vector2:
 	var space_state = get_world_2d().direct_space_state

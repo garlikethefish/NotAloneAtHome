@@ -7,6 +7,9 @@
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_gm45k"]
 polygon = PackedVector2Array(-16, -32, -16, 32, -12, 32, -12, 31, 12, 31, 12, 32, 16, 32, 16, -32)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_px37c"]
+size = Vector2(32, 42)
+
 [node name="DeadGuyCloset" type="Node2D" unique_id=1749090602]
 script = ExtResource("1_px37c")
 
@@ -17,5 +20,13 @@ texture = ExtResource("3_px37c")
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="Sprite2D" unique_id=1924268546]
 occluder = SubResource("OccluderPolygon2D_gm45k")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=1091579881]
+collision_layer = 3
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=1377282174]
+position = Vector2(0, 11)
+shape = SubResource("RectangleShape2D_px37c")
 
 [connection signal="on_interaction" from="IInteractable" to="." method="_on_i_interactable_on_interaction"]

@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://co08e31legfne"
+path="res://.godot/imported/breathe_mask.mp3-042c82664aeb43e13fde2e7b3fb44aad.mp3str"
+
+[deps]
+
+source_file="res://sounds/sound effects/breathe_mask.mp3"
+dest_files=["res://.godot/imported/breathe_mask.mp3-042c82664aeb43e13fde2e7b3fb44aad.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

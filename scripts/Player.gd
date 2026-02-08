@@ -1,7 +1,7 @@
 extends CharacterBody2D
 class_name PlayerCharacter
 
-@export var speed := 200.0
+@export var speed := 100.0
 @export var sprint_multiplier := 2.0
 @export var mask_speed_multiplier := 0.6
 
@@ -25,8 +25,14 @@ var direction: Vector2 = Vector2.ZERO
 @onready var carrier: ICarrier = $ICarrier
 @onready var interactor: IInteractor = $IInteractor
 @onready var overlay_rect: ColorRect = $MaskOverlay/ColorRect
+@onready var footstep_sound : AudioStreamPlayer2D = $FootstepSound
+@onready var mask_sound : AudioStreamPlayer2D = $Breathe
+@onready var breathing_particles : GPUParticles2D = $BreathingParticles
 
 var last_facing := "down"
+var wait := false
+var sprinting := false
+var wait_particles := false
 
 func _ready():
 	GameManager.player = self
@@ -44,6 +50,8 @@ func _process(delta):
 	
 	if direction != Vector2.ZERO:
 		carrier.facingDirection = velocity.normalized()
+		if footstep_sound.playing == false and wait == false:
+			play_footstep_sound()
 	
 	if Input.is_action_just_pressed("interact"):
 		var interactable: IInteractible = interactor.iInteractable
@@ -62,7 +70,12 @@ func _process(delta):
 
 		if mask_on:
 			current_radius = max(min_vision_radius, current_radius - vision_shrink_speed * delta)
+			if breathing_particles.emitting == false:
+				play_breathing_particles()
+			if mask_sound.playing == false:
+				mask_sound.play()
 		else:
+			mask_sound.stop()
 			current_radius = min(atmosphere_radius, current_radius + vision_expand_speed * delta)
 
 		mat.set_shader_parameter("radius", current_radius)
@@ -76,8 +89,10 @@ func _physics_process(_delta):
 	var current_speed = speed
 
 	if Input.is_action_pressed("sprint"):
+		sprinting = true
 		current_speed *= sprint_multiplier
-
+	else:
+		sprinting = false
 	if mask_on:
 		current_speed *= mask_speed_multiplier
 
@@ -114,6 +129,7 @@ func update_animation(dir: Vector2):
 		anim.play("walk_" + last_facing + mask_suffix)
 	else:
 		anim.play("idle_" + last_facing + mask_suffix)
+		
 
 func add_mask():
 	has_mask = true
@@ -123,6 +139,23 @@ func show_defeat_screen(reason: String):
 	get_tree().current_scene.add_child(defeat_scene)
 	defeat_scene.set_defeat_reason(reason)
 
+func play_footstep_sound():
+	footstep_sound.play()
+	wait = true
+	if sprinting:
+		await get_tree().create_timer(0.4).timeout
+	else:
+		await get_tree().create_timer(0.5).timeout
+	wait = false
+	
+func play_breathing_particles():
+	breathing_particles.emitting = true
+	wait_particles = true
+	if sprinting:
+		await get_tree().create_timer(0.8).timeout
+	else:
+		await get_tree().create_timer(1.0).timeout
+	wait_particles = false
 func die():
 	if is_dead:
 		return

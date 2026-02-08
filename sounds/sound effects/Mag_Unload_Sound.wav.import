@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://d1w6ghitekdav"
-path="res://.godot/imported/Mag_Unload_Sound.wav-b7305496c6c9a9162108fe7698da71ee.sample"
+path="res://.godot/imported/Mag_Unload_Sound.wav-42a1b85db751fc07ae2868b415e7e7ff.sample"
 
 [deps]
 
-source_file="res://sounds/Mag_Unload_Sound.wav"
-dest_files=["res://.godot/imported/Mag_Unload_Sound.wav-b7305496c6c9a9162108fe7698da71ee.sample"]
+source_file="res://sounds/sound effects/Mag_Unload_Sound.wav"
+dest_files=["res://.godot/imported/Mag_Unload_Sound.wav-42a1b85db751fc07ae2868b415e7e7ff.sample"]
 
 [params]
 

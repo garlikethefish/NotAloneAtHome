@@ -7,6 +7,8 @@
 polygon = PackedVector2Array(16, -30, 16, 32, -16, 32, -16, -30)
 
 [node name="Valuable" unique_id=2061310895 instance=ExtResource("1_kgp05")]
+top_level = false
+texture_filter = 0
 type = 1
 
 [node name="Sprite2D" parent="." index="1" unique_id=2054388301]

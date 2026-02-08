@@ -1,6 +1,6 @@
 extends CharacterBody2D
 
-@export var speed := 120.0
+@export var speed := 80.0
 @export var roam_wait_time := 1.0
 
 @export var min_x := -100.0
@@ -18,7 +18,7 @@ var look_direction := Vector2.RIGHT
 var rng = RandomNumberGenerator.new()
 
 @onready var anim: AnimatedSprite2D = $AnimatedSprite2D
-@onready var meow_sound: AudioStreamPlayer2D = $AudioStreamPlayer2D
+@onready var meow_sound: AudioStreamPlayer2D = $MeowSound
 @onready var meow_timer : Timer = $MeowTimer
 @onready var interactable: IInteractible = $IInteractable
 
@@ -36,7 +36,6 @@ func set_new_roam_target():
 		randf_range(min_y, max_y)
 	)
 	nav_agent.target_position = random_point
-	print("pointttt:", random_point)
 	has_target = true
 
 func _physics_process(delta: float) -> void:

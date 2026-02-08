@@ -2,7 +2,13 @@
 
 [ext_resource type="Script" uid="uid://bflx038o74dvh" path="res://scripts/Bandit.gd" id="1_nuupm"]
 [ext_resource type="Texture2D" uid="uid://pt5voa6u84nw" path="res://sprites/Bandit-Sheet.png" id="2_1v8oq"]
-[ext_resource type="AudioStream" uid="uid://d1w6ghitekdav" path="res://sounds/Mag_Unload_Sound.wav" id="3_1v8oq"]
+[ext_resource type="AudioStream" uid="uid://d1w6ghitekdav" path="res://sounds/sound effects/Mag_Unload_Sound.wav" id="3_1v8oq"]
+[ext_resource type="Texture2D" uid="uid://brlqbui27jqjn" path="res://sprites/shadow.png" id="3_so3fp"]
+[ext_resource type="AudioStream" uid="uid://ble3theon51k7" path="res://sounds/sound effects/bandit_footstep1.wav" id="5_xs5k3"]
+[ext_resource type="AudioStream" uid="uid://fqprlrvemgox" path="res://sounds/sound effects/bandit_footstep2.wav" id="6_1skd5"]
+[ext_resource type="AudioStream" uid="uid://cfsfletqwk7r2" path="res://sounds/sound effects/bandit_footstep3.wav" id="7_ers6e"]
+[ext_resource type="AudioStream" uid="uid://c5mgu2784a6dr" path="res://sounds/sound effects/bandit_footstep4.wav" id="8_atxhn"]
+[ext_resource type="AudioStream" uid="uid://djh3kwdicro7r" path="res://sounds/sound effects/bandit_breathe.mp3" id="9_1skd5"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_so3fp"]
 atlas = ExtResource("2_1v8oq")
@@ -270,6 +276,15 @@ animations = [{
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_1v8oq"]
 
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_r7hq3"]
+random_pitch = 1.0905077
+random_volume_offset_db = 1.1
+streams_count = 4
+stream_0/stream = ExtResource("5_xs5k3")
+stream_1/stream = ExtResource("6_1skd5")
+stream_2/stream = ExtResource("7_ers6e")
+stream_3/stream = ExtResource("8_atxhn")
+
 [node name="Bandit" type="CharacterBody2D" unique_id=136410527]
 safe_margin = 0.2
 script = ExtResource("1_nuupm")
@@ -280,6 +295,13 @@ modulate = Color(0.76206994, 0.17606321, 0.008382548, 1)
 sprite_frames = SubResource("SpriteFrames_ywp03")
 animation = &"walk_side"
 frame_progress = 0.7469453
+
+[node name="Shadow" type="Sprite2D" parent="AnimatedSprite2D" unique_id=1760309054]
+modulate = Color(1, 1, 1, 0.26666668)
+z_index = -1
+position = Vector2(-1.1473894e-05, 15)
+scale = Vector2(0.8437493, 0.9375)
+texture = ExtResource("3_so3fp")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=36144933]
 top_level = true
@@ -297,6 +319,7 @@ neighbor_distance = 7763.51
 stream = ExtResource("3_1v8oq")
 volume_db = 24.0
 pitch_scale = 4.0
+bus = &"Sounds"
 
 [node name="SightRay" type="RayCast2D" parent="." unique_id=112610399]
 rotation = -1.5707964
@@ -307,3 +330,20 @@ collision_mask = 3
 [node name="CollisionShape2D" type="CollisionShape2D" parent="VisionArea" unique_id=555588942]
 scale = Vector2(-100, 100)
 shape = SubResource("CircleShape2D_1v8oq")
+
+[node name="FootstepSound" type="AudioStreamPlayer2D" parent="." unique_id=1851210468]
+stream = SubResource("AudioStreamRandomizer_r7hq3")
+volume_db = 3.0
+max_distance = 400.0
+panning_strength = 5.0
+bus = &"Sounds"
+
+[node name="Breathe" type="AudioStreamPlayer2D" parent="." unique_id=540973784]
+stream = ExtResource("9_1skd5")
+volume_db = -5.0
+pitch_scale = 0.44
+autoplay = true
+max_distance = 100.0
+panning_strength = 5.0
+bus = &"Sounds"
+parameters/looping = true
