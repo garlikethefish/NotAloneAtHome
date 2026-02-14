@@ -48,11 +48,6 @@ func _ready():
 func _process(delta):
 	can_move = GameManager.player_can_move
 	
-	if direction != Vector2.ZERO:
-		carrier.facingDirection = velocity.normalized()
-		if footstep_sound.playing == false and wait == false:
-			play_footstep_sound()
-	
 	if Input.is_action_just_pressed("interact"):
 		var interactable: IInteractible = interactor.iInteractable
 		var carriable: ICariable = null
@@ -63,46 +58,56 @@ func _process(delta):
 			carriable = Utils.try_get_child_of_type(parent, ICariable)
 			
 		carrier.try_to_carry(carriable)
+		
+	if can_move:
+		if direction != Vector2.ZERO:
+			carrier.facingDirection = velocity.normalized()
+			if footstep_sound.playing == false and wait == false:
+				play_footstep_sound()
 	
-	if overlay_rect and overlay_rect.material:
-		var mat = overlay_rect.material
-		mat.set_shader_parameter("center", Vector2(0.5, 0.5))
+		
+		if overlay_rect and overlay_rect.material:
+			var mat = overlay_rect.material
+			mat.set_shader_parameter("center", Vector2(0.5, 0.5))
 
-		if mask_on:
-			current_radius = max(min_vision_radius, current_radius - vision_shrink_speed * delta)
-			if breathing_particles.emitting == false:
-				play_breathing_particles()
-			if mask_sound.playing == false:
-				mask_sound.play()
-		else:
-			mask_sound.stop()
-			current_radius = min(atmosphere_radius, current_radius + vision_expand_speed * delta)
+			if mask_on:
+				current_radius = max(min_vision_radius, current_radius - vision_shrink_speed * delta)
+				if breathing_particles.emitting == false:
+					play_breathing_particles()
+				if mask_sound.playing == false:
+					mask_sound.play()
+			else:
+				mask_sound.stop()
+				current_radius = min(atmosphere_radius, current_radius + vision_expand_speed * delta)
 
-		mat.set_shader_parameter("radius", current_radius)
+			mat.set_shader_parameter("radius", current_radius)
+	else:
+		immobile_animation()
 
 func _physics_process(_delta):
-	direction = Vector2.ZERO
-	direction.x = Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
-	direction.y = Input.get_action_strength("move_down") - Input.get_action_strength("move_up")
-	direction = direction.normalized()
+	if can_move:
+		direction = Vector2.ZERO
+		direction.x = Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
+		direction.y = Input.get_action_strength("move_down") - Input.get_action_strength("move_up")
+		direction = direction.normalized()
 
-	var current_speed = speed
+		var current_speed = speed
 
-	if Input.is_action_pressed("sprint"):
-		sprinting = true
-		current_speed *= sprint_multiplier
-	else:
-		sprinting = false
-	if mask_on:
-		current_speed *= mask_speed_multiplier
+		if Input.is_action_pressed("sprint"):
+			sprinting = true
+			current_speed *= sprint_multiplier
+		else:
+			sprinting = false
+		if mask_on:
+			current_speed *= mask_speed_multiplier
 
-	velocity = direction * current_speed
-	move_and_slide()
+		velocity = direction * current_speed
+		move_and_slide()
 
-	update_animation(direction)
+		update_animation(direction)
 
-	if Input.is_action_just_pressed("toggle_mask"):
-		toggle_mask()
+		if Input.is_action_just_pressed("toggle_mask"):
+			toggle_mask()
 
 	if is_dead:
 		return
@@ -130,6 +135,10 @@ func update_animation(dir: Vector2):
 	else:
 		anim.play("idle_" + last_facing + mask_suffix)
 		
+func immobile_animation():
+	last_facing = "up"
+	var mask_suffix = "_mask" if mask_on else ""
+	anim.play("idle_" + last_facing + mask_suffix)
 
 func add_mask():
 	has_mask = true

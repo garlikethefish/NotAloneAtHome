@@ -319,7 +319,7 @@ neighbor_distance = 7763.51
 stream = ExtResource("3_1v8oq")
 volume_db = 24.0
 pitch_scale = 4.0
-bus = &"Sounds"
+bus = &"No Reverb Sounds"
 
 [node name="SightRay" type="RayCast2D" parent="." unique_id=112610399]
 rotation = -1.5707964

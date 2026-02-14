@@ -1,0 +1,9 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://bat6r3ysd8bhe"]
+
+[ext_resource type="Shader" uid="uid://dedcyw2lnehha" path="res://shaders/programming_minigame_vignette.gdshader" id="1_iint0"]
+
+[resource]
+shader = ExtResource("1_iint0")
+shader_parameter/center = Vector2(0.5, 0.565)
+shader_parameter/radius = 0.155
+shader_parameter/softness = 0.15

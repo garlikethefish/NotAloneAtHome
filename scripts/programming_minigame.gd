@@ -1,36 +1,59 @@
 extends CanvasLayer
 
 signal minigame_failed
-# =========================
-# CONFIG
-# =========================
 const MAX_MISTAKES := 3
-const LINE_COUNT := 5
+const LINE_COUNT := 4
 
-# =========================
-# NODES
-# =========================
 @onready var canvas = self
-@onready var source_label: RichTextLabel = canvas.get_node("UIImage/ReplyTextLabel")
-@onready var publish_button: Button = canvas.get_node("UIImage/PublishButton")
+@onready var source_label: RichTextLabel = $UIImage/ReplyTextLabel
+@onready var publish_button: Button = $UIImage/PublishButton
+@onready var mistakes_text : RichTextLabel = $UIImage/MistakesText
 
 @onready var inputs: Array[LineEdit] = [
 	canvas.get_node("UIImage/InputLabel1"),
 	canvas.get_node("UIImage/InputLabel2"),
 	canvas.get_node("UIImage/InputLabel3"),
-	canvas.get_node("UIImage/InputLabel4"),
-	canvas.get_node("UIImage/InputLabel5")
+	canvas.get_node("UIImage/InputLabel4")
 ]
+@onready var indicators = [
+	canvas.get_node("UIImage/Indicators/Light0"),
+	canvas.get_node("UIImage/Indicators/Light1"),
+	canvas.get_node("UIImage/Indicators/Light2"),
+	canvas.get_node("UIImage/Indicators/Light3")
+]
+@onready var inactive_light := preload("res://sprites/inactive_light.png")
+@onready var active_light := preload("res://sprites/light.png")
 
-
-# =========================
-# STATE
-# =========================
 var source_lines: PackedStringArray
 
 var mistakes: int = 0
 var active_line: int = 0
+@onready var waiting := false
 
+
+# =========================
+# READY
+# =========================
+func _ready() -> void:
+	source_lines = source_label.text.split("\n", false)
+
+	if source_lines.size() < LINE_COUNT:
+		push_error("Source text must have at least %d lines" % LINE_COUNT)
+		return
+
+	for i in range(inputs.size()):
+		var line_edit: LineEdit = inputs[i]
+		line_edit.text = ""
+		line_edit.context_menu_enabled = false
+		line_edit.editable = (i == 0)
+
+		line_edit.text_changed.connect(
+			Callable(self, "_on_text_changed").bind(i)
+		)
+	indicators[0].texture = active_light
+	indicators[0].get_child(0).visible = true
+	inputs[0].grab_focus()
+	publish_button.disabled = true
 
 # =========================
 # TEXT CHECKING
@@ -58,9 +81,14 @@ func _on_text_changed(new_text: String, line_index: int) -> void:
 		return
 
 	if new_text[char_index] != expected[char_index]:
+		line_edit.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		line_edit.focus_mode = Control.FOCUS_NONE
+		await get_tree().create_timer(0.2).timeout 
+		line_edit.mouse_filter = Control.MOUSE_FILTER_PASS
+		line_edit.focus_mode = Control.FOCUS_ALL
+		line_edit.grab_focus()
 		_register_mistake()
-		line_edit.text = ""
-		line_edit.caret_column = 0
+		line_edit.delete_char_at_caret()
 		return
 
 
@@ -86,6 +114,14 @@ func _advance_line() -> void:
 
 	inputs[active_line].editable = true
 	inputs[active_line].grab_focus()
+	
+	for indicator in indicators:
+		if indicator.name.ends_with(str(active_line)) != true:
+			indicator.texture = inactive_light
+			indicator.get_child(0).visible = false
+	indicators[active_line].texture = active_light
+	indicators[active_line].get_child(0).visible = true
+	#switch objective
 
 
 # =========================
@@ -93,19 +129,23 @@ func _advance_line() -> void:
 # =========================
 func _register_mistake() -> void:
 	mistakes += 1
-
+	mistakes_text.text = str("Mistakes ", mistakes, "/3")
 
 	if mistakes >= MAX_MISTAKES:
+		await get_tree().create_timer(0.2).timeout 
 		_kick_player()
 
-
+func reset_mistakes():
+	mistakes = 0
+	mistakes_text.text = str("Mistakes ", mistakes, "/3")
 
 
 # =========================
 # END STATES
 # =========================
 func _kick_player() -> void:
-	self.get_parent().connect("minigame_failed", Callable(self, "_on_programming_minigame_minigame_failed"))
+	emit_signal("minigame_failed")
+	
 
 
 func _on_success() -> void:
@@ -114,35 +154,10 @@ func _on_success() -> void:
 	
 
 
-# =========================
-# READY
-# =========================
-func _ready() -> void:
-	source_lines = source_label.text.split("\n", false)
-
-	if source_lines.size() < LINE_COUNT:
-		push_error("Source text must have at least %d lines" % LINE_COUNT)
-		return
-
-	for i in range(inputs.size()):
-		var line_edit: LineEdit = inputs[i]
-		line_edit.text = ""
-		line_edit.context_menu_enabled = false
-		line_edit.editable = (i == 0)
-
-		line_edit.text_changed.connect(
-			Callable(self, "_on_text_changed").bind(i)
-		)
-
-	inputs[0].grab_focus()
-	publish_button.disabled = true
-
-
 
 func _on_publish_button_pressed() -> void:
+	GameManager.game_won = true
 	_end_game_success()
 
 func _end_game_success() -> void:
 	get_tree().change_scene_to_file("res://scenes/WinScreen.tscn")
-
-	queue_free()

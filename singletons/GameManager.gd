@@ -31,33 +31,35 @@ var suspicionMultiplier := 0
 var linesCompleted : int = 0
 var current_objective: ObjectiveModel.Objective
 var game_objectives := create_game_objectives()
+var game_won := false
 
 var stolen_stuff_amount : int = 0
 var money_lost: int = 0
 var valuables : Dictionary[ValuableModel.Valuable, ValuableModel] = {
-	ValuableModel.Valuable.TV:     ValuableModel.new(preload("res://canvas_textures/tv_texture.tres"), 70),
-	ValuableModel.Valuable.Bed:    ValuableModel.new(preload("res://canvas_textures/bed_texture.tres"), 40),
-	ValuableModel.Valuable.Chair1: ValuableModel.new(preload("res://canvas_textures/chair1_texture.tres"), 400),
-	ValuableModel.Valuable.Chair2: ValuableModel.new(preload("res://canvas_textures/chair2_texture.tres"), 300),
-	ValuableModel.Valuable.Closet: ValuableModel.new(preload("res://canvas_textures/closet_open_texture.tres"), 100),
+	ValuableModel.Valuable.TV:     ValuableModel.new(preload("res://canvas_textures/tv_texture.tres"), 200),
+	ValuableModel.Valuable.Bed:    ValuableModel.new(preload("res://canvas_textures/bed_texture.tres"), 140),
+	ValuableModel.Valuable.Chair1: ValuableModel.new(preload("res://canvas_textures/chair1_texture.tres"), 20),
+	ValuableModel.Valuable.Chair2: ValuableModel.new(preload("res://canvas_textures/chair2_texture.tres"), 20),
+	ValuableModel.Valuable.Closet: ValuableModel.new(preload("res://canvas_textures/closet_open_texture.tres"), 70),
 	ValuableModel.Valuable.Sofa:   ValuableModel.new(preload("res://canvas_textures/sofa_texture.tres"), 50),
-	ValuableModel.Valuable.Table:  ValuableModel.new(preload("res://canvas_textures/table_texture.tres"), 50),
-	ValuableModel.Valuable.Vase:   ValuableModel.new(preload("res://canvas_textures/vase1_texture.tres"), 50),
+	ValuableModel.Valuable.Table:  ValuableModel.new(preload("res://canvas_textures/table_texture.tres"), 40),
+	ValuableModel.Valuable.Vase:   ValuableModel.new(preload("res://canvas_textures/vase1_texture.tres"), 10),
 }
 
 var maxStealableItems := 10
 var maxTrashAmount := 0
 
 func _process(_delta: float) -> void:
-	handle_suspicion(_delta)
-	check_if_all_trash_collected()
-	
-	var playerCarrier: ICarrier = Utils.try_get_child_of_type(player, ICarrier)
-	if playerCarrier and playerCarrier.iCariable and playerCarrier.isCarrying and Utils.try_get_parent_of_type(playerCarrier.iCariable, ValuableObject) and sellZone and !sellZone.hasApeared:
-		sellZone.apear()
+	if game_won == false:
+		handle_suspicion(_delta)
+		check_if_all_trash_collected()
 		
-	if playerCarrier and !playerCarrier.iCariable and !playerCarrier.isCarrying and sellZone and sellZone.hasApeared:
-		sellZone.disapear()
+		var playerCarrier: ICarrier = Utils.try_get_child_of_type(player, ICarrier)
+		if playerCarrier and playerCarrier.iCariable and playerCarrier.isCarrying and Utils.try_get_parent_of_type(playerCarrier.iCariable, ValuableObject) and sellZone and !sellZone.hasApeared:
+			sellZone.apear()
+			
+		if playerCarrier and !playerCarrier.iCariable and !playerCarrier.isCarrying and sellZone and sellZone.hasApeared:
+			sellZone.disapear()
 	
 func handle_suspicion(timeDelta: float):
 	suspicion += timeDelta * suspicionMultiplier

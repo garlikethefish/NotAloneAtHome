@@ -59,6 +59,8 @@ fill_to = Vector2(0.8565217, 0.14782609)
 background_mode = 3
 tonemap_mode = 1
 ssao_enabled = true
+glow_enabled = true
+glow_bloom = 0.19
 
 [node name="Main" type="Node2D" unique_id=1023568212]
 metadata/_edit_horizontal_guides_ = [690.0, 1085.0, -197.0, 667.0]

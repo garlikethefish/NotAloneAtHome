@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dgemna2cprj7k" path="res://scripts/Player.gd" id="1_v6fml"]
 [ext_resource type="Texture2D" uid="uid://d16fbhghe53wp" path="res://sprites/Player-Sheet.png" id="2_gndvh"]
-[ext_resource type="Shader" uid="uid://dkftmq20sgy7t" path="res://shaders/MaskVision.gdshader" id="3_6vqvp"]
+[ext_resource type="Material" uid="uid://b3npoc6e68ph1" path="res://shaders/MaskVignette.tres" id="3_5vbvs"]
 [ext_resource type="PackedScene" uid="uid://d1lv148xxd5ec" path="res://objects/helpers/ICarrier.tscn" id="4_f6j3j"]
 [ext_resource type="PackedScene" uid="uid://cim6i6h44jpj3" path="res://objects/helpers/IInteractor.tscn" id="5_sderm"]
 [ext_resource type="Texture2D" uid="uid://brlqbui27jqjn" path="res://sprites/shadow.png" id="6_sderm"]
@@ -499,12 +499,6 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_f6j3j"]
-shader = ExtResource("3_6vqvp")
-shader_parameter/center = Vector2(0.5, 0.5)
-shader_parameter/radius = 0.35
-shader_parameter/softness = 0.15
-
 [sub_resource type="Gradient" id="Gradient_seukq"]
 offsets = PackedFloat32Array(0, 0.42771083, 0.52409637, 1)
 colors = PackedColorArray(1, 1, 1, 1, 0.31431594, 0.31431618, 0.31431603, 1, 0.28784722, 0.28784746, 0.2878473, 1, 0, 0, 0, 1)
@@ -574,7 +568,7 @@ frame_progress = 0.0026698245
 layer = 0
 
 [node name="ColorRect" type="ColorRect" parent="MaskOverlay" unique_id=427046387]
-material = SubResource("ShaderMaterial_f6j3j")
+material = ExtResource("3_5vbvs")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0

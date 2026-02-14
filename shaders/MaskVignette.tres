@@ -1,0 +1,9 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://b3npoc6e68ph1"]
+
+[ext_resource type="Shader" uid="uid://dkftmq20sgy7t" path="res://shaders/MaskVision.gdshader" id="1_ss6f5"]
+
+[resource]
+shader = ExtResource("1_ss6f5")
+shader_parameter/center = Vector2(0.5, 0.5)
+shader_parameter/radius = 0.35
+shader_parameter/softness = 0.15
