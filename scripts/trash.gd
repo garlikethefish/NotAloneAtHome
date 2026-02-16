@@ -13,7 +13,8 @@ func _on_i_spawnable_on_spawn(_spawner: ISpawner):
 	print("Spawned trash! at: ", global_position)
 
 func can_interact(_interactor: IInteractor):
-	return true
+	if GameManager.current_objective == ObjectiveModel.Objective.CleanHome:
+		return true
 
 func _on_i_interactable_on_interaction(iInteractor: IInteractor):
 	tapsTillDone -= 1

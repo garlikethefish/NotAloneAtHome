@@ -105,4 +105,5 @@ func _on_i_interactable_on_interaction(iInteractor):
 		interactable.update_can_interact_status()
 
 func can_interact(_interactor: IInteractor):
-	return doCatTimes > 0
+	if GameManager.current_objective == ObjectiveModel.Objective.FeedKitty:
+		return doCatTimes > 0

@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dgemna2cprj7k" path="res://scripts/Player.gd" id="1_v6fml"]
 [ext_resource type="Texture2D" uid="uid://d16fbhghe53wp" path="res://sprites/Player-Sheet.png" id="2_gndvh"]
+[ext_resource type="Script" uid="uid://bhs7qgb1e4mvf" path="res://objects/camera.gd" id="2_jjyn6"]
 [ext_resource type="Material" uid="uid://b3npoc6e68ph1" path="res://shaders/MaskVignette.tres" id="3_5vbvs"]
 [ext_resource type="PackedScene" uid="uid://d1lv148xxd5ec" path="res://objects/helpers/ICarrier.tscn" id="4_f6j3j"]
 [ext_resource type="PackedScene" uid="uid://cim6i6h44jpj3" path="res://objects/helpers/IInteractor.tscn" id="5_sderm"]
@@ -499,6 +500,9 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_5vbvs"]
+radius = 230.3671
+
 [sub_resource type="Gradient" id="Gradient_seukq"]
 offsets = PackedFloat32Array(0, 0.42771083, 0.52409637, 1)
 colors = PackedColorArray(1, 1, 1, 1, 0.31431594, 0.31431618, 0.31431603, 1, 0.28784722, 0.28784746, 0.2878473, 1, 0, 0, 0, 1)
@@ -550,6 +554,9 @@ script = ExtResource("1_v6fml")
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1807232928]
 zoom = Vector2(3.49, 3.49)
 process_callback = 0
+script = ExtResource("2_jjyn6")
+NOISE_SHAKE_SPEED = 10.0
+NOISE_SHAKE_STRENGTH = 30.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1767608192]
 visibility_layer = 15
@@ -583,6 +590,12 @@ metadata/_edit_use_anchors_ = true
 
 [node name="IInteractor" parent="." unique_id=350301088 instance=ExtResource("5_sderm")]
 
+[node name="BanditNearnessDetector" type="Area2D" parent="." unique_id=2046794680]
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BanditNearnessDetector" unique_id=651217859]
+shape = SubResource("CircleShape2D_5vbvs")
+
 [node name="PointLight2D" type="PointLight2D" parent="." unique_id=465774789]
 energy = 0.25
 shadow_enabled = true
@@ -614,5 +627,7 @@ texture = ExtResource("12_5vbvs")
 one_shot = true
 process_material = SubResource("ParticleProcessMaterial_jjyn6")
 
+[connection signal="shake_camera" from="." to="Camera2D" method="_on_shake_camera"]
+[connection signal="stop_camera_shake" from="." to="Camera2D" method="_on__stop_camera_shake"]
 [connection signal="on_interactable_change" from="IInteractor" to="." method="_on_i_interactor_on_interactable_change"]
 [connection signal="ready" from="IInteractor" to="." method="_on_i_interactor_ready"]

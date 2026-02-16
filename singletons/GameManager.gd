@@ -4,6 +4,7 @@ signal on_item_steal()
 signal on_trash_collected()
 signal spawnTrash()
 signal on_suspicion_change()
+signal on_line_completed()
 
 signal on_max_suspicion()
 signal on_max_items_stolen()
@@ -28,10 +29,14 @@ var trashAtHome: int = 0
 var areAllTrashCollected: bool = false
 var suspicion : float = 0
 var suspicionMultiplier := 0
+var max_lines := 4
+var max_mistakes := 3
 var linesCompleted : int = 0
 var current_objective: ObjectiveModel.Objective
 var game_objectives := create_game_objectives()
 var game_won := false
+var locked_out := false
+var random_objectives := ObjectiveModel.Objective.keys()
 
 var stolen_stuff_amount : int = 0
 var money_lost: int = 0
@@ -79,10 +84,30 @@ func complete_objective(objective: ObjectiveModel.Objective):
 	on_objective_completed.emit(objective)
 	
 	var tempObjective = current_objective
-	# loop to next uncompleted objective
-	while game_objectives[current_objective].isCompleted:
-		current_objective = game_objectives[current_objective].nextObjective
-		
+	
+	if random_objectives.has("WriteCode"): # remove linear objectives
+		random_objectives.erase("WriteCode")
+		random_objectives.erase("HideThief")
+		random_objectives.erase("TakeThiefsMask")
+		random_objectives.erase("Escape")
+		random_objectives.erase("Finish")
+	
+	# objective progression: random looping and linear advancement
+	match current_objective:
+		ObjectiveModel.Objective.WriteCode: # pick random task to do that isn't completed
+			if !random_objectives.is_empty():
+				var random_pick = random_objectives.pick_random()
+				current_objective = ObjectiveModel.Objective.get(random_pick)
+				random_objectives.erase(random_pick)
+			else:
+				current_objective = ObjectiveModel.Objective.Escape
+		ObjectiveModel.Objective.TakeThiefsMask: #first objective
+			current_objective = game_objectives[current_objective].nextObjective
+		ObjectiveModel.Objective.HideThief, ObjectiveModel.Objective.FeedKitty, ObjectiveModel.Objective.CleanHome:
+			current_objective = ObjectiveModel.Objective.WriteCode
+			GameManager.locked_out = false
+			game_objectives[current_objective].isCompleted = false # reset writecode objective to incomplete
+
 	if tempObjective != current_objective:
 		on_objective_update.emit(current_objective)
 	

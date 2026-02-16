@@ -1,8 +1,6 @@
 extends CanvasLayer
 
-signal minigame_failed
-const MAX_MISTAKES := 3
-const LINE_COUNT := 4
+signal kick
 
 @onready var canvas = self
 @onready var source_label: RichTextLabel = $UIImage/ReplyTextLabel
@@ -37,8 +35,8 @@ var active_line: int = 0
 func _ready() -> void:
 	source_lines = source_label.text.split("\n", false)
 
-	if source_lines.size() < LINE_COUNT:
-		push_error("Source text must have at least %d lines" % LINE_COUNT)
+	if source_lines.size() < GameManager.max_lines:
+		push_error("Source text must have at least %d lines" % GameManager.max_lines)
 		return
 
 	for i in range(inputs.size()):
@@ -95,33 +93,32 @@ func _on_text_changed(new_text: String, line_index: int) -> void:
 	if new_text.length() == expected.length():
 		_advance_line()
 
-
 # =========================
 # LINE PROGRESSION
 # =========================
 func _advance_line() -> void:
-	# Count completed line globally
-	GameManager.linesCompleted += 1
-
 	inputs[active_line].editable = false
 	active_line += 1
+	
+	# Count completed line globally
+	GameManager.linesCompleted += 1
+	GameManager.on_line_completed.emit()
+	
 
 	# All lines finished
-	if active_line >= LINE_COUNT:
+	if active_line >= GameManager.max_lines:
 		publish_button.disabled = false
 		publish_button.grab_focus()
 		return
-
-	inputs[active_line].editable = true
-	inputs[active_line].grab_focus()
-	
+		
+	# turn off all indicators
 	for indicator in indicators:
-		if indicator.name.ends_with(str(active_line)) != true:
-			indicator.texture = inactive_light
-			indicator.get_child(0).visible = false
-	indicators[active_line].texture = active_light
-	indicators[active_line].get_child(0).visible = true
-	#switch objective
+		indicator.texture = inactive_light
+		indicator.get_child(0).visible = false
+	
+	GameManager.complete_objective(ObjectiveModel.Objective.WriteCode)
+	
+	_kick_player(false)
 
 
 # =========================
@@ -131,9 +128,9 @@ func _register_mistake() -> void:
 	mistakes += 1
 	mistakes_text.text = str("Mistakes ", mistakes, "/3")
 
-	if mistakes >= MAX_MISTAKES:
+	if mistakes >= GameManager.max_mistakes:
 		await get_tree().create_timer(0.2).timeout 
-		_kick_player()
+		_kick_player(true)
 
 func reset_mistakes():
 	mistakes = 0
@@ -143,8 +140,8 @@ func reset_mistakes():
 # =========================
 # END STATES
 # =========================
-func _kick_player() -> void:
-	emit_signal("minigame_failed")
+func _kick_player(fumbled: bool) -> void:
+	emit_signal("kick", fumbled)
 	
 
 
@@ -161,3 +158,19 @@ func _on_publish_button_pressed() -> void:
 
 func _end_game_success() -> void:
 	get_tree().change_scene_to_file("res://scenes/WinScreen.tscn")
+
+# =========================
+# START NEW LINE
+# =========================
+
+func _on_laptop_start_a_new_line() -> void:
+	inputs[active_line].editable = true
+	inputs[active_line].grab_focus()
+	
+	# turn on active lines' indicator and turn off rest
+	for indicator in indicators:
+		if indicator.name.ends_with(str(active_line)) != true:
+			indicator.texture = inactive_light
+			indicator.get_child(0).visible = false
+	indicators[active_line].texture = active_light
+	indicators[active_line].get_child(0).visible = true

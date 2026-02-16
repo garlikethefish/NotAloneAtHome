@@ -18,6 +18,9 @@ var mask_on := false
 var isCarringObject := false
 var carriableObject: InteractableObject
 var can_move := true
+var bandit_near := false
+var bandit_body
+var distance
 
 var direction: Vector2 = Vector2.ZERO 
 
@@ -28,11 +31,16 @@ var direction: Vector2 = Vector2.ZERO
 @onready var footstep_sound : AudioStreamPlayer2D = $FootstepSound
 @onready var mask_sound : AudioStreamPlayer2D = $Breathe
 @onready var breathing_particles : GPUParticles2D = $BreathingParticles
+@onready var nearness_detector : Area2D = $BanditNearnessDetector
 
 var last_facing := "down"
 var wait := false
 var sprinting := false
 var wait_particles := false
+var shaking_camera := false
+
+signal shake_camera
+signal stop_camera_shake
 
 func _ready():
 	GameManager.player = self
@@ -65,6 +73,8 @@ func _process(delta):
 			if footstep_sound.playing == false and wait == false:
 				play_footstep_sound()
 	
+		if shaking_camera:
+				emit_signal("stop_camera_shake")
 		
 		if overlay_rect and overlay_rect.material:
 			var mat = overlay_rect.material
@@ -81,7 +91,22 @@ func _process(delta):
 				current_radius = min(atmosphere_radius, current_radius + vision_expand_speed * delta)
 
 			mat.set_shader_parameter("radius", current_radius)
-	else:
+	else: # is programming
+		if nearness_detector.get_overlapping_areas() != null:
+			for body in nearness_detector.get_overlapping_areas():
+				if body.get_parent().name == "Bandit":
+					bandit_body = body.global_position
+					bandit_near = true
+					distance = bandit_body.distance_to(self.position)
+		if bandit_near and distance <= 300:
+			if !shaking_camera:
+				emit_signal("shake_camera")
+			shaking_camera = true
+			# start screenshake
+		else:
+			if shaking_camera:
+				emit_signal("stop_camera_shake")
+			shaking_camera = false
 		immobile_animation()
 
 func _physics_process(_delta):
@@ -166,6 +191,7 @@ func play_breathing_particles():
 		await get_tree().create_timer(1.0).timeout
 	wait_particles = false
 func die():
+	emit_signal("stop_camera_shake")
 	if is_dead:
 		return
 

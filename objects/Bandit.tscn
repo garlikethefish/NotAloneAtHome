@@ -10,6 +10,9 @@
 [ext_resource type="AudioStream" uid="uid://c5mgu2784a6dr" path="res://sounds/sound effects/bandit_footstep4.wav" id="8_atxhn"]
 [ext_resource type="AudioStream" uid="uid://djh3kwdicro7r" path="res://sounds/sound effects/bandit_breathe.mp3" id="9_1skd5"]
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_1skd5"]
+radius = 17.0
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_so3fp"]
 atlas = ExtResource("2_1v8oq")
 region = Rect2(0, 0, 32, 32)
@@ -289,6 +292,12 @@ stream_3/stream = ExtResource("8_atxhn")
 safe_margin = 0.2
 script = ExtResource("1_nuupm")
 roam_wait_time = 0.1
+
+[node name="Area2D" type="Area2D" parent="." unique_id=2139388755]
+monitoring = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1300606274]
+shape = SubResource("CircleShape2D_1skd5")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=99042333]
 modulate = Color(0.76206994, 0.17606321, 0.008382548, 1)
