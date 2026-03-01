@@ -1,49 +1,47 @@
-extends Node
-class_name ICariable
+extends Helper
+
+class_name ICarriable
 
 signal on_pick_up(_carrier: ICarrier)
 signal on_drop(_carrier: ICarrier)
 
+var can_be_carried_callable: Callable
 var carrier: ICarrier
-var tween: Tween
+
 @export var sprite: Sprite2D
 
 func _ready():
-	var destroyable: IDestroyable = Utils.try_get_child_of_type(get_parent(), IDestroyable)
-	if destroyable:
-		destroyable.on_killing_itself.connect(func ():
-			tween.kill()
-		)
+	pass
 
 func pick_up(_carrier: ICarrier):
-	if tween:
-		tween.kill()
-		
-	tween = create_tween()
-		
 	if sprite:
-		tween.tween_property(sprite, "modulate:a", .5, .1)
+		get_sprite_tween().tween_property(sprite, "modulate:a", .5, .1)
 		
 	carrier = _carrier
 	on_pick_up.emit(carrier)
 	
-func drop():
+func drop(show_animation: bool = true):
 	on_drop.emit(carrier)
+	if show_animation: start_drop_animation()
+	if sprite:
+		var sprite_tween = get_sprite_tween()
+		sprite_tween.tween_property(sprite, "modulate:a", 1, .1)
+	carrier = null
+
+func start_drop_animation():
+	var position_tween = get_position_tween()
 	
 	var lastFacingDirection = carrier.facingDirection
-	carrier = null
-	
-	if tween:
-		tween.kill()
-		
-	tween = create_tween()
-	tween.set_parallel()
+	var parent = helper_holder.main_parent
 	
 	if sprite:
-		tween.tween_property(sprite, "modulate:a", 1, .1)
-	tween.tween_property(get_parent(), "global_position", get_parent().global_position + lastFacingDirection * 10, .5).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+		var sprite_tween = get_sprite_tween()
+		sprite_tween.tween_property(sprite, "modulate:a", 1, .1)
+		
+	position_tween.tween_property(parent, "global_position", parent.global_position + lastFacingDirection * 10, .5).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 
 func can_be_carried(_carrier: ICarrier) -> bool:
-	var parent := get_parent()
-	return parent != null and parent.has_method("can_be_carried") and parent.can_be_carried(_carrier)
-	
+	return can_be_carried_callable.call(_carrier)
+
+func assert_assigned_callables() -> void:
+	assert_callable(can_be_carried_callable, "can_be_carried_callable")

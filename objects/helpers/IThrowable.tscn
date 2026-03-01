@@ -1,0 +1,71 @@
+[gd_scene format=3 uid="uid://m5gqbqgarhdk"]
+
+[ext_resource type="Script" uid="uid://dj0lsc70c0cw4" path="res://scripts/interfaces/i_throwable.gd" id="1_ymslt"]
+[ext_resource type="Shader" uid="uid://dbn4wo7q36mv2" path="res://shaders/radial_progress.gdshader" id="2_y3snk"]
+[ext_resource type="Texture2D" uid="uid://66gx5njfhqb3" path="res://sprites/full_circle.png" id="3_scj3u"]
+[ext_resource type="Shader" uid="uid://bp4xal8jmdr6p" path="res://shaders/dashed_outline.gdshader" id="4_me3qk"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_2doet"]
+viewport_path = NodePath("TargetNode/SubViewport")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_elyw2"]
+resource_local_to_scene = true
+shader = ExtResource("2_y3snk")
+shader_parameter/fill_texture_overlay = SubResource("ViewportTexture_2doet")
+shader_parameter/fill_color = Vector4(5, 5, 5, 1)
+shader_parameter/bg_texture = ExtResource("3_scj3u")
+shader_parameter/bg_color = Vector4(0, 1, 0, 0)
+shader_parameter/fill_ratio = 0.982000046645
+shader_parameter/start_angle = 0.0
+shader_parameter/max_angle = 360.0
+shader_parameter/invert_fill = false
+shader_parameter/reflect_x = false
+shader_parameter/reflect_y = false
+shader_parameter/offset = Vector2(0, 0)
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_ir81x"]
+blend_mode = 2
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mh6ry"]
+shader = ExtResource("4_me3qk")
+shader_parameter/radius = 40.0
+shader_parameter/thickness = 10.0
+shader_parameter/color = Color(1, 1, 1, 1)
+shader_parameter/dash_count = 2.7630000837425
+shader_parameter/dash_ratio = 0.48800002318
+shader_parameter/speed = 2.0
+
+[node name="IThrowable" type="Node2D" unique_id=1551366403]
+script = ExtResource("1_ymslt")
+
+[node name="TargetNode" type="Node2D" parent="." unique_id=164840368]
+visible = false
+z_index = -1
+
+[node name="CanvasGroup" type="CanvasGroup" parent="TargetNode" unique_id=2070916178]
+position = Vector2(0, 4)
+scale = Vector2(0.824, 0.31700003)
+
+[node name="Spri" type="Sprite2D" parent="TargetNode/CanvasGroup" unique_id=1580197177]
+material = SubResource("ShaderMaterial_elyw2")
+scale = Vector2(0.04, 0.04)
+texture = ExtResource("3_scj3u")
+
+[node name="Circl" type="Sprite2D" parent="TargetNode/CanvasGroup" unique_id=1237060451]
+scale = Vector2(0.03, 0.03)
+texture = ExtResource("3_scj3u")
+
+[node name="Sub" type="Sprite2D" parent="TargetNode/CanvasGroup" unique_id=1348426262]
+material = SubResource("CanvasItemMaterial_ir81x")
+scale = Vector2(0.03, 0.03)
+texture = ExtResource("3_scj3u")
+
+[node name="SubViewport" type="SubViewport" parent="TargetNode" unique_id=694180964]
+transparent_bg = true
+size = Vector2i(256, 256)
+
+[node name="ColorRect" type="ColorRect" parent="TargetNode/SubViewport" unique_id=1503936962]
+material = SubResource("ShaderMaterial_mh6ry")
+clip_contents = true
+offset_right = 256.0
+offset_bottom = 256.0

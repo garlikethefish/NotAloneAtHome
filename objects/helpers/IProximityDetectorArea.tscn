@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://di1gufwmxsr11"]
+
+[ext_resource type="Script" uid="uid://bki4ng81opvqc" path="res://scripts/interfaces/i_proximity_detector_area.gd" id="1_h8mnc"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_d6g8k"]
+
+[node name="IProximityArea" type="Node2D" unique_id=327760017]
+script = ExtResource("1_h8mnc")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=1874446681]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1102305667]
+shape = SubResource("CircleShape2D_d6g8k")
+
+[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
+[connection signal="area_exited" from="Area2D" to="." method="_on_area_2d_area_exited"]

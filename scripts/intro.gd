@@ -20,7 +20,7 @@ func next_img():
 	elif current_img_int == 6:
 		get_tree().change_scene_to_file("res://scenes/Difficulty.tscn")
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("press"):
 		current_img_int += 1
 		next_img()

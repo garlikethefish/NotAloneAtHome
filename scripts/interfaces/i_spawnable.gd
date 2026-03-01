@@ -1,4 +1,4 @@
-extends Node
+extends Helper
 
 class_name ISpawnable
 

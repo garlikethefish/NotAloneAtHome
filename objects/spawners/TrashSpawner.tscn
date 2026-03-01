@@ -2,8 +2,11 @@
 
 [ext_resource type="Script" uid="uid://cdibmgeblvb5r" path="res://scripts/trash_spawner.gd" id="1_vi2mq"]
 [ext_resource type="PackedScene" uid="uid://cj3n0evy767qs" path="res://objects/helpers/ISpawner.tscn" id="2_ft26g"]
+[ext_resource type="PackedScene" uid="uid://15v7pc0tt852" path="res://objects/helpers/HelperHolder.tscn" id="2_rsu5b"]
 
 [node name="TrashSpawner" type="Node2D" unique_id=1832572310]
 script = ExtResource("1_vi2mq")
 
-[node name="ISpawner" parent="." unique_id=66854138 instance=ExtResource("2_ft26g")]
+[node name="HelperHolder" parent="." unique_id=38020404 instance=ExtResource("2_rsu5b")]
+
+[node name="ISpawner" parent="HelperHolder" unique_id=66854138 instance=ExtResource("2_ft26g")]

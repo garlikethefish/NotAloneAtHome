@@ -8,6 +8,7 @@
 [ext_resource type="AudioStream" uid="uid://dvfmsx5dolnp7" path="res://sounds/sound effects/meow2.wav" id="6_uki8m"]
 [ext_resource type="AudioStream" uid="uid://dbqeekcm7ern" path="res://sounds/sound effects/meow4.wav" id="7_cy1mn"]
 [ext_resource type="AudioStream" uid="uid://pkgor7kaslsk" path="res://sounds/sound effects/meow5.wav" id="8_yun16"]
+[ext_resource type="PackedScene" uid="uid://15v7pc0tt852" path="res://objects/helpers/HelperHolder.tscn" id="9_cy1mn"]
 [ext_resource type="AudioStream" uid="uid://bk4v0u4evgskv" path="res://sounds/sound effects/meow6.wav" id="9_d4tls"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_rsrf8"]
@@ -53,8 +54,6 @@ path_max_distance = 20.0
 avoidance_enabled = true
 debug_enabled = true
 
-[node name="IInteractable" parent="." unique_id=1999549239 instance=ExtResource("4_7jxut")]
-
 [node name="MeowSound" type="AudioStreamPlayer2D" parent="." unique_id=129856843]
 position = Vector2(0, 3)
 stream = SubResource("AudioStreamRandomizer_d4tls")
@@ -63,5 +62,9 @@ max_distance = 400.0
 panning_strength = 3.0
 bus = &"Sounds"
 
+[node name="HelperHolder" parent="." unique_id=38020404 instance=ExtResource("9_cy1mn")]
+
+[node name="IInteractable" parent="HelperHolder" unique_id=1999549239 instance=ExtResource("4_7jxut")]
+
 [connection signal="timeout" from="MeowTimer" to="." method="_on_meow_timer_timeout"]
-[connection signal="on_interaction" from="IInteractable" to="." method="_on_i_interactable_on_interaction"]
+[connection signal="on_interaction" from="HelperHolder/IInteractable" to="." method="_on_i_interactable_on_interaction"]

@@ -3,8 +3,10 @@ class_name Laptop
 
 signal start_a_new_line
 
+@onready var helper_holder: HelperHolder = $HelperHolder
+@onready var interactable: IInteractible = helper_holder.get_helper(IInteractible)
+
 @onready var ui = $ProgrammingMinigame
-@onready var interactable = $IInteractable
 @onready var vignette = ui.get_child(0)
 @onready var waiting_retry := false
 @onready var rng = RandomNumberGenerator.new()
@@ -12,9 +14,12 @@ signal start_a_new_line
 @onready var wait_countdown_timer = $WaitCountdownTimer
 @onready var time_to_wait := 0
 
+func _ready() -> void:
+	interactable.can_be_interacted_with_callable = can_be_interacted_with
+
 func _process(delta: float) -> void:
 	hide_overlay()
-	if GameManager.player.is_dead:
+	if GameManager.player and GameManager.player.is_dead:
 		ui.visible = false
 		GameManager.player_can_move = true
 		vignette.visible = false
@@ -31,18 +36,17 @@ func hide_overlay():
 		GameManager.player_can_move = true
 		vignette.visible = false
 
-
 func _on_ready() -> void:
 	GameManager.laptop = self
 
-
-func _on_i_interactable_on_interaction(iInteractor):
+func _on_i_interactable_on_interaction(interactor):
 	show_overlay()
 
-func can_interact(_interactor):
+func can_be_interacted_with(_interactor: IInteractor) -> bool:
 	if waiting_retry == false and GameManager.locked_out == false:
 		if GameManager.current_objective == ObjectiveModel.Objective.WriteCode:
 			return true
+	return false
 
 
 func _on_wait_countdown_timer_timeout() -> void:

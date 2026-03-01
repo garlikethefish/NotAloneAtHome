@@ -1,37 +1,42 @@
-extends Node2D
+extends Helper
+
 class_name IInteractor
 
-signal on_interactable_change(_iInteractable: IInteractible)
-signal on_interactor_status_update()
+signal on_interaction(_interactable: IInteractible)
+signal on_interactable_change(_interactable: IInteractible)
+#signal on_interactor_status_update()
+
+var can_interact_callable: Callable
 
 @onready var interactionArea: Area2D = $Area2D
 
 var interactablesInArea: Array[IInteractible] = []
-var iInteractable: IInteractible
+var selected_interactable: IInteractible
 
 func _ready():
 	interactionArea.scale = Vector2.ONE * 5
 
+
 func _process(_delta):
 	var closestInteractable = get_closest_interaction()
 	
-	if iInteractable == closestInteractable: return
+	if selected_interactable == closestInteractable: return
 	
-	if iInteractable:
-		iInteractable.clear_interactor()
+	if selected_interactable:
+		selected_interactable.clear_interactor()
 		
-	iInteractable = closestInteractable
-	on_interactable_change.emit(iInteractable)
+	selected_interactable = closestInteractable
+	on_interactable_change.emit(selected_interactable)
 	
-	if iInteractable:
-		iInteractable.set_interactor(self)
-	print("Switched interactable")
+	if selected_interactable:
+		selected_interactable.set_interactor(self)
+	#print("Switched interactable")
 
 func _on_area_2d_area_entered(area: Area2D):
 	var interactable = Utils.try_get_parent_of_type(area, IInteractible) as IInteractible
 	
 	if !interactable: return
-	print("Entered Interactable")
+	#print("Entered Interactable")
 	
 	if interactablesInArea.has(interactable): return
 	interactablesInArea.append(interactable)
@@ -40,22 +45,25 @@ func _on_area_2d_area_exited(area):
 	var interactable = Utils.try_get_parent_of_type(area, IInteractible) as IInteractible
 	
 	if !interactable: return
-	print("Exited Interactable")
+	#print("Exited Interactable")
 	
 	if !interactablesInArea.has(interactable): return
 	interactablesInArea.erase(interactable)
 	interactable.clear_interactor()
 	
-func interact():
-	if !iInteractable or !can_interact(iInteractable): return
+func interact() -> IInteractible:
+	if !selected_interactable or !can_interact(): return null
 	
-	iInteractable.interact(self)
+	on_interaction.emit(selected_interactable)
+	
+	selected_interactable.interact(self)
+	return selected_interactable
 	
 func get_closest_interaction() -> IInteractible:
 	var closestInteractable: IInteractible = null
 	
 	if interactablesInArea.size() <= 0:
-		iInteractable = null
+		selected_interactable = null
 		return
 	
 	for interactable in interactablesInArea:
@@ -68,6 +76,8 @@ func get_closest_interaction() -> IInteractible:
 			
 	return closestInteractable
 
-func can_interact(_interactable: IInteractible):
-	var parent := get_parent()
-	return parent != null and parent.has_method("can_interact") and parent.can_interact(_interactable)
+func can_interact(_interactable: IInteractible = selected_interactable) -> bool:
+	return can_interact_callable.call(_interactable)
+	
+func assert_assigned_callables():
+	assert_callable(can_interact_callable, "can_interact_callable")

@@ -2,5 +2,5 @@
 
 [ext_resource type="Script" uid="uid://bywk5vfv1ddqd" path="res://scripts/interfaces/i_cariable.gd" id="1_2qpxv"]
 
-[node name="ICariable" type="Node" unique_id=1908233245]
+[node name="ICarriable" type="Node2D" unique_id=883810070]
 script = ExtResource("1_2qpxv")

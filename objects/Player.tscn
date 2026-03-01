@@ -13,6 +13,9 @@
 [ext_resource type="AudioStream" uid="uid://bk7oky2n5ik7a" path="res://sounds/sound effects/footstep4.wav" id="10_5vbvs"]
 [ext_resource type="AudioStream" uid="uid://co08e31legfne" path="res://sounds/sound effects/breathe_mask.mp3" id="11_4tme0"]
 [ext_resource type="Texture2D" uid="uid://dga3prqhhedss" path="res://sprites/smoke2.png" id="12_5vbvs"]
+[ext_resource type="PackedScene" uid="uid://15v7pc0tt852" path="res://objects/helpers/HelperHolder.tscn" id="12_hk5k5"]
+[ext_resource type="PackedScene" uid="uid://s2g10onqsl60" path="res://objects/helpers/IThrower.tscn" id="14_5tpk5"]
+[ext_resource type="PackedScene" uid="uid://di1gufwmxsr11" path="res://objects/helpers/IProximityDetectorArea.tscn" id="16_0thri"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_seukq"]
 radius = 6.0
@@ -551,17 +554,18 @@ position = Vector2(576, 324)
 collision_mask = 2
 script = ExtResource("1_v6fml")
 
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1767608192]
+visibility_layer = 15
+position = Vector2(-0.5, 10.644989)
+shape = SubResource("CircleShape2D_seukq")
+
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1807232928]
+scale = Vector2(90, 1)
 zoom = Vector2(3.49, 3.49)
 process_callback = 0
 script = ExtResource("2_jjyn6")
 NOISE_SHAKE_SPEED = 10.0
 NOISE_SHAKE_STRENGTH = 30.0
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1767608192]
-visibility_layer = 15
-position = Vector2(-0.5, 10.645)
-shape = SubResource("CircleShape2D_seukq")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=110831436]
 position = Vector2(1.9073486e-06, 0)
@@ -585,10 +589,6 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 color = Color(0, 0, 0, 0.8509804)
 metadata/_edit_use_anchors_ = true
-
-[node name="ICarrier" parent="." unique_id=1243835926 instance=ExtResource("4_f6j3j")]
-
-[node name="IInteractor" parent="." unique_id=350301088 instance=ExtResource("5_sderm")]
 
 [node name="BanditNearnessDetector" type="Area2D" parent="." unique_id=2046794680]
 monitorable = false
@@ -627,7 +627,24 @@ texture = ExtResource("12_5vbvs")
 one_shot = true
 process_material = SubResource("ParticleProcessMaterial_jjyn6")
 
+[node name="HelperHolder" parent="." unique_id=38020404 instance=ExtResource("12_hk5k5")]
+
+[node name="IThrower" parent="HelperHolder" unique_id=2059326990 instance=ExtResource("14_5tpk5")]
+
+[node name="ICarrier" parent="HelperHolder" unique_id=1243835926 instance=ExtResource("4_f6j3j")]
+
+[node name="IInteractor" parent="HelperHolder" unique_id=350301088 instance=ExtResource("5_sderm")]
+
+[node name="IProximityArea" parent="HelperHolder" unique_id=327760017 node_paths=PackedStringArray("excluded_coliders") instance=ExtResource("16_0thri")]
+position = Vector2(0, 11)
+scale = Vector2(8.82, 8.82)
+excluded_coliders = [NodePath("../..")]
+
 [connection signal="shake_camera" from="." to="Camera2D" method="_on_shake_camera"]
 [connection signal="stop_camera_shake" from="." to="Camera2D" method="_on__stop_camera_shake"]
-[connection signal="on_interactable_change" from="IInteractor" to="." method="_on_i_interactor_on_interactable_change"]
-[connection signal="ready" from="IInteractor" to="." method="_on_i_interactor_ready"]
+[connection signal="on_throw" from="HelperHolder/IThrower" to="." method="_on_i_thrower_on_throw"]
+[connection signal="on_carry_start" from="HelperHolder/ICarrier" to="." method="_on_i_carrier_on_carry_start"]
+[connection signal="on_carry_stop" from="HelperHolder/ICarrier" to="." method="_on_i_carrier_on_carry_stop"]
+[connection signal="on_interactable_change" from="HelperHolder/IInteractor" to="." method="_on_i_interactor_on_interactable_change"]
+[connection signal="on_interaction" from="HelperHolder/IInteractor" to="." method="_on_i_interactor_on_interaction"]
+[connection signal="ready" from="HelperHolder/IInteractor" to="." method="_on_i_interactor_ready"]

@@ -1,4 +1,5 @@
-extends Node2D
+extends Helper
+
 class_name ISpawner
 
 var spawnedScene: Node
@@ -10,9 +11,9 @@ func spawn(scene: PackedScene):
 	spawnedScene = instance
 	instance.process_mode = Node2D.PROCESS_MODE_ALWAYS
 	instance.visible = true
-	print("Instance created: ", instance)		
-	print("class: ", instance.get_script())		
-	print("process_mode:", instance.process_mode)
+	#print("Instance created: ", instance)		
+	#print("class: ", instance.get_script())		
+	#print("process_mode:", instance.process_mode)
 	
 	instance.global_position = global_position
 	var spawnable: ISpawnable = Utils.try_get_child_of_type(instance, ISpawnable)

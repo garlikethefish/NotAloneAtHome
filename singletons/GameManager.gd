@@ -28,7 +28,7 @@ var player_can_move : bool = true
 var trashAtHome: int = 0
 var areAllTrashCollected: bool = false
 var suspicion : float = 0
-var suspicionMultiplier := 0
+var suspicionMultiplier := 0.0
 var max_lines := 4
 var max_mistakes := 3
 var linesCompleted : int = 0
@@ -54,16 +54,22 @@ var valuables : Dictionary[ValuableModel.Valuable, ValuableModel] = {
 var maxStealableItems := 10
 var maxTrashAmount := 0
 
+func _ready() -> void:
+	AudioServer.set_bus_mute(
+		AudioServer.get_bus_index("Master"),
+		true
+	)
+	#print(Engine.get_version_info())
 func _process(_delta: float) -> void:
 	if game_won == false:
 		handle_suspicion(_delta)
 		check_if_all_trash_collected()
 		
-		var playerCarrier: ICarrier = Utils.try_get_child_of_type(player, ICarrier)
-		if playerCarrier and playerCarrier.iCariable and playerCarrier.isCarrying and Utils.try_get_parent_of_type(playerCarrier.iCariable, ValuableObject) and sellZone and !sellZone.hasApeared:
+		var playerCarrier := player.carrier if player else null
+		if playerCarrier and playerCarrier.carriable and playerCarrier.is_carrying and Utils.try_get_parent_of_type(playerCarrier.carriable, ValuableObject) and sellZone and !sellZone.hasApeared:
 			sellZone.apear()
 			
-		if playerCarrier and !playerCarrier.iCariable and !playerCarrier.isCarrying and sellZone and sellZone.hasApeared:
+		if playerCarrier and !playerCarrier.carriable and !playerCarrier.is_carrying and sellZone and sellZone.hasApeared:
 			sellZone.disapear()
 	
 func handle_suspicion(timeDelta: float):
@@ -77,7 +83,7 @@ func check_if_all_trash_collected():
 	if (trashAtHome <= 0 && !areAllTrashCollected):
 		areAllTrashCollected = true
 		complete_objective(ObjectiveModel.Objective.CleanHome)
-		print("Collected all trash")
+		#print("Collected all trash")
 		
 func complete_objective(objective: ObjectiveModel.Objective):
 	game_objectives[objective].isCompleted = true
@@ -151,17 +157,17 @@ func reset_game_values():
 	game_objectives = create_game_objectives()
 	stolen_stuff_amount = 0
 	money_lost = 0
-	print("Game values reset")
+	#print("Game values reset")
 
 func spawn_in_trash() -> void:
-	print("# Start Trash")
-	print("Trash from difficulty: ", maxTrashAmount)
-	print("Trash from clamp: ", clamp(maxTrashAmount, 0, trashSpawners.size()))
+	#print("# Start Trash")
+	#print("Trash from difficulty: ", maxTrashAmount)
+	#print("Trash from clamp: ", clamp(maxTrashAmount, 0, trashSpawners.size()))
 	var howManyTrashWillBeSpawned: int = clamp(maxTrashAmount, 0, trashSpawners.size())
 	# copies spawners
 	var spawnerPool: Array[ISpawner] = trashSpawners.duplicate()
-	print("spawners:", spawnerPool.size())
-	print("spawning items: ", howManyTrashWillBeSpawned)
+	#print("spawners:", spawnerPool.size())
+	#print("spawning items: ", howManyTrashWillBeSpawned)
 	# shuffles array
 	spawnerPool.shuffle()
 	
@@ -171,10 +177,10 @@ func spawn_in_trash() -> void:
 		
 	areAllTrashCollected = false
 	trashAtHome = howManyTrashWillBeSpawned
-	emit_signal("spawnTrash")
+	#emit_signal("spawnTrash")
 
 func spawn_in_ValuableModels():
-	print("ValuableModel spawners: ", valuableSpawners.size())
+	#print("ValuableModel spawners: ", valuableSpawners.size())
 	for spawner in valuableSpawners:
 		spawner.spawn(spawner.packedScene)
 

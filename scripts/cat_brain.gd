@@ -20,9 +20,12 @@ var rng = RandomNumberGenerator.new()
 @onready var anim: AnimatedSprite2D = $AnimatedSprite2D
 @onready var meow_sound: AudioStreamPlayer2D = $MeowSound
 @onready var meow_timer : Timer = $MeowTimer
-@onready var interactable: IInteractible = $IInteractable
+
+@onready var helper_holder: HelperHolder = $HelperHolder
+@onready var interactable: IInteractible = helper_holder.get_helper(IInteractible)
 
 func _ready():
+	interactable.can_be_interacted_with_callable = can_be_interacted_with
 	nav_agent = $NavigationAgent2D
 	randomize()
 	start_meow_timer()
@@ -97,13 +100,14 @@ func _on_interactable_object_on_interact_finish():
 	GameManager.complete_objective(ObjectiveModel.Objective.FeedKitty)
 
 
-func _on_i_interactable_on_interaction(iInteractor):
+func _on_i_interactable_on_interaction(interactor):
 	doCatTimes -= 1
 	
 	if doCatTimes <= 0:
 		GameManager.complete_objective(ObjectiveModel.Objective.FeedKitty)
 		interactable.update_can_interact_status()
 
-func can_interact(_interactor: IInteractor):
+func can_be_interacted_with(_interactor: IInteractor) -> bool:
 	if GameManager.current_objective == ObjectiveModel.Objective.FeedKitty:
 		return doCatTimes > 0
+	return false

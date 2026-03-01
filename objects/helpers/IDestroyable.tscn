@@ -2,5 +2,5 @@
 
 [ext_resource type="Script" uid="uid://dfmfyqj8xptjq" path="res://scripts/interfaces/i_destroyable.gd" id="1_5c81e"]
 
-[node name="IDestroyable" type="Node" unique_id=701682887]
+[node name="IDestroyable" type="Node2D" unique_id=762967278]
 script = ExtResource("1_5c81e")
