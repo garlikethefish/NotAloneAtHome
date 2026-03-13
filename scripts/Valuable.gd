@@ -10,32 +10,42 @@ class_name ValuableObject
 @onready var interactable:  IInteractible = helper_holder.get_helper(IInteractible)
 @onready var destroyable:   IDestroyable  = helper_holder.get_helper(IDestroyable)
 @onready var throwable:     IThrowable    = helper_holder.get_helper(IThrowable)
+@onready var detectable:    IDetectable   = helper_holder.get_helper(IDetectable)
 @onready var sprite := $Sprite2D
 
 func _ready():
 	interactable.can_be_interacted_with_callable = can_be_interacted_with
 	carriable.can_be_carried_callable = can_be_carried
+	detectable.can_be_detected_callable = can_be_detected
 	sprite.texture = GameManager.valuables[type].sprite.texture
+
 
 func _on_i_cariable_on_pick_up(_carrier: ICarrier):
 	# disable interactions
 	interactable.process_mode = Node.PROCESS_MODE_DISABLED
 
+
 func _on_i_cariable_on_drop(_carrier):
 	# enable interactions
 	interactable.process_mode = Node.PROCESS_MODE_ALWAYS
-	
-func _on_i_interactable_on_interaction(_interactor: IInteractor) -> void:
-	var carrier: ICarrier = _interactor.get_helper_from_holder(ICarrier)
-	if carrier: 
-		carriable.pick_up(carrier)
-	
-func can_be_interacted_with(_interactor: IInteractor) -> bool:
-	return !throwable.is_flying
-	
-func can_be_carried(_carrier: ICarrier) -> bool:
-	return true
-	
+
+
 func sell(node: Node2D):
 	print("Sold!")
 	destroyable.destroy(node)
+
+
+func can_be_interacted_with(_interactor: IInteractor) -> bool:
+	return !helper_holder.is_doing_unskippable_shit
+
+
+func can_be_detected(_detector: IProximityAreaDetector):
+	return !helper_holder.is_doing_unskippable_shit
+
+
+func can_be_carried(_carrier: ICarrier) -> bool:
+	return !helper_holder.is_doing_unskippable_shit
+
+
+func _on_i_throwable_on_land(_throwable: IThrowable) -> void:
+	carriable.retire_unc()

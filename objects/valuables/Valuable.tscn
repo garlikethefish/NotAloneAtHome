@@ -9,18 +9,29 @@
 [ext_resource type="PackedScene" uid="uid://m5gqbqgarhdk" path="res://objects/helpers/IThrowable.tscn" id="7_apino"]
 [ext_resource type="PackedScene" uid="uid://b8odej7420g54" path="res://objects/helpers/IDetectable.tscn" id="8_2vrdr"]
 
-[node name="Valuable" type="Node2D" unique_id=2061310895]
-top_level = true
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2vrdr"]
+size = Vector2(31, 65)
+
+[node name="Valuable" type="RigidBody2D" unique_id=1917833229]
 texture_filter = 1
+collision_mask = 2
+gravity_scale = 0.0
+can_sleep = false
+lock_rotation = true
 script = ExtResource("1_4gmkr")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=168771423]
+shape = SubResource("RectangleShape2D_2vrdr")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=2054388301]
 z_index = 3
 
 [node name="HelperHolder" parent="." unique_id=38020404 instance=ExtResource("2_xcwdw")]
 
-[node name="ICariable" parent="HelperHolder" unique_id=1908233245 node_paths=PackedStringArray("sprite") instance=ExtResource("5_d04w0")]
+[node name="ICariable" parent="HelperHolder" unique_id=1908233245 node_paths=PackedStringArray("sprite", "cs", "rb") instance=ExtResource("5_d04w0")]
 sprite = NodePath("../../Sprite2D")
+cs = NodePath("../../CollisionShape2D")
+rb = NodePath("../..")
 
 [node name="IInteractable" parent="HelperHolder" unique_id=1999549239 instance=ExtResource("4_24yf3")]
 
@@ -35,4 +46,4 @@ sprite = NodePath("../../Sprite2D")
 
 [connection signal="on_drop" from="HelperHolder/ICariable" to="." method="_on_i_cariable_on_drop"]
 [connection signal="on_pick_up" from="HelperHolder/ICariable" to="." method="_on_i_cariable_on_pick_up"]
-[connection signal="on_interaction" from="HelperHolder/IInteractable" to="." method="_on_i_interactable_on_interaction"]
+[connection signal="on_land" from="HelperHolder/IThrowable" to="." method="_on_i_throwable_on_land"]

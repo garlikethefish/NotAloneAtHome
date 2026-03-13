@@ -49,6 +49,13 @@ theme = ExtResource("2_ekxnf")
 theme_override_font_sizes/font_size = 32
 text = "Quit"
 
+[node name="FastStartButton" type="Button" parent="VBoxContainer" unique_id=623029037]
+custom_minimum_size = Vector2(100, 60)
+layout_mode = 2
+theme = ExtResource("2_ekxnf")
+theme_override_font_sizes/font_size = 32
+text = "FUCK THIS INTROOOO"
+
 [node name="RichTextLabel" type="RichTextLabel" parent="." unique_id=260945019]
 layout_mode = 0
 offset_left = 658.0
@@ -69,3 +76,4 @@ parameters/looping = true
 [connection signal="pressed" from="VBoxContainer/StartButton" to="Button_manager" method="_on_start_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/OptionsButton" to="Button_manager" method="_on_options_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/ExitButton" to="Button_manager" method="_on_exit_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/FastStartButton" to="Button_manager" method="_on_fast_start_button_pressed"]

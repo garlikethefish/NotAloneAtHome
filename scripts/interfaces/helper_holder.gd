@@ -2,9 +2,25 @@ extends Node
 
 class_name HelperHolder
 
+@export var is_parent_phisics_object: bool
 @onready var main_parent:  Node2D = get_parent()
 var shared_position_tween: Tween
 var shared_sprite_tween:   Tween 
+
+var unskippable_queue: Array[Helper] = []
+var is_doing_unskippable_shit: bool:
+	get(): return !unskippable_queue.is_empty()
+	
+
+func start_doing_unskippable_shit(helper: Helper):
+	if !unskippable_queue.has(helper):
+		unskippable_queue.append(helper)
+
+
+func stop_doing_unskippable_shit(helper: Helper):
+	if unskippable_queue.has(helper):
+		unskippable_queue.erase(helper)
+
 
 func get_shared_position_tween(target_node: Node) -> Tween:
 	# 1. Kill the old one so the previous script loses control

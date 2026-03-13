@@ -14,13 +14,14 @@ var is_charging := false
 var current_charge := 0.0
 var max_charge_seconds := 1.0
 var charge_multiplier := 1.0
+var collider_masks: Array[int] = [2]
 
 @export var show_debug := false
 
 @onready var target_sprite_node := $TargetNode
 @onready var carrier: ICarrier = helper_holder.get_helper(ICarrier)
 
-# Called when the node enters the scene tree for the first time.
+
 func _ready() -> void:
 	target_sprite_node.visible = false 
 	carrier.on_carry_stop.connect(func (carriable: ICarriable):
@@ -30,7 +31,7 @@ func _ready() -> void:
 			remove_throwable()
 	)
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
+
 func _process(delta: float) -> void:
 	if show_debug: queue_redraw()
 	update_ui()
@@ -47,14 +48,12 @@ func _process(delta: float) -> void:
 func _draw():
 	if !show_debug: return
 	if current_throw_position != Vector2.ZERO:
-		# 1. Convert the global collision point to a position relative to THIS node
 		var local_target = to_local(current_throw_position)
 		
-		# 2. Draw the circle at that local spot
 		draw_circle(local_target, 12.0, Color(0, 1, 0, 0.5)) 
-		
-		# 3. Draw a line from the center of THIS node (0,0) to the target
 		draw_line(Vector2.ZERO, local_target, Color.WHITE, 2.0)
+
+
 func get_circle_shot_center(target_global_pos: Vector2, radius: float) -> Vector2:
 	var space_state = get_world_2d().direct_space_state
 	
@@ -67,7 +66,7 @@ func get_circle_shot_center(target_global_pos: Vector2, radius: float) -> Vector
 	query.shape = shape
 	query.transform = Transform2D(0, global_position) # Start at Player
 	query.motion = target_global_pos - global_position # The "Shot" vector
-	#query.exclude = [get_rid()] # Don't hit yourself
+	query.collision_mask = Utils.get_combined_mask(collider_masks) # Don't hit yourself
 	
 	# 3. Fire the Shot
 	# cast_motion returns [safe_fraction, unsafe_fraction]
@@ -81,12 +80,16 @@ func get_circle_shot_center(target_global_pos: Vector2, radius: float) -> Vector
 	var final_center = global_position + (query.motion * travel_fraction)
 	
 	return final_center
+
+
 func remove_throwable():
 	throwable = null
 	reset_changing_data()
 	
 func try_throw() -> bool: 
-	if !throwable: return false
+	if (
+		!throwable
+	): return false
 	#print("You threw item!")
 	throwable.throw(current_throw_position)
 	remove_throwable()
@@ -95,7 +98,12 @@ func try_throw() -> bool:
 	return true
 
 func try_start_charge(_throwable: IThrowable) -> bool:
-	if is_charging or _throwable == null: return false
+	if (
+		is_charging 
+		or _throwable == null
+		or _throwable.helper_holder.is_doing_unskippable_shit
+	): return false
+	
 	#print("Started charge...")
 	throwable = _throwable
 	current_charge = 0

@@ -5,6 +5,7 @@ signal start_a_new_line
 
 @onready var helper_holder: HelperHolder = $HelperHolder
 @onready var interactable: IInteractible = helper_holder.get_helper(IInteractible)
+@onready var detectable: IDetectable     = helper_holder.get_helper(IDetectable)
 
 @onready var ui = $ProgrammingMinigame
 @onready var vignette = ui.get_child(0)
@@ -16,8 +17,9 @@ signal start_a_new_line
 
 func _ready() -> void:
 	interactable.can_be_interacted_with_callable = can_be_interacted_with
+	detectable.can_be_detected_callable = can_be_detected
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	hide_overlay()
 	if GameManager.player and GameManager.player.is_dead:
 		ui.visible = false
@@ -39,14 +41,20 @@ func hide_overlay():
 func _on_ready() -> void:
 	GameManager.laptop = self
 
-func _on_i_interactable_on_interaction(interactor):
+func _on_i_interactable_on_interaction(_interactor):
 	show_overlay()
+
 
 func can_be_interacted_with(_interactor: IInteractor) -> bool:
 	if waiting_retry == false and GameManager.locked_out == false:
 		if GameManager.current_objective == ObjectiveModel.Objective.WriteCode:
+			print("INTERAAA")
 			return true
 	return false
+
+
+func can_be_detected(_detector: IProximityAreaDetector):
+	return true
 
 
 func _on_wait_countdown_timer_timeout() -> void:
@@ -60,7 +68,6 @@ func _on_programming_minigame_kick(fumbled: bool) -> void:
 		vignette.visible = false
 		ui.visible = false
 		waiting_retry = true
-		interactable.update_can_interact_status()
 		time_to_wait = rng.randi_range(10, 20) # wait 10-20 seconds before can interact with laptop/minigame again
 		wait_countdown_text.text = str(time_to_wait)
 		wait_countdown_text.visible = true

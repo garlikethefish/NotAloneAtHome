@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://k2k1j0y25ebx" path="res://objects/helpers/IInteractable.tscn" id="2_gm45k"]
 [ext_resource type="PackedScene" uid="uid://15v7pc0tt852" path="res://objects/helpers/HelperHolder.tscn" id="3_gm45k"]
 [ext_resource type="Texture2D" uid="uid://bsgla858atp8i" path="res://canvas_textures/closet_open_texture.tres" id="3_px37c"]
+[ext_resource type="PackedScene" uid="uid://b8odej7420g54" path="res://objects/helpers/IDetectable.tscn" id="5_i50dx"]
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_gm45k"]
 polygon = PackedVector2Array(-16, -32, -16, 32, -12, 32, -12, 31, 12, 31, 12, 32, 16, 32, 16, -32)
@@ -31,5 +32,8 @@ shape = SubResource("RectangleShape2D_px37c")
 [node name="HelperHolder" parent="." unique_id=38020404 instance=ExtResource("3_gm45k")]
 
 [node name="IInteractable" parent="HelperHolder" unique_id=1999549239 instance=ExtResource("2_gm45k")]
+
+[node name="IDetectable" parent="HelperHolder" unique_id=2037387284 instance=ExtResource("5_i50dx")]
+position = Vector2(1, 36)
 
 [connection signal="on_interaction" from="HelperHolder/IInteractable" to="." method="_on_i_interactable_on_interaction"]

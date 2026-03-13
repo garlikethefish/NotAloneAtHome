@@ -18,7 +18,11 @@ var mask_on := false
 var isCarringObject := false
 var carriableObject: InteractableObject
 var can_move: bool: 
-	get: return !thrower.is_charging and GameManager.player_can_move
+	get: return (
+		!thrower.is_charging 
+		and GameManager.player_can_move 
+		and !carrier.is_animating
+	)
 var bandit_near := false
 var bandit_body
 var distance
@@ -30,6 +34,8 @@ var direction: Vector2 = Vector2.ZERO
 @onready var thrower: IThrower       = helper_holder.get_helper(IThrower)
 @onready var interactor: IInteractor = helper_holder.get_helper(IInteractor)
 @onready var carrier: ICarrier       = helper_holder.get_helper(ICarrier)
+@onready var detector: IProximityAreaDetector = helper_holder.get_helper(IProximityAreaDetector)
+
 
 @onready var anim: AnimatedSprite2D = $AnimatedSprite2D
 @onready var overlay_rect: ColorRect = $MaskOverlay/ColorRect
@@ -63,24 +69,33 @@ func _ready():
 func _process(delta):
 	thrower.set_target_direction(get_global_mouse_position() - self.global_position)
 	
-	if Input.is_action_just_pressed("throw"):
+	if Input.is_action_pressed("throw"):
 		# start charge
 		if carrier.carriable:
 			var throwable: IThrowable = carrier.carriable.get_helper_from_holder(IThrowable)
-			print("throwable: ", throwable)
 			if !thrower.try_start_charge(throwable): push_warning("Failed to start charge!")
 		
 	if Input.is_action_just_released("throw"):
 		# stop charge & throw
 		if !thrower.try_throw(): push_warning("Failed to throw!")
 		
-	if Input.is_action_just_pressed("interact"):
-		# trigger interaction
-		var interactable: IInteractible = interactor.interact()
+	if Input.is_action_just_pressed("drop"):
+		carrier.carry_stop()
 		
-		var carriable: ICarriable = interactable.get_helper_from_holder(ICarriable) if interactable else null
-		carrier.toggle_carry(carriable)
-			
+	if Input.is_action_just_pressed("interact"):
+		var prioriy = detector.closest_detectable
+		
+		var carriable: ICarriable = null
+		if prioriy:
+			carriable = prioriy.get_helper_from_holder(ICarriable)
+		
+		carrier.try_carry_start(carriable)
+		
+		if prioriy:  
+			var interactable: IInteractible = prioriy.get_helper_from_holder(IInteractible)
+			if interactable:
+				interactor.interact(interactable)
+				
 	if can_move:
 		if direction != Vector2.ZERO:
 			carrier.facingDirection = velocity.normalized()
@@ -235,16 +250,16 @@ func toggle_mask():
 	#interactor.on_interactor_status_update.emit()
 
 
-func _on_i_interactor_on_interactable_change(_iInteractable: IInteractible):
-	if !_iInteractable: return
-	
 func can_carry(_cariable: ICarriable) -> bool:
 	return !mask_on and !carrier.is_carrying
 
 func can_interact(_interactable: IInteractible) -> bool:
+	# exclusion for dead thief and closet
 	if (
-		is_instance_of(_interactable.helper_holder.main_parent, DeadThiefCloset) 
-		and is_instance_of(carrier.carriable.helper_holder.main_parent, DeadThief)
+		_interactable != null
+		and _interactable.main_parent is DeadThiefCloset 
+		and carrier.carriable
+		and carrier.carriable.main_parent is DeadThief
 	):
 		return !mask_on
 	
@@ -252,14 +267,8 @@ func can_interact(_interactable: IInteractible) -> bool:
 
 
 func _on_i_thrower_on_throw(_thrower: IThrower) -> void:
-	carrier.carry_stop(false)
+	carrier.retire_unc()
 
 
 func _on_i_carrier_on_carry_stop(_carriable: ICarriable) -> void:
 	thrower.remove_throwable()
-
-
-func _on_i_interactor_on_interaction(_interactable: IInteractible) -> void:
-	#var carriable: ICarriable = _interactable.get_helper_from_holder(ICarriable)
-	#carrier.try_carry_start(carriable)
-	pass

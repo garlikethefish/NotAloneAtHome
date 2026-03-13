@@ -4,3 +4,5 @@
 
 [node name="ICarrier" type="Node2D" unique_id=1421703381]
 script = ExtResource("1_aegmc")
+
+[node name="CarryPoint" type="Node2D" parent="." unique_id=1304302565]

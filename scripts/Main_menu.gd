@@ -11,3 +11,8 @@ func _on_options_button_pressed() -> void:
 
 func _on_exit_button_pressed() -> void:
 	get_tree().quit() #vnk iziet
+
+
+func _on_fast_start_button_pressed() -> void:
+	GameManager.start(GameManager.GameDifficulty.Easy)
+	get_tree().change_scene_to_file("res://scenes/Main.tscn")

@@ -3,12 +3,19 @@
 [ext_resource type="PackedScene" uid="uid://hnye7wtm1w0e" path="res://objects/valuables/Valuable.tscn" id="1_f831p"]
 [ext_resource type="Texture2D" uid="uid://bsrs60t0mulkn" path="res://canvas_textures/table_texture.tres" id="2_ovyq6"]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ovyq6"]
+size = Vector2(62, 31)
+
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_ovyq6"]
 polygon = PackedVector2Array(-32, -6, -24, -1, -24, 16, -18, 16, -18, 0, -14, 1, -14, 12, -9, 12, -9, 2, 9, 2, 9, 12, 14, 12, 14, 1, 18, 0, 18, 16, 24, 16, 24, -1, 32, -6, 32, -8, 25, -13, 10, -16, -10, -16, -25, -13, -32, -8)
 
 [node name="Valuable" unique_id=2061310895 instance=ExtResource("1_f831p")]
 texture_filter = 0
 type = 6
+
+[node name="CollisionShape2D" parent="." index="0" unique_id=168771423]
+position = Vector2(0, 0.5)
+shape = SubResource("RectangleShape2D_ovyq6")
 
 [node name="Sprite2D" parent="." index="1" unique_id=2054388301]
 texture = ExtResource("2_ovyq6")

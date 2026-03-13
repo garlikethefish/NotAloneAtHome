@@ -348,10 +348,9 @@ spawnableScene = ExtResource("10_qmy6f")
 [node name="DeadGuyCloset" parent="." unique_id=1749090602 instance=ExtResource("13_mwfav")]
 top_level = true
 material = SubResource("ShaderMaterial_1iba3")
-position = Vector2(351, 96)
+position = Vector2(355, 97)
 
 [node name="DeadThief" parent="." unique_id=995744829 instance=ExtResource("14_3p2gp")]
-top_level = true
 position = Vector2(441, 171)
 
 [node name="Laptop" parent="." unique_id=2105277080 instance=ExtResource("13_qmy6f")]
@@ -378,5 +377,8 @@ autoplay = true
 bus = &"Sounds"
 
 [node name="AudioListener2D" type="AudioListener2D" parent="." unique_id=212106023]
+
+[node name="Valuable" parent="." unique_id=2061310895 instance=ExtResource("11_1iba3")]
+position = Vector2(504, 312)
 
 [editable path="Tilemaps"]

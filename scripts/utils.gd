@@ -27,3 +27,11 @@ static func find_parent_of_type(node: Node, script: Script) -> Node:
 			return node
 		node = node.get_parent()
 	return null
+
+
+static func get_combined_mask(masks: Array[int]) -> int:
+	var combined_mask = 0
+	for mask in masks:
+		combined_mask |= (1 << (mask - 1))
+		
+	return combined_mask

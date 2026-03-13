@@ -631,7 +631,14 @@ process_material = SubResource("ParticleProcessMaterial_jjyn6")
 
 [node name="IThrower" parent="HelperHolder" unique_id=2059326990 instance=ExtResource("14_5tpk5")]
 
-[node name="ICarrier" parent="HelperHolder" unique_id=1243835926 instance=ExtResource("4_f6j3j")]
+[node name="ICarrier" parent="HelperHolder" unique_id=1243835926 node_paths=PackedStringArray("excluded_colliders") instance=ExtResource("4_f6j3j")]
+position = Vector2(0, 11)
+excluded_colliders = [NodePath("../..")]
+show_debug = false
+collision_masks = Array[int]([2])
+
+[node name="CarryPoint" parent="HelperHolder/ICarrier" index="0" unique_id=1304302565]
+position = Vector2(0, -34)
 
 [node name="IInteractor" parent="HelperHolder" unique_id=350301088 instance=ExtResource("5_sderm")]
 
@@ -645,6 +652,6 @@ excluded_coliders = [NodePath("../..")]
 [connection signal="on_throw" from="HelperHolder/IThrower" to="." method="_on_i_thrower_on_throw"]
 [connection signal="on_carry_start" from="HelperHolder/ICarrier" to="." method="_on_i_carrier_on_carry_start"]
 [connection signal="on_carry_stop" from="HelperHolder/ICarrier" to="." method="_on_i_carrier_on_carry_stop"]
-[connection signal="on_interactable_change" from="HelperHolder/IInteractor" to="." method="_on_i_interactor_on_interactable_change"]
-[connection signal="on_interaction" from="HelperHolder/IInteractor" to="." method="_on_i_interactor_on_interaction"]
 [connection signal="ready" from="HelperHolder/IInteractor" to="." method="_on_i_interactor_ready"]
+
+[editable path="HelperHolder/ICarrier"]

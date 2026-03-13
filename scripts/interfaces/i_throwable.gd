@@ -15,12 +15,14 @@ func land():
 	print("LANDED!!!")
 	is_flying = false
 	reset_throwable()
+	helper_holder.stop_doing_unskippable_shit(self)
 	on_land.emit(self)
 	
 func throw(to_position: Vector2):
 	land_position = to_position
 	throw_start_position = helper_holder.main_parent.global_position 
 	is_flying = true
+	helper_holder.start_doing_unskippable_shit(self)
 	start_fly_animation()
 	on_throw.emit(self)
 	
