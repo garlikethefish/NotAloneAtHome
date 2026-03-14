@@ -11,29 +11,37 @@ var throw_start_position := Vector2.ZERO
 var fly_duration := .6
 var is_flying := false
 
+@onready var _carriable: ICarriable = get_fellow_helper(ICarriable)
+@onready var _detectable: IDetectable = get_fellow_helper(IDetectable)
+
 func land():
-	print("LANDED!!!")
+	#print("LANDED!!!")
 	is_flying = false
 	reset_throwable()
-	helper_holder.stop_doing_unskippable_shit(self)
 	on_land.emit(self)
 	
+	if _detectable: _detectable.can_be_detected_blockers.remove_blocker(self)
+	if _carriable: _carriable.retire_unc()
+
+
 func throw(to_position: Vector2):
 	land_position = to_position
 	throw_start_position = helper_holder.main_parent.global_position 
 	is_flying = true
-	helper_holder.start_doing_unskippable_shit(self)
 	start_fly_animation()
 	on_throw.emit(self)
+	
+	if _detectable: _detectable.can_be_detected_blockers.add_blocker(self)
 	
 func start_fly_animation():
 	if land_position == Vector2.ZERO: return
 	
 	var parent = helper_holder.main_parent
 	
-	get_position_tween().tween_property(parent, "global_position", land_position, fly_duration).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	var tween = create_tween()
+	
+	tween.tween_property(parent, "global_position", land_position, fly_duration).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 	if sprite:
-		var original_y = sprite.position.y
 		var original_scale = sprite.scale
 		var sprite_tween = create_tween()
 		var rotation_tween = create_tween()

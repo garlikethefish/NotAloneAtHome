@@ -12,7 +12,7 @@ func destroy(goToNode: Node2D):
 	isKillingItself = true
 	on_killing_itself.emit()
 	
-	var position_tween = get_position_tween()
+	var position_tween = create_tween()
 
 	position_tween.tween_property(parent, "scale", Vector2(0,0), .5)
 	position_tween.set_parallel()

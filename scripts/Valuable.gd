@@ -12,22 +12,14 @@ class_name ValuableObject
 @onready var throwable:     IThrowable    = helper_holder.get_helper(IThrowable)
 @onready var detectable:    IDetectable   = helper_holder.get_helper(IDetectable)
 @onready var sprite := $Sprite2D
+var shader_mat := preload("uid://cnuuc1ep5p6ia")
 
 func _ready():
 	interactable.can_be_interacted_with_callable = can_be_interacted_with
 	carriable.can_be_carried_callable = can_be_carried
 	detectable.can_be_detected_callable = can_be_detected
 	sprite.texture = GameManager.valuables[type].sprite.texture
-
-
-func _on_i_cariable_on_pick_up(_carrier: ICarrier):
-	# disable interactions
-	interactable.process_mode = Node.PROCESS_MODE_DISABLED
-
-
-func _on_i_cariable_on_drop(_carrier):
-	# enable interactions
-	interactable.process_mode = Node.PROCESS_MODE_ALWAYS
+	sprite.material = shader_mat
 
 
 func sell(node: Node2D):
@@ -36,16 +28,24 @@ func sell(node: Node2D):
 
 
 func can_be_interacted_with(_interactor: IInteractor) -> bool:
-	return !helper_holder.is_doing_unskippable_shit
+	return true
 
 
 func can_be_detected(_detector: IProximityAreaDetector):
-	return !helper_holder.is_doing_unskippable_shit
+	return true
 
 
 func can_be_carried(_carrier: ICarrier) -> bool:
-	return !helper_holder.is_doing_unskippable_shit
+	return true
 
 
-func _on_i_throwable_on_land(_throwable: IThrowable) -> void:
-	carriable.retire_unc()
+func _on_i_detectable_on_becoming_priority_of_detector(area_detector):
+	print("ON")
+	interactable.show_sprite()
+	sprite.set_instance_shader_parameter("enabled", true)
+
+
+func _on_i_detectable_on_not_beeing_a_priority_of_detector(area_detector):
+	print("off")
+	interactable.hide_sprite()
+	sprite.set_instance_shader_parameter("enabled", false)

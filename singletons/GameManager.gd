@@ -65,12 +65,13 @@ func _process(_delta: float) -> void:
 		handle_suspicion(_delta)
 		check_if_all_trash_collected()
 		
-		var playerCarrier := player.carrier if player else null
-		if playerCarrier and playerCarrier.carriable and playerCarrier.is_carrying and Utils.try_get_parent_of_type(playerCarrier.carriable, ValuableObject) and sellZone and !sellZone.hasApeared:
-			sellZone.apear()
-			
-		if playerCarrier and !playerCarrier.carriable and !playerCarrier.is_carrying and sellZone and sellZone.hasApeared:
-			sellZone.disapear()
+		if player:
+			var playerCarrier: ICarrier = player.carrier
+			if playerCarrier and playerCarrier.carriable and playerCarrier.is_carrying and Utils.try_get_parent_of_type(playerCarrier.carriable, ValuableObject) and sellZone and !sellZone.hasApeared:
+				sellZone.apear()
+				
+			if playerCarrier and !playerCarrier.carriable and !playerCarrier.is_carrying and sellZone and sellZone.hasApeared:
+				sellZone.disapear()
 	
 func handle_suspicion(timeDelta: float):
 	suspicion += timeDelta * suspicionMultiplier

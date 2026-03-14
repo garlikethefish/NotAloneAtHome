@@ -62,11 +62,15 @@ func validate_detectables():
 	var combined_mask = Utils.get_combined_mask(collision_masks)
 	
 	for detectable_model in detectables_in_area:
+		# Ignores / excludes other detectables, so one doesnt block the other
+		var other_detectable_colliders_rids = detectables_in_area.filter(func (model: DetectableModel): return model.detectable != detectable_model.detectable).map(func (model: DetectableModel): return model.detectable.get_rid())
+		var combined_excluded_colider_rids = excluded_collider_rids + other_detectable_colliders_rids
+	
 		var query = PhysicsRayQueryParameters2D.create(
 			global_position, 
 			detectable_model.detectable.global_position,
 			combined_mask,
-			excluded_collider_rids
+			combined_excluded_colider_rids
 		)
 		query.hit_from_inside = true
 		

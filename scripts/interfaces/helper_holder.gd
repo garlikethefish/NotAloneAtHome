@@ -2,59 +2,29 @@ extends Node
 
 class_name HelperHolder
 
-@export var is_parent_phisics_object: bool
-@onready var main_parent:  Node2D = get_parent()
-var shared_position_tween: Tween
-var shared_sprite_tween:   Tween 
+@onready var main_parent: Node2D = get_parent()
 
-var unskippable_queue: Array[Helper] = []
-var is_doing_unskippable_shit: bool:
-	get(): return !unskippable_queue.is_empty()
-	
-
-func start_doing_unskippable_shit(helper: Helper):
-	if !unskippable_queue.has(helper):
-		unskippable_queue.append(helper)
-
-
-func stop_doing_unskippable_shit(helper: Helper):
-	if unskippable_queue.has(helper):
-		unskippable_queue.erase(helper)
-
-
-func get_shared_position_tween(target_node: Node) -> Tween:
-	# 1. Kill the old one so the previous script loses control
-	if is_instance_valid(shared_position_tween) and shared_position_tween.is_valid():
-		shared_position_tween.kill()
-	
-	shared_position_tween = target_node.create_tween()
-	return shared_position_tween
-	
-func get_shared_sprite_tween(target_node: Node) -> Tween:
-	# 1. Kill the old one so the previous script loses control
-	if is_instance_valid(shared_sprite_tween) and shared_sprite_tween.is_valid():
-		shared_sprite_tween.kill()
-	
-	shared_sprite_tween = target_node.create_tween()
-	return shared_sprite_tween
 
 func _ready() -> void:
 	# shoot after _ready
 	await main_parent.ready 
 	assert_helper_assigned_callables()
 
+## Checks if such helper is in holder
 func has_helper(type: Variant) -> bool:
 	for child in get_children():
 		if is_instance_of(child, type):
 			return true
 	return false
 
+## Returns existing helper or null
 func get_helper(type: Variant) -> Variant:
 	for child in get_children():
 		if is_instance_of(child, type):
 			return child
 	return null
-	
+
+## Makes sure required callables are assigned, before game starts
 func assert_helper_assigned_callables():
 	for helper: Helper in get_children():
 		helper.assert_assigned_callables()

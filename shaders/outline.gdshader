@@ -10,14 +10,17 @@ uniform float tolerance: hint_range(0.0, 0.999) = 0.0;
 
 // Set to 1.0 for full padding. Decrease if you have some transparent space already.
 uniform float expansion_intensity : hint_range(0.0, 2.0) = 1.0;
+instance uniform bool enabled = false;
 
 void vertex() {
-	// Instead of multiplying the whole VERTEX, we calculate a specific pixel offset.
-	// This expands the quad outward by the exact number of pixels needed for the outline.
-	float expansion = max(maxLineWidth, minLineWidth) * expansion_intensity;
-	
-	// Shift vertices outward from the center (0.5, 0.5 in UV space)
-	VERTEX += (UV * 2.0 - 1.0) * expansion;
+	if (enabled) {
+		// Instead of multiplying the whole VERTEX, we calculate a specific pixel offset.
+		// This expands the quad outward by the exact number of pixels needed for the outline.
+		float expansion = max(maxLineWidth, minLineWidth) * expansion_intensity;
+		
+		// Shift vertices outward from the center (0.5, 0.5 in UV space)
+		VERTEX += (UV * 2.0 - 1.0) * expansion;
+	}
 }
 
 // --- YOUR ORIGINAL HELPER FUNCTIONS ---
@@ -98,36 +101,41 @@ float get_distance(vec2 maxDistance, sampler2D tex, vec2 uv) {
 // --- FIXED FRAGMENT LOGIC ---
 
 void fragment() {
-	float max_line = max(maxLineWidth, minLineWidth);
+	if (enabled) {
+		float max_line = max(maxLineWidth, minLineWidth);
 	
-	if (max_line > 0.0) {
-		// Calculate the ratio between the original texture and the expanded quad
-		vec2 texture_res = 1.0 / TEXTURE_PIXEL_SIZE;
-		float expansion = max_line * expansion_intensity;
-		vec2 expanded_res = texture_res + (expansion * 2.0);
-		vec2 uv_ratio = expanded_res / texture_res;
+		if (max_line > 0.0) {
+			// Calculate the ratio between the original texture and the expanded quad
+			vec2 texture_res = 1.0 / TEXTURE_PIXEL_SIZE;
+			float expansion = max_line * expansion_intensity;
+			vec2 expanded_res = texture_res + (expansion * 2.0);
+			vec2 uv_ratio = expanded_res / texture_res;
 
-		// Center the UVs so the texture stays in the middle of the expanded quad
-		vec2 uv = (UV - 0.5) * uv_ratio + 0.5;
-		
-		// Sample the color from the remapped UVs
-		vec4 newColor = texture(TEXTURE, uv);
-		
-		// If we are outside the 0.0-1.0 range (the added padding) or the pixel is transparent
-		if (uv.x < 0.0 || uv.x > 1.0 || uv.y < 0.0 || uv.y > 1.0 || newColor.a <= tolerance) {
-			float timeStep = floor(TIME * speed);
-			vec2 size = TEXTURE_PIXEL_SIZE;
-			size *= get_line_width(uv / TEXTURE_PIXEL_SIZE, timeStep);
+			// Center the UVs so the texture stays in the middle of the expanded quad
+			vec2 uv = (UV - 0.5) * uv_ratio + 0.5;
 			
-			// Compute outline if neighbors exist
-			if (in_range(size, TEXTURE, uv)) {
-				vec2 edge_for_gradient = TEXTURE_PIXEL_SIZE * max_line * 2.0;
-				newColor = texture(color, vec2(get_distance(edge_for_gradient / 2.0 + 0.001, TEXTURE, uv)));
-			} else {
-				// Ensure pixels outside the outline remain fully transparent
-				newColor = vec4(0.0);
+			// Sample the color from the remapped UVs
+			vec4 newColor = texture(TEXTURE, uv);
+			
+			// If we are outside the 0.0-1.0 range (the added padding) or the pixel is transparent
+			if (uv.x < 0.0 || uv.x > 1.0 || uv.y < 0.0 || uv.y > 1.0 || newColor.a <= tolerance) {
+				float timeStep = floor(TIME * speed);
+				vec2 size = TEXTURE_PIXEL_SIZE;
+				size *= get_line_width(uv / TEXTURE_PIXEL_SIZE, timeStep);
+				
+				// Compute outline if neighbors exist
+				if (in_range(size, TEXTURE, uv)) {
+					vec2 edge_for_gradient = TEXTURE_PIXEL_SIZE * max_line * 2.0;
+					newColor = texture(color, vec2(get_distance(edge_for_gradient / 2.0 + 0.001, TEXTURE, uv)));
+				} else {
+					// Ensure pixels outside the outline remain fully transparent
+					newColor = vec4(0.0);
+				}
 			}
+			COLOR = newColor;
 		}
-		COLOR = newColor;
-	}
+	} else {
+        // This is the "OFF" switch
+        COLOR = texture(TEXTURE, UV);
+    }
 }

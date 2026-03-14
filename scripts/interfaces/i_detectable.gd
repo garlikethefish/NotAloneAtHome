@@ -8,8 +8,9 @@ signal on_becoming_priority_of_detector(area_detector: IProximityAreaDetector)
 signal on_not_beeing_a_priority_of_detector(area_detector: IProximityAreaDetector)
 
 var can_be_detected_callable:   Callable
-var detectors_im_inside_of:    Array[IProximityAreaDetector] = []
-var detectors_im_priority_of: Array[IProximityAreaDetector] = []
+var detectors_im_inside_of:     Array[IProximityAreaDetector] = []
+var detectors_im_priority_of:   Array[IProximityAreaDetector] = []
+var can_be_detected_blockers:   BlockerQueue                  = BlockerQueue.new()
 
 
 func enter_area(area_detector: IProximityAreaDetector):
@@ -32,12 +33,12 @@ func set_as_area_prioriy(area_detector: IProximityAreaDetector):
 
 func remove_as_area_prioriy(area_detector: IProximityAreaDetector):
 	if detectors_im_priority_of.has(area_detector):
-		detectors_im_inside_of.erase(area_detector)
+		detectors_im_priority_of.erase(area_detector)
 		on_not_beeing_a_priority_of_detector.emit(area_detector)
 
 
 func can_be_detected(detector: IProximityAreaDetector) -> bool:
-	return can_be_detected_callable.call(detector)
+	return can_be_detected_callable.call(detector) and !can_be_detected_blockers.is_blocked
 
 
 func assert_assigned_callables() -> void:

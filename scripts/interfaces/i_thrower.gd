@@ -16,20 +16,15 @@ var max_charge_seconds := 1.0
 var charge_multiplier := 1.0
 var collider_masks: Array[int] = [2]
 
+var can_be_thrown_blockers := BlockerQueue.new()
+
 @export var show_debug := false
 
 @onready var target_sprite_node := $TargetNode
-@onready var carrier: ICarrier = helper_holder.get_helper(ICarrier)
 
 
 func _ready() -> void:
 	target_sprite_node.visible = false 
-	carrier.on_carry_stop.connect(func (carriable: ICarriable):
-		var _trowable: IThrowable = carriable.get_helper_from_holder(IThrowable)
-		
-		if _trowable == throwable:
-			remove_throwable()
-	)
 
 
 func _process(delta: float) -> void:
@@ -44,7 +39,8 @@ func _process(delta: float) -> void:
 	current_throw_position = global_position + calculated_throw_vector
 	
 	current_throw_position = get_circle_shot_center(current_throw_position, 12)
-	
+
+
 func _draw():
 	if !show_debug: return
 	if current_throw_position != Vector2.ZERO:
@@ -85,7 +81,8 @@ func get_circle_shot_center(target_global_pos: Vector2, radius: float) -> Vector
 func remove_throwable():
 	throwable = null
 	reset_changing_data()
-	
+
+
 func try_throw() -> bool: 
 	if (
 		!throwable
@@ -97,11 +94,12 @@ func try_throw() -> bool:
 	
 	return true
 
+
 func try_start_charge(_throwable: IThrowable) -> bool:
 	if (
 		is_charging 
 		or _throwable == null
-		or _throwable.helper_holder.is_doing_unskippable_shit
+		or can_be_thrown_blockers.is_blocked
 	): return false
 	
 	#print("Started charge...")
@@ -112,11 +110,13 @@ func try_start_charge(_throwable: IThrowable) -> bool:
 	on_throw_charge_start.emit(self)
 	
 	return true
-	
+
+
 func cancel_charge():
 	reset_changing_data()
 	on_throw_charge_cancel.emit(self)
-	
+
+
 func reset_changing_data():
 	is_charging = false
 	current_charge = 0
@@ -124,12 +124,15 @@ func reset_changing_data():
 	
 	update_ui()
 	target_sprite_node.visible = false
-	
+
+
 func set_target_direction(direction: Vector2):
 	normalized_desired_throw_direction = direction.normalized()
 
+
 func update_ui():
 	target_sprite_node.global_position = current_throw_position
-	
+
+
 func get_normalized_charge() -> float:
 	return current_charge / max_charge_seconds

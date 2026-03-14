@@ -44,6 +44,5 @@ sprite = NodePath("../../Sprite2D")
 
 [node name="IDetectable" parent="HelperHolder" unique_id=609573622 instance=ExtResource("8_2vrdr")]
 
-[connection signal="on_drop" from="HelperHolder/ICariable" to="." method="_on_i_cariable_on_drop"]
-[connection signal="on_pick_up" from="HelperHolder/ICariable" to="." method="_on_i_cariable_on_pick_up"]
-[connection signal="on_land" from="HelperHolder/IThrowable" to="." method="_on_i_throwable_on_land"]
+[connection signal="on_becoming_priority_of_detector" from="HelperHolder/IDetectable" to="." method="_on_i_detectable_on_becoming_priority_of_detector"]
+[connection signal="on_not_beeing_a_priority_of_detector" from="HelperHolder/IDetectable" to="." method="_on_i_detectable_on_not_beeing_a_priority_of_detector"]

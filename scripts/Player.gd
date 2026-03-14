@@ -72,27 +72,27 @@ func _process(delta):
 	if Input.is_action_pressed("throw"):
 		# start charge
 		if carrier.carriable:
-			var throwable: IThrowable = carrier.carriable.get_helper_from_holder(IThrowable)
-			if !thrower.try_start_charge(throwable): push_warning("Failed to start charge!")
+			var throwable: IThrowable = carrier.carriable.get_fellow_helper(IThrowable)
+			if !thrower.try_start_charge(throwable): pass
 		
 	if Input.is_action_just_released("throw"):
 		# stop charge & throw
 		if !thrower.try_throw(): push_warning("Failed to throw!")
 		
 	if Input.is_action_just_pressed("drop"):
-		carrier.carry_stop()
+		carrier.try_to_drop()
 		
 	if Input.is_action_just_pressed("interact"):
 		var prioriy = detector.closest_detectable
 		
 		var carriable: ICarriable = null
 		if prioriy:
-			carriable = prioriy.get_helper_from_holder(ICarriable)
+			carriable = prioriy.get_fellow_helper(ICarriable)
 		
-		carrier.try_carry_start(carriable)
+		carrier.try_to_carry(carriable)
 		
 		if prioriy:  
-			var interactable: IInteractible = prioriy.get_helper_from_holder(IInteractible)
+			var interactable: IInteractible = prioriy.get_fellow_helper(IInteractible)
 			if interactable:
 				interactor.interact(interactable)
 				

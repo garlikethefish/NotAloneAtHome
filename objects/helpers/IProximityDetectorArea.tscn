@@ -7,6 +7,7 @@
 [node name="IProximityDetectorArea2D" type="Area2D" unique_id=145267381]
 collision_mask = 512
 script = ExtResource("1_h8mnc")
+show_debug = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=441527379]
 shape = SubResource("CircleShape2D_d6g8k")

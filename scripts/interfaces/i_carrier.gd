@@ -31,6 +31,8 @@ var carriable:          ICarriable
 var facingDirection               := Vector2.INF
 var valid_carriable_drop_position := Vector2.INF
 
+@onready var _thrower: IThrower = get_fellow_helper(IThrower)
+
 
 func _draw():
 	# 1. Draw the scout rays
@@ -105,8 +107,8 @@ func find_placement_hybrid():
 					current_best_location = test_pos
 			
 	valid_carriable_drop_position = current_best_location
-	
-	
+
+
 func _process(_delta):
 	if show_debug: queue_redraw()
 
@@ -116,27 +118,34 @@ func _process(_delta):
 
 func toggle_carry(_cariable: ICarriable):
 	if !is_carrying:
-		try_carry_start(_cariable)
+		try_to_carry(_cariable)
 	else:
-		carry_stop()
+		try_to_drop()
 
-func carry_stop(show_animation: bool = true):
+
+func try_to_drop():
 	if (
 		!carriable 
 		or valid_carriable_drop_position == Vector2.INF
 		or is_animating
-	): return
+	): return false
 	
+	_drop()
+	return true
+	
+func _drop():
 	is_dropping = true
 	carriable.on_drop.connect(func (_carrier):
-		is_dropping = false, 
+		is_dropping = false
+		, 
 		CONNECT_ONE_SHOT
 	)
 	carriable.drop(valid_carriable_drop_position)
 	on_carry_stop.emit(carriable)
 	carriable = null
-	
-func try_carry_start(_cariable: ICarriable) -> bool:
+
+
+func try_to_carry(_cariable: ICarriable) -> bool:
 	if (
 		_cariable == null 
 		or is_carrying
@@ -145,27 +154,34 @@ func try_carry_start(_cariable: ICarriable) -> bool:
 		or is_animating
 	): return false
 	
+	_carry(_cariable)
+	return true
+
+func _carry(_cariable: ICarriable):
 	is_picking_up = true
+	if _thrower: _thrower.can_be_thrown_blockers.add_blocker(self)
 	_cariable.on_pick_up.connect(func (_carrier):
 		is_picking_up = false
+		if _thrower: _thrower.can_be_thrown_blockers.remove_blocker(self)
 		print("Picked up"), 
 		CONNECT_ONE_SHOT
 	)
 	
 	# cancels active pos tween
-	_cariable.get_position_tween().kill()
 	carriable = _cariable
 	carriable.pick_up(self)
 	on_carry_start.emit(_cariable)
-	return true
-	
+
+
 func retire_unc():
 	if carriable:
 		carriable.retire_unc()
 		carriable = null
-	
+
+
 func can_carry(_carriable: ICarriable) -> bool:
 	return can_carry_callable.call(_carriable)
-	
+
+
 func assert_assigned_callables() -> void:
 	assert_callable(can_carry_callable, "can_carry_callable")
