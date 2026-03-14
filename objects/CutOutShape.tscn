@@ -1,0 +1,63 @@
+[gd_scene format=3 uid="uid://wv6k007q828b"]
+
+[ext_resource type="Shader" uid="uid://e5tha64l1u68" path="res://shaders/paralax.gdshader" id="1_43rsa"]
+[ext_resource type="Texture2D" uid="uid://dc28r33w4yiik" path="res://sprites/whiteCube.png" id="1_45uej"]
+[ext_resource type="PackedScene" uid="uid://u0mnqyu6x1q3" path="res://objects/RaycastedShape.tscn" id="2_43rsa"]
+
+[sub_resource type="Gradient" id="Gradient_43rsa"]
+offsets = PackedFloat32Array(0, 0.16060606, 1)
+colors = PackedColorArray(0, 0, 0, 1, 0.11515152, 0.11515152, 0.11515152, 1, 1, 1, 1, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_6wqwd"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_twjok"]
+noise = SubResource("FastNoiseLite_6wqwd")
+color_ramp = SubResource("Gradient_43rsa")
+seamless = true
+
+[sub_resource type="Gradient" id="Gradient_yax5s"]
+offsets = PackedFloat32Array(0, 0.27272728, 0.33333334, 0.54242426, 1)
+colors = PackedColorArray(0, 0, 0, 1, 0.5230854, 0.5230854, 0.5230854, 1, 0.56969696, 0.56969696, 0.56969696, 1, 0.03625344, 0.03625344, 0.03625344, 1, 1, 1, 1, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_rwr7e"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_53v3w"]
+noise = SubResource("FastNoiseLite_rwr7e")
+color_ramp = SubResource("Gradient_yax5s")
+seamless = true
+invert = true
+in_3d_space = true
+seamless_blend_skirt = 0.345
+
+[sub_resource type="Gradient" id="Gradient_thh83"]
+offsets = PackedFloat32Array(0, 0)
+colors = PackedColorArray(0.07109723, 0.08665999, 0.21271832, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_xvmvr"]
+gradient = SubResource("Gradient_thh83")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6wqwd"]
+shader = ExtResource("1_43rsa")
+shader_parameter/pixelation = Vector2(256, 256)
+shader_parameter/cloud_noise1 = SubResource("NoiseTexture2D_twjok")
+shader_parameter/scroll_speed1 = Vector2(0.02, -0.003)
+shader_parameter/cloud_noise2 = SubResource("NoiseTexture2D_53v3w")
+shader_parameter/scroll_speed2 = Vector2(0.015, 0.015)
+shader_parameter/center_pos = Vector2(0.5, 0.61)
+shader_parameter/position_impact = 0.6499999854712
+shader_parameter/color_gardient = SubResource("GradientTexture1D_xvmvr")
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_6wqwd"]
+blend_mode = 2
+
+[node name="CutOutShape" type="CanvasGroup" unique_id=591058990]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1952132217]
+light_mask = 0
+material = SubResource("ShaderMaterial_6wqwd")
+scale = Vector2(2.645, 2.645)
+texture = ExtResource("1_45uej")
+
+[node name="RaycastedShape" parent="." unique_id=876828578 instance=ExtResource("2_43rsa")]
+material = SubResource("CanvasItemMaterial_6wqwd")
+ray_count = 128

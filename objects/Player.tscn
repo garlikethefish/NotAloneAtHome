@@ -16,6 +16,7 @@
 [ext_resource type="PackedScene" uid="uid://15v7pc0tt852" path="res://objects/helpers/HelperHolder.tscn" id="12_hk5k5"]
 [ext_resource type="PackedScene" uid="uid://s2g10onqsl60" path="res://objects/helpers/IThrower.tscn" id="14_5tpk5"]
 [ext_resource type="PackedScene" uid="uid://di1gufwmxsr11" path="res://objects/helpers/IProximityDetectorArea.tscn" id="16_0thri"]
+[ext_resource type="PackedScene" uid="uid://wv6k007q828b" path="res://objects/CutOutShape.tscn" id="17_67shi"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_seukq"]
 radius = 6.0
@@ -646,6 +647,8 @@ position = Vector2(0, -34)
 position = Vector2(0, 11)
 scale = Vector2(8.82, 8.82)
 excluded_coliders = [NodePath("../..")]
+
+[node name="CutOutShape" parent="." unique_id=1387330782 instance=ExtResource("17_67shi")]
 
 [connection signal="shake_camera" from="." to="Camera2D" method="_on_shake_camera"]
 [connection signal="stop_camera_shake" from="." to="Camera2D" method="_on__stop_camera_shake"]
