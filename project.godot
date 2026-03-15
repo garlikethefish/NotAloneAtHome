@@ -35,6 +35,7 @@ mouse_cursor/custom_image="uid://l0whfj0grp3v"
 
 mask_overlay=""
 DoableObjectGroup=""
+dynamic_lights=""
 
 [input]
 
@@ -113,3 +114,5 @@ rendering_device/driver.windows="d3d12"
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
 viewport/hdr_2d=true
+limits/opengl/max_renderable_lights=100
+limits/opengl/max_lights_per_object=100

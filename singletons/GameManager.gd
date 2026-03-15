@@ -55,10 +55,11 @@ var maxStealableItems := 10
 var maxTrashAmount := 0
 
 func _ready() -> void:
-	AudioServer.set_bus_mute(
-		AudioServer.get_bus_index("Master"),
-		true
-	)
+	pass
+	#AudioServer.set_bus_mute(
+		#AudioServer.get_bus_index("Master"),
+		#true
+	#)
 	#print(Engine.get_version_info())
 func _process(_delta: float) -> void:
 	if game_won == false:

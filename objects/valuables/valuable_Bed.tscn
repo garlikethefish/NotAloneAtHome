@@ -1,23 +1,10 @@
 [gd_scene format=3 uid="uid://djmsje8kmaa6o"]
 
 [ext_resource type="PackedScene" uid="uid://hnye7wtm1w0e" path="res://objects/valuables/Valuable.tscn" id="1_kgp05"]
-[ext_resource type="Shader" uid="uid://c0mfr1yvtel4s" path="res://shaders/out.gdshader" id="2_g61i1"]
 [ext_resource type="Texture2D" uid="uid://bnqljd5rd5fr8" path="res://sprites/bed.png" id="2_w746c"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_g61i1"]
 size = Vector2(32, 62)
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_5jmt3"]
-shader = ExtResource("2_g61i1")
-shader_parameter/textureScale = Vector2(1, 1)
-shader_parameter/angle = 45.0
-shader_parameter/textureSpeed = 0.1
-shader_parameter/textureStrength = 0.1250000059375
-shader_parameter/thickness = 2.000000095
-shader_parameter/tolerance = 0.9990000128746
-shader_parameter/gradientResolution = 10
-shader_parameter/diagonals = true
-shader_parameter/rounded = true
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_g61i1"]
 polygon = PackedVector2Array(16, -30, 16, 32, -16, 32, -16, -30)
@@ -31,7 +18,6 @@ position = Vector2(0, 1)
 shape = SubResource("RectangleShape2D_g61i1")
 
 [node name="Sprite2D" parent="." index="1" unique_id=2054388301]
-material = SubResource("ShaderMaterial_5jmt3")
 texture = ExtResource("2_w746c")
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="Sprite2D" index="0" unique_id=650105077]

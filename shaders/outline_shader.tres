@@ -4,8 +4,8 @@
 
 [resource]
 shader = ExtResource("1_2pncx")
-shader_parameter/maxLineWidth = 2.000000095
-shader_parameter/minLineWidth = 1.0000000475
+shader_parameter/maxLineWidth = 0.50000002375
+shader_parameter/minLineWidth = 0.6000000285
 shader_parameter/speed = 1.0
 shader_parameter/blockSize = 20.0
 shader_parameter/gradientResolution = 10

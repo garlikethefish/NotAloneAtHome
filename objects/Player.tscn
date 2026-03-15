@@ -598,9 +598,12 @@ monitorable = false
 shape = SubResource("CircleShape2D_5vbvs")
 
 [node name="PointLight2D" type="PointLight2D" parent="." unique_id=465774789]
+z_index = 4
 energy = 0.25
+range_z_max = 4
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_sderm")
+texture_scale = 1.93
 
 [node name="Shadow" type="Sprite2D" parent="." unique_id=243085117]
 modulate = Color(1, 1, 1, 0.26666668)
