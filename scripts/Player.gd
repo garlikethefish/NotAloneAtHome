@@ -237,17 +237,15 @@ func die():
 
 	show_defeat_screen("YOU WERE SHOT")
 
+
 func toggle_mask():
-	if not has_mask:
+	if not has_mask or (carrier.is_carrying and !carrier.try_to_drop()):
 		return
 
 	mask_on = !mask_on
 
 	if mask_on:
-		carrier.carry_stop()
 		current_radius = max_vision_radius
-	
-	#interactor.on_interactor_status_update.emit()
 
 
 func can_carry(_cariable: ICarriable) -> bool:

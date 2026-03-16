@@ -1,6 +1,13 @@
 [gd_resource type="TileSet" format=3 uid="uid://dtse53chvk1wb"]
 
 [ext_resource type="Texture2D" uid="uid://dpbi0vuv43hty" path="res://sprites/walls.png" id="1_84sub"]
+[ext_resource type="Texture2D" uid="uid://iyoqdysspqls" path="res://sprites/transparent_picture.png" id="1_jp4er"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_0nkd0"]
+texture = ExtResource("1_jp4er")
+texture_region_size = Vector2i(32, 32)
+18:20/0 = 0
+18:20/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 16, -16, 16, -8, -16, -8)
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_qcqam"]
 polygon = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
@@ -415,3 +422,4 @@ tile_size = Vector2i(32, 32)
 occlusion_layer_0/light_mask = 1
 physics_layer_0/collision_layer = 2
 sources/2 = SubResource("TileSetAtlasSource_84sub")
+sources/0 = SubResource("TileSetAtlasSource_0nkd0")

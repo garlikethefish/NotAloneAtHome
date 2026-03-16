@@ -60,4 +60,6 @@ texture = ExtResource("1_45uej")
 
 [node name="RaycastedShape" parent="." unique_id=876828578 instance=ExtResource("2_43rsa")]
 material = SubResource("CanvasItemMaterial_6wqwd")
-ray_count = 128
+start_offset = 2.0
+ray_count = 180
+collision_masks = Array[int]([3])
