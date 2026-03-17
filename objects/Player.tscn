@@ -16,7 +16,7 @@
 [ext_resource type="PackedScene" uid="uid://15v7pc0tt852" path="res://objects/helpers/HelperHolder.tscn" id="12_hk5k5"]
 [ext_resource type="PackedScene" uid="uid://s2g10onqsl60" path="res://objects/helpers/IThrower.tscn" id="14_5tpk5"]
 [ext_resource type="PackedScene" uid="uid://di1gufwmxsr11" path="res://objects/helpers/IProximityDetectorArea.tscn" id="16_0thri"]
-[ext_resource type="PackedScene" uid="uid://wv6k007q828b" path="res://objects/CutOutShape.tscn" id="17_67shi"]
+[ext_resource type="PackedScene" uid="uid://u0mnqyu6x1q3" path="res://objects/RaycastedVisionShape.tscn" id="17_67shi"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_seukq"]
 radius = 6.0
@@ -578,6 +578,7 @@ frame_progress = 0.0026698245
 
 [node name="MaskOverlay" type="CanvasLayer" parent="." unique_id=167265925 groups=["mask_overlay"]]
 layer = 0
+visible = false
 
 [node name="ColorRect" type="ColorRect" parent="MaskOverlay" unique_id=427046387]
 material = ExtResource("3_5vbvs")
@@ -651,7 +652,10 @@ position = Vector2(0, 11)
 scale = Vector2(8.82, 8.82)
 excluded_coliders = [NodePath("../..")]
 
-[node name="CutOutShape" parent="." unique_id=1387330782 instance=ExtResource("17_67shi")]
+[node name="RaycastedShape" parent="." unique_id=876828578 instance=ExtResource("17_67shi")]
+start_offset = 0.0
+ray_count = 180
+collision_masks = Array[int]([3])
 
 [connection signal="shake_camera" from="." to="Camera2D" method="_on_shake_camera"]
 [connection signal="stop_camera_shake" from="." to="Camera2D" method="_on__stop_camera_shake"]

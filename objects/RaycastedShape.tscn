@@ -1,6 +1,0 @@
-[gd_scene format=3 uid="uid://u0mnqyu6x1q3"]
-
-[ext_resource type="Script" uid="uid://ddy36ct0704ig" path="res://scripts/raycasted_shape.gd" id="1_wkjqj"]
-
-[node name="RaycastedShape" type="Node2D" unique_id=876828578]
-script = ExtResource("1_wkjqj")
