@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://cg7krccbajseo"]
+
+[ext_resource type="PackedScene" uid="uid://hnye7wtm1w0e" path="res://objects/valuables/Valuable.tscn" id="1_1gh05"]
+[ext_resource type="Texture2D" uid="uid://dwcgwdlp2xq1c" path="res://sprites/extra_decor/fridge.png" id="2_53o6f"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1gh05"]
+size = Vector2(52, 58)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_1gh05"]
+polygon = PackedVector2Array(-26, 29, 26, 29, 26, -29, -26, -29)
+
+[node name="Valuable" unique_id=2061310895 instance=ExtResource("1_1gh05")]
+texture_filter = 0
+type = 10
+
+[node name="CollisionShape2D" parent="." index="0" unique_id=168771423]
+shape = SubResource("RectangleShape2D_1gh05")
+
+[node name="Sprite2D" parent="." index="1" unique_id=2054388301]
+texture = ExtResource("2_53o6f")
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="Sprite2D" index="0" unique_id=650105077]
+occluder = SubResource("OccluderPolygon2D_1gh05")
+
+[node name="IInteractable" parent="HelperHolder" parent_id_path=PackedInt32Array(38020404) index="1" unique_id=1999549239]
+light_mask = 1

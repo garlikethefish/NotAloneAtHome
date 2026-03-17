@@ -19,8 +19,8 @@ signal kick
 	canvas.get_node("UIImage/Indicators/Light2"),
 	canvas.get_node("UIImage/Indicators/Light3")
 ]
-@onready var inactive_light := preload("res://sprites/inactive_light.png")
-@onready var active_light := preload("res://sprites/light.png")
+@onready var inactive_light := preload("uid://m5oiygsiyojj")
+@onready var active_light := preload("uid://cm2b28r73mnmq")
 
 var source_lines: PackedStringArray
 

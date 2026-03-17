@@ -1,7 +1,8 @@
 [gd_scene format=3 uid="uid://k2k1j0y25ebx"]
 
 [ext_resource type="Script" uid="uid://cr75j7qeq8xmw" path="res://scripts/interfaces/i_interactable.gd" id="1_v5mih"]
-[ext_resource type="Texture2D" uid="uid://drlnlgvgspjqk" path="res://sprites/e_button_ui.png" id="2_3arj4"]
+[ext_resource type="Texture2D" uid="uid://drlnlgvgspjqk" path="res://sprites/ui/e_button_ui.png" id="2_3arj4"]
+
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_3arj4"]
 light_mode = 1

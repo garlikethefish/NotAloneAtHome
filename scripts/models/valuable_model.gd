@@ -10,6 +10,18 @@ enum Valuable {
 	Sofa,
 	Table,
 	Vase,
+	Cabinet,
+	Sink,
+	Fridge,
+	Rug1,
+	Rug2,
+	Pillow,
+	Small_Lamp,
+	Tall_Lamp1,
+	Tall_Lamp2,
+	Bowl,
+	Broom,
+	Kitchen_Rack,
 	None
 }
 

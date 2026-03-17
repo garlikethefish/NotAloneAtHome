@@ -49,6 +49,18 @@ var valuables : Dictionary[ValuableModel.Valuable, ValuableModel] = {
 	ValuableModel.Valuable.Sofa:   ValuableModel.new(preload("res://canvas_textures/sofa_texture.tres"), 50),
 	ValuableModel.Valuable.Table:  ValuableModel.new(preload("res://canvas_textures/table_texture.tres"), 40),
 	ValuableModel.Valuable.Vase:   ValuableModel.new(preload("res://canvas_textures/vase1_texture.tres"), 10),
+	ValuableModel.Valuable.Cabinet:   ValuableModel.new(preload("uid://dm1g430wl7ev7"), 130),
+	ValuableModel.Valuable.Sink:   ValuableModel.new(preload("uid://bd8gc4qv0chry"), 140),
+	ValuableModel.Valuable.Fridge:   ValuableModel.new(preload("uid://dwcgwdlp2xq1c"), 180),
+	ValuableModel.Valuable.Rug1:   ValuableModel.new(preload("uid://c2weke3lo5oqh"), 70),
+	ValuableModel.Valuable.Rug2:   ValuableModel.new(preload("uid://bbl8ane67drad"), 70),
+	ValuableModel.Valuable.Pillow:   ValuableModel.new(preload("uid://b5ydv1twi7dqu"), 15),
+	ValuableModel.Valuable.Small_Lamp:   ValuableModel.new(preload("uid://br3io5crcfp64"), 15),
+	ValuableModel.Valuable.Tall_Lamp1:   ValuableModel.new(preload("uid://bdve4x8cidaop"), 25),
+	ValuableModel.Valuable.Tall_Lamp2:   ValuableModel.new(preload("uid://b8q632x7iymn"), 25),
+	ValuableModel.Valuable.Bowl:   ValuableModel.new(preload("uid://c1w601uykp21g"), 8),
+	ValuableModel.Valuable.Broom:   ValuableModel.new(preload("uid://fpejoqq76tfe"), 10),
+	ValuableModel.Valuable.Kitchen_Rack:   ValuableModel.new(preload("uid://cvk1m1afh0our"), 15),
 }
 
 var maxStealableItems := 10
