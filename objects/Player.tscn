@@ -590,7 +590,6 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-color = Color(0, 0, 0, 0.8509804)
 metadata/_edit_use_anchors_ = true
 
 [node name="BanditNearnessDetector" type="Area2D" parent="." unique_id=2046794680]
