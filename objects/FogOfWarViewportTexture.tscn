@@ -1,0 +1,45 @@
+[gd_scene format=3 uid="uid://cp53c124r55di"]
+
+[ext_resource type="Shader" uid="uid://vb6qxgdi2kl5" path="res://shaders/cut_out_for_fogofwar.gdshader" id="1_8gt2o"]
+[ext_resource type="Script" uid="uid://b6j6fh48cmy5n" path="res://objects/fog_of_war.gd" id="1_ju3pa"]
+[ext_resource type="Script" uid="uid://bfe8cl8nl28r2" path="res://objects/vision_mirror.gd" id="1_qe45k"]
+[ext_resource type="Script" uid="uid://cg4q8y2qo7awn" path="res://objects/camera_2d.gd" id="2_feayc"]
+[ext_resource type="Script" uid="uid://4g7ydnedd5y" path="res://objects/black_rect.gd" id="3_co8lb"]
+[ext_resource type="Script" uid="uid://kg0jwosry56j" path="res://objects/static_light.gd" id="6_yxgyd"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_eusyo"]
+shader = ExtResource("1_8gt2o")
+
+[node name="SubViewportContainer" type="SubViewportContainer" unique_id=480592156]
+material = SubResource("ShaderMaterial_eusyo")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch = true
+script = ExtResource("1_ju3pa")
+
+[node name="SubViewport" type="SubViewport" parent="." unique_id=277711369]
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(1920, 1080)
+render_target_update_mode = 4
+
+[node name="BlackRect" type="ColorRect" parent="SubViewport" unique_id=1315165334]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+script = ExtResource("3_co8lb")
+
+[node name="FollowingCamera" type="Camera2D" parent="SubViewport" unique_id=1953738197]
+script = ExtResource("2_feayc")
+
+[node name="PlayerVisionMirror" type="Node2D" parent="SubViewport" unique_id=691512843]
+script = ExtResource("1_qe45k")
+
+[node name="VisibleAreaPolygonDrawer" type="Node2D" parent="SubViewport" unique_id=884909402]
+script = ExtResource("6_yxgyd")

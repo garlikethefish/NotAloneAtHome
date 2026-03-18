@@ -1,9 +1,7 @@
 shader_type canvas_item;
-render_mode unshaded;
-
-uniform sampler2D vision_mask;
 
 void fragment() {
-    float mask = texture(vision_mask, SCREEN_UV).r;
-    COLOR = vec4(0.0, 0.0, 0.0, 1.0 - mask);
+    vec4 tex = texture(TEXTURE, UV);
+    // white areas become transparent, black stays dark
+    COLOR = vec4(0.0, 0.0, 0.0, 1.0 - tex.r);
 }

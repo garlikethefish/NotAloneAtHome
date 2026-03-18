@@ -27,7 +27,14 @@
 [ext_resource type="PackedScene" uid="uid://4qlmy32o1i1f" path="res://objects/EscapeArea.tscn" id="21_1iba3"]
 [ext_resource type="Shader" uid="uid://cuielptcsyeb5" path="res://shaders/vhs_filter.gdshader" id="22_yxlcp"]
 [ext_resource type="Script" uid="uid://psn8bmpins46" path="res://scripts/light_manager.gd" id="24_2ofn6"]
-[ext_resource type="PackedScene" uid="uid://wv6k007q828b" path="res://objects/FogOfWar.tscn" id="28_ma7h6"]
+[ext_resource type="PackedScene" uid="uid://cp53c124r55di" path="res://objects/FogOfWarViewportTexture.tscn" id="27_ma7h6"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ebg2g"]
+shader = ExtResource("22_yxlcp")
+shader_parameter/color_offset_multiplier = 0.0010000000475
+shader_parameter/black_offset_multiplier = 0.062000002945
+shader_parameter/color_offset = 0.00100000330737999
+shader_parameter/blur_amount = 1.20000001788144
 
 [sub_resource type="Gradient" id="Gradient_1nqs0"]
 colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
@@ -221,25 +228,41 @@ ssao_enabled = true
 glow_enabled = true
 glow_bloom = 0.19
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_ebg2g"]
-shader = ExtResource("22_yxlcp")
-shader_parameter/color_offset_multiplier = 0.0010000000475
-shader_parameter/black_offset_multiplier = 0.062000002945
-shader_parameter/color_offset = 0.00100000330737999
-shader_parameter/blur_amount = 1.20000001788144
-
 [node name="Main" type="Node2D" unique_id=1023568212]
 metadata/_edit_horizontal_guides_ = [690.0, 1085.0, -197.0, 667.0]
 metadata/_edit_vertical_guides_ = [-1302.0, -145.0, 887.0, -3874.0]
 
-[node name="UIOverlay" parent="." unique_id=466827575 instance=ExtResource("1_vcsgt")]
+[node name="Polygon2D" type="Polygon2D" parent="." unique_id=2071421769]
+position = Vector2(519, 153)
+color = Color(1, 1, 1, 0)
+polygon = PackedVector2Array(-130, -59, 64, -57, 64, 39, -130, 39)
+uv = PackedVector2Array(-100.5, -42.5, 59.5, -43, 65, 40, -101.5, 38.5)
+
+[node name="UILayers" type="Node" parent="." unique_id=1785141639]
+
+[node name="UIOverlay" parent="UILayers" unique_id=466827575 instance=ExtResource("1_vcsgt")]
+
+[node name="VHSEffectCanvasLayer" type="CanvasLayer" parent="UILayers" unique_id=902195982]
+layer = 0
+
+[node name="SubViewportContainer" parent="UILayers/VHSEffectCanvasLayer" unique_id=480592156 node_paths=PackedStringArray("player_vision_node", "player_camera_node", "visible_area_polygons") instance=ExtResource("27_ma7h6")]
+player_vision_node = NodePath("../../../Player/RaycastedShape")
+player_camera_node = NodePath("../../../Player/Camera2D")
+visible_area_polygons = [NodePath("../../../Polygon2D")]
+
+[node name="ColorRect" type="ColorRect" parent="UILayers/VHSEffectCanvasLayer" unique_id=961030738]
+material = SubResource("ShaderMaterial_ebg2g")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="Lights" type="Node" parent="." unique_id=1159113441]
 
 [node name="DirectionalLight2D" type="DirectionalLight2D" parent="Lights" unique_id=1073051661]
 z_index = 4
-color = Color(0.61689144, 0.6755754, 0.7755339, 1)
-energy = 0.87
+color = Color(0.4122449, 0.48960567, 0.6017795, 1)
 blend_mode = 2
 range_z_max = 4
 
@@ -581,6 +604,9 @@ process_priority = 3
 top_level = true
 position = Vector2(380, 341)
 
+[node name="MaskOverlay" parent="Player" index="3" unique_id=167265925]
+visible = true
+
 [node name="Cat" parent="." unique_id=722993762 instance=ExtResource("4_nxtc6")]
 position = Vector2(-103, 304)
 
@@ -879,29 +905,6 @@ bus = &"Sounds"
 [node name="Valuable" parent="." unique_id=2061310895 instance=ExtResource("11_1iba3")]
 position = Vector2(504, 312)
 
-[node name="FogOfWar" parent="." unique_id=1717590262 node_paths=PackedStringArray("player_vision_node", "player_camera_node") instance=ExtResource("28_ma7h6")]
-player_vision_node = NodePath("../Player/RaycastedShape")
-player_camera_node = NodePath("../Player/Camera2D")
-
-[node name="Node2D" parent="FogOfWar/SubViewportContainer/SubViewport" parent_id_path=PackedInt32Array(1717590262, 1741039626) index="2" unique_id=1744459444]
-position = Vector2(73, 0)
-polygon = PackedVector2Array(-150.75409, -30.477013, 108.54736, -79.968506, 15.62085, 36.072998, -120.14111, 46.720993)
-uv = PackedVector2Array(-150.75409, -30.477013, 3.6418457, -54.435013, 15.62085, 36.072998, -120.14111, 46.720993)
-
-[node name="VHSEffectCanvasLayer" type="CanvasLayer" parent="." unique_id=902195982]
-
-[node name="ColorRect" type="ColorRect" parent="VHSEffectCanvasLayer" unique_id=961030738]
-material = SubResource("ShaderMaterial_ebg2g")
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -7.0
-offset_top = -15.0
-offset_right = -7.0
-offset_bottom = -15.0
-grow_horizontal = 2
-grow_vertical = 2
-
 [node name="LightManager" type="Node2D" parent="." unique_id=1509485762 node_paths=PackedStringArray("player")]
 script = ExtResource("24_2ofn6")
 player = NodePath("../Player")
@@ -910,4 +913,3 @@ max_active_lights = 7
 [editable path="Tilemaps"]
 [editable path="Player"]
 [editable path="Player/HelperHolder/ICarrier"]
-[editable path="FogOfWar"]

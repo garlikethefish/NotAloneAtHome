@@ -581,6 +581,7 @@ layer = 0
 visible = false
 
 [node name="ColorRect" type="ColorRect" parent="MaskOverlay" unique_id=427046387]
+visible = false
 material = ExtResource("3_5vbvs")
 anchors_preset = 15
 anchor_right = 1.0
