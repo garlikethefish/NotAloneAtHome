@@ -3,7 +3,6 @@
 [ext_resource type="Texture2D" uid="uid://3rcysfimbpcd" path="res://sprites/ui/win_screen.png" id="1_ulig0"]
 [ext_resource type="AudioStream" uid="uid://caddxrps3p2ie" path="res://scenes/coin-spill-105867.mp3" id="2_okh34"]
 
-
 [node name="WinScreen" type="Control" unique_id=1035638417]
 layout_mode = 3
 anchors_preset = 15

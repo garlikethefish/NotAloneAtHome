@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://u0mnqyu6x1q3"]
 
-[ext_resource type="Script" uid="uid://ddy36ct0704ig" path="res://scripts/raycasted_vision_shape.gd" id="1_yvrcx"]
+[ext_resource type="Script" uid="uid://ddy36ct0704ig" path="res://objects/raycasted_shape/raycasted_vision_shape.gd" id="1_yvrcx"]
 
 [node name="RaycastedShape" type="Node2D" unique_id=876828578]
 script = ExtResource("1_yvrcx")

@@ -16,7 +16,7 @@ var is_dead := false
 var has_mask := false
 var mask_on := false
 var isCarringObject := false
-var carriableObject: InteractableObject
+
 var can_move: bool: 
 	get: return (
 		!thrower.is_charging 

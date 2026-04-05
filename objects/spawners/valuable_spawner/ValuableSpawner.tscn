@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://dl3gkkwgtjq5f"]
 
-[ext_resource type="Script" uid="uid://btbiisg8pk02c" path="res://objects/spawners/valuable_spawner.gd" id="1_wmb4v"]
+[ext_resource type="Script" uid="uid://btbiisg8pk02c" path="res://objects/spawners/valuable_spawner/valuable_spawner.gd" id="1_wmb4v"]
 [ext_resource type="PackedScene" uid="uid://15v7pc0tt852" path="res://objects/helpers/HelperHolder.tscn" id="2_gxxpd"]
 [ext_resource type="PackedScene" uid="uid://cj3n0evy767qs" path="res://objects/helpers/ISpawner.tscn" id="2_uusxq"]
 

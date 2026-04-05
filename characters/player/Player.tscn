@@ -16,7 +16,7 @@
 [ext_resource type="PackedScene" uid="uid://15v7pc0tt852" path="res://objects/helpers/HelperHolder.tscn" id="12_hk5k5"]
 [ext_resource type="PackedScene" uid="uid://s2g10onqsl60" path="res://objects/helpers/IThrower.tscn" id="14_5tpk5"]
 [ext_resource type="PackedScene" uid="uid://di1gufwmxsr11" path="res://objects/helpers/IProximityDetectorArea.tscn" id="16_0thri"]
-[ext_resource type="PackedScene" uid="uid://u0mnqyu6x1q3" path="res://objects/RaycastedVisionShape.tscn" id="17_67shi"]
+[ext_resource type="PackedScene" uid="uid://u0mnqyu6x1q3" path="res://objects/raycasted_shape/RaycastedVisionShape.tscn" id="17_67shi"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_seukq"]
 radius = 6.0
@@ -657,8 +657,6 @@ start_offset = 0.0
 ray_count = 180
 collision_masks = Array[int]([3])
 
-[connection signal="shake_camera" from="." to="Camera2D" method="_on_shake_camera"]
-[connection signal="stop_camera_shake" from="." to="Camera2D" method="_on__stop_camera_shake"]
 [connection signal="on_throw" from="HelperHolder/IThrower" to="." method="_on_i_thrower_on_throw"]
 [connection signal="on_carry_start" from="HelperHolder/ICarrier" to="." method="_on_i_carrier_on_carry_start"]
 [connection signal="on_carry_stop" from="HelperHolder/ICarrier" to="." method="_on_i_carrier_on_carry_stop"]

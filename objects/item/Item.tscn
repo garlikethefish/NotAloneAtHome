@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://dfdiuox7wslrn"]
 
-[ext_resource type="Script" uid="uid://cno0dvuatlaqa" path="res://scripts/Item.gd" id="1_2oiv6"]
+[ext_resource type="Script" uid="uid://cno0dvuatlaqa" path="res://objects/item/Item.gd" id="1_2oiv6"]
 [ext_resource type="Texture2D" uid="uid://by710rpm7kobn" path="res://sprites/MaskItem.png" id="2_sioqs"]
 [ext_resource type="Shader" uid="uid://bgoa4rm3aawjj" path="res://shaders/hover.gdshader" id="2_uiipj"]
 

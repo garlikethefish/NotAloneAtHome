@@ -1,12 +1,12 @@
 [gd_scene format=3 uid="uid://b7pi43clakhcf"]
 
-[ext_resource type="Script" uid="uid://c3i10nd3v2myj" path="res://scripts/DefeatScreen.gd" id="1_d4dv2"]
-[ext_resource type="Texture2D" uid="uid://by710rpm7kobn" path="res://sprites/MaskItem.png" id="2_yvgvb"]
-[ext_resource type="Theme" uid="uid://c68li1l2cs3o4" path="res://themes/default_theme.tres" id="3_tp7al"]
-[ext_resource type="AudioStream" uid="uid://eipix70ilsb4" path="res://scenes/creepy-atmosphere-145465.mp3" id="4_vrsgx"]
+[ext_resource type="Script" uid="uid://c3i10nd3v2myj" path="res://scenes/defeat_view/DefeatScreen.gd" id="1_7daik"]
+[ext_resource type="Texture2D" uid="uid://by710rpm7kobn" path="res://sprites/MaskItem.png" id="2_w7w8p"]
+[ext_resource type="Theme" uid="uid://c68li1l2cs3o4" path="res://themes/default_theme.tres" id="3_yf13s"]
+[ext_resource type="AudioStream" uid="uid://eipix70ilsb4" path="res://scenes/creepy-atmosphere-145465.mp3" id="4_vshbo"]
 
 [node name="DefeatScreen" type="CanvasLayer" unique_id=1356816678]
-script = ExtResource("1_d4dv2")
+script = ExtResource("1_7daik")
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=211647894]
 anchors_preset = 15
@@ -34,13 +34,13 @@ grow_vertical = 2
 modulate = Color(1, 0, 0, 1)
 layout_mode = 2
 size_flags_vertical = 3
-texture = ExtResource("2_yvgvb")
+texture = ExtResource("2_w7w8p")
 
 [node name="Label" type="Label" parent="ColorRect/VBoxContainer" unique_id=2067670247]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 1
-theme = ExtResource("3_tp7al")
+theme = ExtResource("3_yf13s")
 theme_override_colors/font_color = Color(1, 0, 0, 1)
 theme_override_font_sizes/font_size = 48
 text = "YOU WERE SHOT"
@@ -48,11 +48,11 @@ horizontal_alignment = 1
 
 [node name="Button" type="Button" parent="ColorRect/VBoxContainer" unique_id=1668171724]
 layout_mode = 2
-theme = ExtResource("3_tp7al")
+theme = ExtResource("3_yf13s")
 theme_override_font_sizes/font_size = 32
 text = "Retry"
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=655202211]
-stream = ExtResource("4_vrsgx")
+stream = ExtResource("4_vshbo")
 autoplay = true
 parameters/looping = true
