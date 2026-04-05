@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://be8qbmt0fe144"]
 
-[ext_resource type="Script" uid="uid://dgemna2cprj7k" path="res://scripts/Player.gd" id="1_v6fml"]
+[ext_resource type="Script" uid="uid://dgemna2cprj7k" path="res://characters/player/Player.gd" id="1_v6fml"]
 [ext_resource type="Texture2D" uid="uid://d16fbhghe53wp" path="res://sprites/Player-Sheet.png" id="2_gndvh"]
 [ext_resource type="Script" uid="uid://bhs7qgb1e4mvf" path="res://objects/camera.gd" id="2_jjyn6"]
 [ext_resource type="Material" uid="uid://b3npoc6e68ph1" path="res://shaders/MaskVignette.tres" id="3_5vbvs"]

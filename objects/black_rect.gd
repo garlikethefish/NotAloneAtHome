@@ -1,4 +1,4 @@
-extends ColorRect
+extends Node2D
 
 #func _ready():
 	#var mat = material as ShaderMaterial

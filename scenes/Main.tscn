@@ -1,14 +1,14 @@
 [gd_scene format=4 uid="uid://leb3c1ugsal7"]
 
 [ext_resource type="PackedScene" uid="uid://bn8gn6s3ge12a" path="res://objects/tilemaps.tscn" id="1_rarhs"]
-[ext_resource type="PackedScene" uid="uid://be8qbmt0fe144" path="res://objects/Player.tscn" id="1_rgh2o"]
+[ext_resource type="PackedScene" uid="uid://be8qbmt0fe144" path="res://characters/player/Player.tscn" id="1_rgh2o"]
 [ext_resource type="PackedScene" uid="uid://cbcifivthchns" path="res://ui/ui_overlay.tscn" id="1_vcsgt"]
 [ext_resource type="PackedScene" uid="uid://dfdiuox7wslrn" path="res://objects/Item.tscn" id="2_pbw6q"]
-[ext_resource type="PackedScene" uid="uid://bmvgwyelxjr6q" path="res://objects/Bandit.tscn" id="3_0bbpv"]
+[ext_resource type="PackedScene" uid="uid://bmvgwyelxjr6q" path="res://characters/plain_thief/Bandit.tscn" id="3_0bbpv"]
 [ext_resource type="Texture2D" uid="uid://brf0nnjvb6xuc" path="res://lighting/light1.tres" id="3_cvmbd"]
 [ext_resource type="PackedScene" uid="uid://c0jnnsxohge3o" path="res://lighting/mask_light.tscn" id="3_yxlcp"]
-[ext_resource type="PackedScene" uid="uid://ckwnp346yqoti" path="res://objects/cat2.tscn" id="4_nxtc6"]
-[ext_resource type="PackedScene" uid="uid://cah3urn1fwd1d" path="res://objects/SellZone.tscn" id="8_jlsqs"]
+[ext_resource type="PackedScene" uid="uid://ckwnp346yqoti" path="res://characters/le_cat/cat2.tscn" id="4_nxtc6"]
+[ext_resource type="PackedScene" uid="uid://cah3urn1fwd1d" path="res://zones/sell_zone/SellZone.tscn" id="8_jlsqs"]
 [ext_resource type="PackedScene" uid="uid://k3vopc6l88my" path="res://objects/spawners/TrashSpawner.tscn" id="8_wp0k4"]
 [ext_resource type="PackedScene" uid="uid://dl3gkkwgtjq5f" path="res://objects/spawners/ValuableSpawner.tscn" id="9_qmy6f"]
 [ext_resource type="PackedScene" uid="uid://ceom8536eev0a" path="res://objects/valuables/Valuable_Table.tscn" id="10_qmy6f"]
@@ -17,14 +17,14 @@
 [ext_resource type="PackedScene" uid="uid://dfttis2qx6job" path="res://objects/valuables/Valuable_Chair1.tscn" id="12_yxlcp"]
 [ext_resource type="PackedScene" uid="uid://ccoqy3cvndo7p" path="res://objects/valuables/Valuable_Vase.tscn" id="13_1nqs0"]
 [ext_resource type="PackedScene" uid="uid://3pms5s3tmqpj" path="res://objects/valuables/Valuable_Chair2.tscn" id="13_ebg2g"]
-[ext_resource type="PackedScene" uid="uid://blm3resaadrtl" path="res://objects/DeadThiefCloset.tscn" id="13_mwfav"]
-[ext_resource type="PackedScene" uid="uid://dfbnrpvmioq7g" path="res://objects/laptop.tscn" id="13_qmy6f"]
-[ext_resource type="PackedScene" uid="uid://b2xpj2tshxe1h" path="res://objects/DeadThief.tscn" id="14_3p2gp"]
+[ext_resource type="PackedScene" uid="uid://blm3resaadrtl" path="res://characters/closet_thief/DeadThiefCloset.tscn" id="13_mwfav"]
+[ext_resource type="PackedScene" uid="uid://dfbnrpvmioq7g" path="res://objects/laptop/laptop.tscn" id="13_qmy6f"]
+[ext_resource type="PackedScene" uid="uid://b2xpj2tshxe1h" path="res://objects/dead_thief/DeadThief.tscn" id="14_3p2gp"]
 [ext_resource type="PackedScene" uid="uid://dyuyf26s3aqqs" path="res://objects/valuables/Valuable_Sofa.tscn" id="15_xa025"]
 [ext_resource type="PackedScene" uid="uid://dq60rr28wyibf" path="res://objects/valuables/ValuableCabinet.tscn" id="18_fs0b5"]
 [ext_resource type="PackedScene" uid="uid://cfsot4oxbkssw" path="res://objects/valuables/Valuable_Sink.tscn" id="19_ma7h6"]
 [ext_resource type="PackedScene" uid="uid://cg7krccbajseo" path="res://objects/valuables/Valuable_Fridge.tscn" id="20_e2s0e"]
-[ext_resource type="PackedScene" uid="uid://4qlmy32o1i1f" path="res://objects/EscapeArea.tscn" id="21_1iba3"]
+[ext_resource type="PackedScene" uid="uid://4qlmy32o1i1f" path="res://zones/escape_zone/EscapeArea.tscn" id="21_1iba3"]
 [ext_resource type="Shader" uid="uid://cuielptcsyeb5" path="res://shaders/vhs_filter.gdshader" id="22_yxlcp"]
 [ext_resource type="Script" uid="uid://psn8bmpins46" path="res://scripts/light_manager.gd" id="24_2ofn6"]
 [ext_resource type="PackedScene" uid="uid://cp53c124r55di" path="res://objects/FogOfWarViewportTexture.tscn" id="27_ma7h6"]
@@ -603,6 +603,9 @@ z_index = -1
 process_priority = 3
 top_level = true
 position = Vector2(380, 341)
+
+[node name="ColorRect" parent="Player/MaskOverlay" parent_id_path=PackedInt32Array(1993068751, 167265925) index="0" unique_id=427046387]
+visible = true
 
 [node name="Cat" parent="." unique_id=722993762 instance=ExtResource("4_nxtc6")]
 position = Vector2(-103, 304)

@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bmvgwyelxjr6q"]
 
-[ext_resource type="Script" uid="uid://bflx038o74dvh" path="res://scripts/Bandit.gd" id="1_nuupm"]
+[ext_resource type="Script" uid="uid://bflx038o74dvh" path="res://characters/plain_thief/Bandit.gd" id="1_nuupm"]
 [ext_resource type="Texture2D" uid="uid://pt5voa6u84nw" path="res://sprites/Bandit-Sheet.png" id="2_1v8oq"]
 [ext_resource type="AudioStream" uid="uid://d1w6ghitekdav" path="res://sounds/sound effects/Mag_Unload_Sound.wav" id="3_1v8oq"]
 [ext_resource type="Texture2D" uid="uid://brlqbui27jqjn" path="res://sprites/shadow.png" id="3_so3fp"]
@@ -9,6 +9,7 @@
 [ext_resource type="AudioStream" uid="uid://cfsfletqwk7r2" path="res://sounds/sound effects/bandit_footstep3.wav" id="7_ers6e"]
 [ext_resource type="AudioStream" uid="uid://c5mgu2784a6dr" path="res://sounds/sound effects/bandit_footstep4.wav" id="8_atxhn"]
 [ext_resource type="AudioStream" uid="uid://djh3kwdicro7r" path="res://sounds/sound effects/bandit_breathe.mp3" id="9_1skd5"]
+
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_1skd5"]
 radius = 17.0

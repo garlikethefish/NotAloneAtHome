@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://cah3urn1fwd1d"]
 
-[ext_resource type="Script" uid="uid://b4sx80lvls4xv" path="res://scripts/SellZone.gd" id="1_xejtw"]
+[ext_resource type="Script" uid="uid://b4sx80lvls4xv" path="res://zones/sell_zone/SellZone.gd" id="1_xejtw"]
 [ext_resource type="Shader" uid="uid://bp4xal8jmdr6p" path="res://shaders/dashed_outline.gdshader" id="2_ug3yy"]
 [ext_resource type="Texture2D" uid="uid://dc28r33w4yiik" path="res://sprites/whiteCube.png" id="3_ug3yy"]
 [ext_resource type="Theme" uid="uid://c68li1l2cs3o4" path="res://themes/default_theme.tres" id="4_2m5ol"]

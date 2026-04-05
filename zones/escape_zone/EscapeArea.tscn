@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://4qlmy32o1i1f"]
 
-[ext_resource type="Script" uid="uid://dynmmpad0nil0" path="res://scripts/escape_area.gd" id="1_3cl51"]
+[ext_resource type="Script" uid="uid://dynmmpad0nil0" path="res://zones/escape_zone/escape_area.gd" id="1_3cl51"]
 [ext_resource type="Shader" uid="uid://bp4xal8jmdr6p" path="res://shaders/dashed_outline.gdshader" id="2_8hd4h"]
 [ext_resource type="Texture2D" uid="uid://dc28r33w4yiik" path="res://sprites/whiteCube.png" id="3_ljbf8"]
 [ext_resource type="Theme" uid="uid://c68li1l2cs3o4" path="res://themes/default_theme.tres" id="4_ljbf8"]

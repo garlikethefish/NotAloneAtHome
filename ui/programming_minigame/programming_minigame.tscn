@@ -1,13 +1,14 @@
 [gd_scene format=3 uid="uid://kii0qs3xbrod"]
 
 [ext_resource type="Texture2D" uid="uid://ci7d80g6ejfja" path="res://sprites/ui/programming_minigame.png" id="1_71074"]
-[ext_resource type="Script" uid="uid://rmv2yd3usq5t" path="res://scripts/programming_minigame.gd" id="1_ge1oy"]
+[ext_resource type="Script" uid="uid://rmv2yd3usq5t" path="res://ui/programming_minigame/programming_minigame.gd" id="1_ge1oy"]
 [ext_resource type="Theme" uid="uid://c68li1l2cs3o4" path="res://themes/default_theme.tres" id="2_41l7i"]
 [ext_resource type="Material" uid="uid://bat6r3ysd8bhe" path="res://shaders/programming_minigame_vinette.tres" id="2_t7qfm"]
 [ext_resource type="Texture2D" uid="uid://brq2kdylf8buj" path="res://sprites/ui/cross.png" id="3_n5e6u"]
 [ext_resource type="Texture2D" uid="uid://cm2b28r73mnmq" path="res://sprites/ui/light.png" id="4_x7dja"]
 [ext_resource type="Material" uid="uid://bucyeahmo8kbv" path="res://shaders/glow_shader.tres" id="5_ufnpw"]
 [ext_resource type="Texture2D" uid="uid://m5oiygsiyojj" path="res://sprites/ui/inactive_light.png" id="6_hp5or"]
+
 
 [node name="ProgrammingMinigame" type="CanvasLayer" unique_id=409070707]
 layer = 2

@@ -1,12 +1,13 @@
 [gd_scene format=3 uid="uid://dfbnrpvmioq7g"]
 
 [ext_resource type="Texture2D" uid="uid://d1u4stp3o8b5e" path="res://sprites/laptop.png" id="1_wu6ei"]
-[ext_resource type="Script" uid="uid://de4186bnvdg8l" path="res://objects/laptop.gd" id="2_j6x1g"]
-[ext_resource type="PackedScene" uid="uid://kii0qs3xbrod" path="res://ui/programming_minigame.tscn" id="4_j6x1g"]
+[ext_resource type="Script" uid="uid://de4186bnvdg8l" path="res://objects/laptop/laptop.gd" id="2_j6x1g"]
+[ext_resource type="PackedScene" uid="uid://kii0qs3xbrod" path="res://ui/programming_minigame/programming_minigame.tscn" id="4_j6x1g"]
 [ext_resource type="PackedScene" uid="uid://k2k1j0y25ebx" path="res://objects/helpers/IInteractable.tscn" id="4_ni5dh"]
 [ext_resource type="PackedScene" uid="uid://15v7pc0tt852" path="res://objects/helpers/HelperHolder.tscn" id="5_kg2mr"]
 [ext_resource type="FontFile" uid="uid://m4c4ejijque2" path="res://fonts/Karma Suture.otf" id="5_ni5dh"]
 [ext_resource type="PackedScene" uid="uid://b8odej7420g54" path="res://objects/helpers/IDetectable.tscn" id="7_fivc8"]
+
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_ni5dh"]
 light_mode = 1
