@@ -27,7 +27,7 @@
 [ext_resource type="PackedScene" uid="uid://4qlmy32o1i1f" path="res://zones/escape_zone/EscapeArea.tscn" id="21_1iba3"]
 [ext_resource type="Shader" uid="uid://cuielptcsyeb5" path="res://shaders/vhs_filter.gdshader" id="22_yxlcp"]
 [ext_resource type="Script" uid="uid://psn8bmpins46" path="res://scripts/light_manager.gd" id="24_2ofn6"]
-[ext_resource type="PackedScene" uid="uid://cp53c124r55di" path="res://objects/FogOfWarViewportTexture.tscn" id="27_ma7h6"]
+[ext_resource type="PackedScene" uid="uid://cp53c124r55di" path="res://objects/fog_of_war/FogOfWarViewportTexture.tscn" id="27_ma7h6"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ebg2g"]
 shader = ExtResource("22_yxlcp")
@@ -252,6 +252,7 @@ grow_vertical = 2
 
 [node name="VHSEffectCanvasLayer" type="CanvasLayer" parent="UILayers" unique_id=902195982]
 layer = 0
+visible = false
 
 [node name="SubViewportContainer" parent="UILayers/VHSEffectCanvasLayer" unique_id=480592156 node_paths=PackedStringArray("player_vision_node", "player_camera_node", "visible_area_polygons") instance=ExtResource("27_ma7h6")]
 player_vision_node = NodePath("../../../Player/RaycastedShape")

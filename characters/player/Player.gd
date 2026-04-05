@@ -198,7 +198,7 @@ func add_mask():
 	has_mask = true
 
 func show_defeat_screen(reason: String):
-	var defeat_scene = preload("res://scenes/DefeatScreen.tscn").instantiate()
+	var defeat_scene = preload("res://scenes/defeat_view/DefeatScreen.tscn").instantiate()
 	get_tree().current_scene.add_child(defeat_scene)
 	defeat_scene.set_defeat_reason(reason)
 
