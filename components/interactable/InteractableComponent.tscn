@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://k2k1j0y25ebx"]
+
+[ext_resource type="Script" uid="uid://b7iah78ghhrj5" path="res://components/interactable/InteractableComponent.cs" id="1_m7v26"]
+[ext_resource type="Texture2D" uid="uid://drlnlgvgspjqk" path="res://sprites/ui/e_button_ui.png" id="2_3arj4"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_3arj4"]
+light_mode = 1
+
+[node name="IInteractable" type="Node2D" unique_id=1999549239]
+light_mask = 2
+script = ExtResource("1_m7v26")
+
+[node name="InteractionKey" type="Sprite2D" parent="." unique_id=1457446261]
+light_mask = 2
+z_index = 5
+material = SubResource("CanvasItemMaterial_3arj4")
+position = Vector2(0, -30)
+texture = ExtResource("2_3arj4")

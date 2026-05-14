@@ -1,13 +1,13 @@
 [gd_scene format=3 uid="uid://hnye7wtm1w0e"]
 
 [ext_resource type="Script" uid="uid://4n3fc0ulnkpp" path="res://objects/valuables/Valuable.gd" id="1_4gmkr"]
-[ext_resource type="PackedScene" uid="uid://ikk1afwypstd" path="res://objects/helpers/ISpawnable.tscn" id="2_64t4u"]
-[ext_resource type="PackedScene" uid="uid://15v7pc0tt852" path="res://objects/helpers/HelperHolder.tscn" id="2_xcwdw"]
-[ext_resource type="PackedScene" uid="uid://k2k1j0y25ebx" path="res://objects/helpers/IInteractable.tscn" id="4_24yf3"]
-[ext_resource type="PackedScene" uid="uid://bfxah7yut2ec0" path="res://objects/helpers/ICariable.tscn" id="5_d04w0"]
-[ext_resource type="PackedScene" uid="uid://v2kc0hxagcr" path="res://objects/helpers/IDestroyable.tscn" id="5_xcwdw"]
-[ext_resource type="PackedScene" uid="uid://m5gqbqgarhdk" path="res://objects/helpers/IThrowable.tscn" id="7_apino"]
-[ext_resource type="PackedScene" uid="uid://b8odej7420g54" path="res://objects/helpers/IDetectable.tscn" id="8_2vrdr"]
+[ext_resource type="PackedScene" path="res://objects/helpers/ISpawnable.tscn" id="2_64t4u"]
+[ext_resource type="PackedScene" path="res://objects/helpers/HelperHolder.tscn" id="2_xcwdw"]
+[ext_resource type="PackedScene" path="res://objects/helpers/IInteractable.tscn" id="4_24yf3"]
+[ext_resource type="PackedScene" path="res://objects/helpers/ICariable.tscn" id="5_d04w0"]
+[ext_resource type="PackedScene" path="res://objects/helpers/IDestroyable.tscn" id="5_xcwdw"]
+[ext_resource type="PackedScene" path="res://objects/helpers/IThrowable.tscn" id="7_apino"]
+[ext_resource type="PackedScene" path="res://objects/helpers/IDetectable.tscn" id="8_2vrdr"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2vrdr"]
 size = Vector2(31, 65)

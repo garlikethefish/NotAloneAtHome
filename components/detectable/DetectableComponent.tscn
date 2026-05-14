@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://b8odej7420g54"]
+
+[ext_resource type="Script" uid="uid://dg1uuxu2stncq" path="res://components/detectable/DetectableComponent.cs" id="1_r212o"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_jw3d4"]
+
+[node name="IDetectable" type="StaticBody2D" unique_id=2037387284]
+collision_layer = 512
+collision_mask = 0
+script = ExtResource("1_r212o")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1327579399]
+shape = SubResource("CircleShape2D_jw3d4")

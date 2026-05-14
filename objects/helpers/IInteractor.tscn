@@ -1,6 +1,0 @@
-[gd_scene format=3 uid="uid://cim6i6h44jpj3"]
-
-[ext_resource type="Script" uid="uid://1i0gcn1g873c" path="res://scripts/interfaces/i_interactor.gd" id="1_1c3mi"]
-
-[node name="IInteractor" type="Node2D" unique_id=688399906]
-script = ExtResource("1_1c3mi")

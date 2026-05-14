@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Godot;
 
 public interface IPlayer
@@ -5,9 +6,12 @@ public interface IPlayer
     void DoSomething();
 }
 
-public partial class NewScript : Node2D, ICarriableUser
+public partial class NewScript : Node2D, ITaskItem, IInteractable
 {
-    [Export] private ComponentHolder Holder { get; set; }
+    public Node Node => throw new System.NotImplementedException();
+
+    public ITask Task { get; private set; }
+
     public override void _Ready()
     {
     }
@@ -16,18 +20,26 @@ public partial class NewScript : Node2D, ICarriableUser
     {
     }
 
-    public void Pickup(ICarrier carrier)
+    public void Activate(ITask task)
     {
-        Holder.Carriable.PickUpBy(carrier);
+        Task = task;
     }
 
-    public void Drop(Vector2 landPos)
+    public void Complete()
     {
-        Holder.Carriable.DropAt(landPos);
+        Task.OnTaskItemComplete(this);
     }
 
-    public bool CanBeCarried(ICarrier carrier)
+    public void InteractBy(IInteractor interactor)
     {
-        return true;
+        if (Task is CollectTrashTask)
+        {
+            Complete();
+        }
+    }
+
+    public bool CanBeInteractedBy(IInteractor interactor)
+    {
+        throw new System.NotImplementedException();
     }
 }

@@ -1,10 +1,10 @@
 [gd_scene format=3 uid="uid://ywha5uwa0e62"]
 
 [ext_resource type="Script" uid="uid://c4kvpwbpq765x" path="res://objects/trash/trash.gd" id="1_5vgct"]
-[ext_resource type="PackedScene" uid="uid://15v7pc0tt852" path="res://objects/helpers/HelperHolder.tscn" id="3_h5t3k"]
+[ext_resource type="PackedScene" path="res://objects/helpers/HelperHolder.tscn" id="3_h5t3k"]
 [ext_resource type="Texture2D" uid="uid://crdi4vojlev1e" path="res://canvas_textures/trash1_texture.tres" id="3_johhi"]
-[ext_resource type="PackedScene" uid="uid://ikk1afwypstd" path="res://objects/helpers/ISpawnable.tscn" id="3_si7bq"]
-[ext_resource type="PackedScene" uid="uid://k2k1j0y25ebx" path="res://objects/helpers/IInteractable.tscn" id="4_johhi"]
+[ext_resource type="PackedScene" path="res://objects/helpers/ISpawnable.tscn" id="3_si7bq"]
+[ext_resource type="PackedScene" path="res://objects/helpers/IInteractable.tscn" id="4_johhi"]
 
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_johhi"]

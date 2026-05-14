@@ -1,0 +1,64 @@
+using Godot;
+
+public partial class Throwable : ComponentNode2D, IThrowable
+{
+    [Signal] public delegate void ThrownEventHandler(GodotObject thrower);
+    [Signal] public delegate void LandedEventHandler(Vector2 position);
+    [Export] public Sprite2D Sprite;
+
+    public Node Node => this;
+    public bool IsFlying { get; private set; }
+    private float _flyDuration = 0.6f;
+
+    public override void _Ready()
+    {
+        base._Ready();
+    }
+
+    private void StartFlyAnimation(Vector2 landPos)
+    {
+        if (landPos == Vector2.Inf) return;
+
+        var tween = CreateTween();
+        tween.TweenProperty(Root, "global_position", landPos, _flyDuration)
+             .SetTrans(Tween.TransitionType.Cubic)
+             .SetEase(Tween.EaseType.Out);
+
+        if (Sprite == null) return;
+
+        var originalScale  = Sprite.Scale;
+        var spriteTween    = CreateTween().SetParallel().SetEase(Tween.EaseType.InOut);
+        var rotationTween  = CreateTween();
+
+        rotationTween.TweenProperty(Sprite, "rotation", Mathf.DegToRad(360), _flyDuration);
+
+        spriteTween.TweenProperty(Sprite, "position:y", Sprite.Position.Y - 25, _flyDuration / 2).AsRelative();
+        spriteTween.TweenProperty(Sprite, "scale", new Vector2(0.7f, 0.7f), _flyDuration / 2);
+
+        spriteTween.Chain();
+        spriteTween.TweenProperty(Sprite, "position:y", Sprite.Position.Y + 25, _flyDuration / 2).AsRelative();
+        spriteTween.TweenProperty(Sprite, "scale", originalScale, _flyDuration / 2);
+
+        rotationTween.TweenCallback(Callable.From(() =>
+        {
+            Sprite.Rotation = 0;
+            Land();
+        }));
+    }
+
+    public void OnThrowBy(IThrower thrower, Vector2 toPosition)
+    {
+        IsFlying = true;
+        StartFlyAnimation(toPosition);
+        EmitSignal(SignalName.Thrown, thrower.Node);
+        // _detectable?.CanBeDetectedBlockers.AddBlocker(this);
+    }
+
+    public void Land()
+    {
+        IsFlying = false;
+        EmitSignal(SignalName.Landed, GlobalPosition);
+        // _detectable?.CanBeDetectedBlockers.RemoveBlocker(this);
+        // _carriable?.RetireUncarried();
+    }
+}

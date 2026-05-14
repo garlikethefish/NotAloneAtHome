@@ -4,11 +4,11 @@
 [ext_resource type="SpriteFrames" uid="uid://ekbo6oovgxb0" path="res://animations/cat.tres" id="2_7jxut"]
 [ext_resource type="Texture2D" uid="uid://brlqbui27jqjn" path="res://sprites/shadow.png" id="3_lofro"]
 [ext_resource type="AudioStream" uid="uid://bc8edy7he1anw" path="res://sounds/sound effects/meow.mp3" id="4_0m5c4"]
-[ext_resource type="PackedScene" uid="uid://k2k1j0y25ebx" path="res://objects/helpers/IInteractable.tscn" id="4_7jxut"]
+[ext_resource type="PackedScene" path="res://objects/helpers/IInteractable.tscn" id="4_7jxut"]
 [ext_resource type="AudioStream" uid="uid://dvfmsx5dolnp7" path="res://sounds/sound effects/meow2.wav" id="6_uki8m"]
 [ext_resource type="AudioStream" uid="uid://dbqeekcm7ern" path="res://sounds/sound effects/meow4.wav" id="7_cy1mn"]
 [ext_resource type="AudioStream" uid="uid://pkgor7kaslsk" path="res://sounds/sound effects/meow5.wav" id="8_yun16"]
-[ext_resource type="PackedScene" uid="uid://15v7pc0tt852" path="res://objects/helpers/HelperHolder.tscn" id="9_cy1mn"]
+[ext_resource type="PackedScene" path="res://objects/helpers/HelperHolder.tscn" id="9_cy1mn"]
 [ext_resource type="AudioStream" uid="uid://bk4v0u4evgskv" path="res://sounds/sound effects/meow6.wav" id="9_d4tls"]
 
 
