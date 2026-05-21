@@ -18,10 +18,39 @@ public static class HelperExtensions
         node.GetParent().GetChildren().OfType<T>().FirstOrDefault();
 }
 
+public static class Extensions
+{
+    public static bool TryNextItem<T>(this List<T> list, T current, out T next)
+    {
+        var index = list.IndexOf(current);
+        if (index >= 0 && index < list.Count - 1)
+        {
+            next = list[index + 1];
+            return true;
+        }
+        next = default;
+        return false;
+    }
+
+    public static bool TryPreviousItem<T>(this List<T> list, T current, out T previous)
+    {
+        var index = list.IndexOf(current);
+        if (index > 0)
+        {
+            previous = list[index - 1];
+            return true;
+        }
+        previous = default;
+        return false;
+    }
+}
+
 public static class Utils
 {
     public static uint GetCombinedMask(IEnumerable<int> masks) =>
         (uint)masks.Aggregate(0, (combined, mask) => combined | (1 << (mask - 1)));
+
+    
 }
 
 public static class Casters
