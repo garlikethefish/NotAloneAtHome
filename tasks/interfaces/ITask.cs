@@ -7,7 +7,8 @@ using Godot;
 public interface ITask
 {
     public Node Context { get; }
-    public event EventHandler OnComplete;
+    public bool IsCompleted { get; }
+    public event Action OnComplete;
     public void Start();
     /// <summary>
     /// Goes to next step

@@ -14,16 +14,17 @@ public partial class WaterPlantsTask : Node, ITask
 
     public ITaskStep CurrentStep { get; set; }
 
+    public bool IsCompleted { get; }
+
     public bool HasFilledUpWateringCan = false;
 
-    public event EventHandler OnComplete;
-    
-    [Signal] public delegate void FilledUpWateringCanEventHandler();
+    public event Action OnComplete;
 
     public WaterPlantsTask(Node ctx)
     {
         Name = "Water plants";
         Context = ctx;
+        IsCompleted = false;
         Steps = [
             new PickupCan(this),
             new FillUpCanStep(this),
@@ -84,8 +85,7 @@ public partial class WaterPlantsTask : Node, ITask
 
     public void EmitComplete()
     {
-        EmitSignal(SignalName.FilledUpWateringCan);
-        OnComplete?.Invoke(this, EventArgs.Empty);
+        OnComplete?.Invoke();
     }
 
     public void EmitStepComplete(ITaskStep task) {}

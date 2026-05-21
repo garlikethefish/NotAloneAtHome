@@ -27,8 +27,8 @@ public interface ITaskStep
     /// </summary>
     public void EmitBack();
 }
+
 public interface ITaskStep<T> : ITaskStep where T : ITask
 {
     public T Task { get; }
-    
 }
