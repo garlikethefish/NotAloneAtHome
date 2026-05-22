@@ -8,7 +8,7 @@ public partial class TaskManager : Node
 {
     [Signal] public delegate void TaskChangedEventHandler(Node previous, Node next);
     [Signal] public delegate void TaskAddedEventHandler(Node task);
-    List<ITask> Tasks;
+    List<ITask> Tasks = new();
     ITask CurrentTask;
     public static TaskManager Instance { get; private set; }
     public override void _Ready() => Instance = this;

@@ -7,14 +7,7 @@ public partial class InteractorComponent : ComponentNode2D, IInteractor
 
     public void InteractWith(IInteractable interactable)
     {
-        if (!CanInteractWith(interactable)) return;
-        
         interactable.InteractBy(this);
         EmitSignal(SignalName.Interacted, interactable.Node);
-    }
-
-    public bool CanInteractWith(IInteractable interactable)
-    {
-        return (Root as IInteractor)?.CanInteractWith(interactable) ?? false;
     }
 }

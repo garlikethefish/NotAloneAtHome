@@ -10,6 +10,13 @@ public static class NodeExtensions
         result = node as T;
         return result != null;
     }
+
+    public static T GetComponentOfType<T>(this Node node) where T : Node
+    {
+        foreach (Node child in node.GetChildren())
+            if (child is T match) return match;
+        return null;
+    }
 }
 
 public static class HelperExtensions

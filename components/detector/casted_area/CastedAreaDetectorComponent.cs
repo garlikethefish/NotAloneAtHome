@@ -1,15 +1,18 @@
 using Godot;
 using System.Linq;
 
-public partial class CastedAreaDetectorComponent : AreaDetector
+#nullable enable
+public partial class CastedAreaDetectorComponent : AreaDetector, ICastedAreaDetector
 {
     [Signal] public delegate void EnteredSightEventHandler(GodotObject detectable);
     [Signal] public delegate void ExitedSightEventHandler(GodotObject detectable);
     [Export] public int[] RaycastCollisionMasks = [10, 2];
-    private DetectableComponent _closestDetectable = null;
+    private DetectableComponent? _closestDetectable = null;
     public Color IsInSightColor  = Colors.Azure;
     public Color NotInSightColor = Colors.Crimson;
     public Color ClosestColor    = Colors.LimeGreen;
+
+    public IDetectable? ClosestDetectable => _closestDetectable;
 
     public override void _Ready()
     {
@@ -106,11 +109,11 @@ public partial class CastedAreaDetectorComponent : AreaDetector
         }
     }
 
-    private DetectableComponent GetClosestDetectable()
+    private DetectableComponent? GetClosestDetectable()
     {
         if (DetectablesInArea.Count == 0) return null;
 
-        DetectableComponent closest = null;
+        DetectableComponent? closest = null;
 
         foreach (var model in DetectablesInArea)
         {

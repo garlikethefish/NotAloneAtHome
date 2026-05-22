@@ -6,6 +6,6 @@ public interface IThrower : IComponentInterface
     bool IsAiming { get; }
     void StartAiming();
     void StopAiming();
-    void Throw(IThrowable throwable, Vector2 toPosition);
+    void Throw();
     void SetFacingDirection(Vector2 direction);
 }
