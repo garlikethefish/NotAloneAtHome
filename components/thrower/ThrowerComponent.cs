@@ -1,6 +1,6 @@
 using Godot;
 
-public partial class Thrower : ComponentNode2D, IThrower
+public partial class ThrowerComponent : ComponentNode2D, IThrower
 {
     [Signal] public delegate void ThrewEventHandler(GodotObject throwable, Vector2 position);
     [Signal] public delegate void StartedChargeEventHandler();
@@ -32,12 +32,12 @@ public partial class Thrower : ComponentNode2D, IThrower
 
     public override void _Process(double delta)
     {
-        if (ShowDebug) QueueRedraw();
-        _targetSpriteNode.GlobalPosition = AimedAtLocation;
+        // if (ShowDebug) QueueRedraw();
+        // _targetSpriteNode.GlobalPosition = AimedAtLocation;
 
-        if (!IsCharging) return;
-        CurrentCharge = Mathf.Clamp(CurrentCharge + (float)delta * ChargeMultiplier,0, MaxChargeSeconds);
-        AimedAtLocation = CalculateAimedAtLocation(FacingDirection);
+        // if (!IsCharging) return;
+        // CurrentCharge = Mathf.Clamp(CurrentCharge + (float)delta * ChargeMultiplier,0, MaxChargeSeconds);
+        // AimedAtLocation = CalculateAimedAtLocation(FacingDirection);
     }
 
     public override void _Draw()
@@ -99,6 +99,11 @@ public partial class Thrower : ComponentNode2D, IThrower
         
         _targetSpriteNode.GlobalPosition = Vector2.Inf;
         _targetSpriteNode.Visible = false;
+    }
+
+    public void Throw()
+    {
+        throw new System.NotImplementedException();
     }
     // public bool TryThrow()
     // {

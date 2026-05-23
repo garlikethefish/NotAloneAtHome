@@ -20,23 +20,33 @@ public partial class Player
             {
                 var detectable = Ctx._detector.ClosestDetectable;
                 if (detectable == null) return;
-                
-                if (detectable is ICarriable carriable && carriable.CanBeCarried(Ctx._carrier))
+
+                if (detectable.Holder.HasComp<ICarriable>(out var carriable) && carriable.CanBeCarried(Ctx._carrier))
                 {
                     Ctx._carrier.Pickup(carriable);
                     Ctx.ChangeState(Ctx.States[typeof(CarryingState)]);
                 }
 
-                if (detectable is IInteractable interactable && interactable.CanBeInteractedBy(Ctx._interactor))
+                if (detectable.Holder.HasComp<IInteractable>(out var interactable) && interactable.CanBeInteractedBy(Ctx._interactor))
                 {
                     Ctx._interactor.InteractWith(interactable);
                 }
+            }
+
+            if (Ctx._moveDirection != Vector2.Zero)
+            {
+                Ctx.ChangeState(Ctx.States[typeof(WalkingState)]);
+            }
+
+            if (Input.IsActionJustPressed("toggle_mask"))
+            {
+                Ctx.ChangeState(Ctx.States[typeof(MaskedState)]);
             }
         }
 
         public void Enter()
         {
-            
+            Ctx.ImmobileAnimation();
         }
 
         public void Exit()

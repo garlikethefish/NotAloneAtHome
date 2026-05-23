@@ -2,6 +2,6 @@ using Godot;
 
 public interface IInteractable : IComponentInterface
 {
-    void InteractBy(IInteractor interactor);
+    void WhenInteractBy(IInteractor interactor);
     bool CanBeInteractedBy(IInteractor interactor);
 }

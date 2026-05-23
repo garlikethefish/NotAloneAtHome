@@ -1,6 +1,6 @@
 using Godot;
 
-public partial class Carriable : ComponentNode2D, ICarriable
+public partial class CariableComponent : ComponentNode2D, ICarriable
 {
     [Signal] public delegate void PickedUpEventHandler(Node2D carrier);
     [Signal] public delegate void DroppedEventHandler();
@@ -12,8 +12,9 @@ public partial class Carriable : ComponentNode2D, ICarriable
 
     // @onready var _detectable: IDetectable = get_fellow_helper(IDetectable)
 
-    public async void PickUpBy(ICarrier carrier)
+    public async void WhenPickedUpBy(ICarrier carrier)
     {
+        
         Root.SetDeferred("freeze", true);
         Root.Reparent(carrier.CarryPointNode, true);
         
@@ -23,12 +24,12 @@ public partial class Carriable : ComponentNode2D, ICarriable
         // _detectable?.CanBeDetectedBlockers.AddBlocker(this);
     }
 
-    public async void DropAt(Vector2 landPos)
+    public async void WhenDropedAt(Vector2 landPos)
     {
         Root.Reparent(GetTree().CurrentScene, true);
         await PlayDropAnimation(landPos);
 
-        Root.Freeze = false;
+        // Root.Freeze = false;
         EmitSignal(SignalName.Dropped);
     }
     private SignalAwaiter PlayDropAnimation(Vector2 landPos)

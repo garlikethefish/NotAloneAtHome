@@ -1,6 +1,6 @@
 using Godot;
 
-public partial class Throwable : ComponentNode2D, IThrowable
+public partial class ThrowableComponent : ComponentNode2D, IThrowable
 {
     [Signal] public delegate void ThrownEventHandler(GodotObject thrower);
     [Signal] public delegate void LandedEventHandler(Vector2 position);
@@ -46,7 +46,7 @@ public partial class Throwable : ComponentNode2D, IThrowable
         }));
     }
 
-    public void OnThrowBy(IThrower thrower, Vector2 toPosition)
+    public void WhenThrownBy(IThrower thrower, Vector2 toPosition)
     {
         IsFlying = true;
         StartFlyAnimation(toPosition);

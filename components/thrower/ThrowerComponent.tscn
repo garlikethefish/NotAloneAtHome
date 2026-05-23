@@ -26,8 +26,10 @@ shader_parameter/dash_count = 2.7630000837425
 shader_parameter/dash_ratio = 0.48800002318
 shader_parameter/speed = 2.0
 
-[node name="IThrower" type="Node2D" unique_id=2059326990]
+[node name="IThrower" type="Node2D" unique_id=2059326990 node_paths=PackedStringArray("_targetSpriteNode")]
 script = ExtResource("1_holk5")
+ShowDebug = true
+_targetSpriteNode = NodePath("TargetNode/CanvasGroup")
 
 [node name="TargetNode" type="Node2D" parent="." unique_id=1793392157]
 z_index = -1

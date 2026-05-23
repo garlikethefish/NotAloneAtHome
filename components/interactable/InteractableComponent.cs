@@ -2,7 +2,7 @@ using Godot;
 
 namespace NotAloneAtHome.Components;
 
-public partial class Interactable : ComponentNode2D, IInteractable
+public partial class InteractableComponent : ComponentNode2D, IInteractable
 {
     [Signal] public delegate void InteractedByEventHandler(GodotObject interactor);
 
@@ -53,7 +53,7 @@ public partial class Interactable : ComponentNode2D, IInteractable
         _interactionSprite.Visible = false;
     }
 
-    public void InteractBy(IInteractor interactor)
+    public void WhenInteractBy(IInteractor interactor)
     {
         if (!CanBeInteractedBy(interactor)) return;
         TweenAnimation();

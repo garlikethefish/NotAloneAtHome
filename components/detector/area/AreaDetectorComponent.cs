@@ -17,6 +17,8 @@ public partial class AreaDetector : ComponentArea2D, IAreaDetector
     {
         base._Ready();
         _collisionShape = GetNode<CollisionShape2D>("CollisionShape2D");
+        BodyEntered += OnBodyEntered;
+        BodyExited += OnBodyExited;
     }
 
     public override void _PhysicsProcess(double delta)

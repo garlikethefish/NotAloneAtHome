@@ -7,7 +7,7 @@ public partial class InteractorComponent : ComponentNode2D, IInteractor
 
     public void InteractWith(IInteractable interactable)
     {
-        interactable.InteractBy(this);
+        interactable.WhenInteractBy(this);
         EmitSignal(SignalName.Interacted, interactable.Node);
     }
 }

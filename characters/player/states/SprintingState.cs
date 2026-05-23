@@ -5,25 +5,25 @@ using NotAloneAtHome.state_machines.interfaces;
 
 public partial class Player
 {
-    public class WalkingState : IState<Player>
+    public class SprintingState : IState<Player>
     {
         public Player Ctx { get; private set; }
 
-        public WalkingState(Player ctx)
+        public SprintingState(Player ctx)
         {
             Ctx = ctx;
         }
 
         public void Update(double delta)
         {
-            if (Input.IsActionPressed("sprint"))
-            {
-                Ctx.ChangeState(Ctx.States[typeof(SprintingState)]);
-            }
-
             if (Ctx._moveDirection == Vector2.Zero)
             {
                 Ctx.ChangeState(Ctx.States[typeof(IdleState)]);
+            }
+
+            if (Input.IsActionJustReleased("sprint"))
+            {
+                Ctx.ChangeState(Ctx.States[typeof(WalkingState)]);
             }
 
             if (!Ctx._footstepSound.Playing && !Ctx._waitBeforeWalkingSound)
@@ -32,12 +32,14 @@ public partial class Player
 
         public void Enter()
         {
-            
+            Ctx._sprinting = true;
+            Ctx._currentSpeed = Ctx.NormalSpeed * Ctx.SprintMultiplier;
         }
 
         public void Exit()
         {
-            
+            Ctx._sprinting = false;
+            Ctx._currentSpeed = Ctx.NormalSpeed;
         }
 
         public void PhysicsUpdate(double delta)

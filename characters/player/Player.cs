@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using Godot;
 using NotAloneAtHome.state_machines.interfaces;
-using static NotAloneAtHome.Characters.Player.States.Player;
 
 public enum PlayerState
 {
@@ -18,30 +17,35 @@ public enum PlayerState
 
 public partial class Player : CharacterBody2D, IThrower, IInteractor, IAreaDetector, ICarrier, IStateMachine
 {
-    [Export] public float Speed = 100.0f;
+    // player move speed
+    [Export] public float NormalSpeed = 100.0f;
     [Export] public float SprintMultiplier = 2.0f;
     [Export] public float MaskSpeedMultiplier = 0.6f;
+    float _currentSpeed = 100.0f;
 
-    [Export] public float MaxVisionRadius = 0.35f;
-    [Export] public float MinVisionRadius = 0.08f;
-    [Export] public float VisionShrinkSpeed = 0.05f;
-    [Export] public float AtmosphereRadius = 0.35f;
-    [Export] public float VisionExpandSpeed = 0.25f;
+    // player vision
+    [Export] public double MaxVisionRadius = 0.35;
+    [Export] public double MinVisionRadius = 0.08;
+    [Export] public double VisionShrinkSpeed = 0.05;
+    [Export] public double VisionExpandSpeed = 0.25;
+    [Export] public double AtmosphereRadius = 0.35;
+    private double _targetVisionRadius = 0;
+    private double _currentVisionRadius = 0.35;
+    
+    [ExportGroup("Debug")]
+    [Export] public bool DebugState = false;
 
-    private float _currentRadius = 0.35f;
     public bool IsDead = false;
-    public bool HasMask = false;
-    public bool MaskOn = false;
+    public bool HasMask = true;
     public bool IsCarryingObject = false;
 
-    public Dictionary<Type, IState> States = new();
     private bool _banditNear = false;
     private Vector2 _banditBody;
     private float _distance;
 
-    private Vector2 _direction = Vector2.Zero;
+    private Vector2 _moveDirection = Vector2.Zero;
 
-    private ComponentHolder _componentHolder;
+    // components
     private IThrower _thrower;
     private IInteractor _interactor;
     private ICarrier _carrier;
@@ -55,7 +59,7 @@ public partial class Player : CharacterBody2D, IThrower, IInteractor, IAreaDetec
     private Area2D _nearnessDetector;
 
     private string _lastFacing = "down";
-    private bool _wait = false;
+    private bool _waitBeforeWalkingSound = false;
     private bool _sprinting = false;
     private bool _waitParticles = false;
     private bool _shakingCamera = false;
@@ -67,18 +71,27 @@ public partial class Player : CharacterBody2D, IThrower, IInteractor, IAreaDetec
     public bool IsAiming => throw new System.NotImplementedException();
 
     public Node2D CarryPointNode => throw new System.NotImplementedException();
+    public CariableComponent Carriable => throw new NotImplementedException();
+    public Dictionary<Type, IState> States = new();
     public IState CurrentState { get; private set; }
+    public ComponentHolder Holder { get; private set; }
 
     [Signal] public delegate void ShakeCameraEventHandler();
     [Signal] public delegate void StopCameraShakeEventHandler();
 
     public override void _Ready()
     {
-        _componentHolder = this.GetComponentOfType<ComponentHolder>();
-        _thrower         = _componentHolder.Thrower;
-        _interactor      = _componentHolder.Interactor;
-        _carrier         = _componentHolder.Carrier;
-        _detector        = (CastedAreaDetectorComponent)_componentHolder.AreaDetector;
+        Holder = this.GetComponentOfType<ComponentHolder>();
+        if (Holder == null)
+        {
+            GD.PrintErr("ComponentHolder not found!");
+            return;
+        }
+
+        _thrower    = Holder.Thrower;
+        _interactor = Holder.Interactor;
+        _carrier    = Holder.Carrier;
+        _detector   = (CastedAreaDetectorComponent)Holder.AreaDetector;
 
         _anim               = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
         _overlayRect        = GetNode<ColorRect>("MaskOverlay/ColorRect");
@@ -87,14 +100,19 @@ public partial class Player : CharacterBody2D, IThrower, IInteractor, IAreaDetec
         _breathingParticles = GetNode<GpuParticles2D>("BreathingParticles");
         _nearnessDetector   = GetNode<Area2D>("BanditNearnessDetector");
 
-        // _interactor.CanInteractCallable = CanInteract;
-        // _carrier.CanCarryCallable = CanCarry;
-
         AddToGroup("player");
 
         // populating states
-        States[typeof(IdleState)]   = new IdleState(this);
-        States[typeof(AimingState)] = new AimingState(this);
+        States[typeof(IdleState)]      = new IdleState(this);
+        States[typeof(AimingState)]    = new AimingState(this);
+        States[typeof(CarryingState)]  = new CarryingState(this);
+        States[typeof(MaskedState)]    = new MaskedState(this);
+        States[typeof(SprintingState)] = new SprintingState(this);
+        States[typeof(WalkingState)]   = new WalkingState(this);
+
+        ChangeState(States[typeof(IdleState)]);
+
+        _targetVisionRadius = MaxVisionRadius;
 
         if (_overlayRect != null)
         {
@@ -109,106 +127,67 @@ public partial class Player : CharacterBody2D, IThrower, IInteractor, IAreaDetec
 
     public override void _Process(double delta)
     {
-        CurrentState.Update(delta);
         // _thrower.SetTargetDirection(GetGlobalMousePosition() - GlobalPosition);
-
-        if (CanMove)
-        {
-            if (_direction != Vector2.Zero)
-            {
-                _carrier.FacingDirection = Velocity.Normalized();
-                if (!_footstepSound.Playing && !_wait)
-                    PlayFootstepSound();
-            }
-
-            if (_shakingCamera)
-                EmitSignal(SignalName.StopCameraShake);
-
-            if (_overlayRect?.Material is ShaderMaterial mat)
-            {
-                mat.SetShaderParameter("center", new Vector2(0.5f, 0.5f));
-
-                if (MaskOn)
-                {
-                    _currentRadius = Mathf.Max(MinVisionRadius, _currentRadius - VisionShrinkSpeed * (float)delta);
-                    if (!_breathingParticles.Emitting)
-                        PlayBreathingParticles();
-                    if (!_maskSound.Playing)
-                        _maskSound.Play();
-                }
-                else
-                {
-                    _maskSound.Stop();
-                    _currentRadius = Mathf.Min(AtmosphereRadius, _currentRadius + VisionExpandSpeed * (float)delta);
-                }
-
-                mat.SetShaderParameter("radius", _currentRadius);
-            }
-        }
-        else
-        {
-            foreach (var body in _nearnessDetector.GetOverlappingAreas())
-            {
-                if (body.GetParent().Name == "Bandit")
-                {
-                    _banditBody = body.GlobalPosition;
-                    _banditNear = true;
-                    _distance = _banditBody.DistanceTo(Position);
-                }
-            }
-
-            if (_banditNear && _distance <= 300)
-            {
-                if (!_shakingCamera)
-                    EmitSignal(SignalName.ShakeCamera);
-                _shakingCamera = true;
-            }
-            else
-            {
-                if (_shakingCamera)
-                    EmitSignal(SignalName.StopCameraShake);
-                _shakingCamera = false;
-            }
-
-            ImmobileAnimation();
-        }
+        CurrentState?.Update(delta);
+        HandleShaking();
+        TransitionVisionRadius(delta, _targetVisionRadius);
     }
 
     public override void _PhysicsProcess(double delta)
     {
-        if (CanMove)
-        {
-            _direction = Vector2.Zero;
-            _direction.X = Input.GetActionStrength("move_right") - Input.GetActionStrength("move_left");
-            _direction.Y = Input.GetActionStrength("move_down") - Input.GetActionStrength("move_up");
-            _direction = _direction.Normalized();
+        _moveDirection.X = Input.GetActionStrength("move_right") - Input.GetActionStrength("move_left");
+        _moveDirection.Y = Input.GetActionStrength("move_down") - Input.GetActionStrength("move_up");
+        _moveDirection = _moveDirection.Normalized();
 
-            float currentSpeed = Speed;
+        Velocity = _moveDirection * _currentSpeed;
+        MoveAndSlide();
+        UpdateAnimation(_moveDirection);
 
-            if (Input.IsActionPressed("sprint"))
-            {
-                _sprinting = true;
-                currentSpeed *= SprintMultiplier;
-            }
-            else
-            {
-                _sprinting = false;
-            }
-
-            if (MaskOn)
-                currentSpeed *= MaskSpeedMultiplier;
-
-            Velocity = _direction * currentSpeed;
-            MoveAndSlide();
-
-            UpdateAnimation(_direction);
-
-            if (Input.IsActionJustPressed("toggle_mask"))
-                ToggleMask();
-        }
+        if (_shakingCamera)
+            EmitSignal(SignalName.StopCameraShake);
 
         if (IsDead)
             return;
+    }
+
+    public void HandleShaking()
+    {
+        foreach (var body in _nearnessDetector.GetOverlappingAreas())
+        {
+            if (body.GetParent().Name == "Bandit")
+            {
+                _banditBody = body.GlobalPosition;
+                _banditNear = true;
+                _distance = _banditBody.DistanceTo(Position);
+            }
+        }
+
+        if (_banditNear && _distance <= 300)
+        {
+            if (!_shakingCamera)
+                EmitSignal(SignalName.ShakeCamera);
+            _shakingCamera = true;
+        }
+        else
+        {
+            if (_shakingCamera)
+                EmitSignal(SignalName.StopCameraShake);
+            _shakingCamera = false;
+        }
+    }
+
+    public void TransitionVisionRadius(double delta, double targetRadius)
+    {
+        if (_overlayRect?.Material is not ShaderMaterial mat) return;
+        if (_currentVisionRadius == targetRadius) return;
+        mat.SetShaderParameter("center", new Vector2(0.5f, 0.5f));
+
+        double transitionSpeed = _currentVisionRadius < targetRadius 
+            ? VisionExpandSpeed 
+            : VisionShrinkSpeed;
+        _currentVisionRadius =  Mathf.MoveToward(_currentVisionRadius, targetRadius, transitionSpeed * delta);
+
+        mat.SetShaderParameter("radius", _currentVisionRadius);
     }
 
     private void UpdateAnimation(Vector2 dir)
@@ -227,7 +206,7 @@ public partial class Player : CharacterBody2D, IThrower, IInteractor, IAreaDetec
             else                 _lastFacing = "side";
         }
 
-        string maskSuffix = MaskOn ? "_mask" : "";
+        string maskSuffix = isWearingMask ? "_mask" : "";
 
         _anim.Play(moving
             ? "walk_" + _lastFacing + maskSuffix
@@ -236,26 +215,24 @@ public partial class Player : CharacterBody2D, IThrower, IInteractor, IAreaDetec
 
     private void ImmobileAnimation()
     {
-        _lastFacing = "up";
-        string maskSuffix = MaskOn ? "_mask" : "";
+        _lastFacing = "down";
+        string maskSuffix = isWearingMask ? "_mask" : "";
         _anim.Play("idle_" + _lastFacing + maskSuffix);
     }
-
-    public void AddMask() => HasMask = true;
 
     public void ShowDefeatScreen(string reason)
     {
         var defeatScene = GD.Load<PackedScene>("res://scenes/defeat_view/DefeatScreen.tscn").Instantiate();
         GetTree().CurrentScene.AddChild(defeatScene);
-        (defeatScene as DefeatScreen)?.SetDefeatReason(reason);
+        defeatScene.Call("set_defeat_reason", reason);
     }
 
     private async void PlayFootstepSound()
     {
         _footstepSound.Play();
-        _wait = true;
+        _waitBeforeWalkingSound = true;
         await ToSignal(GetTree().CreateTimer(_sprinting ? 0.4 : 0.5), SceneTreeTimer.SignalName.Timeout);
-        _wait = false;
+        _waitBeforeWalkingSound = false;
     }
 
     private async void PlayBreathingParticles()
@@ -285,67 +262,53 @@ public partial class Player : CharacterBody2D, IThrower, IInteractor, IAreaDetec
         ShowDefeatScreen("YOU WERE SHOT");
     }
 
-    private void ToggleMask()
-    {
-        if (!HasMask || (_carrier.IsCarrying && !_carrier.TryToDrop()))
-            return;
-
-        MaskOn = !MaskOn;
-
-        if (MaskOn)
-            _currentRadius = MaxVisionRadius;
-    }
-
     public bool CanDetectLike(DetectableComponent detectable)
     {
-        throw new System.NotImplementedException();
+        return true;
     }
 
     public void InteractWith(IInteractable interactable)
     {
-        // if (interactable != null
-        //     && interactable.MainParent is DeadThiefCloset
-        //     && _carrier.Carriable != null
-        //     && _carrier.Carriable.MainParent is DeadThief)
-        // {
-        //     return !MaskOn;
-        // }
-
-        // return !MaskOn && !_carrier.IsCarrying;
+        
     }
 
     public void StartAiming()
     {
-        throw new System.NotImplementedException();
+        
     }
 
     public void StopAiming()
     {
-        throw new System.NotImplementedException();
+        
     }
 
-    public void Throw(IThrowable throwable, Vector2 toPosition)
+    public void Throw()
     {
-        throw new System.NotImplementedException();
+        
     }
 
     public void SetFacingDirection(Vector2 direction)
     {
-        throw new System.NotImplementedException();
+        
     }
 
     public void Pickup(ICarriable carriable)
     {
-        // !MaskOn && !_carrier.IsCarrying;
+       
     }
 
     public void Drop()
     {
-        throw new System.NotImplementedException();
+        
     }
 
     public void ChangeState(IState next)
     {
+        var oldState = CurrentState?.GetType().Name;
+        var newState = next.GetType().Name;
+        
+        if (DebugState) GD.Print($"[{DateTime.Now:HH:mm:ss:fff}][State] {oldState} => {newState}");
+
         CurrentState?.Exit();
         CurrentState = next;
         CurrentState?.Enter();

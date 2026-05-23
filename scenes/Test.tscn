@@ -1,0 +1,43 @@
+[gd_scene format=3 uid="uid://45b72bnlu6ms"]
+
+[ext_resource type="PackedScene" uid="uid://be8qbmt0fe144" path="res://characters/player/Player.tscn" id="1_w8un3"]
+[ext_resource type="PackedScene" uid="uid://hnye7wtm1w0e" path="res://objects/valuables/Valuable.tscn" id="3_jbd4l"]
+[ext_resource type="PackedScene" uid="uid://dq60rr28wyibf" path="res://objects/valuables/ValuableCabinet.tscn" id="4_fu3ou"]
+[ext_resource type="PackedScene" uid="uid://djmsje8kmaa6o" path="res://objects/valuables/valuable_Bed.tscn" id="5_bhwsq"]
+[ext_resource type="PackedScene" uid="uid://dfttis2qx6job" path="res://objects/valuables/Valuable_Chair1.tscn" id="6_xftjw"]
+[ext_resource type="PackedScene" uid="uid://3pms5s3tmqpj" path="res://objects/valuables/Valuable_Chair2.tscn" id="7_8bdjt"]
+[ext_resource type="PackedScene" uid="uid://d3rn5wbx4px5w" path="res://objects/valuables/Valuable_Closet.tscn" id="8_wnywe"]
+[ext_resource type="PackedScene" uid="uid://cg7krccbajseo" path="res://objects/valuables/Valuable_Fridge.tscn" id="9_1of5j"]
+
+[node name="Test" type="Node2D" unique_id=78523924]
+
+[node name="Player" parent="." unique_id=1993068751 instance=ExtResource("1_w8un3")]
+position = Vector2(678, 371)
+
+[node name="Valuable" parent="." unique_id=1917833229 instance=ExtResource("3_jbd4l")]
+position = Vector2(409, 277)
+Type = null
+
+[node name="Valuable2" parent="." unique_id=2061310895 instance=ExtResource("4_fu3ou")]
+position = Vector2(982, 256)
+Type = null
+
+[node name="Valuable3" parent="." unique_id=438965817 instance=ExtResource("5_bhwsq")]
+position = Vector2(405, 478)
+Type = null
+
+[node name="Valuable4" parent="." unique_id=1789179876 instance=ExtResource("6_xftjw")]
+position = Vector2(941, 495)
+Type = null
+
+[node name="Valuable5" parent="." unique_id=1054021440 instance=ExtResource("7_8bdjt")]
+position = Vector2(665, 482)
+Type = null
+
+[node name="Valuable6" parent="." unique_id=984273387 instance=ExtResource("8_wnywe")]
+position = Vector2(664, 280)
+Type = null
+
+[node name="Valuable7" parent="." unique_id=678477915 instance=ExtResource("9_1of5j")]
+position = Vector2(793, 269)
+Type = null

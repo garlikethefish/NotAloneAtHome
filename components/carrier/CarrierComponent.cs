@@ -2,7 +2,7 @@ using Godot;
 using System.Collections.Generic;
 using System.Linq;
 
-public partial class Carrier : ComponentNode2D, ICarrier
+public partial class CarrierComponent : ComponentNode2D, ICarrier
 {
     [Signal] public delegate void PickedUpEventHandler(GodotObject carriable);
     [Signal] public delegate void DroppedEventHandler(GodotObject carriable);
@@ -18,6 +18,9 @@ public partial class Carrier : ComponentNode2D, ICarrier
     public Node Node => this;
     public bool IsAnimating => IsPickingUp || IsDropping;
     public bool IsCarrying  => _carriable != null;
+
+    public CariableComponent Carriable => throw new System.NotImplementedException();
+
     public bool IsPickingUp = false;
     public bool IsDropping = false;
     public Vector2 FacingDirection = Vector2.Inf;
@@ -142,7 +145,7 @@ public partial class Carrier : ComponentNode2D, ICarrier
     {
         IsPickingUp = true;
         // _thrower?.CanBeThrownBlockers.AddBlocker(this);
-        carriable.PickUpBy(this);
+        carriable.WhenPickedUpBy(this);
 
         // carriable.OnPickUp += OnPickUpFinished;
 
@@ -157,7 +160,7 @@ public partial class Carrier : ComponentNode2D, ICarrier
 
         IsDropping = true;
         // _carriable.OnDrop += OnDropFinished;
-        carriable.DropAt(_validCarriableDropPosition);
+        carriable.WhenDropedAt(_validCarriableDropPosition);
         EmitSignal(SignalName.Dropped, carriable.Node);
     }
 }

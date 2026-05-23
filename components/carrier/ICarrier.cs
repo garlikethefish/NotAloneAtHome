@@ -1,10 +1,10 @@
 using Godot;
 
 #nullable enable
-public interface ICarrier: IComponentInterface
+public interface ICarrier : IComponentInterface
 {
     Node2D CarryPointNode { get; }
-    Carriable? Carriable { get; }
+    CariableComponent? Carriable { get; }
     void Pickup(ICarriable carriable);
     void Drop();
 }

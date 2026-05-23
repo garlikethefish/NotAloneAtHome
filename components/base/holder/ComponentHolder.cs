@@ -4,7 +4,7 @@ using Godot;
 
 public partial class ComponentHolder : Node2D
 {
-    public RigidBody2D Root => GetParent<RigidBody2D>();
+    public Node2D Root => GetParent<Node2D>();
 
     // all helpers
     public ICarriable Carriable;
@@ -18,6 +18,7 @@ public partial class ComponentHolder : Node2D
 
     public override async void _Ready()
     {
+        Carrier      = GetChildren().OfType<ICarrier>().FirstOrDefault();
         Carriable    = GetChildren().OfType<ICarriable>().FirstOrDefault();
         Detectable   = GetChildren().OfType<IDetectable>().FirstOrDefault();
         Throwable    = GetChildren().OfType<IThrowable>().FirstOrDefault();
@@ -38,4 +39,11 @@ public partial class ComponentHolder : Node2D
     /// Called after all helper nodes are ready.
     /// </summary>
     public virtual void AfterHelperReady() { }
+
+    public bool HasComp<T>(out T result) where T : class
+    {
+        result = GetChildren().OfType<T>().FirstOrDefault();
+        return result != null;
+    }
+
 }

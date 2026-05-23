@@ -2,6 +2,6 @@ using Godot;
 
 public interface IThrowable : IComponentInterface
 {
-    void OnThrowBy(IThrower thrower, Vector2 toPosition);
+    void WhenThrownBy(IThrower thrower, Vector2 toPosition);
 }
 
