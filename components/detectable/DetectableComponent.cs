@@ -17,40 +17,64 @@ public partial class DetectableComponent : ComponentStaticBody2D, IDetectable
     public CollisionShape2D CollisionShape => _collisionShape;
     public Node Node => this;
 
-    // public BlockerQueue CanBeDetectedBlockers { get; } = new();
-    public List<AreaDetectorBase> Detectors = [];
-    public List<AreaDetectorBase> SimpDetectors = []; // Detectors that have this detectable as priority
+    public List<IAreaDetector> BlacklistedDetectors { get; } = [];
 
-    public void EnterArea(AreaDetectorBase detector)
+    public List<IAreaDetector> Detectors = [];
+    public List<IAreaDetector> SimpDetectors = []; // Detectors that have this detectable as priority
+
+    public void WhenEnteredDetectorArea(IAreaDetector detector)
     {
-        if (Detectors.Contains(detector)) return;
+        if (Detectors.Contains(detector) || BlacklistedDetectors.Contains(detector)) return;
         Detectors.Add(detector);
-        EmitSignal(SignalName.Detected, detector);
+        EmitSignal(SignalName.Detected, detector.Node);
     }
 
-    public void ExitArea(AreaDetectorBase detector)
+    public void WhenExitedDetectorArea(IAreaDetector detector)
     {
         if (!Detectors.Contains(detector)) return;
         Detectors.Remove(detector);
-        EmitSignal(SignalName.Lost, detector);
+        EmitSignal(SignalName.Lost, detector.Node);
     }
 
-    public void SetAsAreaPriority(AreaDetectorBase detector)
+    public void WhenSetAsDetectorPriority(IAreaDetector detector)
     {
         if (SimpDetectors.Contains(detector)) return;
         SimpDetectors.Add(detector);
-        EmitSignal(SignalName.BecamePriority, detector);
+        EmitSignal(SignalName.BecamePriority, detector.Node);
     }
 
-    public void RemoveAsAreaPriority(AreaDetectorBase detector)
+    public void WhenRemovedFromDetectorPriority(IAreaDetector detector)
     {
         if (!SimpDetectors.Contains(detector)) return;
         SimpDetectors.Remove(detector);
-        EmitSignal(SignalName.LostPriority, detector);
+        EmitSignal(SignalName.LostPriority, detector.Node);
     }
 
-    public bool CanBeDetected(AreaDetectorBase detector)
+    public bool CanBeDetected(IAreaDetector detector)
     {
         return (Root as IDetectable).CanBeDetected(detector);
+    }
+
+    public void AddToBlacklist(IAreaDetector detector)
+    {
+        BlacklistedDetectors.Add(detector);
+        detector.WhenBlacklistedFromDetectable(this);
+        SimpDetectors.Remove(detector);
+        Detectors.Remove(detector);
+    }
+
+    public void RemoveFromBlacklist(IAreaDetector detector)
+    {
+        BlacklistedDetectors.Remove(detector);
+        if (detector.Node is Area2D area2D)
+        {
+            var bodies = area2D.GetOverlappingBodies();
+            if (bodies.Contains(this)) detector.OnBodyEntered(this);
+        }
+    }
+
+    public bool IsDetectorBlacklisted(IAreaDetector detector)
+    {
+        return BlacklistedDetectors.Contains(detector);
     }
 }

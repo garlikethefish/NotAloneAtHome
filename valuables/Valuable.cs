@@ -1,4 +1,6 @@
 namespace NotAloneAtHome.Valuables;
+
+using System.Collections.Generic;
 using Godot;
 
 
@@ -19,6 +21,7 @@ public partial class Valuable : RigidBody2D, IInteractable, ICarriable, IThrowab
     public Node Node => this;
     public Node2D Root => this;
     [Export] public CollisionShape2D CollisionShape2D { get; private set; }
+    public List<IAreaDetector> BlacklistedDetectors => _detectable.BlacklistedDetectors;
 
     public override void _Ready()
     {
@@ -40,7 +43,7 @@ public partial class Valuable : RigidBody2D, IInteractable, ICarriable, IThrowab
         // _destroyable.Destroy(node);
     }
 
-    public bool CanBeDetected(AreaDetectorBase detector)
+    public bool CanBeDetected(IAreaDetector detector)
     {
         return true;
     }
@@ -86,25 +89,41 @@ public partial class Valuable : RigidBody2D, IInteractable, ICarriable, IThrowab
 
     public void WhenDropedAt(Vector2 landPos)
     {
+        GD.Print("I was droped!");
         _carriable.WhenDropedAt(landPos);
     }
 
-    public void EnterArea(AreaDetectorBase detector)
+    public void WhenEnteredDetectorArea(IAreaDetector detector)
     {
         throw new System.NotImplementedException();
     }
 
-    public void ExitArea(AreaDetectorBase detector)
+    public void WhenExitedDetectorArea(IAreaDetector detector)
+    {
+        GD.Print("I! Type: " + Type + "Exited a detector area!");
+    }
+
+    public void WhenSetAsDetectorPriority(IAreaDetector detector)
     {
         throw new System.NotImplementedException();
     }
 
-    public void SetAsAreaPriority(AreaDetectorBase detector)
+    public void WhenRemovedFromDetectorPriority(IAreaDetector detector)
     {
         throw new System.NotImplementedException();
     }
 
-    public void RemoveAsAreaPriority(AreaDetectorBase detector)
+    public void AddToBlacklist(IAreaDetector detector)
+    {
+        _detectable.AddToBlacklist(detector);
+    }
+
+    public void RemoveFromBlacklist(IAreaDetector detector)
+    {
+        _detectable.RemoveFromBlacklist(detector);
+    }
+
+    public bool IsDetectorBlacklisted(IAreaDetector detector)
     {
         throw new System.NotImplementedException();
     }

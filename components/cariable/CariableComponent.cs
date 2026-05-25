@@ -9,29 +9,20 @@ public partial class CariableComponent : ComponentNode2D, ICarriable
     [Export] RigidBody2D rigidBody;
     public CollisionShape2D CollisionShape2D => _collisionShape2D;
     public Node Node => this;
-
-    // @onready var _detectable: IDetectable = get_fellow_helper(IDetectable)
-
     public async void WhenPickedUpBy(ICarrier carrier)
     {
-        
-        Root.SetDeferred("freeze", true);
         Root.Reparent(carrier.CarryPointNode, true);
-        
         await PlayPickUpAnimation(Vector2.Zero);
-        
-        EmitSignal(SignalName.PickedUp, carrier.Node); // or C# event: OnPickUp?.Invoke(carrier);
-        // _detectable?.CanBeDetectedBlockers.AddBlocker(this);
+        EmitSignal(SignalName.PickedUp, carrier.Node);
     }
 
     public async void WhenDropedAt(Vector2 landPos)
     {
         Root.Reparent(GetTree().CurrentScene, true);
         await PlayDropAnimation(landPos);
-
-        // Root.Freeze = false;
         EmitSignal(SignalName.Dropped);
     }
+
     private SignalAwaiter PlayDropAnimation(Vector2 landPos)
     {
         var tween  = CreateTween();
@@ -78,12 +69,4 @@ public partial class CariableComponent : ComponentNode2D, ICarriable
     {
         return (Root as ICarriable)?.CanBeCarried(carrier) ?? false;
     }
-
-    // func retire_unc():
-    // var parent = main_parent as RigidBody2D
-    // parent.reparent(get_tree().current_scene, true)
-    // if parent is RigidBody2D:
-    // 	parent.freeze = false
-    // if _detectable: _detectable.can_be_detected_blockers.remove_blocker(self)
-    // carrier = null
 }

@@ -32,12 +32,12 @@ Type = null
 
 [node name="Valuable5" parent="." unique_id=1054021440 instance=ExtResource("7_8bdjt")]
 position = Vector2(665, 482)
-Type = null
+Type = 7
 
 [node name="Valuable6" parent="." unique_id=984273387 instance=ExtResource("8_wnywe")]
 position = Vector2(664, 280)
-Type = null
+Type = 7
 
 [node name="Valuable7" parent="." unique_id=678477915 instance=ExtResource("9_1of5j")]
 position = Vector2(793, 269)
-Type = null
+Type = 7

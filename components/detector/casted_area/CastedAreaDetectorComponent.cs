@@ -3,7 +3,7 @@ using System.Linq;
 
 #nullable enable
 [GlobalClass]
-public partial class CastedAreaDetectorComponent : AreaDetectorBase, ICastedAreaDetector
+public partial class CastedAreaDetectorComponent : AreaDetectorComponent, ICastedAreaDetector
 {
     [Signal] public delegate void EnteredSightEventHandler(GodotObject detectable);
     [Signal] public delegate void ExitedSightEventHandler(GodotObject detectable);
@@ -29,8 +29,8 @@ public partial class CastedAreaDetectorComponent : AreaDetectorBase, ICastedArea
 
         if (newPriority != _closestDetectable)
         {
-            _closestDetectable?.RemoveAsAreaPriority(this);
-            newPriority?.SetAsAreaPriority(this);
+            _closestDetectable?.WhenRemovedFromDetectorPriority(this);
+            newPriority?.WhenSetAsDetectorPriority(this);
         }
 
         _closestDetectable = newPriority;
@@ -40,8 +40,8 @@ public partial class CastedAreaDetectorComponent : AreaDetectorBase, ICastedArea
     {
         if (!ShowDebug) return;
 
-        if (_collisionShape.Shape is CircleShape2D circle)
-            DrawCircle(_collisionShape.Position, circle.Radius, new Color(1, 0, 0, 0.12f));
+        if (CollisionShape.Shape is CircleShape2D circle)
+            DrawCircle(CollisionShape.Position, circle.Radius, new Color(1, 0, 0, 0.12f));
 
         foreach (var model in DetectablesInArea)
         {

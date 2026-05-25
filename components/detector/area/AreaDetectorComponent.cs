@@ -2,22 +2,21 @@ using System.Collections.Generic;
 using System.Linq;
 using Godot;
 
-[GlobalClass]
-public partial class AreaDetectorBase : ComponentArea2D, IAreaDetector
+public partial class AreaDetectorComponent : ComponentArea2D, IAreaDetector
 {
     [Signal] public delegate void EnteredEventHandler(GodotObject detectable);
     [Signal] public delegate void ExitedEventHandler(GodotObject detectable);
-    [Export] public CollisionObject2D[] ExcludedColliders = [];
+    [Export] public CollisionObject2D[] ExcludedColliders { get; private set; } = [];
     [Export] public bool ShowDebug = true;
     [Export] public int[] CollisionMasks = [10, 2];
-    public List<DetectableComponentModel> DetectablesInArea = [];
-    protected CollisionShape2D _collisionShape;
+    public List<DetectableComponentModel> DetectablesInArea { get; } = [];
+    public CollisionShape2D CollisionShape { get; private set; }
     public Node Node => this;
 
     public override void _Ready()
     {
         base._Ready();
-        _collisionShape = GetNode<CollisionShape2D>("CollisionShape2D");
+        CollisionShape = GetNode<CollisionShape2D>("CollisionShape2D");
         BodyEntered += OnBodyEntered;
         BodyExited += OnBodyExited;
     }
@@ -31,8 +30,8 @@ public partial class AreaDetectorBase : ComponentArea2D, IAreaDetector
     {
         if (!ShowDebug) return;
 
-        if (_collisionShape.Shape is CircleShape2D circle)
-            DrawCircle(_collisionShape.Position, circle.Radius, new Color(1, 0, 0, 0.12f));
+        if (CollisionShape.Shape is CircleShape2D circle)
+            DrawCircle(CollisionShape.Position, circle.Radius, new Color(1, 0, 0, 0.12f));
 
         foreach (var model in DetectablesInArea)
         {
@@ -44,25 +43,25 @@ public partial class AreaDetectorBase : ComponentArea2D, IAreaDetector
         }
     }
 
-    private void OnBodyEntered(Node2D body)
+    public void OnBodyEntered(Node2D body)
     {
-        if (body is not DetectableComponent detectable) return;
+        if (body is not IDetectable detectable || detectable.IsDetectorBlacklisted(this)) return;
         if (DetectablesInArea.Any(detInArea => detInArea.Detectable == detectable)) return;
 
-        DetectablesInArea.Add(new DetectableComponentModel { Detectable = detectable });
-        detectable.EnterArea(this);
+        DetectablesInArea.Add(new DetectableComponentModel { Detectable = detectable as DetectableComponent });
+        detectable.WhenEnteredDetectorArea(this);
         EmitSignal(SignalName.Entered, body);
     }
 
-    private void OnBodyExited(Node2D body)
+    public void OnBodyExited(Node2D body)
     {
-        if (body is not DetectableComponent detectable) return;
+        if (body is not IDetectable detectable) return;
 
         var model = DetectablesInArea.FirstOrDefault(m => m.Detectable == detectable);
         if (model == null) return;
 
         DetectablesInArea.Remove(model);
-        detectable.ExitArea(this);
+        detectable.WhenExitedDetectorArea(this);
         EmitSignal(SignalName.Exited, body);
     }
 
@@ -73,5 +72,10 @@ public partial class AreaDetectorBase : ComponentArea2D, IAreaDetector
     public bool CanDetectLike(DetectableComponent detectable)
     {
         return (Root as IAreaDetector)?.CanDetectLike(detectable) ?? false;
+    }
+
+    public void WhenBlacklistedFromDetectable(IDetectable detectable)
+    {
+        OnBodyExited(detectable.Node as Node2D);
     }
 }

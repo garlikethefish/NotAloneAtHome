@@ -145,6 +145,10 @@ public partial class CarrierComponent : ComponentNode2D, ICarrier
         Carriable = carriable;
         IsPickingUp = true;
         carriable.WhenPickedUpBy(this);
+
+        if (carriable.Root is IDetectable detectable)
+            detectable.AddToBlacklist(Holder.AreaDetector);
+
         EmitSignal(SignalName.PickedUp, carriable.Node);
     }
 
@@ -152,10 +156,12 @@ public partial class CarrierComponent : ComponentNode2D, ICarrier
     {
         var carriable = Carriable;
         Carriable = null;
-
         IsDropping = true;
-        // _carriable.OnDrop += OnDropFinished;
         carriable.WhenDropedAt(_validCarriableDropPosition);
+
+        if (carriable.Root is IDetectable detectable)
+            detectable.RemoveFromBlacklist(Holder.AreaDetector);
+
         EmitSignal(SignalName.Dropped, carriable.Node);
     }
 }

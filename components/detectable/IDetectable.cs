@@ -1,10 +1,16 @@
-using Godot;
+
+
+using System.Collections.Generic;
 
 public interface IDetectable : IComponentInterface
 {
-    public void EnterArea(AreaDetectorBase detector);
-    public void ExitArea(AreaDetectorBase detector);
-    public void SetAsAreaPriority(AreaDetectorBase detector);
-    public void RemoveAsAreaPriority(AreaDetectorBase detector);
-    public bool CanBeDetected(AreaDetectorBase detector);
+    public List<IAreaDetector> BlacklistedDetectors { get; }
+    public void WhenEnteredDetectorArea(IAreaDetector detector);
+    public void WhenExitedDetectorArea(IAreaDetector detector);
+    public void WhenSetAsDetectorPriority(IAreaDetector detector);
+    public void WhenRemovedFromDetectorPriority(IAreaDetector detector);
+    public void AddToBlacklist(IAreaDetector detector);
+    public void RemoveFromBlacklist(IAreaDetector detector);
+    public bool IsDetectorBlacklisted(IAreaDetector detector);
+    public bool CanBeDetected(IAreaDetector detector);
 }

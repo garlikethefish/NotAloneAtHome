@@ -75,8 +75,10 @@ public partial class Player : CharacterBody2D, IThrower, IInteractor, IAreaDetec
     public Dictionary<Type, IState> States = new();
     public IState CurrentState { get; private set; }
     public ComponentHolder Holder { get; private set; }
-
     public Node2D Root => throw new NotImplementedException();
+    public CollisionObject2D[] ExcludedColliders => _detector.ExcludedColliders;
+    public List<DetectableComponentModel> DetectablesInArea => _detector.DetectablesInArea;
+    public CollisionShape2D CollisionShape => _detector.CollisionShape;
 
     [Signal] public delegate void ShakeCameraEventHandler();
     [Signal] public delegate void StopCameraShakeEventHandler();
@@ -327,5 +329,20 @@ public partial class Player : CharacterBody2D, IThrower, IInteractor, IAreaDetec
     public void PhysicsUpdate(double delta)
     {
         CurrentState.PhysicsUpdate(delta);
+    }
+
+    public void OnBodyEntered(Node2D body)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void OnBodyExited(Node2D body)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void WhenBlacklistedFromDetectable(IDetectable detectable)
+    {
+        throw new NotImplementedException();
     }
 }
