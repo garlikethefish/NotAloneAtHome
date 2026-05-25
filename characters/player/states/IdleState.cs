@@ -21,15 +21,14 @@ public partial class Player
                 var detectable = Ctx._detector.ClosestDetectable;
                 if (detectable == null) return;
 
-                if (detectable.Holder.HasComp<ICarriable>(out var carriable) && carriable.CanBeCarried(Ctx._carrier))
+                if (detectable.Root is ICarriable carriable && carriable.CanBeCarried(Ctx))
                 {
-                    Ctx._carrier.Pickup(carriable);
+                    Ctx.Pickup(carriable);
                     Ctx.ChangeState(Ctx.States[typeof(CarryingState)]);
                 }
-
-                if (detectable.Holder.HasComp<IInteractable>(out var interactable) && interactable.CanBeInteractedBy(Ctx._interactor))
+                else if (detectable.Root is IInteractable interactable && interactable.CanBeInteractedBy(Ctx))
                 {
-                    Ctx._interactor.InteractWith(interactable);
+                    Ctx.InteractWith(interactable);
                 }
             }
 
@@ -49,10 +48,7 @@ public partial class Player
             Ctx.ImmobileAnimation();
         }
 
-        public void Exit()
-        {
-            
-        }
+        public void Exit() {}
 
         public void PhysicsUpdate(double delta) {}
     }

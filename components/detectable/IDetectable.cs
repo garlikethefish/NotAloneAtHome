@@ -2,9 +2,9 @@ using Godot;
 
 public interface IDetectable : IComponentInterface
 {
-    public void EnterArea(AreaDetector detector);
-    public void ExitArea(AreaDetector detector);
-    public void SetAsAreaPriority(AreaDetector detector);
-    public void RemoveAsAreaPriority(AreaDetector detector);
-    public bool CanBeDetected(AreaDetector detector);
+    public void EnterArea(AreaDetectorBase detector);
+    public void ExitArea(AreaDetectorBase detector);
+    public void SetAsAreaPriority(AreaDetectorBase detector);
+    public void RemoveAsAreaPriority(AreaDetectorBase detector);
+    public bool CanBeDetected(AreaDetectorBase detector);
 }

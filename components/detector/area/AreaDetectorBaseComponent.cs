@@ -2,7 +2,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Godot;
 
-public partial class AreaDetector : ComponentArea2D, IAreaDetector
+[GlobalClass]
+public partial class AreaDetectorBase : ComponentArea2D, IAreaDetector
 {
     [Signal] public delegate void EnteredEventHandler(GodotObject detectable);
     [Signal] public delegate void ExitedEventHandler(GodotObject detectable);

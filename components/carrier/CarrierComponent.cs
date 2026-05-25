@@ -17,15 +17,14 @@ public partial class CarrierComponent : ComponentNode2D, ICarrier
 
     public Node Node => this;
     public bool IsAnimating => IsPickingUp || IsDropping;
-    public bool IsCarrying  => _carriable != null;
+    public bool IsCarrying  => Carriable != null;
 
-    public CariableComponent Carriable => throw new System.NotImplementedException();
+    public ICarriable Carriable { get; private set; }
 
     public bool IsPickingUp = false;
     public bool IsDropping = false;
     public Vector2 FacingDirection = Vector2.Inf;
     Vector2 _validCarriableDropPosition = Vector2.Inf;
-    private ICarriable _carriable;
     // private List<(Vector2 From, Vector2 To)> _debugRays = new();
     // private List<(Vector2 Pos, bool IsValid)> _debugPoints = new();
 
@@ -38,11 +37,11 @@ public partial class CarrierComponent : ComponentNode2D, ICarrier
     public override void _Process(double delta)
     {
         if (ShowDebug) QueueRedraw();
-        if (_carriable == null) return;
+        if (Carriable == null) return;
 
         _validCarriableDropPosition = Casters.RadialyFindAValidLocationWhichFitsGivenShape(
             GetWorld2D().DirectSpaceState,
-            _carriable.CollisionShape2D,
+            Carriable.CollisionShape2D,
             GlobalPosition,
             Reach,
             StepSize,
@@ -143,20 +142,16 @@ public partial class CarrierComponent : ComponentNode2D, ICarrier
 
     public void Pickup(ICarriable carriable)
     {
+        Carriable = carriable;
         IsPickingUp = true;
-        // _thrower?.CanBeThrownBlockers.AddBlocker(this);
         carriable.WhenPickedUpBy(this);
-
-        // carriable.OnPickUp += OnPickUpFinished;
-
         EmitSignal(SignalName.PickedUp, carriable.Node);
-        _carriable = carriable;
     }
 
     public void Drop()
     {
-        var carriable = _carriable;
-        _carriable = null;
+        var carriable = Carriable;
+        Carriable = null;
 
         IsDropping = true;
         // _carriable.OnDrop += OnDropFinished;

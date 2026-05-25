@@ -21,6 +21,7 @@ public partial class Player : CharacterBody2D, IThrower, IInteractor, IAreaDetec
     [Export] public float NormalSpeed = 100.0f;
     [Export] public float SprintMultiplier = 2.0f;
     [Export] public float MaskSpeedMultiplier = 0.6f;
+    [Export] public float CarrySpeedMultiplier = 0.8f;
     float _currentSpeed = 100.0f;
 
     // player vision
@@ -29,11 +30,13 @@ public partial class Player : CharacterBody2D, IThrower, IInteractor, IAreaDetec
     [Export] public double VisionShrinkSpeed = 0.05;
     [Export] public double VisionExpandSpeed = 0.25;
     [Export] public double AtmosphereRadius = 0.35;
+    [Export] public double maskedVisionRadiuss = 5;
     private double _targetVisionRadius = 0;
     private double _currentVisionRadius = 0.35;
     
     [ExportGroup("Debug")]
     [Export] public bool DebugState = false;
+    public bool isWearingMask = false;
 
     public bool IsDead = false;
     public bool HasMask = true;
@@ -64,17 +67,16 @@ public partial class Player : CharacterBody2D, IThrower, IInteractor, IAreaDetec
     private bool _waitParticles = false;
     private bool _shakingCamera = false;
 
-    public Node Node => throw new System.NotImplementedException();
-
-    public Vector2 FacingDirection => throw new System.NotImplementedException();
-
-    public bool IsAiming => throw new System.NotImplementedException();
-
+    public Node Node => this;
+    public Vector2 FacingDirection { get; private set; }
+    public bool IsAiming { get; private set; }
     public Node2D CarryPointNode => throw new System.NotImplementedException();
-    public CariableComponent Carriable => throw new NotImplementedException();
+    public ICarriable Carriable => _carrier.Carriable;
     public Dictionary<Type, IState> States = new();
     public IState CurrentState { get; private set; }
     public ComponentHolder Holder { get; private set; }
+
+    public Node2D Root => throw new NotImplementedException();
 
     [Signal] public delegate void ShakeCameraEventHandler();
     [Signal] public delegate void StopCameraShakeEventHandler();
@@ -127,7 +129,6 @@ public partial class Player : CharacterBody2D, IThrower, IInteractor, IAreaDetec
 
     public override void _Process(double delta)
     {
-        // _thrower.SetTargetDirection(GetGlobalMousePosition() - GlobalPosition);
         CurrentState?.Update(delta);
         HandleShaking();
         TransitionVisionRadius(delta, _targetVisionRadius);
@@ -138,6 +139,8 @@ public partial class Player : CharacterBody2D, IThrower, IInteractor, IAreaDetec
         _moveDirection.X = Input.GetActionStrength("move_right") - Input.GetActionStrength("move_left");
         _moveDirection.Y = Input.GetActionStrength("move_down") - Input.GetActionStrength("move_up");
         _moveDirection = _moveDirection.Normalized();
+
+        if (!IsAiming) SetFacingDirection(Velocity);
 
         Velocity = _moveDirection * _currentSpeed;
         MoveAndSlide();
@@ -269,37 +272,39 @@ public partial class Player : CharacterBody2D, IThrower, IInteractor, IAreaDetec
 
     public void InteractWith(IInteractable interactable)
     {
-        
+        GD.Print("Interacted!");
+        _interactor.InteractWith(interactable);
     }
 
     public void StartAiming()
     {
-        
+        _thrower.StartAiming();
     }
 
     public void StopAiming()
     {
-        
-    }
-
-    public void Throw()
-    {
-        
+        _thrower.StopAiming();
     }
 
     public void SetFacingDirection(Vector2 direction)
     {
-        
+        FacingDirection = direction;
     }
 
     public void Pickup(ICarriable carriable)
     {
-       
+        GD.Print("Picked up!");
+       _carrier.Pickup(carriable);
     }
 
     public void Drop()
     {
-        
+        _carrier.Drop();
+    }
+
+    public void Throw(IThrowable throwable)
+    {
+        _thrower.Throw(throwable);
     }
 
     public void ChangeState(IState next)

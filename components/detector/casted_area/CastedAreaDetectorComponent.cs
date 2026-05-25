@@ -2,7 +2,8 @@ using Godot;
 using System.Linq;
 
 #nullable enable
-public partial class CastedAreaDetectorComponent : AreaDetector, ICastedAreaDetector
+[GlobalClass]
+public partial class CastedAreaDetectorComponent : AreaDetectorBase, ICastedAreaDetector
 {
     [Signal] public delegate void EnteredSightEventHandler(GodotObject detectable);
     [Signal] public delegate void ExitedSightEventHandler(GodotObject detectable);

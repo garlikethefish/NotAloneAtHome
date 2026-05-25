@@ -5,17 +5,19 @@
 [ext_resource type="PackedScene" uid="uid://bfxah7yut2ec0" path="res://components/cariable/CariableComponent.tscn" id="3_xcwdw"]
 [ext_resource type="PackedScene" uid="uid://b8odej7420g54" path="res://components/detectable/DetectableComponent.tscn" id="4_apino"]
 [ext_resource type="PackedScene" uid="uid://k2k1j0y25ebx" path="res://components/interactable/InteractableComponent.tscn" id="5_2vrdr"]
+[ext_resource type="PackedScene" uid="uid://m5gqbqgarhdk" path="res://components/throwable/ThrowableComponent.tscn" id="6_xcwdw"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2vrdr"]
 size = Vector2(31, 65)
 
-[node name="Valuable" type="RigidBody2D" unique_id=901548105]
+[node name="Valuable" type="RigidBody2D" unique_id=901548105 node_paths=PackedStringArray("CollisionShape2D")]
 texture_filter = 1
 collision_mask = 2
 gravity_scale = 0.0
 can_sleep = false
 lock_rotation = true
 script = ExtResource("1_7p2l0")
+CollisionShape2D = NodePath("CollisionShape2D")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=168771423]
 shape = SubResource("RectangleShape2D_2vrdr")
@@ -34,3 +36,6 @@ rigidBody = NodePath("../..")
 _collisionShape = NodePath("../../CollisionShape2D")
 
 [node name="IInteractable" parent="ComponentHolder" unique_id=1999549239 instance=ExtResource("5_2vrdr")]
+
+[node name="IThrowable" parent="ComponentHolder" unique_id=1551366403 node_paths=PackedStringArray("Sprite") instance=ExtResource("6_xcwdw")]
+Sprite = NodePath("../../Sprite2D")

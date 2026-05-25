@@ -4,7 +4,7 @@ using Godot;
 public interface ICarrier : IComponentInterface
 {
     Node2D CarryPointNode { get; }
-    CariableComponent? Carriable { get; }
+    ICarriable? Carriable { get; }
     void Pickup(ICarriable carriable);
     void Drop();
 }

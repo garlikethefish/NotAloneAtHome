@@ -16,28 +16,27 @@ public partial class Player
 
         public void Update(double delta)
         {
-            if (Input.IsActionPressed("throw"))
+            if (Input.IsActionPressed("throw") && Ctx.Carriable.Root is IThrowable)
             {
-                Ctx._thrower.StartAiming();
+                Ctx.StartAiming();
                 Ctx.ChangeState(Ctx.States[typeof(AimingState)]);
             }
 
             if (Input.IsActionJustPressed("drop"))
             {
-                Ctx._carrier.Drop();
+                Ctx.Drop();
                 Ctx.ChangeState(Ctx.States[typeof(IdleState)]);
             }
-
         }
 
         public void Enter()
         {
-            
+            Ctx._currentSpeed = Ctx.NormalSpeed * Ctx.CarrySpeedMultiplier;
         }
 
         public void Exit()
         {
-            
+            Ctx._currentSpeed = Ctx.NormalSpeed;
         }
 
         public void PhysicsUpdate(double delta) {}

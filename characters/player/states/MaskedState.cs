@@ -5,9 +5,6 @@ using NotAloneAtHome.state_machines.interfaces;
 
 public partial class Player
 {
-    [Export] public double maskedVisionRadiuss = 5;
-    public bool isWearingMask = false;
-
     public class MaskedState : IState<Player>
     {
         public Player Ctx { get; private set; }

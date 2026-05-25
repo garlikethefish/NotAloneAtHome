@@ -32,12 +32,13 @@ public partial class ThrowerComponent : ComponentNode2D, IThrower
 
     public override void _Process(double delta)
     {
-        // if (ShowDebug) QueueRedraw();
-        // _targetSpriteNode.GlobalPosition = AimedAtLocation;
+        _targetSpriteNode.GlobalPosition = AimedAtLocation;
 
-        // if (!IsCharging) return;
-        // CurrentCharge = Mathf.Clamp(CurrentCharge + (float)delta * ChargeMultiplier,0, MaxChargeSeconds);
-        // AimedAtLocation = CalculateAimedAtLocation(FacingDirection);
+        if (!IsCharging) return;
+        CurrentCharge = Mathf.Clamp(CurrentCharge + (float)delta * ChargeMultiplier,0, MaxChargeSeconds);
+        AimedAtLocation = CalculateAimedAtLocation(FacingDirection);
+
+        if (ShowDebug) QueueRedraw();
     }
 
     public override void _Draw()
@@ -72,9 +73,12 @@ public partial class ThrowerComponent : ComponentNode2D, IThrower
         return GlobalPosition + query.Motion * travelFraction;
     }
 
-    public void Throw(IThrowable throwable, Vector2 toPosition)
+    public void Throw(IThrowable throwable)
     {
-        EmitSignal(SignalName.Threw, throwable.Node, toPosition);
+        throwable.Node.Reparent(GetTree().CurrentScene);
+        throwable.WhenThrownBy(this, AimedAtLocation);
+        EmitSignal(SignalName.Threw, throwable.Node, AimedAtLocation);
+        StopAiming();
     }
 
     public void SetFacingDirection(Vector2 direction)
@@ -99,12 +103,9 @@ public partial class ThrowerComponent : ComponentNode2D, IThrower
         
         _targetSpriteNode.GlobalPosition = Vector2.Inf;
         _targetSpriteNode.Visible = false;
+        QueueRedraw();
     }
 
-    public void Throw()
-    {
-        throw new System.NotImplementedException();
-    }
     // public bool TryThrow()
     // {
     //     if (Throwable == null) return false;
@@ -139,14 +140,5 @@ public partial class ThrowerComponent : ComponentNode2D, IThrower
     // {
     //     Throwable = null;
     //     ResetChargingData();
-    // }
-
-    // private void ResetChargingData()
-    // {
-    //     IsCharging           = false;
-    //     CurrentCharge        = 0;
-    //     CurrentThrowPosition = Vector2.Zero;
-    //     UpdateUi();
-    //     _targetSpriteNode.Visible = false;
     // }
 }

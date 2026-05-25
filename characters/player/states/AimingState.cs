@@ -16,21 +16,23 @@ public partial class Player
 
         public void Update(double delta)
         {
-            if (Input.IsActionJustReleased("throw"))
+            Ctx.SetFacingDirection(Ctx.GetGlobalMousePosition() - Ctx.GlobalPosition);
+
+            if (Input.IsActionJustReleased("throw") && Ctx.Carriable.Root is IThrowable throwable)
             {
-                Ctx._thrower.Throw();
+                Ctx.Throw(throwable);
                 Ctx.ChangeState(Ctx.States[typeof(IdleState)]);
             }
         }
 
         public void Enter()
         {
-            
+            Ctx.IsAiming = true;
         }
 
         public void Exit()
         {
-            
+            Ctx.IsAiming = false;
         }
 
         public void PhysicsUpdate(double delta) {}

@@ -651,6 +651,5 @@ scale = Vector2(5.19, 5.19)
 [node name="IInteractor" parent="ComponentHolder" unique_id=688399906 instance=ExtResource("16_k06rn")]
 
 [node name="IThrower" parent="ComponentHolder" unique_id=2059326990 instance=ExtResource("17_u7nq2")]
-ShowDebug = false
 
 [editable path="ComponentHolder/ICarrier"]

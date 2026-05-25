@@ -16,9 +16,9 @@ public partial class Valuable : RigidBody2D, IInteractable, ICarriable, IThrowab
 
     private ShaderMaterial _shaderMat = GD.Load<ShaderMaterial>("uid://cnuuc1ep5p6ia");
 
-    public Node Node => throw new System.NotImplementedException();
-
-    public CollisionShape2D CollisionShape2D => throw new System.NotImplementedException();
+    public Node Node => this;
+    public Node2D Root => this;
+    [Export] public CollisionShape2D CollisionShape2D { get; private set; }
 
     public override void _Ready()
     {
@@ -27,7 +27,7 @@ public partial class Valuable : RigidBody2D, IInteractable, ICarriable, IThrowab
         _detectable   = Holder.Detectable;
         _interactable = Holder.Interactable;
         _carriable    = Holder.Carriable;
-        // _throwable    = _componentHolder.Throwable;
+        _throwable    = Holder.Throwable;
         _sprite       = GetNode<Sprite2D>("Sprite2D");
 
         _sprite.Texture = ValuableData.Valuables[Type].texture2D;
@@ -40,7 +40,7 @@ public partial class Valuable : RigidBody2D, IInteractable, ICarriable, IThrowab
         // _destroyable.Destroy(node);
     }
 
-    public bool CanBeDetected(AreaDetector detector)
+    public bool CanBeDetected(AreaDetectorBase detector)
     {
         return true;
     }
@@ -76,38 +76,36 @@ public partial class Valuable : RigidBody2D, IInteractable, ICarriable, IThrowab
 
     public void WhenThrownBy(IThrower thrower, Vector2 toPosition)
     {
-        
+        _throwable.WhenThrownBy(thrower, toPosition);
     }
 
     public void WhenPickedUpBy(ICarrier carrier)
     {
-        
+        _carriable.WhenPickedUpBy(carrier);
     }
 
     public void WhenDropedAt(Vector2 landPos)
     {
-        
+        _carriable.WhenDropedAt(landPos);
     }
 
-    public void EnterArea(AreaDetector detector)
+    public void EnterArea(AreaDetectorBase detector)
     {
         throw new System.NotImplementedException();
     }
 
-    public void ExitArea(AreaDetector detector)
+    public void ExitArea(AreaDetectorBase detector)
     {
         throw new System.NotImplementedException();
     }
 
-    public void SetAsAreaPriority(AreaDetector detector)
+    public void SetAsAreaPriority(AreaDetectorBase detector)
     {
         throw new System.NotImplementedException();
     }
 
-    public void RemoveAsAreaPriority(AreaDetector detector)
+    public void RemoveAsAreaPriority(AreaDetectorBase detector)
     {
         throw new System.NotImplementedException();
     }
-
-    
 }

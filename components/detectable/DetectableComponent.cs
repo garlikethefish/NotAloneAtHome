@@ -18,38 +18,38 @@ public partial class DetectableComponent : ComponentStaticBody2D, IDetectable
     public Node Node => this;
 
     // public BlockerQueue CanBeDetectedBlockers { get; } = new();
-    public List<AreaDetector> Detectors = [];
-    public List<AreaDetector> SimpDetectors = []; // Detectors that have this detectable as priority
+    public List<AreaDetectorBase> Detectors = [];
+    public List<AreaDetectorBase> SimpDetectors = []; // Detectors that have this detectable as priority
 
-    public void EnterArea(AreaDetector detector)
+    public void EnterArea(AreaDetectorBase detector)
     {
         if (Detectors.Contains(detector)) return;
         Detectors.Add(detector);
         EmitSignal(SignalName.Detected, detector);
     }
 
-    public void ExitArea(AreaDetector detector)
+    public void ExitArea(AreaDetectorBase detector)
     {
         if (!Detectors.Contains(detector)) return;
         Detectors.Remove(detector);
         EmitSignal(SignalName.Lost, detector);
     }
 
-    public void SetAsAreaPriority(AreaDetector detector)
+    public void SetAsAreaPriority(AreaDetectorBase detector)
     {
         if (SimpDetectors.Contains(detector)) return;
         SimpDetectors.Add(detector);
         EmitSignal(SignalName.BecamePriority, detector);
     }
 
-    public void RemoveAsAreaPriority(AreaDetector detector)
+    public void RemoveAsAreaPriority(AreaDetectorBase detector)
     {
         if (!SimpDetectors.Contains(detector)) return;
         SimpDetectors.Remove(detector);
         EmitSignal(SignalName.LostPriority, detector);
     }
 
-    public bool CanBeDetected(AreaDetector detector)
+    public bool CanBeDetected(AreaDetectorBase detector)
     {
         return (Root as IDetectable).CanBeDetected(detector);
     }
