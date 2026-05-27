@@ -16,22 +16,6 @@ public partial class Player
 
         public void Update(double delta)
         {
-            if (Input.IsActionJustPressed("interact"))
-            {
-                var detectable = Ctx._detector.ClosestDetectable;
-                if (detectable == null) return;
-
-                if (detectable.Root is ICarriable carriable && carriable.CanBeCarried(Ctx))
-                {
-                    Ctx.Pickup(carriable);
-                    Ctx.ChangeState(Ctx.States[typeof(CarryingState)]);
-                }
-                else if (detectable.Root is IInteractable interactable && interactable.CanBeInteractedBy(Ctx))
-                {
-                    Ctx.InteractWith(interactable);
-                }
-            }
-
             if (Ctx._moveDirection != Vector2.Zero)
             {
                 Ctx.ChangeState(Ctx.States[typeof(WalkingState)]);
@@ -45,10 +29,14 @@ public partial class Player
 
         public void Enter()
         {
+            Ctx._canInteract = true;
             Ctx.ImmobileAnimation();
         }
 
-        public void Exit() {}
+        public void Exit()
+        {
+            Ctx._canInteract = false;
+        }
 
         public void PhysicsUpdate(double delta) {}
     }

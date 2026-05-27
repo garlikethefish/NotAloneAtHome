@@ -15,7 +15,6 @@ public partial class CarrierComponent : ComponentNode2D, ICarrier
     [Export] public int[] CollisionMasks = [];
     [Export] public Node2D CarryPointNode { get; private set; }
 
-    public Node Node => this;
     public bool IsAnimating => IsPickingUp || IsDropping;
     public bool IsCarrying  => Carriable != null;
 

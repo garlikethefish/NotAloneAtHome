@@ -1,6 +1,7 @@
 
 using System.Linq;
 using Godot;
+using NotAloneAtHome.Components.Destroyable;
 
 public partial class ComponentHolder : Node2D
 {
@@ -15,6 +16,7 @@ public partial class ComponentHolder : Node2D
     public IThrower Thrower;
     public IInteractable Interactable;
     public IInteractor Interactor;
+    public IDestroyable Destroyable;
 
     public override async void _Ready()
     {
@@ -26,7 +28,8 @@ public partial class ComponentHolder : Node2D
         Thrower      = GetChildren().OfType<IThrower>().FirstOrDefault();
         Interactable = GetChildren().OfType<IInteractable>().FirstOrDefault();
         Interactor   = GetChildren().OfType<IInteractor>().FirstOrDefault();
-
+        Destroyable   = GetChildren().OfType<IDestroyable>().FirstOrDefault();
+        
         await ToSignal(Root, Node.SignalName.Ready);
 
         foreach (var child in GetChildren().OfType<IComponentBase>()) 

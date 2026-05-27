@@ -1,4 +1,5 @@
 using Godot;
+using System;
 using System.Collections.Generic;
 
 public class DetectableComponentModel
@@ -15,12 +16,25 @@ public partial class DetectableComponent : ComponentStaticBody2D, IDetectable
     [Signal] public delegate void LostPriorityEventHandler(GodotObject detector);
     [Export] public CollisionShape2D _collisionShape;
     public CollisionShape2D CollisionShape => _collisionShape;
-    public Node Node => this;
-
     public List<IAreaDetector> BlacklistedDetectors { get; } = [];
 
     public List<IAreaDetector> Detectors = [];
     public List<IAreaDetector> SimpDetectors = []; // Detectors that have this detectable as priority
+
+    public event Action<IAreaDetector> OnBecamePriority;
+    public event Action<IAreaDetector> OnLostPriority;
+
+    public override void _Ready()
+    {
+        base._Ready();
+        OnBecamePriority += (IAreaDetector d) => EmitSignal(SignalName.BecamePriority, d.Node);
+        OnLostPriority += (IAreaDetector d) => EmitSignal(SignalName.LostPriority, d.Node);
+    }
+
+    public override void _ExitTree()
+    {
+        ExitAllDetectors();
+    }
 
     public void WhenEnteredDetectorArea(IAreaDetector detector)
     {
@@ -40,14 +54,14 @@ public partial class DetectableComponent : ComponentStaticBody2D, IDetectable
     {
         if (SimpDetectors.Contains(detector)) return;
         SimpDetectors.Add(detector);
-        EmitSignal(SignalName.BecamePriority, detector.Node);
+        OnBecamePriority?.Invoke(detector);
     }
 
     public void WhenRemovedFromDetectorPriority(IAreaDetector detector)
     {
         if (!SimpDetectors.Contains(detector)) return;
         SimpDetectors.Remove(detector);
-        EmitSignal(SignalName.LostPriority, detector.Node);
+        OnLostPriority?.Invoke(detector);
     }
 
     public bool CanBeDetected(IAreaDetector detector)
@@ -76,5 +90,11 @@ public partial class DetectableComponent : ComponentStaticBody2D, IDetectable
     public bool IsDetectorBlacklisted(IAreaDetector detector)
     {
         return BlacklistedDetectors.Contains(detector);
+    }
+
+    public void ExitAllDetectors()
+    {
+        Detectors.ForEach(item => item.RemoveDetectable(this));
+        SimpDetectors.ForEach(item => item.RemoveDetectable(this));
     }
 }

@@ -6,9 +6,10 @@
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_3arj4"]
 light_mode = 1
 
-[node name="IInteractable" type="Node2D" unique_id=1999549239]
+[node name="InteractableComponent" type="Node2D" unique_id=1999549239 node_paths=PackedStringArray("_interactionSprite")]
 light_mask = 2
 script = ExtResource("1_m7v26")
+_interactionSprite = NodePath("InteractionKey")
 
 [node name="InteractionKey" type="Sprite2D" parent="." unique_id=1457446261]
 light_mask = 2

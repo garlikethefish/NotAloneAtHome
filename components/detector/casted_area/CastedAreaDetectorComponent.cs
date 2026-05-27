@@ -132,4 +132,10 @@ public partial class CastedAreaDetectorComponent : AreaDetectorComponent, ICaste
         point.GlobalPosition.DistanceTo(second.GlobalPosition)
             ? first
             : second;
+
+    public override void RemoveDetectable(IDetectable detectable)
+    {
+        if (_closestDetectable == detectable)
+        _closestDetectable = null;
+    }
 }

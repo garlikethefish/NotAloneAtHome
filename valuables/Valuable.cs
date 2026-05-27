@@ -1,5 +1,6 @@
 namespace NotAloneAtHome.Valuables;
 
+using System;
 using System.Collections.Generic;
 using Godot;
 
@@ -17,6 +18,9 @@ public partial class Valuable : RigidBody2D, IInteractable, ICarriable, IThrowab
     private Sprite2D     _sprite;
 
     private ShaderMaterial _shaderMat = GD.Load<ShaderMaterial>("uid://cnuuc1ep5p6ia");
+
+    public event Action<IAreaDetector> OnBecamePriority;
+    public event Action<IAreaDetector> OnLostPriority;
 
     public Node Node => this;
     public Node2D Root => this;
@@ -124,6 +128,11 @@ public partial class Valuable : RigidBody2D, IInteractable, ICarriable, IThrowab
     }
 
     public bool IsDetectorBlacklisted(IAreaDetector detector)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void ExitAllDetectors()
     {
         throw new System.NotImplementedException();
     }

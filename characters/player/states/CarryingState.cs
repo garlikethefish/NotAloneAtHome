@@ -31,11 +31,13 @@ public partial class Player
 
         public void Enter()
         {
+            Ctx._canInteract = true;
             Ctx._currentSpeed = Ctx.NormalSpeed * Ctx.CarrySpeedMultiplier;
         }
 
         public void Exit()
         {
+            Ctx._canInteract = false;
             Ctx._currentSpeed = Ctx.NormalSpeed;
         }
 

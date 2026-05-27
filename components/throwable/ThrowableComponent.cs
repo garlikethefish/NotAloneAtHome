@@ -5,8 +5,6 @@ public partial class ThrowableComponent : ComponentNode2D, IThrowable
     [Signal] public delegate void ThrownEventHandler(GodotObject thrower);
     [Signal] public delegate void LandedEventHandler(Vector2 position);
     [Export] public Sprite2D Sprite;
-
-    public Node Node => this;
     public bool IsFlying { get; private set; }
     private float _flyDuration = 0.6f;
 

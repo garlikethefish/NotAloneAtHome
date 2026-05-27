@@ -32,12 +32,12 @@ public partial class Player
 
         public void Enter()
         {
-            
+            Ctx._canInteract = true;
         }
 
         public void Exit()
         {
-            
+            Ctx._canInteract = false;
         }
 
         public void PhysicsUpdate(double delta)

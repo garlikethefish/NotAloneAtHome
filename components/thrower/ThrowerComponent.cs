@@ -18,8 +18,6 @@ public partial class ThrowerComponent : ComponentNode2D, IThrower
     public float MaxChargeSeconds = 1f;
     public float ChargeMultiplier = 1f;
     public int[] AimColliderMasks = [2];
-
-    public Node Node => this;
     public Vector2 FacingDirection => (Root as IThrower)?.FacingDirection ?? Vector2.Zero;
     public bool IsAiming { get; private set; }
     Vector2 AimedAtLocation = Vector2.Inf;

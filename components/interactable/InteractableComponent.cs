@@ -1,29 +1,38 @@
+using System;
 using Godot;
 
 namespace NotAloneAtHome.Components;
 
 public partial class InteractableComponent : ComponentNode2D, IInteractable
 {
+    [Export] private Sprite2D _interactionSprite;
     [Signal] public delegate void InteractedByEventHandler(GodotObject interactor);
 
-    private Sprite2D _interactionSprite;
     private Vector2  _interactionKeyStartPos;
     private Vector2  _interactionKeyStartScale;
     private Tween    _appearTween;
-    public Node Node => this;
 
     public override void _Ready()
     {
         base._Ready();
-        _interactionSprite        = GetNode<Sprite2D>("InteractionKey");
         _interactionKeyStartPos   = _interactionSprite.Position;
         _interactionKeyStartScale = _interactionSprite.Scale;
         _interactionSprite.Visible = false;
-        SpriteHideAnimation();
+        HideSprite();
+
+        GD.Print("Is root detectable?: ", Root is IDetectable );
+        if (Root is IDetectable detectable)
+        {
+            detectable.OnBecamePriority += _ => ShowSprite();
+            detectable.OnLostPriority += _ => HideSprite();
+        }
     }
 
-    public void ShowSprite() => SpriteAppearAnimation();
-    public void HideSprite() => SpriteHideAnimation();
+    public override void _Process(double delta)
+    {
+        
+    }
+
     private void TweenAnimation()
     {
         _interactionSprite.Position = _interactionKeyStartPos;
@@ -36,16 +45,19 @@ public partial class InteractableComponent : ComponentNode2D, IInteractable
         tween.TweenProperty(_interactionSprite, "scale",    _interactionKeyStartScale,                     0.1f).SetDelay(0.1f);
     }
 
-    private void SpriteAppearAnimation()
+    private void ShowSprite()
     {
+        GD.Print("showed!");
         _interactionSprite.Visible = true;
         _appearTween?.Kill();
         _appearTween = CreateTween().SetEase(Tween.EaseType.Out).SetTrans(Tween.TransitionType.Elastic);
         _appearTween.TweenProperty(_interactionSprite, "scale", Vector2.One, 0.5f);
     }
 
-    private async void SpriteHideAnimation()
+    private async void HideSprite()
     {
+        GD.Print("hidden!");
+        
         _appearTween?.Kill();
         _appearTween = CreateTween().SetEase(Tween.EaseType.Out).SetTrans(Tween.TransitionType.Elastic);
         _appearTween.TweenProperty(_interactionSprite, "scale", Vector2.Zero, 0.2f);

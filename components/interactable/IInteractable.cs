@@ -1,3 +1,4 @@
+using System;
 using Godot;
 
 public interface IInteractable : IComponentInterface

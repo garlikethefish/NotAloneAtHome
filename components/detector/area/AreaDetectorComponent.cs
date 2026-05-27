@@ -11,7 +11,6 @@ public partial class AreaDetectorComponent : ComponentArea2D, IAreaDetector
     [Export] public int[] CollisionMasks = [10, 2];
     public List<DetectableComponentModel> DetectablesInArea { get; } = [];
     public CollisionShape2D CollisionShape { get; private set; }
-    public Node Node => this;
 
     public override void _Ready()
     {
@@ -77,5 +76,10 @@ public partial class AreaDetectorComponent : ComponentArea2D, IAreaDetector
     public void WhenBlacklistedFromDetectable(IDetectable detectable)
     {
         OnBodyExited(detectable.Node as Node2D);
+    }
+
+    public virtual void RemoveDetectable(IDetectable detectable)
+    {
+        DetectablesInArea.RemoveAll(model => model.Detectable == detectable);
     }
 }

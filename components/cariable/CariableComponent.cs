@@ -8,7 +8,6 @@ public partial class CariableComponent : ComponentNode2D, ICarriable
     [Export] CollisionShape2D _collisionShape2D;
     [Export] RigidBody2D rigidBody;
     public CollisionShape2D CollisionShape2D => _collisionShape2D;
-    public Node Node => this;
     public async void WhenPickedUpBy(ICarrier carrier)
     {
         Root.Reparent(carrier.CarryPointNode, true);

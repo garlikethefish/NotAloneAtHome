@@ -10,4 +10,5 @@ public interface IAreaDetector : IComponentInterface
     void OnBodyEntered(Node2D body);
     void OnBodyExited(Node2D body);
     void WhenBlacklistedFromDetectable(IDetectable detectable);
+    void RemoveDetectable(IDetectable detectable);
 }

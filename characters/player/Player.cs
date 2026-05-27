@@ -17,14 +17,17 @@ public enum PlayerState
 
 public partial class Player : CharacterBody2D, IThrower, IInteractor, IAreaDetector, ICarrier, IStateMachine
 {
+    //
     // player move speed
+    //
     [Export] public float NormalSpeed = 100.0f;
     [Export] public float SprintMultiplier = 2.0f;
     [Export] public float MaskSpeedMultiplier = 0.6f;
     [Export] public float CarrySpeedMultiplier = 0.8f;
     float _currentSpeed = 100.0f;
-
+    //
     // player vision
+    //
     [Export] public double MaxVisionRadius = 0.35;
     [Export] public double MinVisionRadius = 0.08;
     [Export] public double VisionShrinkSpeed = 0.05;
@@ -37,6 +40,11 @@ public partial class Player : CharacterBody2D, IThrower, IInteractor, IAreaDetec
     [ExportGroup("Debug")]
     [Export] public bool DebugState = false;
     public bool isWearingMask = false;
+    //
+    // internal flags
+    //
+    private bool _canInteract = true;
+    private bool _canCarry = true;
 
     public bool IsDead = false;
     public bool HasMask = true;
@@ -67,6 +75,7 @@ public partial class Player : CharacterBody2D, IThrower, IInteractor, IAreaDetec
     private bool _waitParticles = false;
     private bool _shakingCamera = false;
 
+  
     public Node Node => this;
     public Vector2 FacingDirection { get; private set; }
     public bool IsAiming { get; private set; }
@@ -132,6 +141,7 @@ public partial class Player : CharacterBody2D, IThrower, IInteractor, IAreaDetec
     public override void _Process(double delta)
     {
         CurrentState?.Update(delta);
+        HandleInteraction();
         HandleShaking();
         TransitionVisionRadius(delta, _targetVisionRadius);
     }
@@ -153,6 +163,26 @@ public partial class Player : CharacterBody2D, IThrower, IInteractor, IAreaDetec
 
         if (IsDead)
             return;
+    }
+
+    public void HandleInteraction()
+    {
+        if (!_canInteract) return;
+        if (Input.IsActionJustPressed("interact"))
+        {
+            var detectable = _detector.ClosestDetectable;
+            if (detectable == null) return;
+
+            if (detectable.Root is ICarriable carriable && carriable.CanBeCarried(this) && _canCarry)
+            {
+                Pickup(carriable);
+                ChangeState(States[typeof(CarryingState)]);
+            }
+            else if (detectable.Root is IInteractable interactable && interactable.CanBeInteractedBy(this))
+            {
+                InteractWith(interactable);
+            }
+        }
     }
 
     public void HandleShaking()
@@ -274,7 +304,6 @@ public partial class Player : CharacterBody2D, IThrower, IInteractor, IAreaDetec
 
     public void InteractWith(IInteractable interactable)
     {
-        GD.Print("Interacted!");
         _interactor.InteractWith(interactable);
     }
 
@@ -295,17 +324,19 @@ public partial class Player : CharacterBody2D, IThrower, IInteractor, IAreaDetec
 
     public void Pickup(ICarriable carriable)
     {
-        GD.Print("Picked up!");
-       _carrier.Pickup(carriable);
+        _canCarry = false;
+        _carrier.Pickup(carriable);
     }
 
     public void Drop()
     {
+        _canCarry = true;
         _carrier.Drop();
     }
 
     public void Throw(IThrowable throwable)
     {
+        _canCarry = true;
         _thrower.Throw(throwable);
     }
 
@@ -342,6 +373,11 @@ public partial class Player : CharacterBody2D, IThrower, IInteractor, IAreaDetec
     }
 
     public void WhenBlacklistedFromDetectable(IDetectable detectable)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void RemoveDetectable(IDetectable detectable)
     {
         throw new NotImplementedException();
     }
