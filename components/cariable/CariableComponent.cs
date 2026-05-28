@@ -1,27 +1,7 @@
 using Godot;
 
-public partial class CariableComponent : ComponentNode2D, ICarriable
+public partial class CariableComponent : ComponentNode2D, ICarriableComponent
 {
-    [Signal] public delegate void PickedUpEventHandler(Node2D carrier);
-    [Signal] public delegate void DroppedEventHandler();
-    [Export] Sprite2D sprite;
-    [Export] CollisionShape2D _collisionShape2D;
-    [Export] RigidBody2D rigidBody;
-    public CollisionShape2D CollisionShape2D => _collisionShape2D;
-    public async void WhenPickedUpBy(ICarrier carrier)
-    {
-        Root.Reparent(carrier.CarryPointNode, true);
-        await PlayPickUpAnimation(Vector2.Zero);
-        EmitSignal(SignalName.PickedUp, carrier.Node);
-    }
-
-    public async void WhenDropedAt(Vector2 landPos)
-    {
-        Root.Reparent(GetTree().CurrentScene, true);
-        await PlayDropAnimation(landPos);
-        EmitSignal(SignalName.Dropped);
-    }
-
     private SignalAwaiter PlayDropAnimation(Vector2 landPos)
     {
         var tween  = CreateTween();
@@ -64,8 +44,20 @@ public partial class CariableComponent : ComponentNode2D, ICarriable
         return ToSignal(tween, Tween.SignalName.Finished);
     }
 
+    public async void OnPickedUpBy(ICarrier carrier)
+    {
+        Root.Reparent(carrier.CarryPointNode, true);
+        await PlayPickUpAnimation(carrier.CarryPointNode.GlobalPosition);
+    }
+
+    public async void OnDropedAt(Vector2 landPos)
+    {
+        Root.Reparent(GetTree().CurrentScene, true);
+        await PlayDropAnimation(landPos);
+    }
+
     public bool CanBeCarried(ICarrier carrier)
     {
-        return (Root as ICarriable)?.CanBeCarried(carrier) ?? false;
+        return (Root as ICarriable).CanBeCarried(carrier);
     }
 }

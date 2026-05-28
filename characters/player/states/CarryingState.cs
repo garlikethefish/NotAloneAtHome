@@ -16,7 +16,7 @@ public partial class Player
 
         public void Update(double delta)
         {
-            if (Input.IsActionPressed("throw") && Ctx.Carriable.Root is IThrowable)
+            if (Input.IsActionPressed("throw") && Ctx.Carriable is IThrowable)
             {
                 Ctx.StartAiming();
                 Ctx.ChangeState(Ctx.States[typeof(AimingState)]);

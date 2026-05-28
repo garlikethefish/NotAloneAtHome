@@ -57,7 +57,17 @@ public static class Utils
     public static uint GetCombinedMask(IEnumerable<int> masks) =>
         (uint)masks.Aggregate(0, (combined, mask) => combined | (1 << (mask - 1)));
 
-    
+    public static bool TryGetRoot<T>(this Node componentNode, out T result) where T : class
+    {
+        var root = (componentNode as IComponentInterface)?.Root;
+        if (root == null)
+        {
+            result = null;
+            return false;
+        }
+        result = root as T;
+        return result != null;
+    }
 }
 
 public static class Casters

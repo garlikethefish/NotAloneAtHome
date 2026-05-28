@@ -1,6 +1,6 @@
 using Godot;
 
-public partial class ThrowableComponent : ComponentNode2D, IThrowable
+public partial class ThrowableComponent : ComponentNode2D, IThrowableComponent
 {
     [Signal] public delegate void ThrownEventHandler(GodotObject thrower);
     [Signal] public delegate void LandedEventHandler(Vector2 position);
@@ -44,19 +44,16 @@ public partial class ThrowableComponent : ComponentNode2D, IThrowable
         }));
     }
 
-    public void WhenThrownBy(IThrower thrower, Vector2 toPosition)
+    public void HandleThrownBy(IThrower thrower, Vector2 toPosition)
     {
         IsFlying = true;
         StartFlyAnimation(toPosition);
-        EmitSignal(SignalName.Thrown, thrower.Node);
-        // _detectable?.CanBeDetectedBlockers.AddBlocker(this);
+        (Root as IThrowable).GotThrownBy(thrower);
     }
 
     public void Land()
     {
         IsFlying = false;
-        EmitSignal(SignalName.Landed, GlobalPosition);
-        // _detectable?.CanBeDetectedBlockers.RemoveBlocker(this);
-        // _carriable?.RetireUncarried();
+        (Root as IThrowable).GotLandedOn(GlobalPosition);
     }
 }

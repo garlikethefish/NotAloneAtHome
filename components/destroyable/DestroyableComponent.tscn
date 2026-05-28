@@ -1,22 +1,3 @@
 [gd_scene format=3 uid="uid://d0c53n70o1h68"]
 
-[sub_resource type="CSharpScript" id="CSharpScript_42bg3"]
-script/source = "using NotAloneAtHome.Components.Destroyable;
-
-public partial class DestroyableComponent : ComponentNode2D, IDestroyable
-{
-    public int Health { get; private set; }
-
-    public void OnDeath()
-    {
-        Root.QueueFree();
-    }
-
-    public void TakeDamage(int damage)
-    {
-       
-    }
-}"
-
 [node name="DestroyableComponent" type="Node2D" unique_id=433779201]
-script = SubResource("CSharpScript_42bg3")

@@ -1,10 +1,8 @@
 using Godot;
+using NotAloneAtHome.Components.Thrower;
 
-public partial class ThrowerComponent : ComponentNode2D, IThrower
+public partial class ThrowerComponent : ComponentNode2D, IThrowerComponent
 {
-    [Signal] public delegate void ThrewEventHandler(GodotObject throwable, Vector2 position);
-    [Signal] public delegate void StartedChargeEventHandler();
-    [Signal] public delegate void CanceledChargeEventHandler(double charge);
     [Export] public bool ShowDebug = false;
     [Export] private Node2D _targetSpriteNode;
 
@@ -73,13 +71,12 @@ public partial class ThrowerComponent : ComponentNode2D, IThrower
 
     public void Throw(IThrowable throwable)
     {
-        throwable.Node.Reparent(GetTree().CurrentScene);
-        throwable.WhenThrownBy(this, AimedAtLocation);
+        (throwable as Node2D).Reparent(GetTree().CurrentScene);
 
-        if (throwable.Root is IDetectable detectable)
-            detectable.RemoveFromBlacklist(Holder.AreaDetector);
+        if (throwable is IDetectable detectable)
+            detectable.DetectableRemoveFromBlacklist((IAreaDetector)Root);
             
-        EmitSignal(SignalName.Threw, throwable.Node, AimedAtLocation);
+        throwable.GotThrownBy((IThrower)Root);
         StopAiming();
     }
 
@@ -93,8 +90,6 @@ public partial class ThrowerComponent : ComponentNode2D, IThrower
         CurrentCharge = 0;
         IsCharging    = true;
         _targetSpriteNode.Visible = true;
-        // Throwable     = throwable;
-        EmitSignal(SignalName.StartedCharge);
     }
 
     public void StopAiming()

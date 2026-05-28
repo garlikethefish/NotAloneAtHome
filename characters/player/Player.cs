@@ -3,19 +3,11 @@ namespace NotAloneAtHome.Characters.Player;
 using System;
 using System.Collections.Generic;
 using Godot;
+using NotAloneAtHome.Components.Base.Holder;
+using NotAloneAtHome.Components.Thrower;
 using NotAloneAtHome.state_machines.interfaces;
 
-public enum PlayerState
-{
-    Idle,
-    Walking,
-    Sprinting,
-    Aiming,
-    Masked,
-    Frozen
-}
-
-public partial class Player : CharacterBody2D, IThrower, IInteractor, IAreaDetector, ICarrier, IStateMachine
+public partial class Player : CharacterBody2D, IThrower, IInteractor, ICastedAreaDetector, ICarrier, IStateMachine
 {
     //
     // player move speed
@@ -57,10 +49,10 @@ public partial class Player : CharacterBody2D, IThrower, IInteractor, IAreaDetec
     private Vector2 _moveDirection = Vector2.Zero;
 
     // components
-    private IThrower _thrower;
-    private IInteractor _interactor;
-    private ICarrier _carrier;
-    private CastedAreaDetectorComponent _detector;
+    private IThrowerComponent _thrower;
+    private IInteractorComponent _interactor;
+    private ICarrierComponent _carrier;
+    private ICastedAreaDetectorComponent _detector;
 
     private AnimatedSprite2D _anim;
     private ColorRect _overlayRect;
@@ -74,20 +66,17 @@ public partial class Player : CharacterBody2D, IThrower, IInteractor, IAreaDetec
     private bool _sprinting = false;
     private bool _waitParticles = false;
     private bool _shakingCamera = false;
-
-  
-    public Node Node => this;
     public Vector2 FacingDirection { get; private set; }
     public bool IsAiming { get; private set; }
-    public Node2D CarryPointNode => throw new System.NotImplementedException();
+    public Node2D CarryPointNode => _carrier.CarryPointNode;
     public ICarriable Carriable => _carrier.Carriable;
-    public Dictionary<Type, IState> States = new();
+    public Dictionary<Type, IState> States = [];
     public IState CurrentState { get; private set; }
     public ComponentHolder Holder { get; private set; }
-    public Node2D Root => throw new NotImplementedException();
     public CollisionObject2D[] ExcludedColliders => _detector.ExcludedColliders;
     public List<DetectableComponentModel> DetectablesInArea => _detector.DetectablesInArea;
     public CollisionShape2D CollisionShape => _detector.CollisionShape;
+    public IDetectable ClosestDetectable => _detector.ClosestDetectable;
 
     [Signal] public delegate void ShakeCameraEventHandler();
     [Signal] public delegate void StopCameraShakeEventHandler();
@@ -104,7 +93,7 @@ public partial class Player : CharacterBody2D, IThrower, IInteractor, IAreaDetec
         _thrower    = Holder.Thrower;
         _interactor = Holder.Interactor;
         _carrier    = Holder.Carrier;
-        _detector   = (CastedAreaDetectorComponent)Holder.AreaDetector;
+        _detector   = Holder.CastedAreaDetector;
 
         _anim               = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
         _overlayRect        = GetNode<ColorRect>("MaskOverlay/ColorRect");
@@ -173,12 +162,12 @@ public partial class Player : CharacterBody2D, IThrower, IInteractor, IAreaDetec
             var detectable = _detector.ClosestDetectable;
             if (detectable == null) return;
 
-            if (detectable.Root is ICarriable carriable && carriable.CanBeCarried(this) && _canCarry)
+            if (detectable is ICarriable carriable && carriable.CanBeCarried(this) && _canCarry)
             {
                 Pickup(carriable);
                 ChangeState(States[typeof(CarryingState)]);
             }
-            else if (detectable.Root is IInteractable interactable && interactable.CanBeInteractedBy(this))
+            else if (detectable is IInteractable interactable && interactable.CanBeInteractedBy(this))
             {
                 InteractWith(interactable);
             }
@@ -297,11 +286,6 @@ public partial class Player : CharacterBody2D, IThrower, IInteractor, IAreaDetec
         ShowDefeatScreen("YOU WERE SHOT");
     }
 
-    public bool CanDetectLike(DetectableComponent detectable)
-    {
-        return true;
-    }
-
     public void InteractWith(IInteractable interactable)
     {
         _interactor.InteractWith(interactable);
@@ -362,23 +346,26 @@ public partial class Player : CharacterBody2D, IThrower, IInteractor, IAreaDetec
         CurrentState.PhysicsUpdate(delta);
     }
 
-    public void OnBodyEntered(Node2D body)
+    public void OnBodyEntered(Node2D body){}
+
+    public void OnBodyExited(Node2D body){}
+
+    public void WhenBlacklistedFromDetectable(IDetectable detectable){}
+
+    public void RemoveDetectable(IDetectable detectable){}
+
+    public bool CanDetectLike(IDetectable detectable)
     {
-        throw new NotImplementedException();
+        return true;
     }
 
-    public void OnBodyExited(Node2D body)
+    public void OnEnteredSight(IDetectable detectable)
     {
-        throw new NotImplementedException();
+        
     }
 
-    public void WhenBlacklistedFromDetectable(IDetectable detectable)
+    public void OnExitedSight(IDetectable detectable)
     {
-        throw new NotImplementedException();
-    }
-
-    public void RemoveDetectable(IDetectable detectable)
-    {
-        throw new NotImplementedException();
+        
     }
 }

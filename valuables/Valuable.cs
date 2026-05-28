@@ -3,34 +3,29 @@ namespace NotAloneAtHome.Valuables;
 using System;
 using System.Collections.Generic;
 using Godot;
-
+using NotAloneAtHome.Components.Base.Holder;
+using NotAloneAtHome.Components.Detectable;
 
 public partial class Valuable : RigidBody2D, IInteractable, ICarriable, IThrowable, IDetectable
 {
     [Export] public ValuableType Type;
 
     public ComponentHolder Holder { get; private set; }
-    // private ISpawnable   _spawnable;
-    private ICarriable   _carriable;
-    private IInteractable _interactable;
-    private IThrowable   _throwable;
-    private IDetectable  _detectable;
-    private Sprite2D     _sprite;
-
+    private ICarriableComponent _carriable;
+    private IInteractableComponent _interactable;
+    private IThrowableComponent _throwable;
+    private IDetectableComponent _detectable;
+    private Sprite2D _sprite;
     private ShaderMaterial _shaderMat = GD.Load<ShaderMaterial>("uid://cnuuc1ep5p6ia");
-
-    public event Action<IAreaDetector> OnBecamePriority;
-    public event Action<IAreaDetector> OnLostPriority;
-
-    public Node Node => this;
-    public Node2D Root => this;
-    [Export] public CollisionShape2D CollisionShape2D { get; private set; }
+    public event Action<IAreaDetector> OnDetectableBecamePriority;
+    public event Action<IAreaDetector> OnDetectableLostPriority;
+    public CollisionShape2D CollisionShape2D => _detectable.CollisionShape2D;
     public List<IAreaDetector> BlacklistedDetectors => _detectable.BlacklistedDetectors;
+    public Rid Rid => _detectable.Rid;
 
     public override void _Ready()
     {
         Holder = this.GetComponentOfType<ComponentHolder>();
-        // _spawnable    = _componentHolder.
         _detectable   = Holder.Detectable;
         _interactable = Holder.Interactable;
         _carriable    = Holder.Carriable;
@@ -44,7 +39,6 @@ public partial class Valuable : RigidBody2D, IInteractable, ICarriable, IThrowab
     public void Sell(Node2D node)
     {
         GD.Print("Sold!");
-        // _destroyable.Destroy(node);
     }
 
     public bool CanBeDetected(IAreaDetector detector)
@@ -57,20 +51,6 @@ public partial class Valuable : RigidBody2D, IInteractable, ICarriable, IThrowab
         return true;
     }
 
-    // private void OnIDetectableOnBecomingPriorityOfDetector(Node areaDetector)
-    // {
-    //     GD.Print("ON");
-    //     _interactable.ShowSprite();
-    //     _sprite.SetInstanceShaderParameter("enabled", true);
-    // }
-
-    // private void OnIDetectableOnNotBeeingAPriorityOfDetector(Node areaDetector)
-    // {
-    //     GD.Print("off");
-    //     _interactable.HideSprite();
-    //     _sprite.SetInstanceShaderParameter("enabled", false);
-    // }
-
     public bool CanBeInteractedBy(IInteractor interactor)
     {
         return true;
@@ -78,62 +58,66 @@ public partial class Valuable : RigidBody2D, IInteractable, ICarriable, IThrowab
 
     public void WhenInteractBy(IInteractor interactor)
     {
-        GD.Print("You Touched ME!");
+        
     }
 
-    public void WhenThrownBy(IThrower thrower, Vector2 toPosition)
+    public void OnCarriablePickedUpBy(ICarrier carrier)
     {
-        _throwable.WhenThrownBy(thrower, toPosition);
+        _carriable.OnPickedUpBy(carrier);
     }
 
-    public void WhenPickedUpBy(ICarrier carrier)
+    public void OnCarriableDropedAt(Vector2 landPos)
     {
-        _carriable.WhenPickedUpBy(carrier);
+        _carriable.OnDropedAt(landPos);
     }
 
-    public void WhenDropedAt(Vector2 landPos)
+    public void OnDetectableEnteredDetectorArea(IAreaDetector detector)
     {
-        GD.Print("I was droped!");
-        _carriable.WhenDropedAt(landPos);
+        
     }
 
-    public void WhenEnteredDetectorArea(IAreaDetector detector)
+    public void OnDetectableExitedDetectorArea(IAreaDetector detector)
     {
-        throw new System.NotImplementedException();
+        
     }
 
-    public void WhenExitedDetectorArea(IAreaDetector detector)
+    public void OnDetectableSetAsDetectorPriority(IAreaDetector detector)
     {
-        GD.Print("I! Type: " + Type + "Exited a detector area!");
+        OnDetectableBecamePriority?.Invoke(detector);
     }
 
-    public void WhenSetAsDetectorPriority(IAreaDetector detector)
+    public void OnDetectableRemovedFromDetectorPriority(IAreaDetector detector)
     {
-        throw new System.NotImplementedException();
+        OnDetectableLostPriority?.Invoke(detector);
     }
 
-    public void WhenRemovedFromDetectorPriority(IAreaDetector detector)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public void AddToBlacklist(IAreaDetector detector)
+    public void DetectableAddToBlacklist(IAreaDetector detector)
     {
         _detectable.AddToBlacklist(detector);
     }
 
-    public void RemoveFromBlacklist(IAreaDetector detector)
+    public void DetectableRemoveFromBlacklist(IAreaDetector detector)
     {
         _detectable.RemoveFromBlacklist(detector);
     }
 
-    public bool IsDetectorBlacklisted(IAreaDetector detector)
+    public bool DetectableIsDetectorBlacklisted(IAreaDetector detector)
     {
-        throw new System.NotImplementedException();
+        return _detectable.IsDetectorBlacklisted(detector);
     }
 
     public void ExitAllDetectors()
     {
-        throw new System.NotImplementedException();
+        _detectable.ExitAllDetectors();
+    }
+
+    public void GotThrownBy(IThrower thrower)
+    {
+        _throwable.HandleThrownBy(thrower, Vector2.Down);
+    }
+
+    public void GotLandedOn(Vector2 pos)
+    {
+        
     }
 }

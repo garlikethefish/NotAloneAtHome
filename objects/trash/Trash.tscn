@@ -9,9 +9,10 @@
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_johhi"]
 polygon = PackedVector2Array(-5, -10, -3, -4, -11, 1, -12, 5, -9, 10, -6, 13, 5, 13, 11, 6, 11, 3, 8, 0, 3, -3, 3, -7, 5, -10)
 
-[node name="Trash" type="Node2D" unique_id=189504567]
+[node name="Trash" type="Node2D" unique_id=189504567 node_paths=PackedStringArray("sprite2D")]
 top_level = true
 script = ExtResource("1_pdm3e")
+sprite2D = NodePath("Sprite2D")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1195771060]
 texture = ExtResource("3_johhi")

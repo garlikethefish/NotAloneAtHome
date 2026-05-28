@@ -18,7 +18,7 @@ public partial class Player
         {
             Ctx.SetFacingDirection(Ctx.GetGlobalMousePosition() - Ctx.GlobalPosition);
 
-            if (Input.IsActionJustReleased("throw") && Ctx.Carriable.Root is IThrowable throwable)
+            if (Input.IsActionJustReleased("throw") && Ctx.Carriable is IThrowable throwable)
             {
                 Ctx.Throw(throwable);
                 Ctx.ChangeState(Ctx.States[typeof(IdleState)]);

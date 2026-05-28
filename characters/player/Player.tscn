@@ -578,10 +578,8 @@ frame_progress = 0.0026698245
 
 [node name="MaskOverlay" type="CanvasLayer" parent="." unique_id=167265925 groups=["mask_overlay"]]
 layer = 0
-visible = false
 
 [node name="ColorRect" type="ColorRect" parent="MaskOverlay" unique_id=427046387]
-visible = false
 material = ExtResource("3_5vbvs")
 anchors_preset = 15
 anchor_right = 1.0

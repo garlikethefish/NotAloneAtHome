@@ -1,6 +1,6 @@
 using System;
 
-public interface IInteractor 
+public interface IInteractorComponent
 {
     void InteractWith(IInteractable interactable);
 }

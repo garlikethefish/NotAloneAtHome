@@ -1,9 +1,9 @@
 using Godot;
-public interface ICarriable : IComponentInterface
+public interface ICarriable
 {
     CollisionShape2D CollisionShape2D { get; }
-    void WhenPickedUpBy(ICarrier carrier);
-    void WhenDropedAt(Vector2 landPos);
+    void OnCarriablePickedUpBy(ICarrier carrier);
+    void OnCarriableDropedAt(Vector2 landPos);
     bool CanBeCarried(ICarrier carrier);
 }
 

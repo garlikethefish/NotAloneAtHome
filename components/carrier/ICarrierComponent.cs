@@ -1,7 +1,7 @@
 using Godot;
 
 #nullable enable
-public interface ICarrier 
+public interface ICarrierComponent
 {
     Node2D CarryPointNode { get; }
     ICarriable? Carriable { get; }

@@ -1,6 +1,8 @@
+namespace NotAloneAtHome.Components.Thrower;
+
 using Godot;
 
-public interface IThrower
+public interface IThrowerComponent
 {
     Vector2 FacingDirection { get; }
     bool IsAiming { get; }

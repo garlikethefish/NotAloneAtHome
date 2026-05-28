@@ -1,17 +1,14 @@
+namespace NotAloneAtHome.Components;
 using System;
 using Godot;
 
-namespace NotAloneAtHome.Components;
-
-public partial class InteractableComponent : ComponentNode2D, IInteractable
+#nullable enable
+public partial class InteractableComponent : ComponentNode2D, IInteractableComponent
 {
-    [Export] private Sprite2D _interactionSprite;
-    [Signal] public delegate void InteractedByEventHandler(GodotObject interactor);
-
-    private Vector2  _interactionKeyStartPos;
-    private Vector2  _interactionKeyStartScale;
-    private Tween    _appearTween;
-
+    [Export] private Sprite2D _interactionSprite = default!;
+    private Vector2 _interactionKeyStartPos;
+    private Vector2 _interactionKeyStartScale;
+    private Tween? _appearTween;
     public override void _Ready()
     {
         base._Ready();
@@ -23,14 +20,9 @@ public partial class InteractableComponent : ComponentNode2D, IInteractable
         GD.Print("Is root detectable?: ", Root is IDetectable );
         if (Root is IDetectable detectable)
         {
-            detectable.OnBecamePriority += _ => ShowSprite();
-            detectable.OnLostPriority += _ => HideSprite();
+            detectable.OnDetectableBecamePriority += _ => ShowSprite();
+            detectable.OnDetectableLostPriority += _ => HideSprite();
         }
-    }
-
-    public override void _Process(double delta)
-    {
-        
     }
 
     private void TweenAnimation()
@@ -47,6 +39,7 @@ public partial class InteractableComponent : ComponentNode2D, IInteractable
 
     private void ShowSprite()
     {
+        if (!IsInstanceValid(this) || IsQueuedForDeletion()) return;
         GD.Print("showed!");
         _interactionSprite.Visible = true;
         _appearTween?.Kill();
@@ -56,6 +49,7 @@ public partial class InteractableComponent : ComponentNode2D, IInteractable
 
     private async void HideSprite()
     {
+        if (!IsInstanceValid(this) || IsQueuedForDeletion()) return;
         GD.Print("hidden!");
         
         _appearTween?.Kill();
@@ -67,13 +61,6 @@ public partial class InteractableComponent : ComponentNode2D, IInteractable
 
     public void WhenInteractBy(IInteractor interactor)
     {
-        if (!CanBeInteractedBy(interactor)) return;
         TweenAnimation();
-        EmitSignal(SignalName.InteractedBy, interactor as GodotObject);
-    }
-
-    public bool CanBeInteractedBy(IInteractor interactor)
-    {
-        return (Root as IInteractable)?.CanBeInteractedBy(interactor) ?? false;
     }
 }

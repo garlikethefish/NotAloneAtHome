@@ -1,6 +1,6 @@
 namespace NotAloneAtHome.Components.Destroyable;
 
-public interface IDestroyable : IComponentInterface
+public interface IDestroyable
 {
     int Health { get; }
     void TakeDamage(int damage);

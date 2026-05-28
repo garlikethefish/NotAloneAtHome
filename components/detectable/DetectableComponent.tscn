@@ -4,11 +4,11 @@
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_jw3d4"]
 
-[node name="IDetectable" type="StaticBody2D" unique_id=2037387284 node_paths=PackedStringArray("_collisionShape")]
+[node name="IDetectable" type="StaticBody2D" unique_id=2037387284 node_paths=PackedStringArray("CollisionShape2D")]
 collision_layer = 512
 collision_mask = 0
 script = ExtResource("1_r212o")
-_collisionShape = NodePath("CollisionShape2D")
+CollisionShape2D = NodePath("CollisionShape2D")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1327579399]
 shape = SubResource("CircleShape2D_jw3d4")

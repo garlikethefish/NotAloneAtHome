@@ -1,34 +1,39 @@
+namespace NotAloneAtHome.Components.Base.Holder;
 
 using System.Linq;
 using Godot;
 using NotAloneAtHome.Components.Destroyable;
+using NotAloneAtHome.Components.Detectable;
+using NotAloneAtHome.Components.Thrower;
 
 public partial class ComponentHolder : Node2D
 {
     public Node2D Root => GetParent<Node2D>();
 
-    // all helpers
-    public ICarriable Carriable;
-    public ICarrier Carrier;
-    public IDetectable Detectable;
-    public IAreaDetector AreaDetector;
-    public IThrowable Throwable;
-    public IThrower Thrower;
-    public IInteractable Interactable;
-    public IInteractor Interactor;
+    // all components
+    public ICarriableComponent Carriable;
+    public ICarrierComponent Carrier;
+    public IDetectableComponent Detectable;
+    public IAreaDetectorComponent AreaDetector;
+    public ICastedAreaDetectorComponent CastedAreaDetector;
+    public IThrowableComponent Throwable;
+    public IThrowerComponent Thrower;
+    public IInteractorComponent Interactor;
+    public IInteractableComponent Interactable;
     public IDestroyable Destroyable;
 
     public override async void _Ready()
     {
-        Carrier      = GetChildren().OfType<ICarrier>().FirstOrDefault();
-        Carriable    = GetChildren().OfType<ICarriable>().FirstOrDefault();
-        Detectable   = GetChildren().OfType<IDetectable>().FirstOrDefault();
-        Throwable    = GetChildren().OfType<IThrowable>().FirstOrDefault();
-        AreaDetector = GetChildren().OfType<IAreaDetector>().FirstOrDefault();
-        Thrower      = GetChildren().OfType<IThrower>().FirstOrDefault();
-        Interactable = GetChildren().OfType<IInteractable>().FirstOrDefault();
-        Interactor   = GetChildren().OfType<IInteractor>().FirstOrDefault();
-        Destroyable   = GetChildren().OfType<IDestroyable>().FirstOrDefault();
+        Carrier            = GetChildren().OfType<ICarrierComponent>().FirstOrDefault();
+        Carriable          = GetChildren().OfType<ICarriableComponent>().FirstOrDefault();
+        Detectable         = GetChildren().OfType<IDetectableComponent>().FirstOrDefault();
+        Throwable          = GetChildren().OfType<IThrowableComponent>().FirstOrDefault();
+        AreaDetector       = GetChildren().OfType<IAreaDetectorComponent>().FirstOrDefault();
+        CastedAreaDetector = GetChildren().OfType<ICastedAreaDetectorComponent>().FirstOrDefault();
+        Thrower            = GetChildren().OfType<IThrowerComponent>().FirstOrDefault();
+        Interactable       = GetChildren().OfType<IInteractableComponent>().FirstOrDefault();
+        Interactor         = GetChildren().OfType<IInteractorComponent>().FirstOrDefault();
+        Destroyable        = GetChildren().OfType<IDestroyable>().FirstOrDefault();
         
         await ToSignal(Root, Node.SignalName.Ready);
 
@@ -42,11 +47,4 @@ public partial class ComponentHolder : Node2D
     /// Called after all helper nodes are ready.
     /// </summary>
     public virtual void AfterHelperReady() { }
-
-    public bool HasComp<T>(out T result) where T : class
-    {
-        result = GetChildren().OfType<T>().FirstOrDefault();
-        return result != null;
-    }
-
 }

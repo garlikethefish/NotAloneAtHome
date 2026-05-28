@@ -1,7 +1,8 @@
 using Godot;
 
-public interface IThrowable : IComponentInterface
+public interface IThrowable
 {
-    void WhenThrownBy(IThrower thrower, Vector2 toPosition);
+    void GotThrownBy(IThrower thrower);
+    void GotLandedOn(Vector2 pos);
 }
 

@@ -1,19 +1,17 @@
 using Godot;
+using NotAloneAtHome.Components.Detectable;
 using System.Linq;
 
 #nullable enable
 [GlobalClass]
-public partial class CastedAreaDetectorComponent : AreaDetectorComponent, ICastedAreaDetector
+public partial class CastedAreaDetectorComponent : AreaDetectorComponent, ICastedAreaDetectorComponent
 {
-    [Signal] public delegate void EnteredSightEventHandler(GodotObject detectable);
-    [Signal] public delegate void ExitedSightEventHandler(GodotObject detectable);
     [Export] public int[] RaycastCollisionMasks = [10, 2];
-    private DetectableComponent? _closestDetectable = null;
     public Color IsInSightColor  = Colors.Azure;
     public Color NotInSightColor = Colors.Crimson;
     public Color ClosestColor    = Colors.LimeGreen;
-
-    public IDetectable? ClosestDetectable => _closestDetectable;
+    public IDetectable? ClosestDetectable { get; private set; }
+    public ICastedAreaDetector RootCastedDetector => (ICastedAreaDetector)Root;
 
     public override void _Ready()
     {
@@ -27,13 +25,13 @@ public partial class CastedAreaDetectorComponent : AreaDetectorComponent, ICaste
 
         var newPriority = GetClosestDetectable();
 
-        if (newPriority != _closestDetectable)
+        if (newPriority != ClosestDetectable)
         {
-            _closestDetectable?.WhenRemovedFromDetectorPriority(this);
-            newPriority?.WhenSetAsDetectorPriority(this);
+            ClosestDetectable?.OnDetectableRemovedFromDetectorPriority(RootDetector);
+            newPriority?.OnDetectableSetAsDetectorPriority(RootDetector);
         }
 
-        _closestDetectable = newPriority;
+        ClosestDetectable = newPriority;
     }
 
     public override void _Draw()
@@ -43,13 +41,13 @@ public partial class CastedAreaDetectorComponent : AreaDetectorComponent, ICaste
         if (CollisionShape.Shape is CircleShape2D circle)
             DrawCircle(CollisionShape.Position, circle.Radius, new Color(1, 0, 0, 0.12f));
 
-        foreach (var model in DetectablesInArea)
+        foreach (var model in DetectablesInArea.ToList())
         {
-            var iDetectable  = model.Detectable;
-            var localTarget = ToLocal(iDetectable.CollisionShape.GlobalPosition);
+            var detectable  = model.Detectable;
+            var localTarget = ToLocal(detectable.CollisionShape2D.GlobalPosition);
 
             Color color;
-            if (iDetectable == _closestDetectable)
+            if (detectable == ClosestDetectable)
                 color = ClosestColor;
             else if (model.IsInLineOfSight)
                 color = IsInSightColor;
@@ -63,6 +61,8 @@ public partial class CastedAreaDetectorComponent : AreaDetectorComponent, ICaste
 
     private void ValidateDetectables()
     {
+        if (DetectablesInArea.Count == 0) return;
+
         var excludedRids = ExcludedColliders
             .Select(c => c.GetRid())
             .ToList();
@@ -70,20 +70,22 @@ public partial class CastedAreaDetectorComponent : AreaDetectorComponent, ICaste
         var spaceState   = GetWorld2D().DirectSpaceState;
         var combinedMask = Utils.GetCombinedMask(RaycastCollisionMasks);
 
-        for (int i = 0; i < DetectablesInArea.Count; i++)
-        {
-            var model = DetectablesInArea[i];
+        var DetectablesInAreaSnapshot = DetectablesInArea.ToList();
 
-            var otherRids = DetectablesInArea
+        for (int i = 0; i < DetectablesInAreaSnapshot.Count; i++)
+        {
+            var model = DetectablesInAreaSnapshot[i];
+
+            var otherRids = DetectablesInAreaSnapshot
                 .Where(m => m.Detectable != model.Detectable)
-                .Select(m => m.Detectable.GetRid())
+                .Select(m => m.Detectable.Rid)
                 .ToList();
 
             var allExcluded = new RidArray(excludedRids.Concat(otherRids));
 
             var query = PhysicsRayQueryParameters2D.Create(
                 GlobalPosition,
-                model.Detectable.CollisionShape.GlobalPosition,
+                model.Detectable.CollisionShape2D.GlobalPosition,
                 combinedMask,
                 allExcluded
             );
@@ -94,34 +96,34 @@ public partial class CastedAreaDetectorComponent : AreaDetectorComponent, ICaste
             if (result.Count > 0)
             {
                 var collider = result["collider"].As<Node2D>();
-                if (collider is DetectableComponent detectable &&
+                if (collider.TryGetRoot<IDetectable>(out var detectable) &&
                     detectable == model.Detectable &&
-                    detectable.CanBeDetected(this))
-                {
-                    if (!model.IsInLineOfSight) EmitSignal(SignalName.EnteredSight, model.Detectable);
+                    detectable.CanBeDetected(RootDetector)
+                ) {
+                    if (!model.IsInLineOfSight) RootCastedDetector.OnEnteredSight(model.Detectable);
                     model.IsInLineOfSight = true;
                     continue;
                 }
             }
     
             // wasnt hit or failed on hitting
-            if (model.IsInLineOfSight) EmitSignal(SignalName.ExitedSight, model.Detectable);
+            if (model.IsInLineOfSight) RootCastedDetector.OnExitedSight(model.Detectable);
             model.IsInLineOfSight = false;
         }
     }
 
-    private DetectableComponent? GetClosestDetectable()
+    private IDetectable? GetClosestDetectable()
     {
         if (DetectablesInArea.Count == 0) return null;
 
-        DetectableComponent? closest = null;
+        IDetectable? closest = null;
 
         foreach (var model in DetectablesInArea)
         {
             if (!model.IsInLineOfSight) continue;
             if (closest == null) { closest = model.Detectable; continue; }
 
-            closest = (DetectableComponent)GetClosestNode(this, closest, model.Detectable);
+            closest = (IDetectable)GetClosestNode(this, (Node2D)closest, (Node2D)model.Detectable);
         }
 
         return closest;
@@ -135,7 +137,7 @@ public partial class CastedAreaDetectorComponent : AreaDetectorComponent, ICaste
 
     public override void RemoveDetectable(IDetectable detectable)
     {
-        if (_closestDetectable == detectable)
-        _closestDetectable = null;
+        if (ClosestDetectable == detectable)
+        ClosestDetectable = null;
     }
 }

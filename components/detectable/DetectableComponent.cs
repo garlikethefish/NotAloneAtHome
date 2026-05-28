@@ -1,34 +1,28 @@
 using Godot;
+using NotAloneAtHome.Components.Detectable;
 using System;
 using System.Collections.Generic;
 
 public class DetectableComponentModel
 {
-    public DetectableComponent Detectable;
+    public IDetectable Detectable;
     public bool IsInLineOfSight;
 }
 
-public partial class DetectableComponent : ComponentStaticBody2D, IDetectable
+#nullable enable
+public partial class DetectableComponent : ComponentStaticBody2D, IDetectableComponent
 {
-    [Signal] public delegate void DetectedEventHandler(GodotObject detector);
-    [Signal] public delegate void LostEventHandler(GodotObject detector);
-    [Signal] public delegate void BecamePriorityEventHandler(GodotObject detector);
-    [Signal] public delegate void LostPriorityEventHandler(GodotObject detector);
-    [Export] public CollisionShape2D _collisionShape;
-    public CollisionShape2D CollisionShape => _collisionShape;
+    [Export] public CollisionShape2D? CollisionShape2D { get; private set; }
     public List<IAreaDetector> BlacklistedDetectors { get; } = [];
-
     public List<IAreaDetector> Detectors = [];
     public List<IAreaDetector> SimpDetectors = []; // Detectors that have this detectable as priority
+    public IDetectable RootDetectable => (IDetectable)Root;
 
-    public event Action<IAreaDetector> OnBecamePriority;
-    public event Action<IAreaDetector> OnLostPriority;
+    public Rid Rid => GetRid();
 
     public override void _Ready()
     {
         base._Ready();
-        OnBecamePriority += (IAreaDetector d) => EmitSignal(SignalName.BecamePriority, d.Node);
-        OnLostPriority += (IAreaDetector d) => EmitSignal(SignalName.LostPriority, d.Node);
     }
 
     public override void _ExitTree()
@@ -40,39 +34,34 @@ public partial class DetectableComponent : ComponentStaticBody2D, IDetectable
     {
         if (Detectors.Contains(detector) || BlacklistedDetectors.Contains(detector)) return;
         Detectors.Add(detector);
-        EmitSignal(SignalName.Detected, detector.Node);
+        RootDetectable.OnDetectableEnteredDetectorArea(detector);
     }
 
     public void WhenExitedDetectorArea(IAreaDetector detector)
     {
         if (!Detectors.Contains(detector)) return;
         Detectors.Remove(detector);
-        EmitSignal(SignalName.Lost, detector.Node);
+        RootDetectable.OnDetectableExitedDetectorArea(detector);
     }
 
     public void WhenSetAsDetectorPriority(IAreaDetector detector)
     {
         if (SimpDetectors.Contains(detector)) return;
         SimpDetectors.Add(detector);
-        OnBecamePriority?.Invoke(detector);
+        RootDetectable.OnDetectableSetAsDetectorPriority(detector);
     }
 
     public void WhenRemovedFromDetectorPriority(IAreaDetector detector)
     {
         if (!SimpDetectors.Contains(detector)) return;
         SimpDetectors.Remove(detector);
-        OnLostPriority?.Invoke(detector);
-    }
-
-    public bool CanBeDetected(IAreaDetector detector)
-    {
-        return (Root as IDetectable).CanBeDetected(detector);
+        RootDetectable.OnDetectableRemovedFromDetectorPriority(detector);
     }
 
     public void AddToBlacklist(IAreaDetector detector)
     {
         BlacklistedDetectors.Add(detector);
-        detector.WhenBlacklistedFromDetectable(this);
+        detector.WhenBlacklistedFromDetectable(RootDetectable);
         SimpDetectors.Remove(detector);
         Detectors.Remove(detector);
     }
@@ -80,7 +69,7 @@ public partial class DetectableComponent : ComponentStaticBody2D, IDetectable
     public void RemoveFromBlacklist(IAreaDetector detector)
     {
         BlacklistedDetectors.Remove(detector);
-        if (detector.Node is Area2D area2D)
+        if (detector is Area2D area2D)
         {
             var bodies = area2D.GetOverlappingBodies();
             if (bodies.Contains(this)) detector.OnBodyEntered(this);
@@ -92,9 +81,14 @@ public partial class DetectableComponent : ComponentStaticBody2D, IDetectable
         return BlacklistedDetectors.Contains(detector);
     }
 
+    public bool CanBeDetected(IAreaDetector detector)
+    {
+        return RootDetectable?.CanBeDetected(detector) ?? false;
+    }
+
     public void ExitAllDetectors()
     {
-        Detectors.ForEach(item => item.RemoveDetectable(this));
-        SimpDetectors.ForEach(item => item.RemoveDetectable(this));
+        Detectors.ForEach(item => item.RemoveDetectable(RootDetectable));
+        SimpDetectors.ForEach(item => item.RemoveDetectable(RootDetectable));
     }
 }
