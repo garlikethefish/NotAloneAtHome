@@ -3,12 +3,13 @@ using Godot;
 
 public interface IAreaDetector 
 {
-    CollisionObject2D[] ExcludedColliders { get; }
+    List<Rid> ExcludedRids { get; }
     List<DetectableComponentModel> DetectablesInArea { get; }
     CollisionShape2D CollisionShape { get; }
-    bool CanDetectLike(IDetectable detectable);
-    void OnBodyEntered(Node2D body);
-    void OnBodyExited(Node2D body);
-    void WhenBlacklistedFromDetectable(IDetectable detectable);
-    void RemoveDetectable(IDetectable detectable);
+    void WhenBodyEntered(Node2D body);
+    void WhenBodyExited(Node2D body);
+    void BlacklistDetectable(IDetectable detectable);
+    void ExitDetectable(IDetectable detectable);
+    void ExcludeRid(Rid rid);
+    void IncludeRid(Rid rid);
 }

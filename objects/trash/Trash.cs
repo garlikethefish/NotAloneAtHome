@@ -6,7 +6,7 @@ using NotAloneAtHome.Components.Detectable;
 using System;
 using System.Collections.Generic;
 
-public partial class Trash : Node2D, IDestroyable, IInteractable, IDetectable
+public partial class Trash : Node2D, IKillable, IInteractable, IDetectable
 {
     [Export] public Sprite2D sprite2D;
     public int Health { get; private set; } = 2;
@@ -18,7 +18,7 @@ public partial class Trash : Node2D, IDestroyable, IInteractable, IDetectable
     public event Action<IAreaDetector> OnDetectableLostPriority;
     public List<IAreaDetector> BlacklistedDetectors => _detectable.BlacklistedDetectors;
     public CollisionShape2D CollisionShape2D => _detectable.CollisionShape2D;
-    public Rid Rid => _detectable.Rid;
+    public Rid Rid => _detectable.HandleGetRid();
 
     public override void _Ready()
     {
@@ -36,19 +36,19 @@ public partial class Trash : Node2D, IDestroyable, IInteractable, IDetectable
     public void TakeDamage(int damage)
     {
         Health -= damage;
-        if (Health <= 0) OnDeath();
+        if (Health <= 0) Die();
     }
 
-    public void OnDeath()
+    public void Die()
     {
         GD.Print("I Died");
         QueueFree();
     }
 
-    public void WhenInteractBy(IInteractor interactor)
+    public void InteractedBy(IInteractor interactor)
     {
         TakeDamage(1);
-        _interactable.WhenInteractBy(interactor);
+        _interactable.HandleInteractedBy(interactor);
     }
 
     public bool CanBeInteractedBy(IInteractor interactor)
@@ -56,39 +56,39 @@ public partial class Trash : Node2D, IDestroyable, IInteractable, IDetectable
         return true;
     }
 
-    public void OnDetectableEnteredDetectorArea(IAreaDetector detector)
+    public void WhenEnteredDetectorArea(IAreaDetector detector)
     {
         
     }
 
-    public void OnDetectableExitedDetectorArea(IAreaDetector detector)
+    public void WhenExitedDetectorArea(IAreaDetector detector)
     {
         
     }
 
-    public void OnDetectableSetAsDetectorPriority(IAreaDetector detector)
+    public void WhenSetAsDetectorPriority(IAreaDetector detector)
     {
         OnDetectableBecamePriority?.Invoke(detector);
     }
 
-    public void OnDetectableRemovedFromDetectorPriority(IAreaDetector detector)
+    public void WhenRemovedFromDetectorPriority(IAreaDetector detector)
     {
         OnDetectableLostPriority?.Invoke(detector);
     }
 
-    public void DetectableAddToBlacklist(IAreaDetector detector)
+    public void AddToDetectorBlacklist(IAreaDetector detector)
     {
-        _detectable.AddToBlacklist(detector);
+        _detectable.HandleAddToBlacklist(detector);
     }
 
-    public void DetectableRemoveFromBlacklist(IAreaDetector detector)
+    public void RemoveFromDetectorBlacklist(IAreaDetector detector)
     {
-        _detectable.RemoveFromBlacklist(detector);
+        _detectable.HandleRemoveFromBlacklist(detector);
     }
 
-    public bool DetectableIsDetectorBlacklisted(IAreaDetector detector)
+    public bool IsDetectorBlacklisted(IAreaDetector detector)
     {
-        return _detectable.IsDetectorBlacklisted(detector);
+        return _detectable.HandleIsDetectorBlacklisted(detector);
     }
 
     public bool CanBeDetected(IAreaDetector detector)
@@ -98,6 +98,6 @@ public partial class Trash : Node2D, IDestroyable, IInteractable, IDetectable
 
     public void ExitAllDetectors()
     {
-        _detectable.ExitAllDetectors();
+        _detectable.HandleExitAllDetectors();
     }
 }

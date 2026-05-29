@@ -59,7 +59,7 @@ public partial class InteractableComponent : ComponentNode2D, IInteractableCompo
         _interactionSprite.Visible = false;
     }
 
-    public void WhenInteractBy(IInteractor interactor)
+    public void HandleInteractedBy(IInteractor interactor)
     {
         TweenAnimation();
     }

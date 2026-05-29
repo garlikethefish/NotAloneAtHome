@@ -16,9 +16,7 @@ public partial class DetectableComponent : ComponentStaticBody2D, IDetectableCom
     public List<IAreaDetector> BlacklistedDetectors { get; } = [];
     public List<IAreaDetector> Detectors = [];
     public List<IAreaDetector> SimpDetectors = []; // Detectors that have this detectable as priority
-    public IDetectable RootDetectable => (IDetectable)Root;
-
-    public Rid Rid => GetRid();
+    private IDetectable RootDetectable => (IDetectable)Root;
 
     public override void _Ready()
     {
@@ -27,68 +25,67 @@ public partial class DetectableComponent : ComponentStaticBody2D, IDetectableCom
 
     public override void _ExitTree()
     {
-        ExitAllDetectors();
+        HandleExitAllDetectors();
     }
 
-    public void WhenEnteredDetectorArea(IAreaDetector detector)
+    public void HandleEnterDetectorArea(IAreaDetector detector)
     {
         if (Detectors.Contains(detector) || BlacklistedDetectors.Contains(detector)) return;
         Detectors.Add(detector);
-        RootDetectable.OnDetectableEnteredDetectorArea(detector);
+        RootDetectable.WhenEnteredDetectorArea(detector);
     }
 
-    public void WhenExitedDetectorArea(IAreaDetector detector)
+    public void HandleExitDetectorArea(IAreaDetector detector)
     {
         if (!Detectors.Contains(detector)) return;
         Detectors.Remove(detector);
-        RootDetectable.OnDetectableExitedDetectorArea(detector);
+        RootDetectable.WhenExitedDetectorArea(detector);
     }
 
-    public void WhenSetAsDetectorPriority(IAreaDetector detector)
+    public void HandleSetAsDetectorPriority(IAreaDetector detector)
     {
         if (SimpDetectors.Contains(detector)) return;
         SimpDetectors.Add(detector);
-        RootDetectable.OnDetectableSetAsDetectorPriority(detector);
+        RootDetectable.WhenSetAsDetectorPriority(detector);
     }
 
-    public void WhenRemovedFromDetectorPriority(IAreaDetector detector)
+    public void HandleRemovedFromDetectorPriority(IAreaDetector detector)
     {
         if (!SimpDetectors.Contains(detector)) return;
         SimpDetectors.Remove(detector);
-        RootDetectable.OnDetectableRemovedFromDetectorPriority(detector);
+        RootDetectable.WhenRemovedFromDetectorPriority(detector);
     }
 
-    public void AddToBlacklist(IAreaDetector detector)
+    public void HandleAddToBlacklist(IAreaDetector detector)
     {
         BlacklistedDetectors.Add(detector);
-        detector.WhenBlacklistedFromDetectable(RootDetectable);
+        detector.BlacklistDetectable(RootDetectable);
+        detector.ExcludeRid(RootDetectable.Rid);
         SimpDetectors.Remove(detector);
         Detectors.Remove(detector);
     }
 
-    public void RemoveFromBlacklist(IAreaDetector detector)
+    public void HandleRemoveFromBlacklist(IAreaDetector detector)
     {
         BlacklistedDetectors.Remove(detector);
+        detector.IncludeRid(RootDetectable.Rid);
         if (detector is Area2D area2D)
         {
             var bodies = area2D.GetOverlappingBodies();
-            if (bodies.Contains(this)) detector.OnBodyEntered(this);
+            if (bodies.Contains(this)) detector.WhenBodyEntered(this);
         }
     }
 
-    public bool IsDetectorBlacklisted(IAreaDetector detector)
+    public bool HandleIsDetectorBlacklisted(IAreaDetector detector)
     {
         return BlacklistedDetectors.Contains(detector);
     }
 
-    public bool CanBeDetected(IAreaDetector detector)
+    public void HandleExitAllDetectors()
     {
-        return RootDetectable?.CanBeDetected(detector) ?? false;
+        Detectors.ForEach(item => item.ExitDetectable(RootDetectable));
+        SimpDetectors.ForEach(item => item.ExitDetectable(RootDetectable));
     }
 
-    public void ExitAllDetectors()
-    {
-        Detectors.ForEach(item => item.RemoveDetectable(RootDetectable));
-        SimpDetectors.ForEach(item => item.RemoveDetectable(RootDetectable));
-    }
+    public Rid HandleGetRid()=>GetRid();
 }

@@ -1,8 +1,8 @@
 namespace NotAloneAtHome.Components.Destroyable;
 
-public interface IDestroyable
+public interface IKillable
 {
     int Health { get; }
     void TakeDamage(int damage);
-    void OnDeath();
+    void Die();
 }

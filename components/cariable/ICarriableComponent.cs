@@ -1,8 +1,8 @@
 using Godot;
 public interface ICarriableComponent
 {
-    void OnPickedUpBy(ICarrier carrier);
-    void OnDropedAt(Vector2 landPos);
+    void HandlePickedUpBy(ICarrier carrier);
+    void HandleDropedAt(Vector2 landPos);
     bool CanBeCarried(ICarrier carrier);
 }
 

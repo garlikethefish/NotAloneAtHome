@@ -2,5 +2,5 @@ using System;
 
 public interface IInteractorComponent
 {
-    void InteractWith(IInteractable interactable);
+    void HandleInteractWith(IInteractable interactable);
 }

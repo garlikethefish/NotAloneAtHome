@@ -8,9 +8,10 @@ public partial class AreaDetectorComponent : ComponentArea2D, IAreaDetectorCompo
     [Export] public CollisionShape2D CollisionShape { get; private set; }
     [Export] public bool ShowDebug = true;
     [Export] public int[] CollisionMasks = [10, 2];
-    public CollisionObject2D[] ExcludedColliders { get; } = [];
+    public List<Rid> ExcludedRids { get; } = [];
     public List<DetectableComponentModel> DetectablesInArea { get; } = [];
-    public IAreaDetector RootDetector => (IAreaDetector)Root;
+    private IAreaDetector RootDetector => (IAreaDetector)Root;
+
     public override void _Ready()
     {
         base._Ready();
@@ -44,13 +45,13 @@ public partial class AreaDetectorComponent : ComponentArea2D, IAreaDetectorCompo
     {
         GD.Print($"[OnBodyEntered] body={body?.Name ?? "NULL"}, valid={IsInstanceValid(body)}");
         if (!body.TryGetRoot<IDetectable>(out var detectable) 
-            || detectable.DetectableIsDetectorBlacklisted(RootDetector)
+            || detectable.IsDetectorBlacklisted(RootDetector)
         ) return;
         if (DetectablesInArea.Any(detInArea => detInArea.Detectable == detectable)) return;
 
         DetectablesInArea.Add(new DetectableComponentModel { Detectable = detectable });
-        detectable.OnDetectableEnteredDetectorArea(RootDetector);
-        RootDetector.OnBodyEntered(body);
+        detectable.WhenEnteredDetectorArea(RootDetector);
+        RootDetector.WhenBodyEntered(body);
     }
 
     public void OnBodyExited(Node2D body)
@@ -61,17 +62,27 @@ public partial class AreaDetectorComponent : ComponentArea2D, IAreaDetectorCompo
         if (model == null) return;
 
         DetectablesInArea.Remove(model);
-        detectable.OnDetectableExitedDetectorArea(RootDetector);
-        RootDetector.OnBodyExited(body);
+        detectable.WhenExitedDetectorArea(RootDetector);
+        RootDetector.WhenBodyExited(body);
     }
 
-    public void WhenBlacklistedFromDetectable(IDetectable detectable)
+    public void HandleBlacklistDetectable(IDetectable detectable)
     {
         OnBodyExited((Node2D)detectable);
     }
 
-    public virtual void RemoveDetectable(IDetectable detectable)
+    public virtual void HandleExitDetectable(IDetectable detectable)
     {
         DetectablesInArea.RemoveAll(model => model.Detectable == detectable);
+    }
+
+    public void HandleExcludeRid(Rid rid)
+    {
+        ExcludedRids.Add(rid);
+    }
+
+    public void HandleIncludeRid(Rid rid)
+    {
+        ExcludedRids.Remove(rid);
     }
 }

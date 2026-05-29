@@ -21,7 +21,7 @@ public partial class Valuable : RigidBody2D, IInteractable, ICarriable, IThrowab
     public event Action<IAreaDetector> OnDetectableLostPriority;
     public CollisionShape2D CollisionShape2D => _detectable.CollisionShape2D;
     public List<IAreaDetector> BlacklistedDetectors => _detectable.BlacklistedDetectors;
-    public Rid Rid => _detectable.Rid;
+    public Rid Rid => _detectable.HandleGetRid();
 
     public override void _Ready()
     {
@@ -56,67 +56,67 @@ public partial class Valuable : RigidBody2D, IInteractable, ICarriable, IThrowab
         return true;
     }
 
-    public void WhenInteractBy(IInteractor interactor)
+    public void InteractedBy(IInteractor interactor)
+    {
+        _interactable.HandleInteractedBy(interactor);
+    }
+
+    public void WhenPickedUpBy(ICarrier carrier)
+    {
+        _carriable.HandlePickedUpBy(carrier);
+    }
+
+    public void WhenDropedAt(Vector2 landPos)
+    {
+        _carriable.HandleDropedAt(landPos);
+    }
+
+    public void WhenEnteredDetectorArea(IAreaDetector detector)
     {
         
     }
 
-    public void OnCarriablePickedUpBy(ICarrier carrier)
-    {
-        _carriable.OnPickedUpBy(carrier);
-    }
-
-    public void OnCarriableDropedAt(Vector2 landPos)
-    {
-        _carriable.OnDropedAt(landPos);
-    }
-
-    public void OnDetectableEnteredDetectorArea(IAreaDetector detector)
+    public void WhenExitedDetectorArea(IAreaDetector detector)
     {
         
     }
 
-    public void OnDetectableExitedDetectorArea(IAreaDetector detector)
-    {
-        
-    }
-
-    public void OnDetectableSetAsDetectorPriority(IAreaDetector detector)
+    public void WhenSetAsDetectorPriority(IAreaDetector detector)
     {
         OnDetectableBecamePriority?.Invoke(detector);
     }
 
-    public void OnDetectableRemovedFromDetectorPriority(IAreaDetector detector)
+    public void WhenRemovedFromDetectorPriority(IAreaDetector detector)
     {
         OnDetectableLostPriority?.Invoke(detector);
     }
 
-    public void DetectableAddToBlacklist(IAreaDetector detector)
+    public void AddToDetectorBlacklist(IAreaDetector detector)
     {
-        _detectable.AddToBlacklist(detector);
+        _detectable.HandleAddToBlacklist(detector);
     }
 
-    public void DetectableRemoveFromBlacklist(IAreaDetector detector)
+    public void RemoveFromDetectorBlacklist(IAreaDetector detector)
     {
-        _detectable.RemoveFromBlacklist(detector);
+        _detectable.HandleRemoveFromBlacklist(detector);
     }
 
-    public bool DetectableIsDetectorBlacklisted(IAreaDetector detector)
+    public bool IsDetectorBlacklisted(IAreaDetector detector)
     {
-        return _detectable.IsDetectorBlacklisted(detector);
+        return _detectable.HandleIsDetectorBlacklisted(detector);
     }
 
     public void ExitAllDetectors()
     {
-        _detectable.ExitAllDetectors();
+        _detectable.HandleExitAllDetectors();
     }
 
-    public void GotThrownBy(IThrower thrower)
+    public void WhenThrownBy(IThrower thrower, Vector2 pos)
     {
-        _throwable.HandleThrownBy(thrower, Vector2.Down);
+        _throwable.HandleThrownBy(thrower, pos);
     }
 
-    public void GotLandedOn(Vector2 pos)
+    public void WhenLandedOn(Vector2 pos)
     {
         
     }

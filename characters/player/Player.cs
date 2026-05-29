@@ -50,7 +50,6 @@ public partial class Player : CharacterBody2D, IThrower, IInteractor, ICastedAre
 
     // components
     private IThrowerComponent _thrower;
-    private IInteractorComponent _interactor;
     private ICarrierComponent _carrier;
     private ICastedAreaDetectorComponent _detector;
 
@@ -73,10 +72,10 @@ public partial class Player : CharacterBody2D, IThrower, IInteractor, ICastedAre
     public Dictionary<Type, IState> States = [];
     public IState CurrentState { get; private set; }
     public ComponentHolder Holder { get; private set; }
-    public CollisionObject2D[] ExcludedColliders => _detector.ExcludedColliders;
     public List<DetectableComponentModel> DetectablesInArea => _detector.DetectablesInArea;
     public CollisionShape2D CollisionShape => _detector.CollisionShape;
     public IDetectable ClosestDetectable => _detector.ClosestDetectable;
+    public List<Rid> ExcludedRids => _detector.ExcludedRids;
 
     [Signal] public delegate void ShakeCameraEventHandler();
     [Signal] public delegate void StopCameraShakeEventHandler();
@@ -91,7 +90,6 @@ public partial class Player : CharacterBody2D, IThrower, IInteractor, ICastedAre
         }
 
         _thrower    = Holder.Thrower;
-        _interactor = Holder.Interactor;
         _carrier    = Holder.Carrier;
         _detector   = Holder.CastedAreaDetector;
 
@@ -288,17 +286,17 @@ public partial class Player : CharacterBody2D, IThrower, IInteractor, ICastedAre
 
     public void InteractWith(IInteractable interactable)
     {
-        _interactor.InteractWith(interactable);
+        interactable.InteractedBy(this);
     }
 
     public void StartAiming()
     {
-        _thrower.StartAiming();
+        _thrower.HandleStartAiming();
     }
 
     public void StopAiming()
     {
-        _thrower.StopAiming();
+        _thrower.HandleStopAiming();
     }
 
     public void SetFacingDirection(Vector2 direction)
@@ -309,19 +307,19 @@ public partial class Player : CharacterBody2D, IThrower, IInteractor, ICastedAre
     public void Pickup(ICarriable carriable)
     {
         _canCarry = false;
-        _carrier.Pickup(carriable);
+        _carrier.HandlePickup(carriable);
     }
 
     public void Drop()
     {
         _canCarry = true;
-        _carrier.Drop();
+        _carrier.HandleDrop();
     }
 
     public void Throw(IThrowable throwable)
     {
         _canCarry = true;
-        _thrower.Throw(throwable);
+        _thrower.HandleThrow(throwable);
     }
 
     public void ChangeState(IState next)
@@ -346,26 +344,25 @@ public partial class Player : CharacterBody2D, IThrower, IInteractor, ICastedAre
         CurrentState.PhysicsUpdate(delta);
     }
 
-    public void OnBodyEntered(Node2D body){}
+    public void WhenBodyEntered(Node2D body){}
 
-    public void OnBodyExited(Node2D body){}
+    public void WhenBodyExited(Node2D body){}
 
-    public void WhenBlacklistedFromDetectable(IDetectable detectable){}
+    public void BlacklistDetectable(IDetectable detectable){}
 
-    public void RemoveDetectable(IDetectable detectable){}
+    public void ExitDetectable(IDetectable detectable){}
 
-    public bool CanDetectLike(IDetectable detectable)
+    public void WhenEnteredSight(IDetectable detectable){}
+
+    public void WhenExitedSight(IDetectable detectable){}
+
+    public void ExcludeRid(Rid rid)
     {
-        return true;
+        _detector.HandleExcludeRid(rid);
     }
 
-    public void OnEnteredSight(IDetectable detectable)
+    public void IncludeRid(Rid rid)
     {
-        
-    }
-
-    public void OnExitedSight(IDetectable detectable)
-    {
-        
+        _detector.HandleIncludeRid(rid);
     }
 }

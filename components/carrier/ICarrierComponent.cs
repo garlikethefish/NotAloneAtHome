@@ -5,6 +5,6 @@ public interface ICarrierComponent
 {
     Node2D CarryPointNode { get; }
     ICarriable? Carriable { get; }
-    void Pickup(ICarriable carriable);
-    void Drop();
+    void HandlePickup(ICarriable carriable);
+    void HandleDrop();
 }

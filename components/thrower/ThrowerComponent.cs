@@ -69,30 +69,25 @@ public partial class ThrowerComponent : ComponentNode2D, IThrowerComponent
         return GlobalPosition + query.Motion * travelFraction;
     }
 
-    public void Throw(IThrowable throwable)
+    public void HandleThrow(IThrowable throwable)
     {
         (throwable as Node2D).Reparent(GetTree().CurrentScene);
 
         if (throwable is IDetectable detectable)
-            detectable.DetectableRemoveFromBlacklist((IAreaDetector)Root);
+            detectable.RemoveFromDetectorBlacklist((IAreaDetector)Root);
             
-        throwable.GotThrownBy((IThrower)Root);
-        StopAiming();
+        throwable.WhenThrownBy((IThrower)Root, AimedAtLocation);
+        HandleStopAiming();
     }
 
-    public void SetFacingDirection(Vector2 direction)
-    {
-        (Root as IThrower)?.SetFacingDirection(direction);
-    }
-
-    public void StartAiming()
+    public void HandleStartAiming()
     {
         CurrentCharge = 0;
         IsCharging    = true;
         _targetSpriteNode.Visible = true;
     }
 
-    public void StopAiming()
+    public void HandleStopAiming()
     {
         IsCharging      = false;
         CurrentCharge   = 0;
@@ -102,40 +97,4 @@ public partial class ThrowerComponent : ComponentNode2D, IThrowerComponent
         _targetSpriteNode.Visible = false;
         QueueRedraw();
     }
-
-    // public bool TryThrow()
-    // {
-    //     if (Throwable == null) return false;
-
-    //     Throwable.Throw(CurrentThrowPosition);
-    //     RemoveThrowable();
-    //     EmitSignal(SignalName.OnThrow, this);
-    //     return true;
-    // }
-
-    // public bool TryStartCharge(Throwable throwable)
-    // {
-    //     if (IsCharging ||
-    //         throwable == null ||
-    //         CanBeThrownBlockers.IsBlocked) return false;
-
-    //     Throwable     = throwable;
-    //     CurrentCharge = 0;
-    //     IsCharging    = true;
-    //     _targetSpriteNode.Visible = true;
-    //     EmitSignal(SignalName.OnThrowChargeStart, this);
-    //     return true;
-    // }
-
-    // public void CancelCharge()
-    // {
-    //     ResetChargingData();
-    //     EmitSignal(SignalName.OnThrowChargeCancel, this);
-    // }
-
-    // public void RemoveThrowable()
-    // {
-    //     Throwable = null;
-    //     ResetChargingData();
-    // }
 }

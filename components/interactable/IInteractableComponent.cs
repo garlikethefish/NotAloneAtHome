@@ -5,5 +5,5 @@ using Godot;
 
 public interface IInteractableComponent 
 {
-    void WhenInteractBy(IInteractor interactor);
+    void HandleInteractedBy(IInteractor interactor);
 }

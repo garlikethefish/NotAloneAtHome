@@ -48,12 +48,11 @@ public partial class ThrowableComponent : ComponentNode2D, IThrowableComponent
     {
         IsFlying = true;
         StartFlyAnimation(toPosition);
-        (Root as IThrowable).GotThrownBy(thrower);
     }
 
     public void Land()
     {
         IsFlying = false;
-        (Root as IThrowable).GotLandedOn(GlobalPosition);
+        (Root as IThrowable).WhenLandedOn(GlobalPosition);
     }
 }

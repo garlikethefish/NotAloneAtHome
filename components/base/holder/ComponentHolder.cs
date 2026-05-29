@@ -18,9 +18,8 @@ public partial class ComponentHolder : Node2D
     public ICastedAreaDetectorComponent CastedAreaDetector;
     public IThrowableComponent Throwable;
     public IThrowerComponent Thrower;
-    public IInteractorComponent Interactor;
     public IInteractableComponent Interactable;
-    public IDestroyable Destroyable;
+    public IKillable Destroyable;
 
     public override async void _Ready()
     {
@@ -32,8 +31,7 @@ public partial class ComponentHolder : Node2D
         CastedAreaDetector = GetChildren().OfType<ICastedAreaDetectorComponent>().FirstOrDefault();
         Thrower            = GetChildren().OfType<IThrowerComponent>().FirstOrDefault();
         Interactable       = GetChildren().OfType<IInteractableComponent>().FirstOrDefault();
-        Interactor         = GetChildren().OfType<IInteractorComponent>().FirstOrDefault();
-        Destroyable        = GetChildren().OfType<IDestroyable>().FirstOrDefault();
+        Destroyable        = GetChildren().OfType<IKillable>().FirstOrDefault();
         
         await ToSignal(Root, Node.SignalName.Ready);
 

@@ -42,24 +42,24 @@ public partial class CarrierComponent : ComponentNode2D, ICarrierComponent
         );
     }
 
-    public void Pickup(ICarriable carriable)
+    public void HandlePickup(ICarriable carriable)
     {
         Carriable = carriable;
         IsPickingUp = true;
-        carriable.OnCarriablePickedUpBy((ICarrier)Root);
+        carriable.WhenPickedUpBy((ICarrier)Root);
 
         if (carriable is IDetectable detectable)
-            detectable.DetectableAddToBlacklist((IAreaDetector)Root);
+            detectable.AddToDetectorBlacklist((IAreaDetector)Root);
     }
 
-    public void Drop()
+    public void HandleDrop()
     {
         var carriable = Carriable;
         Carriable = null;
         IsDropping = true;
-        carriable.OnCarriableDropedAt(_validCarriableDropPosition);
+        carriable.WhenDropedAt(_validCarriableDropPosition);
 
         if (carriable is IDetectable detectable)
-            detectable.DetectableRemoveFromBlacklist((IAreaDetector)Root);
+            detectable.RemoveFromDetectorBlacklist((IAreaDetector)Root);
     }
 }

@@ -27,8 +27,8 @@ public partial class CastedAreaDetectorComponent : AreaDetectorComponent, ICaste
 
         if (newPriority != ClosestDetectable)
         {
-            ClosestDetectable?.OnDetectableRemovedFromDetectorPriority(RootDetector);
-            newPriority?.OnDetectableSetAsDetectorPriority(RootDetector);
+            ClosestDetectable?.WhenRemovedFromDetectorPriority(RootCastedDetector);
+            newPriority?.WhenSetAsDetectorPriority(RootCastedDetector);
         }
 
         ClosestDetectable = newPriority;
@@ -63,9 +63,7 @@ public partial class CastedAreaDetectorComponent : AreaDetectorComponent, ICaste
     {
         if (DetectablesInArea.Count == 0) return;
 
-        var excludedRids = ExcludedColliders
-            .Select(c => c.GetRid())
-            .ToList();
+        var excludedRids = ExcludedRids.ToList();
 
         var spaceState   = GetWorld2D().DirectSpaceState;
         var combinedMask = Utils.GetCombinedMask(RaycastCollisionMasks);
@@ -98,16 +96,16 @@ public partial class CastedAreaDetectorComponent : AreaDetectorComponent, ICaste
                 var collider = result["collider"].As<Node2D>();
                 if (collider.TryGetRoot<IDetectable>(out var detectable) &&
                     detectable == model.Detectable &&
-                    detectable.CanBeDetected(RootDetector)
+                    detectable.CanBeDetected(RootCastedDetector)
                 ) {
-                    if (!model.IsInLineOfSight) RootCastedDetector.OnEnteredSight(model.Detectable);
+                    if (!model.IsInLineOfSight) OnEnteredSight(model.Detectable);
                     model.IsInLineOfSight = true;
                     continue;
                 }
             }
     
             // wasnt hit or failed on hitting
-            if (model.IsInLineOfSight) RootCastedDetector.OnExitedSight(model.Detectable);
+            if (model.IsInLineOfSight) OnExitedSight(model.Detectable);
             model.IsInLineOfSight = false;
         }
     }
@@ -135,9 +133,19 @@ public partial class CastedAreaDetectorComponent : AreaDetectorComponent, ICaste
             ? first
             : second;
 
-    public override void RemoveDetectable(IDetectable detectable)
+    public override void HandleExitDetectable(IDetectable detectable)
     {
         if (ClosestDetectable == detectable)
         ClosestDetectable = null;
+    }
+
+    public void OnEnteredSight(IDetectable detectable)
+    {
+        RootCastedDetector.WhenEnteredSight(detectable);
+    }
+
+    public void OnExitedSight(IDetectable detectable)
+    {        
+        RootCastedDetector.WhenExitedSight(detectable);
     }
 }

@@ -4,7 +4,7 @@ using System;
 
 public interface ICastedAreaDetector : IAreaDetector
 {
-    void OnEnteredSight(IDetectable detectable);
-    void OnExitedSight(IDetectable detectable);
+    void WhenEnteredSight(IDetectable detectable);
+    void WhenExitedSight(IDetectable detectable);
     IDetectable? ClosestDetectable { get; }
 }

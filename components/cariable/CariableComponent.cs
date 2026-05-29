@@ -44,13 +44,13 @@ public partial class CariableComponent : ComponentNode2D, ICarriableComponent
         return ToSignal(tween, Tween.SignalName.Finished);
     }
 
-    public async void OnPickedUpBy(ICarrier carrier)
+    public async void HandlePickedUpBy(ICarrier carrier)
     {
         Root.Reparent(carrier.CarryPointNode, true);
-        await PlayPickUpAnimation(carrier.CarryPointNode.GlobalPosition);
+        await PlayPickUpAnimation(carrier.CarryPointNode.Position);
     }
 
-    public async void OnDropedAt(Vector2 landPos)
+    public async void HandleDropedAt(Vector2 landPos)
     {
         Root.Reparent(GetTree().CurrentScene, true);
         await PlayDropAnimation(landPos);
