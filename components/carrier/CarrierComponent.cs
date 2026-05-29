@@ -46,10 +46,10 @@ public partial class CarrierComponent : ComponentNode2D, ICarrierComponent
     {
         Carriable = carriable;
         IsPickingUp = true;
-        carriable.WhenPickedUpBy((ICarrier)Root);
+        carriable.OnPickedUpBy?.InvokeOrLog((ICarrier)Root);
 
         if (carriable is IDetectable detectable)
-            detectable.AddToDetectorBlacklist((IAreaDetector)Root);
+            detectable.DetectableComp.HandleAddToBlacklist((IAreaDetector)Root);
     }
 
     public void HandleDrop()
@@ -57,9 +57,9 @@ public partial class CarrierComponent : ComponentNode2D, ICarrierComponent
         var carriable = Carriable;
         Carriable = null;
         IsDropping = true;
-        carriable.WhenDropedAt(_validCarriableDropPosition);
+        carriable.OnDropedAt?.InvokeOrLog(_validCarriableDropPosition);
 
         if (carriable is IDetectable detectable)
-            detectable.RemoveFromDetectorBlacklist((IAreaDetector)Root);
+            detectable.DetectableComp.HandleRemoveFromBlacklist((IAreaDetector)Root);
     }
 }

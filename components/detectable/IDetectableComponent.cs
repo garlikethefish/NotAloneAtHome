@@ -13,7 +13,6 @@ public interface IDetectableComponent : IComponentInterface
     void HandleRemovedFromDetectorPriority(IAreaDetector detector);
     void HandleAddToBlacklist(IAreaDetector detector);
     void HandleRemoveFromBlacklist(IAreaDetector detector);
-    bool HandleIsDetectorBlacklisted(IAreaDetector detector);
     void HandleExitAllDetectors();
     Rid HandleGetRid();
 }

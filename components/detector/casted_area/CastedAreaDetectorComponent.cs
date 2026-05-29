@@ -1,9 +1,9 @@
 using Godot;
 using NotAloneAtHome.Components.Detectable;
+using System;
 using System.Linq;
 
 #nullable enable
-[GlobalClass]
 public partial class CastedAreaDetectorComponent : AreaDetectorComponent, ICastedAreaDetectorComponent
 {
     [Export] public int[] RaycastCollisionMasks = [10, 2];
@@ -27,8 +27,8 @@ public partial class CastedAreaDetectorComponent : AreaDetectorComponent, ICaste
 
         if (newPriority != ClosestDetectable)
         {
-            ClosestDetectable?.WhenRemovedFromDetectorPriority(RootCastedDetector);
-            newPriority?.WhenSetAsDetectorPriority(RootCastedDetector);
+            ClosestDetectable?.OnRemovedDetectorPriority?.InvokeOrLog(RootCastedDetector);
+            newPriority?.OnBecameDetectorPriority?.InvokeOrLog(RootCastedDetector);
         }
 
         ClosestDetectable = newPriority;
@@ -98,14 +98,14 @@ public partial class CastedAreaDetectorComponent : AreaDetectorComponent, ICaste
                     detectable == model.Detectable &&
                     detectable.CanBeDetected(RootCastedDetector)
                 ) {
-                    if (!model.IsInLineOfSight) OnEnteredSight(model.Detectable);
+                    if (!model.IsInLineOfSight) RootCastedDetector.OnEnteredSight?.InvokeOrLog(model.Detectable);
                     model.IsInLineOfSight = true;
                     continue;
                 }
             }
     
             // wasnt hit or failed on hitting
-            if (model.IsInLineOfSight) OnExitedSight(model.Detectable);
+            if (model.IsInLineOfSight) RootCastedDetector.OnExitedSight?.InvokeOrLog(model.Detectable);
             model.IsInLineOfSight = false;
         }
     }
@@ -133,19 +133,9 @@ public partial class CastedAreaDetectorComponent : AreaDetectorComponent, ICaste
             ? first
             : second;
 
-    public override void HandleExitDetectable(IDetectable detectable)
+    public override void HandleForceUndetectDetectable(IDetectable detectable)
     {
         if (ClosestDetectable == detectable)
         ClosestDetectable = null;
-    }
-
-    public void OnEnteredSight(IDetectable detectable)
-    {
-        RootCastedDetector.WhenEnteredSight(detectable);
-    }
-
-    public void OnExitedSight(IDetectable detectable)
-    {        
-        RootCastedDetector.WhenExitedSight(detectable);
     }
 }

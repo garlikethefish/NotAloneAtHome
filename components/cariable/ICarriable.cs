@@ -1,9 +1,10 @@
+using System;
 using Godot;
 public interface ICarriable
 {
     CollisionShape2D CollisionShape2D { get; }
-    void WhenPickedUpBy(ICarrier carrier);
-    void WhenDropedAt(Vector2 landPos);
+    Action<ICarrier> OnPickedUpBy { get; set; }
+    Action<Vector2> OnDropedAt { get; set; }
     bool CanBeCarried(ICarrier carrier);
 }
 

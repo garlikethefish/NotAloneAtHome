@@ -14,5 +14,5 @@ func _on_exit_button_pressed() -> void:
 
 
 func _on_fast_start_button_pressed() -> void:
-	GameManager.start(GameManager.GameDifficulty.Easy)
+	GameManager.StartGame("easy")
 	get_tree().change_scene_to_file("res://scenes/Main.tscn")

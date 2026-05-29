@@ -4,10 +4,11 @@ using System;
 using System.Collections.Generic;
 using Godot;
 using NotAloneAtHome.Components.Base.Holder;
+using NotAloneAtHome.Components.Interactable;
 using NotAloneAtHome.Components.Thrower;
 using NotAloneAtHome.state_machines.interfaces;
 
-public partial class Player : CharacterBody2D, IThrower, IInteractor, ICastedAreaDetector, ICarrier, IStateMachine
+public partial class Player : CharacterBody2D, IThrower, ICastedAreaDetector, ICarrier, IInteractor, IStateMachine
 {
     //
     // player move speed
@@ -76,6 +77,11 @@ public partial class Player : CharacterBody2D, IThrower, IInteractor, ICastedAre
     public CollisionShape2D CollisionShape => _detector.CollisionShape;
     public IDetectable ClosestDetectable => _detector.ClosestDetectable;
     public List<Rid> ExcludedRids => _detector.ExcludedRids;
+
+    Action<Node2D> IAreaDetector.OnBodyEntered { get; set; }
+    Action<Node2D> IAreaDetector.OnBodyExited { get; set; }
+    public Action<IDetectable> OnEnteredSight { get; set; }
+    public Action<IDetectable> OnExitedSight { get; set; }
 
     [Signal] public delegate void ShakeCameraEventHandler();
     [Signal] public delegate void StopCameraShakeEventHandler();
@@ -165,7 +171,7 @@ public partial class Player : CharacterBody2D, IThrower, IInteractor, ICastedAre
                 Pickup(carriable);
                 ChangeState(States[typeof(CarryingState)]);
             }
-            else if (detectable is IInteractable interactable && interactable.CanBeInteractedBy(this))
+            else if (detectable is IInteractable interactable)
             {
                 InteractWith(interactable);
             }
@@ -204,9 +210,9 @@ public partial class Player : CharacterBody2D, IThrower, IInteractor, ICastedAre
         if (_currentVisionRadius == targetRadius) return;
         mat.SetShaderParameter("center", new Vector2(0.5f, 0.5f));
 
-        double transitionSpeed = _currentVisionRadius < targetRadius 
-            ? VisionExpandSpeed 
-            : VisionShrinkSpeed;
+        double transitionSpeed = targetRadius > _currentVisionRadius  
+            ? VisionShrinkSpeed
+            : VisionExpandSpeed;
         _currentVisionRadius =  Mathf.MoveToward(_currentVisionRadius, targetRadius, transitionSpeed * delta);
 
         mat.SetShaderParameter("radius", _currentVisionRadius);
@@ -344,25 +350,7 @@ public partial class Player : CharacterBody2D, IThrower, IInteractor, ICastedAre
         CurrentState.PhysicsUpdate(delta);
     }
 
-    public void WhenBodyEntered(Node2D body){}
+    public void BlacklistDetectable(IDetectable detectable) => _detector.HandleBlacklistDetectable(detectable);
+    public void ForceUndetectDetectable(IDetectable detectable) => _detector.HandleForceUndetectDetectable(detectable);
 
-    public void WhenBodyExited(Node2D body){}
-
-    public void BlacklistDetectable(IDetectable detectable){}
-
-    public void ExitDetectable(IDetectable detectable){}
-
-    public void WhenEnteredSight(IDetectable detectable){}
-
-    public void WhenExitedSight(IDetectable detectable){}
-
-    public void ExcludeRid(Rid rid)
-    {
-        _detector.HandleExcludeRid(rid);
-    }
-
-    public void IncludeRid(Rid rid)
-    {
-        _detector.HandleIncludeRid(rid);
-    }
 }

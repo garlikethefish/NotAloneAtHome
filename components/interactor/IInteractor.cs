@@ -1,4 +1,5 @@
 using System;
+using NotAloneAtHome.Components.Interactable;
 
 public interface IInteractor 
 {

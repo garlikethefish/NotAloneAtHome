@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Godot;
-using NotAloneAtHome.Components.Detectable;
 
 public partial class AreaDetectorComponent : ComponentArea2D, IAreaDetectorComponent
 {
@@ -45,13 +44,13 @@ public partial class AreaDetectorComponent : ComponentArea2D, IAreaDetectorCompo
     {
         GD.Print($"[OnBodyEntered] body={body?.Name ?? "NULL"}, valid={IsInstanceValid(body)}");
         if (!body.TryGetRoot<IDetectable>(out var detectable) 
-            || detectable.IsDetectorBlacklisted(RootDetector)
+            || detectable.BlacklistedDetectors.Contains(RootDetector)
         ) return;
         if (DetectablesInArea.Any(detInArea => detInArea.Detectable == detectable)) return;
 
         DetectablesInArea.Add(new DetectableComponentModel { Detectable = detectable });
-        detectable.WhenEnteredDetectorArea(RootDetector);
-        RootDetector.WhenBodyEntered(body);
+        detectable.OnEnteredDetectorArea?.InvokeOrLog(RootDetector);
+        RootDetector.OnBodyEntered?.InvokeOrLog(body);
     }
 
     public void OnBodyExited(Node2D body)
@@ -62,8 +61,8 @@ public partial class AreaDetectorComponent : ComponentArea2D, IAreaDetectorCompo
         if (model == null) return;
 
         DetectablesInArea.Remove(model);
-        detectable.WhenExitedDetectorArea(RootDetector);
-        RootDetector.WhenBodyExited(body);
+        detectable.OnExitedDetectorArea?.InvokeOrLog(RootDetector);
+        RootDetector.OnBodyExited?.InvokeOrLog(body);
     }
 
     public void HandleBlacklistDetectable(IDetectable detectable)
@@ -71,18 +70,8 @@ public partial class AreaDetectorComponent : ComponentArea2D, IAreaDetectorCompo
         OnBodyExited((Node2D)detectable);
     }
 
-    public virtual void HandleExitDetectable(IDetectable detectable)
+    public virtual void HandleForceUndetectDetectable(IDetectable detectable)
     {
         DetectablesInArea.RemoveAll(model => model.Detectable == detectable);
-    }
-
-    public void HandleExcludeRid(Rid rid)
-    {
-        ExcludedRids.Add(rid);
-    }
-
-    public void HandleIncludeRid(Rid rid)
-    {
-        ExcludedRids.Remove(rid);
     }
 }

@@ -5,28 +5,36 @@ using System.Collections.Generic;
 using Godot;
 using NotAloneAtHome.Components.Base.Holder;
 using NotAloneAtHome.Components.Detectable;
+using NotAloneAtHome.Components.Interactable;
 
 public partial class Valuable : RigidBody2D, IInteractable, ICarriable, IThrowable, IDetectable
 {
     [Export] public ValuableType Type;
-
     public ComponentHolder Holder { get; private set; }
     private ICarriableComponent _carriable;
     private IInteractableComponent _interactable;
     private IThrowableComponent _throwable;
-    private IDetectableComponent _detectable;
+    public IDetectableComponent DetectableComp { get; set; }
     private Sprite2D _sprite;
     private ShaderMaterial _shaderMat = GD.Load<ShaderMaterial>("uid://cnuuc1ep5p6ia");
-    public event Action<IAreaDetector> OnDetectableBecamePriority;
-    public event Action<IAreaDetector> OnDetectableLostPriority;
-    public CollisionShape2D CollisionShape2D => _detectable.CollisionShape2D;
-    public List<IAreaDetector> BlacklistedDetectors => _detectable.BlacklistedDetectors;
-    public Rid Rid => _detectable.HandleGetRid();
+    public CollisionShape2D CollisionShape2D => DetectableComp.CollisionShape2D;
+    public List<IAreaDetector> BlacklistedDetectors => DetectableComp.BlacklistedDetectors;
+    public Rid Rid => DetectableComp.HandleGetRid();
+
+    public Action<ICarrier> OnPickedUpBy { get; set; }
+    public Action<Vector2> OnDropedAt { get; set; }
+    public Action<IThrower, Vector2> OnThrownBy { get; set; }
+    public Action<Vector2> OnLanded { get; set; }
+    public Action<IAreaDetector> OnEnteredDetectorArea { get; set; }
+    public Action<IAreaDetector> OnExitedDetectorArea { get; set; }
+    public Action<IAreaDetector> OnBecameDetectorPriority { get; set; }
+    public Action<IAreaDetector> OnRemovedDetectorPriority { get; set; }
+
 
     public override void _Ready()
     {
         Holder = this.GetComponentOfType<ComponentHolder>();
-        _detectable   = Holder.Detectable;
+        DetectableComp   = Holder.Detectable;
         _interactable = Holder.Interactable;
         _carriable    = Holder.Carriable;
         _throwable    = Holder.Throwable;
@@ -34,6 +42,10 @@ public partial class Valuable : RigidBody2D, IInteractable, ICarriable, IThrowab
 
         _sprite.Texture = ValuableData.Valuables[Type].texture2D;
         _sprite.Material = _shaderMat;
+
+        OnThrownBy   += ThrownBy;
+        OnPickedUpBy += PickedUpBy;
+        OnDropedAt   += DropedAt;
     }
 
     public void Sell(Node2D node)
@@ -41,83 +53,32 @@ public partial class Valuable : RigidBody2D, IInteractable, ICarriable, IThrowab
         GD.Print("Sold!");
     }
 
-    public bool CanBeDetected(IAreaDetector detector)
+    void ThrownBy(IThrower thrower, Vector2 pos)
     {
-        return true;
+        _throwable.HandleThrownBy(thrower, pos);
     }
 
-    public bool CanBeCarried(ICarrier carrier)
+    void PickedUpBy(ICarrier carrier)
     {
-        return true;
+        _carriable.HandlePickedUpBy(carrier);
     }
 
-    public bool CanBeInteractedBy(IInteractor interactor)
+    void DropedAt(Vector2 pos)
     {
-        return true;
+        _carriable.HandleDropedAt(pos);
     }
+
+    public bool CanBeCarried(ICarrier carrier)=>true;
 
     public void InteractedBy(IInteractor interactor)
     {
         _interactable.HandleInteractedBy(interactor);
     }
 
-    public void WhenPickedUpBy(ICarrier carrier)
-    {
-        _carriable.HandlePickedUpBy(carrier);
-    }
-
-    public void WhenDropedAt(Vector2 landPos)
-    {
-        _carriable.HandleDropedAt(landPos);
-    }
-
-    public void WhenEnteredDetectorArea(IAreaDetector detector)
-    {
-        
-    }
-
-    public void WhenExitedDetectorArea(IAreaDetector detector)
-    {
-        
-    }
-
-    public void WhenSetAsDetectorPriority(IAreaDetector detector)
-    {
-        OnDetectableBecamePriority?.Invoke(detector);
-    }
-
-    public void WhenRemovedFromDetectorPriority(IAreaDetector detector)
-    {
-        OnDetectableLostPriority?.Invoke(detector);
-    }
-
-    public void AddToDetectorBlacklist(IAreaDetector detector)
-    {
-        _detectable.HandleAddToBlacklist(detector);
-    }
-
-    public void RemoveFromDetectorBlacklist(IAreaDetector detector)
-    {
-        _detectable.HandleRemoveFromBlacklist(detector);
-    }
-
-    public bool IsDetectorBlacklisted(IAreaDetector detector)
-    {
-        return _detectable.HandleIsDetectorBlacklisted(detector);
-    }
-
     public void ExitAllDetectors()
     {
-        _detectable.HandleExitAllDetectors();
+        DetectableComp.HandleExitAllDetectors();
     }
 
-    public void WhenThrownBy(IThrower thrower, Vector2 pos)
-    {
-        _throwable.HandleThrownBy(thrower, pos);
-    }
-
-    public void WhenLandedOn(Vector2 pos)
-    {
-        
-    }
+    public bool CanBeDetected(IAreaDetector detector)=>true;
 }

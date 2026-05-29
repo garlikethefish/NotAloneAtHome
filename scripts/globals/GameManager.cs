@@ -7,7 +7,7 @@ public enum GameStatus { Started, Paused, Ended }
 
 public partial class GameManager : Node
 {
-    [Signal] public delegate void GameStartedEventHandler();
+    [Signal] public delegate void GameStartedEventHandler(string dificulty);
     [Signal] public delegate void GameEndedEventHandler();
     public static GameManager Instance { get; private set; }
     private GameDifficulty _difficulty = GameDifficulty.Easy;
@@ -18,8 +18,9 @@ public partial class GameManager : Node
     public int MaxStealableItems = 10;
     public override void _Ready() => Instance = this; 
 
-    public void StartGame(GameDifficulty difficulty)
+    public void StartGame(string difficulty)
     {
+        //Enum.Parse<GameDifficulty>(difficulty, ignoreCase: true);
         GameStatus = GameStatus.Started;
         EmitSignal(SignalName.GameStarted);
     }

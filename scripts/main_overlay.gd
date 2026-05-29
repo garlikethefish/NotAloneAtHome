@@ -10,14 +10,9 @@ extends Control
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	GameManager.on_start.connect(initialize)
-	GameManager.on_objective_completed.connect(func (objective: ObjectiveModel.Objective) -> void:
-		if objective == ObjectiveModel.Objective.CleanHome:
-			finishTrashColection()
-	)
-	GameManager.on_objective_update.connect(func (objective: ObjectiveModel.Objective) -> void:
-		objective_content_label.text = GameManager.game_objectives[objective].text
-	)
+	GameManager.GameStarted.connect(initialize)
+	TaskManager.TaskChanged.connect(task_changed)
+	
 	GameManager.on_trash_collected.connect(updateTrashCollected)
 	GameManager.on_suspicion_change.connect(updateSuspision)
 	GameManager.on_item_steal.connect(upadteItemStealed)
@@ -30,6 +25,9 @@ func initialize():
 	lines_done_count_label.text = "0/4"
 	stolen_progress_bar.value = 0
 	money_lost_count_label.text = "0$"
+	
+func task_changed(_title: String, step_name: String) -> void:
+	objective_content_label.text = step_name
 	
 func updateSuspision():
 	suspicious_progress_bar.value = GameManager.suspicion

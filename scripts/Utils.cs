@@ -1,7 +1,10 @@
 global using RidArray = Godot.Collections.Array<Godot.Rid>;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Godot;
+
+
 
 public static class NodeExtensions
 {
@@ -17,6 +20,24 @@ public static class NodeExtensions
             if (child is T match) return match;
         return null;
     }
+    public static void InvokeOrLog(this Action action,  string name = "Action")
+    {
+        if (action == null) GD.Print($"{name} has no subscribers");
+        else action();
+    }
+
+    public static void InvokeOrLog<T1>(this Action<T1> action, T1 arg1, string name = "Action")
+    {
+        if (action == null) GD.Print($"{name} has no subscribers");
+        else action(arg1);
+    }
+
+    public static void InvokeOrLog<T1, T2>(this Action<T1, T2> action, T1 arg1, T2 arg2, string name = "Action")
+    {
+        if (action == null) GD.Print($"{name} has no subscribers");
+        else action(arg1, arg2);
+    }
+
 }
 
 public static class HelperExtensions

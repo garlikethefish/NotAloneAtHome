@@ -53,6 +53,6 @@ public partial class ThrowableComponent : ComponentNode2D, IThrowableComponent
     public void Land()
     {
         IsFlying = false;
-        (Root as IThrowable).WhenLandedOn(GlobalPosition);
+        (Root as IThrowable).OnLanded?.InvokeOrLog(GlobalPosition);
     }
 }

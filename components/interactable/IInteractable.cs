@@ -1,8 +1,6 @@
-using System;
-using Godot;
+namespace NotAloneAtHome.Components.Interactable;
 
 public interface IInteractable 
 {
     void InteractedBy(IInteractor interactor);
-    bool CanBeInteractedBy(IInteractor interactor);
 }

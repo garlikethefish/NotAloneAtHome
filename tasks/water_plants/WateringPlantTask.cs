@@ -85,7 +85,7 @@ public partial class WaterPlantsTask : Node, ITask
 
     public void EmitComplete()
     {
-        OnComplete?.Invoke();
+        OnComplete?.InvokeOrLog();
     }
 
     public void EmitStepComplete(ITaskStep task) {}

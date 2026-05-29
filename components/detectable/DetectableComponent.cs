@@ -2,6 +2,7 @@ using Godot;
 using NotAloneAtHome.Components.Detectable;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 public class DetectableComponentModel
 {
@@ -32,35 +33,35 @@ public partial class DetectableComponent : ComponentStaticBody2D, IDetectableCom
     {
         if (Detectors.Contains(detector) || BlacklistedDetectors.Contains(detector)) return;
         Detectors.Add(detector);
-        RootDetectable.WhenEnteredDetectorArea(detector);
+        RootDetectable.OnEnteredDetectorArea?.InvokeOrLog(detector);
     }
 
     public void HandleExitDetectorArea(IAreaDetector detector)
     {
         if (!Detectors.Contains(detector)) return;
         Detectors.Remove(detector);
-        RootDetectable.WhenExitedDetectorArea(detector);
+        RootDetectable.OnExitedDetectorArea?.InvokeOrLog(detector);
     }
 
     public void HandleSetAsDetectorPriority(IAreaDetector detector)
     {
         if (SimpDetectors.Contains(detector)) return;
         SimpDetectors.Add(detector);
-        RootDetectable.WhenSetAsDetectorPriority(detector);
+        RootDetectable.OnBecameDetectorPriority?.InvokeOrLog(detector);
     }
 
     public void HandleRemovedFromDetectorPriority(IAreaDetector detector)
     {
         if (!SimpDetectors.Contains(detector)) return;
         SimpDetectors.Remove(detector);
-        RootDetectable.WhenRemovedFromDetectorPriority(detector);
+        RootDetectable.OnRemovedDetectorPriority?.InvokeOrLog(detector);
     }
 
     public void HandleAddToBlacklist(IAreaDetector detector)
     {
         BlacklistedDetectors.Add(detector);
         detector.BlacklistDetectable(RootDetectable);
-        detector.ExcludeRid(RootDetectable.Rid);
+        detector.ExcludedRids.Add(RootDetectable.Rid);
         SimpDetectors.Remove(detector);
         Detectors.Remove(detector);
     }
@@ -68,23 +69,18 @@ public partial class DetectableComponent : ComponentStaticBody2D, IDetectableCom
     public void HandleRemoveFromBlacklist(IAreaDetector detector)
     {
         BlacklistedDetectors.Remove(detector);
-        detector.IncludeRid(RootDetectable.Rid);
+        detector.ExcludedRids.Remove(RootDetectable.Rid);
         if (detector is Area2D area2D)
         {
             var bodies = area2D.GetOverlappingBodies();
-            if (bodies.Contains(this)) detector.WhenBodyEntered(this);
+            if (bodies.Contains(this)) detector.OnBodyEntered?.InvokeOrLog(this);
         }
-    }
-
-    public bool HandleIsDetectorBlacklisted(IAreaDetector detector)
-    {
-        return BlacklistedDetectors.Contains(detector);
     }
 
     public void HandleExitAllDetectors()
     {
-        Detectors.ForEach(item => item.ExitDetectable(RootDetectable));
-        SimpDetectors.ForEach(item => item.ExitDetectable(RootDetectable));
+        Detectors.ForEach(item => item.ForceUndetectDetectable(RootDetectable));
+        SimpDetectors.ForEach(item => item.ForceUndetectDetectable(RootDetectable));
     }
 
     public Rid HandleGetRid()=>GetRid();

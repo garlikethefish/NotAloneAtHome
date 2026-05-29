@@ -9,7 +9,5 @@ public interface IAreaDetectorComponent
     void OnBodyEntered(Node2D body);
     void OnBodyExited(Node2D body);
     void HandleBlacklistDetectable(IDetectable detectable);
-    void HandleExitDetectable(IDetectable detectable);
-    void HandleExcludeRid(Rid rid);
-    void HandleIncludeRid(Rid rid);
+    void HandleForceUndetectDetectable(IDetectable detectable);
 }

@@ -1,8 +1,9 @@
+using System;
 using Godot;
 
 public interface IThrowable
 {
-    void WhenThrownBy(IThrower thrower, Vector2 pos);
-    void WhenLandedOn(Vector2 pos);
+    Action<IThrower, Vector2> OnThrownBy { get; set; }
+    Action<Vector2> OnLanded { get; set; }
 }
 

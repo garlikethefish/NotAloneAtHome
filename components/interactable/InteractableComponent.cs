@@ -20,8 +20,8 @@ public partial class InteractableComponent : ComponentNode2D, IInteractableCompo
         GD.Print("Is root detectable?: ", Root is IDetectable );
         if (Root is IDetectable detectable)
         {
-            detectable.OnDetectableBecamePriority += _ => ShowSprite();
-            detectable.OnDetectableLostPriority += _ => HideSprite();
+            detectable.OnBecameDetectorPriority += _ => ShowSprite();
+            detectable.OnRemovedDetectorPriority += _ => HideSprite();
         }
     }
 
