@@ -7,9 +7,8 @@ using NotAloneAtHome.Components.Detectable;
 
 public interface IDetectable
 {
-    IDetectableComponent DetectableComp { get; }
     Rid Rid { get; }
-    List<IAreaDetector> BlacklistedDetectors { get; }
+    ReactiveList<IAreaDetector> BlacklistedDetectors { get; }
     CollisionShape2D CollisionShape2D { get; }
     Action<IAreaDetector> OnEnteredDetectorArea { get; set; }
     Action<IAreaDetector> OnExitedDetectorArea { get; set; }

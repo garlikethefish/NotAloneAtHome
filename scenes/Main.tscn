@@ -3,27 +3,15 @@
 [ext_resource type="PackedScene" uid="uid://bn8gn6s3ge12a" path="res://objects/tilemaps.tscn" id="1_rarhs"]
 [ext_resource type="PackedScene" uid="uid://be8qbmt0fe144" path="res://characters/player/Player.tscn" id="1_rgh2o"]
 [ext_resource type="PackedScene" uid="uid://cbcifivthchns" path="res://ui/ui_overlay.tscn" id="1_vcsgt"]
-[ext_resource type="PackedScene" uid="uid://dfdiuox7wslrn" path="res://objects/item/Item.tscn" id="2_pbw6q"]
 [ext_resource type="PackedScene" uid="uid://bmvgwyelxjr6q" path="res://characters/plain_thief/Bandit.tscn" id="3_0bbpv"]
 [ext_resource type="Texture2D" uid="uid://brf0nnjvb6xuc" path="res://lighting/light1.tres" id="3_cvmbd"]
 [ext_resource type="PackedScene" uid="uid://c0jnnsxohge3o" path="res://lighting/mask_light.tscn" id="3_yxlcp"]
-[ext_resource type="PackedScene" uid="uid://ckwnp346yqoti" path="res://characters/le_cat/cat2.tscn" id="4_nxtc6"]
+[ext_resource type="PackedScene" uid="uid://ckwnp346yqoti" path="res://characters/le_cat/cat.tscn" id="4_nxtc6"]
 [ext_resource type="PackedScene" uid="uid://cah3urn1fwd1d" path="res://zones/sell_zone/SellZone.tscn" id="8_jlsqs"]
-[ext_resource type="PackedScene" uid="uid://k3vopc6l88my" path="res://objects/spawners/trash_spawner/TrashSpawner.tscn" id="8_wp0k4"]
-[ext_resource type="PackedScene" uid="uid://dl3gkkwgtjq5f" path="res://objects/spawners/valuable_spawner/ValuableSpawner.tscn" id="9_qmy6f"]
-[ext_resource type="PackedScene" uid="uid://ceom8536eev0a" path="res://objects/valuables/Valuable_Table.tscn" id="10_qmy6f"]
 [ext_resource type="PackedScene" uid="uid://djmsje8kmaa6o" path="res://objects/valuables/valuable_Bed.tscn" id="11_1iba3"]
-[ext_resource type="PackedScene" uid="uid://b3bhbeampby6v" path="res://objects/valuables/Valuable_TV.tscn" id="11_yxlcp"]
-[ext_resource type="PackedScene" uid="uid://dfttis2qx6job" path="res://objects/valuables/Valuable_Chair1.tscn" id="12_yxlcp"]
-[ext_resource type="PackedScene" uid="uid://ccoqy3cvndo7p" path="res://objects/valuables/Valuable_Vase.tscn" id="13_1nqs0"]
-[ext_resource type="PackedScene" uid="uid://3pms5s3tmqpj" path="res://objects/valuables/Valuable_Chair2.tscn" id="13_ebg2g"]
-[ext_resource type="PackedScene" uid="uid://blm3resaadrtl" path="res://characters/closet_thief/DeadThiefCloset.tscn" id="13_mwfav"]
+[ext_resource type="PackedScene" uid="uid://blm3resaadrtl" path="res://characters/closet_thief/DeadBanditCloset.tscn" id="13_mwfav"]
 [ext_resource type="PackedScene" uid="uid://dfbnrpvmioq7g" path="res://objects/laptop/laptop.tscn" id="13_qmy6f"]
 [ext_resource type="PackedScene" uid="uid://b2xpj2tshxe1h" path="res://objects/dead_thief/DeadThief.tscn" id="14_3p2gp"]
-[ext_resource type="PackedScene" uid="uid://dyuyf26s3aqqs" path="res://objects/valuables/Valuable_Sofa.tscn" id="15_xa025"]
-[ext_resource type="PackedScene" uid="uid://dq60rr28wyibf" path="res://objects/valuables/ValuableCabinet.tscn" id="18_fs0b5"]
-[ext_resource type="PackedScene" uid="uid://cfsot4oxbkssw" path="res://objects/valuables/Valuable_Sink.tscn" id="19_ma7h6"]
-[ext_resource type="PackedScene" uid="uid://cg7krccbajseo" path="res://objects/valuables/Valuable_Fridge.tscn" id="20_e2s0e"]
 [ext_resource type="PackedScene" uid="uid://4qlmy32o1i1f" path="res://zones/escape_zone/EscapeArea.tscn" id="21_1iba3"]
 [ext_resource type="Shader" uid="uid://cuielptcsyeb5" path="res://shaders/vhs_filter.gdshader" id="22_yxlcp"]
 [ext_resource type="Script" uid="uid://psn8bmpins46" path="res://scripts/light_manager.gd" id="24_2ofn6"]
@@ -616,94 +604,6 @@ top_level = true
 position = Vector2(-135, 538)
 collision_mask = 2
 
-[node name="Item" parent="." unique_id=1473760491 instance=ExtResource("2_pbw6q")]
-top_level = true
-position = Vector2(637, 214)
-
-[node name="TrashSpawners" type="Node" parent="." unique_id=1264154806]
-
-[node name="TrashSpawner" parent="TrashSpawners" unique_id=1832572310 instance=ExtResource("8_wp0k4")]
-position = Vector2(390, 258)
-
-[node name="TrashSpawner2" parent="TrashSpawners" unique_id=1108825871 instance=ExtResource("8_wp0k4")]
-position = Vector2(359, 257)
-
-[node name="TrashSpawner4" parent="TrashSpawners" unique_id=776489940 instance=ExtResource("8_wp0k4")]
-position = Vector2(390, 390)
-
-[node name="TrashSpawner5" parent="TrashSpawners" unique_id=826879951 instance=ExtResource("8_wp0k4")]
-position = Vector2(359, 389)
-
-[node name="TrashSpawner6" parent="TrashSpawners" unique_id=1624166046 instance=ExtResource("8_wp0k4")]
-position = Vector2(419, 389)
-
-[node name="TrashSpawner7" parent="TrashSpawners" unique_id=1510105791 instance=ExtResource("8_wp0k4")]
-position = Vector2(421, 304)
-
-[node name="TrashSpawner3" parent="TrashSpawners" unique_id=975325543 instance=ExtResource("8_wp0k4")]
-position = Vector2(419, 257)
-
-[node name="TrashSpawner8" parent="TrashSpawners" unique_id=118846577 instance=ExtResource("8_wp0k4")]
-position = Vector2(390, 350)
-
-[node name="TrashSpawner9" parent="TrashSpawners" unique_id=1524624982 instance=ExtResource("8_wp0k4")]
-position = Vector2(359, 349)
-
-[node name="TrashSpawner10" parent="TrashSpawners" unique_id=484486871 instance=ExtResource("8_wp0k4")]
-position = Vector2(419, 349)
-
-[node name="TrashSpawner11" parent="TrashSpawners" unique_id=304041335 instance=ExtResource("8_wp0k4")]
-position = Vector2(361, 304)
-
-[node name="TrashSpawner12" parent="TrashSpawners" unique_id=379907943 instance=ExtResource("8_wp0k4")]
-position = Vector2(392, 305)
-
-[node name="ValuableSpawners" type="Node" parent="." unique_id=1648296099]
-
-[node name="ValuableSpawner8" parent="ValuableSpawners" unique_id=1628582456 instance=ExtResource("9_qmy6f")]
-position = Vector2(532, -134)
-spawnableScene = ExtResource("13_1nqs0")
-
-[node name="ValuableSpawner" parent="ValuableSpawners" unique_id=1799986873 instance=ExtResource("9_qmy6f")]
-position = Vector2(530, 275)
-spawnableScene = ExtResource("11_1iba3")
-
-[node name="ValuableSpawner7" parent="ValuableSpawners" unique_id=147982880 instance=ExtResource("9_qmy6f")]
-position = Vector2(75, -98)
-spawnableScene = ExtResource("11_yxlcp")
-
-[node name="ValuableSpawner3" parent="ValuableSpawners" unique_id=72103695 instance=ExtResource("9_qmy6f")]
-position = Vector2(163, 578)
-spawnableScene = ExtResource("12_yxlcp")
-
-[node name="ValuableSpawner2" parent="ValuableSpawners" unique_id=1387090579 instance=ExtResource("9_qmy6f")]
-position = Vector2(581, 524)
-spawnableScene = ExtResource("13_ebg2g")
-
-[node name="ValuableSpawner4" parent="ValuableSpawners" unique_id=465862513 instance=ExtResource("9_qmy6f")]
-position = Vector2(28, 279)
-spawnableScene = ExtResource("13_1nqs0")
-
-[node name="ValuableSpawner5" parent="ValuableSpawners" unique_id=1454301278 instance=ExtResource("9_qmy6f")]
-position = Vector2(134, -23)
-spawnableScene = ExtResource("15_xa025")
-
-[node name="ValuableSpawner6" parent="ValuableSpawners" unique_id=1305782228 instance=ExtResource("9_qmy6f")]
-position = Vector2(545, -25)
-spawnableScene = ExtResource("10_qmy6f")
-
-[node name="ValuableSpawner9" parent="ValuableSpawners" unique_id=183715082 instance=ExtResource("9_qmy6f")]
-position = Vector2(258, -49)
-spawnableScene = ExtResource("18_fs0b5")
-
-[node name="ValuableSpawner10" parent="ValuableSpawners" unique_id=1379955438 instance=ExtResource("9_qmy6f")]
-position = Vector2(327, -49)
-spawnableScene = ExtResource("19_ma7h6")
-
-[node name="ValuableSpawner11" parent="ValuableSpawners" unique_id=511665217 instance=ExtResource("9_qmy6f")]
-position = Vector2(389, -52)
-spawnableScene = ExtResource("20_e2s0e")
-
 [node name="DeadGuyCloset" parent="." unique_id=1749090602 instance=ExtResource("13_mwfav")]
 top_level = true
 material = SubResource("ShaderMaterial_1iba3")
@@ -886,7 +786,6 @@ position = Vector2(663, -15)
 top_level = true
 position = Vector2(690, 240.99998)
 scale = Vector2(0.48266658, 0.5516835)
-expandToPos = Vector2(-20, 0)
 
 [node name="EscapeArea" parent="." unique_id=1530702801 instance=ExtResource("21_1iba3")]
 top_level = true
@@ -913,4 +812,4 @@ max_active_lights = 7
 
 [editable path="Tilemaps"]
 [editable path="Player"]
-[editable path="Player/HelperHolder/ICarrier"]
+[editable path="Player/ComponentHolder/ICarrier"]

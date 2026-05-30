@@ -2,6 +2,8 @@ using Godot;
 using NotAloneAtHome.Components.Detectable;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
 
 public class DetectableComponentModel
@@ -14,7 +16,7 @@ public class DetectableComponentModel
 public partial class DetectableComponent : ComponentStaticBody2D, IDetectableComponent
 {
     [Export] public CollisionShape2D? CollisionShape2D { get; private set; }
-    public List<IAreaDetector> BlacklistedDetectors { get; } = [];
+    public ReactiveList<IAreaDetector> BlacklistedDetectors { get; } = new();
     public List<IAreaDetector> Detectors = [];
     public List<IAreaDetector> SimpDetectors = []; // Detectors that have this detectable as priority
     private IDetectable RootDetectable => (IDetectable)Root;
@@ -22,6 +24,8 @@ public partial class DetectableComponent : ComponentStaticBody2D, IDetectableCom
     public override void _Ready()
     {
         base._Ready();
+        BlacklistedDetectors.OnAdded += HandleAddToBlacklist;
+        BlacklistedDetectors.OnRemoved += HandleRemoveFromBlacklist;
     }
 
     public override void _ExitTree()

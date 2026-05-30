@@ -13,7 +13,7 @@ public partial class Trash : Node2D, IKillable, IInteractable, IDetectable
     public int Health { get; private set; } = 2;
     public ComponentHolder Holder { get; private set; }
     private IInteractableComponent _interactable;
-    public List<IAreaDetector> BlacklistedDetectors => DetectableComp.BlacklistedDetectors;
+    public ReactiveList<IAreaDetector> BlacklistedDetectors => DetectableComp.BlacklistedDetectors;
     public CollisionShape2D CollisionShape2D => DetectableComp.CollisionShape2D;
     public Rid Rid => DetectableComp.HandleGetRid();
     public Action<IAreaDetector> OnEnteredDetectorArea { get; set; }
@@ -26,8 +26,8 @@ public partial class Trash : Node2D, IKillable, IInteractable, IDetectable
     {
         Holder = this.GetComponentOfType<ComponentHolder>();
         if (Holder == null) GD.PushError("Didnt get holder in trash.cs");
-        DetectableComp = Holder.Detectable;
-        _interactable = Holder.Interactable;
+        DetectableComp = Holder.DetectableComp;
+        _interactable = Holder.InteractableComp;
     }
 
     public void TakeDamage(int damage)

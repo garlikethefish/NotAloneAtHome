@@ -6,7 +6,7 @@ using Godot;
 public interface IDetectableComponent : IComponentInterface
 {
     CollisionShape2D CollisionShape2D { get; } 
-    List<IAreaDetector> BlacklistedDetectors { get; }
+    ReactiveList<IAreaDetector> BlacklistedDetectors { get; }
     void HandleEnterDetectorArea(IAreaDetector detector);
     void HandleExitDetectorArea(IAreaDetector detector);
     void HandleSetAsDetectorPriority(IAreaDetector detector);

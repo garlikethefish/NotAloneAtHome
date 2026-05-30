@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://d3rn5wbx4px5w" path="res://objects/valuables/Valuable_Closet.tscn" id="8_wnywe"]
 [ext_resource type="PackedScene" uid="uid://cg7krccbajseo" path="res://objects/valuables/Valuable_Fridge.tscn" id="9_1of5j"]
 [ext_resource type="PackedScene" uid="uid://ywha5uwa0e62" path="res://objects/trash/Trash.tscn" id="9_jbd4l"]
+[ext_resource type="PackedScene" uid="uid://ckwnp346yqoti" path="res://characters/le_cat/cat.tscn" id="10_fu3ou"]
 
 [node name="Test" type="Node2D" unique_id=78523924]
 
@@ -47,3 +48,6 @@ position = Vector2(736, 450)
 
 [node name="Trash3" parent="." unique_id=1175326664 instance=ExtResource("9_jbd4l")]
 position = Vector2(583, 326)
+
+[node name="Cat" parent="." unique_id=722993762 instance=ExtResource("10_fu3ou")]
+position = Vector2(588, 364)

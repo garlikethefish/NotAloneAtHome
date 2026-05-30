@@ -33,7 +33,7 @@ public partial class Cat : CharacterBody2D, IInteractable, IDetectable
 
     public Rid Rid => DetectableComp.HandleGetRid();
 
-    public List<IAreaDetector> BlacklistedDetectors => DetectableComp.BlacklistedDetectors;
+    public ReactiveList<IAreaDetector> BlacklistedDetectors => DetectableComp.BlacklistedDetectors;
 
     public CollisionShape2D CollisionShape2D => DetectableComp.CollisionShape2D;
 
@@ -45,8 +45,8 @@ public partial class Cat : CharacterBody2D, IInteractable, IDetectable
     public override void _Ready()
     {
         Holder = GetNode<ComponentHolder>("ComponentHolder");
-        _interactable = Holder.Interactable;
-        DetectableComp = Holder.Detectable;
+        _interactable = Holder.InteractableComp;
+        DetectableComp = Holder.DetectableComp;
         
 
         _anim = GetNode<AnimatedSprite2D>("AnimatedSprite2D");

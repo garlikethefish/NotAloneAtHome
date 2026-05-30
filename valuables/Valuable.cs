@@ -18,7 +18,7 @@ public partial class Valuable : RigidBody2D, IInteractable, ICarriable, IThrowab
     private Sprite2D _sprite;
     private ShaderMaterial _shaderMat = GD.Load<ShaderMaterial>("uid://cnuuc1ep5p6ia");
     public CollisionShape2D CollisionShape2D => DetectableComp.CollisionShape2D;
-    public List<IAreaDetector> BlacklistedDetectors => DetectableComp.BlacklistedDetectors;
+    public ReactiveList<IAreaDetector> BlacklistedDetectors => DetectableComp.BlacklistedDetectors;
     public Rid Rid => DetectableComp.HandleGetRid();
 
     public Action<ICarrier> OnPickedUpBy { get; set; }
@@ -34,10 +34,10 @@ public partial class Valuable : RigidBody2D, IInteractable, ICarriable, IThrowab
     public override void _Ready()
     {
         Holder = this.GetComponentOfType<ComponentHolder>();
-        DetectableComp   = Holder.Detectable;
-        _interactable = Holder.Interactable;
-        _carriable    = Holder.Carriable;
-        _throwable    = Holder.Throwable;
+        DetectableComp   = Holder.DetectableComp;
+        _interactable = Holder.InteractableComp;
+        _carriable    = Holder.CarriableComp;
+        _throwable    = Holder.ThrowableComp;
         _sprite       = GetNode<Sprite2D>("Sprite2D");
 
         _sprite.Texture = ValuableData.Valuables[Type].texture2D;

@@ -95,9 +95,9 @@ public partial class Player : CharacterBody2D, IThrower, ICastedAreaDetector, IC
             return;
         }
 
-        _thrower    = Holder.Thrower;
-        _carrier    = Holder.Carrier;
-        _detector   = Holder.CastedAreaDetector;
+        _thrower    = Holder.ThrowerComp;
+        _carrier    = Holder.CarrierComp;
+        _detector   = Holder.CastedAreaDetectorComp;
 
         _anim               = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
         _overlayRect        = GetNode<ColorRect>("MaskOverlay/ColorRect");

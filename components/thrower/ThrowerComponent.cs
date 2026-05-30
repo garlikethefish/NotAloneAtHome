@@ -74,7 +74,7 @@ public partial class ThrowerComponent : ComponentNode2D, IThrowerComponent
         (throwable as Node2D).Reparent(GetTree().CurrentScene);
 
         if (throwable is IDetectable detectable)
-            detectable.DetectableComp.HandleRemoveFromBlacklist((IAreaDetector)Root);
+            detectable.BlacklistedDetectors.Remove((IAreaDetector)Root);
             
         throwable.OnThrownBy?.InvokeOrLog((IThrower)Root, AimedAtLocation);
         HandleStopAiming();

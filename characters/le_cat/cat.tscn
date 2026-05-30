@@ -1,16 +1,16 @@
 [gd_scene format=3 uid="uid://ckwnp346yqoti"]
 
-[ext_resource type="Script" uid="uid://csje0lqoac68q" path="res://characters/le_cat/cat_brain.gd" id="1_7jxut"]
+[ext_resource type="Script" uid="uid://dg0j0g50bmrr8" path="res://characters/le_cat/Cat.cs" id="1_auh5i"]
 [ext_resource type="SpriteFrames" uid="uid://ekbo6oovgxb0" path="res://animations/cat.tres" id="2_7jxut"]
 [ext_resource type="Texture2D" uid="uid://brlqbui27jqjn" path="res://sprites/shadow.png" id="3_lofro"]
 [ext_resource type="AudioStream" uid="uid://bc8edy7he1anw" path="res://sounds/sound effects/meow.mp3" id="4_0m5c4"]
-[ext_resource type="PackedScene" path="res://objects/helpers/IInteractable.tscn" id="4_7jxut"]
 [ext_resource type="AudioStream" uid="uid://dvfmsx5dolnp7" path="res://sounds/sound effects/meow2.wav" id="6_uki8m"]
 [ext_resource type="AudioStream" uid="uid://dbqeekcm7ern" path="res://sounds/sound effects/meow4.wav" id="7_cy1mn"]
 [ext_resource type="AudioStream" uid="uid://pkgor7kaslsk" path="res://sounds/sound effects/meow5.wav" id="8_yun16"]
-[ext_resource type="PackedScene" path="res://objects/helpers/HelperHolder.tscn" id="9_cy1mn"]
 [ext_resource type="AudioStream" uid="uid://bk4v0u4evgskv" path="res://sounds/sound effects/meow6.wav" id="9_d4tls"]
-
+[ext_resource type="PackedScene" uid="uid://vtaarm6aoww0" path="res://components/base/holder/ComponentHolder.tscn" id="9_kj5y6"]
+[ext_resource type="PackedScene" uid="uid://k2k1j0y25ebx" path="res://components/interactable/InteractableComponent.tscn" id="10_0tq2b"]
+[ext_resource type="PackedScene" uid="uid://b8odej7420g54" path="res://components/detectable/DetectableComponent.tscn" id="11_xw8lf"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_rsrf8"]
 radius = 6.0
@@ -29,7 +29,7 @@ stream_4/stream = ExtResource("9_d4tls")
 top_level = true
 collision_layer = 8
 collision_mask = 3
-script = ExtResource("1_7jxut")
+script = ExtResource("1_auh5i")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1296469098]
 position = Vector2(0, 10)
@@ -63,9 +63,10 @@ max_distance = 400.0
 panning_strength = 3.0
 bus = &"Sounds"
 
-[node name="HelperHolder" parent="." unique_id=38020404 instance=ExtResource("9_cy1mn")]
+[node name="ComponentHolder" parent="." unique_id=1878740538 instance=ExtResource("9_kj5y6")]
 
-[node name="IInteractable" parent="HelperHolder" unique_id=1999549239 instance=ExtResource("4_7jxut")]
+[node name="InteractableComponent" parent="ComponentHolder" unique_id=1999549239 instance=ExtResource("10_0tq2b")]
+
+[node name="IDetectable" parent="ComponentHolder" unique_id=2037387284 instance=ExtResource("11_xw8lf")]
 
 [connection signal="timeout" from="MeowTimer" to="." method="_on_meow_timer_timeout"]
-[connection signal="on_interaction" from="HelperHolder/IInteractable" to="." method="_on_i_interactable_on_interaction"]
