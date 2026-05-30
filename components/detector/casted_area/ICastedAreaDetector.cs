@@ -1,11 +1,5 @@
 
-#nullable enable
-using System;
-
-public interface ICastedAreaDetector : IAreaDetector
+public interface ICastedAreaDetector
 {
-    
-    Action<IDetectable> OnEnteredSight { get; set; }
-    Action<IDetectable> OnExitedSight { get; set; }
-    IDetectable? ClosestDetectable { get; }
+    ICastedAreaDetectorComponent CastedAreaDetectorComponent { get; }
 }

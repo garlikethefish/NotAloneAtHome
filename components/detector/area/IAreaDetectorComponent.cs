@@ -1,3 +1,6 @@
+namespace NotAloneAtHome.Components;
+
+using System;
 using System.Collections.Generic;
 using Godot;
 
@@ -6,8 +9,8 @@ public interface IAreaDetectorComponent
     List<Rid> ExcludedRids { get; }
     List<DetectableComponentModel> DetectablesInArea { get; }
     CollisionShape2D CollisionShape { get; }
-    void OnBodyEntered(Node2D body);
-    void OnBodyExited(Node2D body);
+    event Action<Node2D> OnBodyEntered;
+    event Action<Node2D> OnBodyExited;
     void HandleBlacklistDetectable(IDetectable detectable);
     void HandleForceUndetectDetectable(IDetectable detectable);
 }

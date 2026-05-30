@@ -32,12 +32,12 @@ public partial class Player
 
         public void Enter()
         {
-            Ctx._canInteract = true;
+            Ctx.CanInteract = true;
         }
 
         public void Exit()
         {
-            Ctx._canInteract = false;
+            Ctx.CanInteract = false;
         }
 
         public void PhysicsUpdate(double delta)

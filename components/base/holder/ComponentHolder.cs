@@ -1,11 +1,7 @@
-namespace NotAloneAtHome.Components.Base.Holder;
+namespace NotAloneAtHome.Components;
 
 using System.Linq;
 using Godot;
-using NotAloneAtHome.Components.Destroyable;
-using NotAloneAtHome.Components.Detectable;
-using NotAloneAtHome.Components.Spawner;
-using NotAloneAtHome.Components.Thrower;
 
 public partial class ComponentHolder : Node2D
 {

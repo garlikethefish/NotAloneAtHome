@@ -1,5 +1,7 @@
+namespace NotAloneAtHome.Components;
+
 using Godot;
-using NotAloneAtHome.Components.Base.Holder;
+
 
 public interface IComponentBase
 {

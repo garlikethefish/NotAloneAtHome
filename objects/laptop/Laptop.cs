@@ -9,8 +9,7 @@ public partial class Laptop : Sprite2D, IDetectable, IInteractable
     [Signal] public delegate void StartANewLineEventHandler();
 
     private ComponentHolder Holder;
-    private IInteractableComponent _interactableComp;
-    private IDetectableComponent _detectableComp;
+    public IDetectableComponent DetectableComponent { get; set; }
     private Control       _ui;
     private Control       _vignette;
     private bool          _waitingRetry = false;
@@ -19,19 +18,12 @@ public partial class Laptop : Sprite2D, IDetectable, IInteractable
     private Timer  _waitCountdownTimer;
     private int    _timeToWait = 0;
 
-    public Rid Rid => _detectableComp.HandleGetRid();
-    public ReactiveList<IAreaDetector> BlacklistedDetectors => _detectableComp.BlacklistedDetectors;
-    public CollisionShape2D CollisionShape2D => _detectableComp.CollisionShape2D;
-    public Action<IAreaDetector> OnEnteredDetectorArea { get; set; }
-    public Action<IAreaDetector> OnExitedDetectorArea { get; set; }
-    public Action<IAreaDetector> OnBecameDetectorPriority { get; set; }
-    public Action<IAreaDetector> OnRemovedDetectorPriority { get; set; }
+
 
     public override void _Ready()
     {
-        Holder = this.GetComponentOfType<ComponentHolder>();
-        _interactableComp = Holder.InteractableComp;
-        _detectableComp   = Holder.DetectableComp;
+        Holder              = this.GetComponentOfType<ComponentHolder>();
+        DetectableComponent = Holder.DetectableComp;
 
         _ui           = GetNode<Control>("ProgrammingMinigame");
         _vignette     = _ui.GetChild<Control>(0);
@@ -133,10 +125,5 @@ public partial class Laptop : Sprite2D, IDetectable, IInteractable
     public bool CanBeDetected(IAreaDetector detector)
     {
         return true;
-    }
-
-    public void ExitAllDetectors()
-    {
-        _detectableComp.HandleExitAllDetectors();
     }
 }

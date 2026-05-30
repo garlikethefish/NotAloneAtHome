@@ -32,14 +32,14 @@ public partial class Player
 
         public void Enter()
         {
-            Ctx._canInteract = true;
+            Ctx.CanInteract = true;
             Ctx._sprinting = true;
             Ctx._currentSpeed = Ctx.NormalSpeed * Ctx.SprintMultiplier;
         }
 
         public void Exit()
         {
-            Ctx._canInteract = false;
+            Ctx.CanInteract = false;
             Ctx._sprinting = false;
             Ctx._currentSpeed = Ctx.NormalSpeed;
         }

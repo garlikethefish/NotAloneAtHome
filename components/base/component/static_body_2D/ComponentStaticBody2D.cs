@@ -1,6 +1,6 @@
-using System.Linq;
+namespace NotAloneAtHome.Components;
+
 using Godot;
-using NotAloneAtHome.Components.Base.Holder;
 
 public partial class ComponentStaticBody2D : StaticBody2D, IComponentBase
 {

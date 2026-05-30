@@ -1,4 +1,4 @@
-namespace NotAloneAtHome.Components.Spawner;
+namespace NotAloneAtHome.Components;
 using Godot;
 
 public interface ISpawnerComponent

@@ -1,3 +1,6 @@
+namespace NotAloneAtHome.Components;
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Godot;
@@ -10,12 +13,14 @@ public partial class AreaDetectorComponent : ComponentArea2D, IAreaDetectorCompo
     public List<Rid> ExcludedRids { get; } = [];
     public List<DetectableComponentModel> DetectablesInArea { get; } = [];
     private IAreaDetector RootDetector => (IAreaDetector)Root;
+    public event Action<Node2D> OnBodyEntered;
+    public event Action<Node2D> OnBodyExited;
 
     public override void _Ready()
     {
         base._Ready();
-        BodyEntered += OnBodyEntered;
-        BodyExited += OnBodyExited;
+        BodyEntered += WhenBodyEntered;
+        BodyExited += WhenBodyExited;
     }
 
     public override void _PhysicsProcess(double delta)
@@ -33,27 +38,27 @@ public partial class AreaDetectorComponent : ComponentArea2D, IAreaDetectorCompo
         foreach (var model in DetectablesInArea.ToList())
         {
             var detectable = model.Detectable;
-            var localTarget = ToLocal(detectable.CollisionShape2D.GlobalPosition);
+            var localTarget = ToLocal(detectable.DetectableComponent.CollisionShape2D.GlobalPosition);
 
             Color color = new(0, 1, 0, 0.5f);
             DrawCircle(localTarget, 2f, color);
         }
     }
 
-    public void OnBodyEntered(Node2D body)
+    public void WhenBodyEntered(Node2D body)
     {
         GD.Print($"[OnBodyEntered] body={body?.Name ?? "NULL"}, valid={IsInstanceValid(body)}");
         if (!body.TryGetRoot<IDetectable>(out var detectable) 
-            || detectable.BlacklistedDetectors.Contains(RootDetector)
+            || detectable.DetectableComponent.BlacklistedDetectors.Contains(RootDetector)
         ) return;
         if (DetectablesInArea.Any(detInArea => detInArea.Detectable == detectable)) return;
 
         DetectablesInArea.Add(new DetectableComponentModel { Detectable = detectable });
-        detectable.OnEnteredDetectorArea?.InvokeOrLog(RootDetector);
-        RootDetector.OnBodyEntered?.InvokeOrLog(body);
+        detectable.DetectableComponent.HandleEnterDetectorArea(RootDetector);
+        OnBodyEntered?.Invoke(body);
     }
 
-    public void OnBodyExited(Node2D body)
+    public void WhenBodyExited(Node2D body)
     {
         if (!body.TryGetRoot<IDetectable>(out var detectable)) return;
 
@@ -61,8 +66,8 @@ public partial class AreaDetectorComponent : ComponentArea2D, IAreaDetectorCompo
         if (model == null) return;
 
         DetectablesInArea.Remove(model);
-        detectable.OnExitedDetectorArea?.InvokeOrLog(RootDetector);
-        RootDetector.OnBodyExited?.InvokeOrLog(body);
+        detectable.DetectableComponent.HandleExitDetectorArea(RootDetector);
+        OnBodyExited?.Invoke(body);
     }
 
     public void HandleBlacklistDetectable(IDetectable detectable)

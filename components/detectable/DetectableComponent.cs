@@ -1,10 +1,8 @@
+namespace NotAloneAtHome.Components;
+
 using Godot;
-using NotAloneAtHome.Components.Detectable;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.Linq;
 
 public class DetectableComponentModel
 {
@@ -19,6 +17,12 @@ public partial class DetectableComponent : ComponentStaticBody2D, IDetectableCom
     public ReactiveList<IAreaDetector> BlacklistedDetectors { get; } = new();
     public List<IAreaDetector> Detectors = [];
     public List<IAreaDetector> SimpDetectors = []; // Detectors that have this detectable as priority
+
+    public event Action<IAreaDetector>? OnEnteredDetectorArea;
+    public event Action<IAreaDetector>? OnExitedDetectorArea;
+    public event Action<IAreaDetector>? OnBecameDetectorPriority;
+    public event Action<IAreaDetector>? OnRemovedDetectorPriority;
+
     private IDetectable RootDetectable => (IDetectable)Root;
 
     public override void _Ready()
@@ -37,35 +41,34 @@ public partial class DetectableComponent : ComponentStaticBody2D, IDetectableCom
     {
         if (Detectors.Contains(detector) || BlacklistedDetectors.Contains(detector)) return;
         Detectors.Add(detector);
-        RootDetectable.OnEnteredDetectorArea?.InvokeOrLog(detector);
+        OnEnteredDetectorArea?.Invoke(detector);
     }
 
     public void HandleExitDetectorArea(IAreaDetector detector)
     {
         if (!Detectors.Contains(detector)) return;
         Detectors.Remove(detector);
-        RootDetectable.OnExitedDetectorArea?.InvokeOrLog(detector);
+        OnExitedDetectorArea?.Invoke(detector);
     }
 
     public void HandleSetAsDetectorPriority(IAreaDetector detector)
     {
         if (SimpDetectors.Contains(detector)) return;
         SimpDetectors.Add(detector);
-        RootDetectable.OnBecameDetectorPriority?.InvokeOrLog(detector);
+        OnBecameDetectorPriority?.Invoke(detector);
     }
 
     public void HandleRemovedFromDetectorPriority(IAreaDetector detector)
     {
         if (!SimpDetectors.Contains(detector)) return;
         SimpDetectors.Remove(detector);
-        RootDetectable.OnRemovedDetectorPriority?.InvokeOrLog(detector);
+        OnRemovedDetectorPriority?.Invoke(detector);
     }
 
     public void HandleAddToBlacklist(IAreaDetector detector)
     {
         BlacklistedDetectors.Add(detector);
-        detector.BlacklistDetectable(RootDetectable);
-        detector.ExcludedRids.Add(RootDetectable.Rid);
+        detector.AreaDetectorComponent.HandleBlacklistDetectable(RootDetectable);
         SimpDetectors.Remove(detector);
         Detectors.Remove(detector);
     }
@@ -73,7 +76,7 @@ public partial class DetectableComponent : ComponentStaticBody2D, IDetectableCom
     public void HandleRemoveFromBlacklist(IAreaDetector detector)
     {
         BlacklistedDetectors.Remove(detector);
-        detector.ExcludedRids.Remove(RootDetectable.Rid);
+        detector.AreaDetectorComponent.ExcludedRids.Remove(GetRid());
         if (detector is Area2D area2D)
         {
             var bodies = area2D.GetOverlappingBodies();
@@ -83,8 +86,8 @@ public partial class DetectableComponent : ComponentStaticBody2D, IDetectableCom
 
     public void HandleExitAllDetectors()
     {
-        Detectors.ForEach(item => item.ForceUndetectDetectable(RootDetectable));
-        SimpDetectors.ForEach(item => item.ForceUndetectDetectable(RootDetectable));
+        Detectors.ForEach(item => item.AreaDetectorComponent.HandleForceUndetectDetectable(RootDetectable));
+        SimpDetectors.ForEach(item => item.AreaDetectorComponent.HandleForceUndetectDetectable(RootDetectable));
     }
 
     public Rid HandleGetRid()=>GetRid();

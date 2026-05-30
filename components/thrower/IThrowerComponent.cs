@@ -1,4 +1,4 @@
-namespace NotAloneAtHome.Components.Thrower;
+namespace NotAloneAtHome.Components;
 
 using Godot;
 

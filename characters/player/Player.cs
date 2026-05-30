@@ -3,9 +3,7 @@ namespace NotAloneAtHome.Characters.Player;
 using System;
 using System.Collections.Generic;
 using Godot;
-using NotAloneAtHome.Components.Base.Holder;
-using NotAloneAtHome.Components.Interactable;
-using NotAloneAtHome.Components.Thrower;
+using NotAloneAtHome.Components;
 using NotAloneAtHome.state_machines.interfaces;
 
 public partial class Player : CharacterBody2D, IThrower, ICastedAreaDetector, ICarrier, IInteractor, IStateMachine
@@ -36,7 +34,8 @@ public partial class Player : CharacterBody2D, IThrower, ICastedAreaDetector, IC
     //
     // internal flags
     //
-    private bool _canInteract = true;
+    public bool IsAiming { get; private set; }
+    public bool CanInteract { get; set; } = true;
     private bool _canCarry = true;
 
     public bool IsDead = false;
@@ -50,10 +49,6 @@ public partial class Player : CharacterBody2D, IThrower, ICastedAreaDetector, IC
     private Vector2 _moveDirection = Vector2.Zero;
 
     // components
-    private IThrowerComponent _thrower;
-    private ICarrierComponent _carrier;
-    private ICastedAreaDetectorComponent _detector;
-
     private AnimatedSprite2D _anim;
     private ColorRect _overlayRect;
     private AudioStreamPlayer2D _footstepSound;
@@ -67,37 +62,22 @@ public partial class Player : CharacterBody2D, IThrower, ICastedAreaDetector, IC
     private bool _waitParticles = false;
     private bool _shakingCamera = false;
     public Vector2 FacingDirection { get; private set; }
-    public bool IsAiming { get; private set; }
-    public Node2D CarryPointNode => _carrier.CarryPointNode;
-    public ICarriable Carriable => _carrier.Carriable;
     public Dictionary<Type, IState> States = [];
     public IState CurrentState { get; private set; }
-    public ComponentHolder Holder { get; private set; }
-    public List<DetectableComponentModel> DetectablesInArea => _detector.DetectablesInArea;
-    public CollisionShape2D CollisionShape => _detector.CollisionShape;
-    public IDetectable ClosestDetectable => _detector.ClosestDetectable;
-    public List<Rid> ExcludedRids => _detector.ExcludedRids;
 
-    Action<Node2D> IAreaDetector.OnBodyEntered { get; set; }
-    Action<Node2D> IAreaDetector.OnBodyExited { get; set; }
-    public Action<IDetectable> OnEnteredSight { get; set; }
-    public Action<IDetectable> OnExitedSight { get; set; }
-
+    public ComponentHolder Holder { get; private set; }    
+    public IThrowerComponent ThrowerComponent { get; private set; }
+    public ICarrierComponent CarrierComponent { get; private set; }
+    public ICastedAreaDetectorComponent CastedAreaDetectorComponent { get; private set; }
     [Signal] public delegate void ShakeCameraEventHandler();
     [Signal] public delegate void StopCameraShakeEventHandler();
 
     public override void _Ready()
     {
         Holder = this.GetComponentOfType<ComponentHolder>();
-        if (Holder == null)
-        {
-            GD.PrintErr("ComponentHolder not found!");
-            return;
-        }
-
-        _thrower    = Holder.ThrowerComp;
-        _carrier    = Holder.CarrierComp;
-        _detector   = Holder.CastedAreaDetectorComp;
+        ThrowerComponent            = Holder.ThrowerComp;
+        CarrierComponent            = Holder.CarrierComp;
+        CastedAreaDetectorComponent = Holder.CastedAreaDetectorComp;
 
         _anim               = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
         _overlayRect        = GetNode<ColorRect>("MaskOverlay/ColorRect");
@@ -160,10 +140,10 @@ public partial class Player : CharacterBody2D, IThrower, ICastedAreaDetector, IC
 
     public void HandleInteraction()
     {
-        if (!_canInteract) return;
+        if (!CanInteract) return;
         if (Input.IsActionJustPressed("interact"))
         {
-            var detectable = _detector.ClosestDetectable;
+            var detectable = CastedAreaDetectorComponent.ClosestDetectable;
             if (detectable == null) return;
 
             if (detectable is ICarriable carriable && carriable.CanBeCarried(this) && _canCarry)
@@ -297,12 +277,12 @@ public partial class Player : CharacterBody2D, IThrower, ICastedAreaDetector, IC
 
     public void StartAiming()
     {
-        _thrower.HandleStartAiming();
+        ThrowerComponent.HandleStartAiming();
     }
 
     public void StopAiming()
     {
-        _thrower.HandleStopAiming();
+        ThrowerComponent.HandleStopAiming();
     }
 
     public void SetFacingDirection(Vector2 direction)
@@ -313,19 +293,19 @@ public partial class Player : CharacterBody2D, IThrower, ICastedAreaDetector, IC
     public void Pickup(ICarriable carriable)
     {
         _canCarry = false;
-        _carrier.HandlePickup(carriable);
+        CarrierComponent.HandlePickup(carriable);
     }
 
     public void Drop()
     {
         _canCarry = true;
-        _carrier.HandleDrop();
+        CarrierComponent.HandleDrop();
     }
 
     public void Throw(IThrowable throwable)
     {
         _canCarry = true;
-        _thrower.HandleThrow(throwable);
+        ThrowerComponent.HandleThrow(throwable);
     }
 
     public void ChangeState(IState next)
@@ -349,8 +329,4 @@ public partial class Player : CharacterBody2D, IThrower, ICastedAreaDetector, IC
     {
         CurrentState.PhysicsUpdate(delta);
     }
-
-    public void BlacklistDetectable(IDetectable detectable) => _detector.HandleBlacklistDetectable(detectable);
-    public void ForceUndetectDetectable(IDetectable detectable) => _detector.HandleForceUndetectDetectable(detectable);
-
 }

@@ -1,12 +1,16 @@
-namespace NotAloneAtHome.Components.Detectable;
+namespace NotAloneAtHome.Components;
 
-using System.Collections.Generic;
+using System;
 using Godot;
 
 public interface IDetectableComponent : IComponentInterface
 {
     CollisionShape2D CollisionShape2D { get; } 
     ReactiveList<IAreaDetector> BlacklistedDetectors { get; }
+    event Action<IAreaDetector> OnEnteredDetectorArea;
+    event Action<IAreaDetector> OnExitedDetectorArea;
+    event Action<IAreaDetector> OnBecameDetectorPriority;
+    event Action<IAreaDetector> OnRemovedDetectorPriority;
     void HandleEnterDetectorArea(IAreaDetector detector);
     void HandleExitDetectorArea(IAreaDetector detector);
     void HandleSetAsDetectorPriority(IAreaDetector detector);

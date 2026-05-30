@@ -1,6 +1,8 @@
+namespace NotAloneAtHome.Components;
+
 using Godot;
-using NotAloneAtHome.Components.Detectable;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 #nullable enable
@@ -137,5 +139,10 @@ public partial class CastedAreaDetectorComponent : AreaDetectorComponent, ICaste
     {
         if (ClosestDetectable == detectable)
         ClosestDetectable = null;
+    }
+
+    public void HandleBlacklistDetectable(IDetectable detectable)
+    {
+        throw new NotImplementedException();
     }
 }

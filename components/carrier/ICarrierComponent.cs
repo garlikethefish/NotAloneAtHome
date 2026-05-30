@@ -1,5 +1,6 @@
-using Godot;
+namespace NotAloneAtHome.Components;
 
+using Godot;
 #nullable enable
 public interface ICarrierComponent
 {

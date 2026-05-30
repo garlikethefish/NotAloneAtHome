@@ -1,4 +1,4 @@
-namespace NotAloneAtHome.Components.Destroyable;
+namespace NotAloneAtHome.Components;
 
 public interface IKillable
 {

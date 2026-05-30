@@ -1,4 +1,4 @@
-namespace NotAloneAtHome.Components.Interactable;
+namespace NotAloneAtHome.Components;
 
 public interface IInteractable 
 {

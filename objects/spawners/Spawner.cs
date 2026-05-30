@@ -1,8 +1,7 @@
-namespace NotAloneAtHome.Components.Spawner;
+namespace NotAloneAtHome.Components;
 
 using System;
 using Godot;
-using NotAloneAtHome.Components.Base.Holder;
 
 public partial class Spawner : Node2D, ISpawner
 {

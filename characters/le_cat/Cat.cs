@@ -1,9 +1,6 @@
 using System;
-using System.Collections.Generic;
 using Godot;
-using NotAloneAtHome.Components.Base.Holder;
-using NotAloneAtHome.Components.Detectable;
-using NotAloneAtHome.Components.Interactable;
+using NotAloneAtHome.Components;
 using NotAloneAtHome.Tasks;
 using NotAloneAtHome.Tasks.WaterPlantsTask;
 
@@ -41,6 +38,8 @@ public partial class Cat : CharacterBody2D, IInteractable, IDetectable
     public Action<IAreaDetector> OnExitedDetectorArea { get; set; }
     public Action<IAreaDetector> OnBecameDetectorPriority { get; set; }
     public Action<IAreaDetector> OnRemovedDetectorPriority { get; set; }
+
+    public IDetectableComponent DetectableComponent => throw new NotImplementedException();
 
     public override void _Ready()
     {

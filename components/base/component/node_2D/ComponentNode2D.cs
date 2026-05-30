@@ -1,6 +1,7 @@
-using System.Linq;
+namespace NotAloneAtHome.Components;
+
 using Godot;
-using NotAloneAtHome.Components.Base.Holder;
+
 
 public partial class ComponentNode2D : Node2D, IComponentBase
 {
