@@ -13,4 +13,5 @@ public interface IAreaDetectorComponent
     event Action<Node2D> OnBodyExited;
     void HandleBlacklistDetectable(IDetectable detectable);
     void HandleForceUndetectDetectable(IDetectable detectable);
+    void HandleAttemptToEnterArea(IDetectable detectable);
 }

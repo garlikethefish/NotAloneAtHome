@@ -1,9 +1,9 @@
-
+namespace NotAloneAtHome.Components;
 
 using System;
 using Godot;
 
-public interface IInteractableComponent 
+public interface IInteractableComponent
 {
-    void HandleInteractedBy(IInteractor interactor);
+    event Action<IInteractor> OnInteraction;
 }

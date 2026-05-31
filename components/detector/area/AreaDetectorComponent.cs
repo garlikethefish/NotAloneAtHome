@@ -79,4 +79,10 @@ public partial class AreaDetectorComponent : ComponentArea2D, IAreaDetectorCompo
     {
         DetectablesInArea.RemoveAll(model => model.Detectable == detectable);
     }
+
+    public void HandleAttemptToEnterArea(IDetectable detectable)
+    {
+        var bodies = GetOverlappingBodies();
+        if (bodies.Contains((Node2D)detectable.DetectableComponent)) WhenBodyEntered((Node2D)detectable); 
+    }
 }

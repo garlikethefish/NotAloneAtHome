@@ -2,18 +2,17 @@ namespace NotAloneAtHome.Characters.DeadThiefCloset;
 
 using System;
 using Godot;
-using NotAloneAtHome.Components.Base.Holder;
-using NotAloneAtHome.Components.Detectable;
-using NotAloneAtHome.Components.Interactable;
+using NotAloneAtHome.Components;
 
 public partial class DeadBanditCloset : Node2D, IInteractable, IDetectable
 {
     private ComponentHolder Holder;
     public IDetectableComponent DetectableComponent { get; set; }
+    public IInteractableComponent interactableComponent { get; set; }
 
     public override void _Ready()
     {
-        Holder = this.GetComponentOfType<ComponentHolder>();
+        Holder = this.TryGetComponent<ComponentHolder>();
         DetectableComponent = Holder.DetectableComp;
     }
 

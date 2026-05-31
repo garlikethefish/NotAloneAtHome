@@ -77,11 +77,7 @@ public partial class DetectableComponent : ComponentStaticBody2D, IDetectableCom
     {
         BlacklistedDetectors.Remove(detector);
         detector.AreaDetectorComponent.ExcludedRids.Remove(GetRid());
-        if (detector is Area2D area2D)
-        {
-            var bodies = area2D.GetOverlappingBodies();
-            if (bodies.Contains(this)) detector.OnBodyEntered?.InvokeOrLog(this);
-        }
+        detector.AreaDetectorComponent.HandleAttemptToEnterArea((IDetectable)Root);
     }
 
     public void HandleExitAllDetectors()

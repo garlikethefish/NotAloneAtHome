@@ -11,7 +11,7 @@ public partial class Spawner : Node2D, ISpawner
 
     public override void _Ready()
     {
-        Holder = this.GetComponentOfType<ComponentHolder>();
+        Holder = this.TryGetComponent<ComponentHolder>();
         _spawnerComp = Holder.SpawnerComp;
     }
 

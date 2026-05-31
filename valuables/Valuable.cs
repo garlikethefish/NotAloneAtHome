@@ -1,10 +1,7 @@
 namespace NotAloneAtHome.Valuables;
 
-using System;
 using Godot;
-using NotAloneAtHome.Components.Base.Holder;
-using NotAloneAtHome.Components.Detectable;
-using NotAloneAtHome.Components.Interactable;
+using NotAloneAtHome.Components;
 
 public partial class Valuable : RigidBody2D, IInteractable, ICarriable, IThrowable, IDetectable
 {
@@ -16,13 +13,15 @@ public partial class Valuable : RigidBody2D, IInteractable, ICarriable, IThrowab
     public IDetectableComponent DetectableComponent { get; set; }
     public ICarriableComponent CarriableComponent { get; set; }
     public IThrowableComponent ThrowableComponent { get; set; }
+    public IInteractableComponent interactableComponent { get; set; }
 
     public override void _Ready()
     {
-        Holder              = this.GetComponentOfType<ComponentHolder>();
+        Holder              = this.TryGetComponent<ComponentHolder>();
         DetectableComponent = Holder.DetectableComp;
         CarriableComponent  = Holder.CarriableComp;
         ThrowableComponent  = Holder.ThrowableComp;
+        interactableComponent = Holder.InteractableComp;
 
         Sprite.Texture = ValuableData.Valuables[Type].texture2D;
         Sprite.Material = _shaderMat;

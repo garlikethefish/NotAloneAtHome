@@ -1,7 +1,14 @@
+namespace NotAloneAtHome.Components;
+
+using System;
 using Godot;
 
 public partial class CariableComponent : ComponentNode2D, ICarriableComponent
 {
+    [Export] public CollisionShape2D CollisionShape2D { get; private set; }
+    public event Action<ICarrier> OnPickedUpBy;
+    public event Action<Vector2> OnDropedAt;
+
     private SignalAwaiter PlayDropAnimation(Vector2 landPos)
     {
         var tween  = CreateTween();
@@ -46,18 +53,15 @@ public partial class CariableComponent : ComponentNode2D, ICarriableComponent
 
     public async void HandlePickedUpBy(ICarrier carrier)
     {
-        Root.Reparent(carrier.CarryPointNode, true);
-        await PlayPickUpAnimation(carrier.CarryPointNode.Position);
+        Root.Reparent(carrier.CarrierComponent.CarryPointNode, true);
+        await PlayPickUpAnimation(carrier.CarrierComponent.CarryPointNode.Position);
+        OnPickedUpBy?.Invoke(carrier);
     }
 
     public async void HandleDropedAt(Vector2 landPos)
     {
         Root.Reparent(GetTree().CurrentScene, true);
         await PlayDropAnimation(landPos);
-    }
-
-    public bool CanBeCarried(ICarrier carrier)
-    {
-        return (Root as ICarriable).CanBeCarried(carrier);
+        OnDropedAt?.Invoke(landPos);
     }
 }

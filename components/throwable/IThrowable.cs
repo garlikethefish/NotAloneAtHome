@@ -1,5 +1,4 @@
-using System;
-using Godot;
+namespace NotAloneAtHome.Components;
 
 public interface IThrowable
 {

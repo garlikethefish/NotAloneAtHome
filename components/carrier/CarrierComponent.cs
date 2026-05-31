@@ -1,3 +1,5 @@
+namespace NotAloneAtHome.Components;
+
 using Godot;
 using System.Linq;
 
@@ -31,7 +33,7 @@ public partial class CarrierComponent : ComponentNode2D, ICarrierComponent
 
         _validCarriableDropPosition = Casters.RadialyFindAValidLocationWhichFitsGivenShape(
             GetWorld2D().DirectSpaceState,
-            Carriable.CollisionShape2D,
+            Carriable.CarriableComponent.CollisionShape2D,
             GlobalPosition,
             Reach,
             StepSize,
@@ -46,10 +48,10 @@ public partial class CarrierComponent : ComponentNode2D, ICarrierComponent
     {
         Carriable = carriable;
         IsPickingUp = true;
-        carriable.OnPickedUpBy?.InvokeOrLog((ICarrier)Root);
+        carriable.CarriableComponent.HandlePickedUpBy((ICarrier)Root);
 
         if (carriable is IDetectable detectable)
-            detectable.BlacklistedDetectors.Add((IAreaDetector)Root);
+            detectable.DetectableComponent.BlacklistedDetectors.Add((IAreaDetector)Root);
     }
 
     public void HandleDrop()
@@ -57,9 +59,9 @@ public partial class CarrierComponent : ComponentNode2D, ICarrierComponent
         var carriable = Carriable;
         Carriable = null;
         IsDropping = true;
-        carriable.OnDropedAt?.InvokeOrLog(_validCarriableDropPosition);
+        carriable.CarriableComponent.HandleDropedAt(_validCarriableDropPosition);
 
         if (carriable is IDetectable detectable)
-            detectable.BlacklistedDetectors.Remove((IAreaDetector)Root);
+            detectable.DetectableComponent.BlacklistedDetectors.Remove((IAreaDetector)Root);
     }
 }

@@ -14,7 +14,7 @@ public static class NodeExtensions
         return result != null;
     }
 
-    public static T GetComponentOfType<T>(this Node node) where T : Node
+    public static T TryGetComponent<T>(this Node node) where T : Node
     {
         foreach (Node child in node.GetChildren())
             if (child is T match) return match;

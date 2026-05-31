@@ -8,9 +8,12 @@ public partial class Trash : Node2D, IKillable, IInteractable, IDetectable
     public ComponentHolder Holder { get; private set; }
     public IDetectableComponent DetectableComponent { get; set; }
 
+    public IInteractableComponent interactableComponent => throw new System.NotImplementedException();
+
+
     public override void _Ready()
     {
-        Holder = this.GetComponentOfType<ComponentHolder>();
+        Holder = this.TryGetComponent<ComponentHolder>();
         if (Holder == null) GD.PushError("Didnt get holder in trash.cs");
         DetectableComponent = Holder.DetectableComp;
     }

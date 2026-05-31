@@ -3,7 +3,7 @@ using System;
 using Godot;
 
 #nullable enable
-public partial class InteractableComponent : ComponentNode2D, IInteractableComponent
+public partial class InteractableAnimationComponent : ComponentNode2D, IInteractableAnimationComponent
 {
     [Export] private Sprite2D _interactionSprite = default!;
     private Vector2 _interactionKeyStartPos;
@@ -15,29 +15,21 @@ public partial class InteractableComponent : ComponentNode2D, IInteractableCompo
         _interactionKeyStartPos   = _interactionSprite.Position;
         _interactionKeyStartScale = _interactionSprite.Scale;
         _interactionSprite.Visible = false;
-        HideSprite();
+        HideInteractSprite();
 
-        GD.Print("Is root detectable?: ", Root is IDetectable );
         if (Root is IDetectable detectable)
         {
-            detectable.OnBecameDetectorPriority += _ => ShowSprite();
-            detectable.OnRemovedDetectorPriority += _ => HideSprite();
+            detectable.DetectableComponent.OnBecameDetectorPriority += _ => ShowInteractSprite();
+            detectable.DetectableComponent.OnRemovedDetectorPriority += _ => HideInteractSprite();
+        }
+
+        if (Root is IInteractable interactable)
+        {
+            interactable.interactableComponent.OnInteraction += _ => PerformInteraction();
         }
     }
 
-    private void TweenAnimation()
-    {
-        _interactionSprite.Position = _interactionKeyStartPos;
-        _interactionSprite.Scale    = _interactionKeyStartScale;
-
-        var tween = CreateTween().SetParallel(true);
-        tween.TweenProperty(_interactionSprite, "position", _interactionKeyStartPos - new Vector2(0, -20), 0.1f);
-        tween.TweenProperty(_interactionSprite, "scale",    _interactionKeyStartScale / 2,                 0.1f);
-        tween.TweenProperty(_interactionSprite, "position", _interactionKeyStartPos,                       0.1f).SetDelay(0.1f);
-        tween.TweenProperty(_interactionSprite, "scale",    _interactionKeyStartScale,                     0.1f).SetDelay(0.1f);
-    }
-
-    private void ShowSprite()
+    public async void ShowInteractSprite()
     {
         if (!IsInstanceValid(this) || IsQueuedForDeletion()) return;
         GD.Print("showed!");
@@ -47,7 +39,7 @@ public partial class InteractableComponent : ComponentNode2D, IInteractableCompo
         _appearTween.TweenProperty(_interactionSprite, "scale", Vector2.One, 0.5f);
     }
 
-    private async void HideSprite()
+    public async void HideInteractSprite()
     {
         if (!IsInstanceValid(this) || IsQueuedForDeletion()) return;
         GD.Print("hidden!");
@@ -59,8 +51,15 @@ public partial class InteractableComponent : ComponentNode2D, IInteractableCompo
         _interactionSprite.Visible = false;
     }
 
-    public void HandleInteractedBy(IInteractor interactor)
+    public void PerformInteraction()
     {
-        TweenAnimation();
+        _interactionSprite.Position = _interactionKeyStartPos;
+        _interactionSprite.Scale    = _interactionKeyStartScale;
+
+        var tween = CreateTween().SetParallel(true);
+        tween.TweenProperty(_interactionSprite, "position", _interactionKeyStartPos - new Vector2(0, -20), 0.1f);
+        tween.TweenProperty(_interactionSprite, "scale",    _interactionKeyStartScale / 2,                 0.1f);
+        tween.TweenProperty(_interactionSprite, "position", _interactionKeyStartPos,                       0.1f).SetDelay(0.1f);
+        tween.TweenProperty(_interactionSprite, "scale",    _interactionKeyStartScale,                     0.1f).SetDelay(0.1f);
     }
 }

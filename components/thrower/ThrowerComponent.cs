@@ -1,6 +1,6 @@
-using Godot;
-using NotAloneAtHome.Components.Thrower;
+namespace NotAloneAtHome.Components;
 
+using Godot;
 public partial class ThrowerComponent : ComponentNode2D, IThrowerComponent
 {
     [Export] public bool ShowDebug = false;
@@ -74,9 +74,9 @@ public partial class ThrowerComponent : ComponentNode2D, IThrowerComponent
         (throwable as Node2D).Reparent(GetTree().CurrentScene);
 
         if (throwable is IDetectable detectable)
-            detectable.BlacklistedDetectors.Remove((IAreaDetector)Root);
+            detectable.DetectableComponent.BlacklistedDetectors.Remove((IAreaDetector)Root);
             
-        throwable.OnThrownBy?.InvokeOrLog((IThrower)Root, AimedAtLocation);
+        throwable.ThrowableComponent.HandleThrownBy((IThrower)Root, AimedAtLocation);
         HandleStopAiming();
     }
 

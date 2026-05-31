@@ -1,4 +1,5 @@
-using System;
+namespace NotAloneAtHome.Characters;
+
 using Godot;
 using NotAloneAtHome.Components;
 using NotAloneAtHome.Tasks;
@@ -24,30 +25,15 @@ public partial class Cat : CharacterBody2D, IInteractable, IDetectable
     private AudioStreamPlayer2D _meowSound;
     private Timer _meowTimer;
     private ComponentHolder Holder;
-    private IInteractableComponent _interactable;
-
-    public IDetectableComponent DetectableComp { get; set; }
-
-    public Rid Rid => DetectableComp.HandleGetRid();
-
-    public ReactiveList<IAreaDetector> BlacklistedDetectors => DetectableComp.BlacklistedDetectors;
-
-    public CollisionShape2D CollisionShape2D => DetectableComp.CollisionShape2D;
-
-    public Action<IAreaDetector> OnEnteredDetectorArea { get; set; }
-    public Action<IAreaDetector> OnExitedDetectorArea { get; set; }
-    public Action<IAreaDetector> OnBecameDetectorPriority { get; set; }
-    public Action<IAreaDetector> OnRemovedDetectorPriority { get; set; }
-
-    public IDetectableComponent DetectableComponent => throw new NotImplementedException();
+    public IDetectableComponent DetectableComponent { get; set; }
+    public IInteractableComponent interactableComponent { get; set; }
 
     public override void _Ready()
     {
         Holder = GetNode<ComponentHolder>("ComponentHolder");
-        _interactable = Holder.InteractableComp;
-        DetectableComp = Holder.DetectableComp;
+        interactableComponent = Holder.InteractableComp;
+        DetectableComponent = Holder.DetectableComp;
         
-
         _anim = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
         _meowSound = GetNode<AudioStreamPlayer2D>("MeowSound");
         _meowTimer = GetNode<Timer>("MeowTimer");
@@ -146,6 +132,6 @@ public partial class Cat : CharacterBody2D, IInteractable, IDetectable
 
     public void ExitAllDetectors()
     {
-        DetectableComp.HandleExitAllDetectors();
+        DetectableComponent.HandleExitAllDetectors();
     }
 }

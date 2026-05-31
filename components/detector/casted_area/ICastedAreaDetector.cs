@@ -1,5 +1,7 @@
+namespace NotAloneAtHome.Components;
 
-public interface ICastedAreaDetector
+public interface ICastedAreaDetector : IAreaDetector
 {
     ICastedAreaDetectorComponent CastedAreaDetectorComponent { get; }
+    IAreaDetectorComponent IAreaDetector.AreaDetectorComponent => CastedAreaDetectorComponent;
 }

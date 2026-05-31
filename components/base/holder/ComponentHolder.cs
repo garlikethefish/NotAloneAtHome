@@ -38,7 +38,15 @@ public partial class ComponentHolder : Node2D
         foreach (var child in GetChildren().OfType<IComponentBase>()) 
             child.AfterReady();
 
+        WireComponents();
+
         AfterHelperReady();
+    }
+
+    void WireComponents()
+    {
+        var method = Root.GetType().GetMethod("WireComponents");
+        method?.Invoke(Root, null);
     }
 
     /// <summary>

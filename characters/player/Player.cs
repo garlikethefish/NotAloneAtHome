@@ -3,6 +3,7 @@ namespace NotAloneAtHome.Characters.Player;
 using System;
 using System.Collections.Generic;
 using Godot;
+using GodotUtilities;
 using NotAloneAtHome.Components;
 using NotAloneAtHome.state_machines.interfaces;
 
@@ -65,19 +66,19 @@ public partial class Player : CharacterBody2D, IThrower, ICastedAreaDetector, IC
     public Dictionary<Type, IState> States = [];
     public IState CurrentState { get; private set; }
 
-    public ComponentHolder Holder { get; private set; }    
-    public IThrowerComponent ThrowerComponent { get; private set; }
-    public ICarrierComponent CarrierComponent { get; private set; }
-    public ICastedAreaDetectorComponent CastedAreaDetectorComponent { get; private set; }
+    [Node] public ComponentHolder Holder { get; private set; }    
+    [FromHolder] public IThrowerComponent ThrowerComponent { get; private set; }
+    [FromHolder] public ICarrierComponent CarrierComponent { get; private set; }
+    [FromHolder] public ICastedAreaDetectorComponent CastedAreaDetectorComponent { get; private set; }
     [Signal] public delegate void ShakeCameraEventHandler();
     [Signal] public delegate void StopCameraShakeEventHandler();
 
     public override void _Ready()
     {
-        Holder = this.GetComponentOfType<ComponentHolder>();
-        ThrowerComponent            = Holder.ThrowerComp;
-        CarrierComponent            = Holder.CarrierComp;
-        CastedAreaDetectorComponent = Holder.CastedAreaDetectorComp;
+        // Holder = this.TryGetComponent<ComponentHolder>();
+        // ThrowerComponent            = Holder.ThrowerComp;
+        // CarrierComponent            = Holder.CarrierComp;
+        // CastedAreaDetectorComponent = Holder.CastedAreaDetectorComp;
 
         _anim               = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
         _overlayRect        = GetNode<ColorRect>("MaskOverlay/ColorRect");
@@ -272,7 +273,7 @@ public partial class Player : CharacterBody2D, IThrower, ICastedAreaDetector, IC
 
     public void InteractWith(IInteractable interactable)
     {
-        interactable.InteractedBy(this);
+        
     }
 
     public void StartAiming()

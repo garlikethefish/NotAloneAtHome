@@ -1,3 +1,6 @@
+namespace NotAloneAtHome.Components;
+
+using System;
 using Godot;
 
 public partial class ThrowableComponent : ComponentNode2D, IThrowableComponent
@@ -7,6 +10,9 @@ public partial class ThrowableComponent : ComponentNode2D, IThrowableComponent
     [Export] public Sprite2D Sprite;
     public bool IsFlying { get; private set; }
     private float _flyDuration = 0.6f;
+
+    public event Action<IThrower, Vector2> OnThrownBy;
+    public event Action<Vector2> OnLanded;
 
     public override void _Ready()
     {
@@ -48,11 +54,12 @@ public partial class ThrowableComponent : ComponentNode2D, IThrowableComponent
     {
         IsFlying = true;
         StartFlyAnimation(toPosition);
+        OnThrownBy?.Invoke(thrower, toPosition);
     }
 
     public void Land()
     {
         IsFlying = false;
-        (Root as IThrowable).OnLanded?.InvokeOrLog(GlobalPosition);
+        OnLanded?.Invoke(GlobalPosition);
     }
 }

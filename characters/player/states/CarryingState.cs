@@ -1,6 +1,7 @@
 namespace NotAloneAtHome.Characters.Player;
 
 using Godot;
+using NotAloneAtHome.Components;
 using NotAloneAtHome.state_machines.interfaces;
 
 public partial class Player
@@ -16,7 +17,7 @@ public partial class Player
 
         public void Update(double delta)
         {
-            if (Input.IsActionPressed("throw") && Ctx.Carriable is IThrowable)
+            if (Input.IsActionPressed("throw") && Ctx.CarrierComponent.Carriable is IThrowable)
             {
                 Ctx.StartAiming();
                 Ctx.ChangeState(Ctx.States[typeof(AimingState)]);

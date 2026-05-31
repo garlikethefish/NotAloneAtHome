@@ -1,8 +1,6 @@
 using System;
 using Godot;
-using NotAloneAtHome.Components.Base.Holder;
-using NotAloneAtHome.Components.Detectable;
-using NotAloneAtHome.Components.Interactable;
+using NotAloneAtHome.Components;
 
 public partial class Laptop : Sprite2D, IDetectable, IInteractable
 {
@@ -10,20 +8,21 @@ public partial class Laptop : Sprite2D, IDetectable, IInteractable
 
     private ComponentHolder Holder;
     public IDetectableComponent DetectableComponent { get; set; }
-    private Control       _ui;
-    private Control       _vignette;
-    private bool          _waitingRetry = false;
+    public IInteractableComponent interactableComponent { get; set; }
+
+    private Control _ui;
+    private Control _vignette;
+    private bool _waitingRetry = false;
     private RandomNumberGenerator _rng = new();
-    private Label  _waitCountdownText;
-    private Timer  _waitCountdownTimer;
-    private int    _timeToWait = 0;
-
-
+    private Label _waitCountdownText;
+    private Timer _waitCountdownTimer;
+    private int _timeToWait = 0;
 
     public override void _Ready()
     {
-        Holder              = this.GetComponentOfType<ComponentHolder>();
+        Holder              = this.TryGetComponent<ComponentHolder>();
         DetectableComponent = Holder.DetectableComp;
+        interactableComponent = Holder.InteractableComp;
 
         _ui           = GetNode<Control>("ProgrammingMinigame");
         _vignette     = _ui.GetChild<Control>(0);

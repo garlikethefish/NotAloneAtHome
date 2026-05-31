@@ -12,4 +12,5 @@ public interface IComponentBase
     /// Called after the root node runs its _Ready method.
     /// </summary>
     void AfterReady();
+    protected virtual void WireComponents() { }
 }
