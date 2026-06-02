@@ -3,22 +3,15 @@ namespace NotAloneAtHome.Components;
 using System;
 using Godot;
 
-public partial class Spawner : Node2D, ISpawner
+public partial class Spawner : Node2D
 {
-    public ComponentHolder Holder { get; set; }
-    private ISpawnerComponent _spawnerComp;
+    [Node] public SpawnerComponent SpawnerComponent;
     public Action<Node2D> OnSpawned { get; set; }
-
-    public override void _Ready()
-    {
-        Holder = this.TryGetComponent<ComponentHolder>();
-        _spawnerComp = Holder.SpawnerComp;
-    }
 
     public Node2D Spawn(PackedScene scene, Node parentNode = null, Vector2? globalPos = null)
     {
-        var instance = _spawnerComp.HandleSpawn(scene, parentNode, globalPos);
-        OnSpawned?.InvokeOrLog(instance);
+        var instance = SpawnerComponent.HandleSpawn(scene, parentNode, globalPos);
+        OnSpawned?.Invoke(instance);
         return instance;
     }
 }

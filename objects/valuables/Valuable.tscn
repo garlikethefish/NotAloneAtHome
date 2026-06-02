@@ -1,8 +1,7 @@
 [gd_scene format=3 uid="uid://hnye7wtm1w0e"]
 
 [ext_resource type="Script" uid="uid://dhqwec757yqdt" path="res://valuables/Valuable.cs" id="1_7p2l0"]
-[ext_resource type="PackedScene" uid="uid://vtaarm6aoww0" path="res://components/base/holder/ComponentHolder.tscn" id="2_d04w0"]
-[ext_resource type="PackedScene" uid="uid://bfxah7yut2ec0" path="res://components/cariable/CariableComponent.tscn" id="3_xcwdw"]
+[ext_resource type="PackedScene" uid="uid://bfxah7yut2ec0" path="res://components/cariable/CarriableComponent.tscn" id="3_xcwdw"]
 [ext_resource type="PackedScene" uid="uid://b8odej7420g54" path="res://components/detectable/DetectableComponent.tscn" id="4_apino"]
 [ext_resource type="PackedScene" uid="uid://k2k1j0y25ebx" path="res://components/interactable/InteractableComponent.tscn" id="5_2vrdr"]
 [ext_resource type="PackedScene" uid="uid://m5gqbqgarhdk" path="res://components/throwable/ThrowableComponent.tscn" id="6_xcwdw"]
@@ -10,14 +9,14 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2vrdr"]
 size = Vector2(31, 65)
 
-[node name="Valuable" type="RigidBody2D" unique_id=901548105 node_paths=PackedStringArray("CollisionShape2D")]
+[node name="Valuable" type="RigidBody2D" unique_id=901548105 node_paths=PackedStringArray("Sprite")]
 texture_filter = 1
 collision_mask = 2
 gravity_scale = 0.0
 can_sleep = false
 lock_rotation = true
 script = ExtResource("1_7p2l0")
-CollisionShape2D = NodePath("CollisionShape2D")
+Sprite = NodePath("Sprite2D")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=168771423]
 shape = SubResource("RectangleShape2D_2vrdr")
@@ -25,17 +24,10 @@ shape = SubResource("RectangleShape2D_2vrdr")
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=2054388301]
 z_index = 3
 
-[node name="ComponentHolder" parent="." unique_id=1878740538 instance=ExtResource("2_d04w0")]
+[node name="CarriableComponent" parent="." unique_id=883810070 instance=ExtResource("3_xcwdw")]
 
-[node name="ICarriable" parent="ComponentHolder" unique_id=883810070 node_paths=PackedStringArray("sprite", "_collisionShape2D", "rigidBody") instance=ExtResource("3_xcwdw")]
-sprite = NodePath("../../Sprite2D")
-_collisionShape2D = NodePath("../../CollisionShape2D")
-rigidBody = NodePath("../..")
+[node name="ThrowableComponent" parent="." unique_id=1551366403 instance=ExtResource("6_xcwdw")]
 
-[node name="IDetectable" parent="ComponentHolder" unique_id=2037387284 node_paths=PackedStringArray("_collisionShape") instance=ExtResource("4_apino")]
-_collisionShape = NodePath("../../CollisionShape2D")
+[node name="DetectableComponent" parent="." unique_id=2037387284 instance=ExtResource("4_apino")]
 
-[node name="IInteractable" parent="ComponentHolder" unique_id=1999549239 instance=ExtResource("5_2vrdr")]
-
-[node name="IThrowable" parent="ComponentHolder" unique_id=1551366403 node_paths=PackedStringArray("Sprite") instance=ExtResource("6_xcwdw")]
-Sprite = NodePath("../../Sprite2D")
+[node name="InteractableComponent" parent="." unique_id=1999549239 instance=ExtResource("5_2vrdr")]

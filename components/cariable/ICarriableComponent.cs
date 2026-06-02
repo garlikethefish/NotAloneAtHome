@@ -5,9 +5,10 @@ using Godot;
 public interface ICarriableComponent
 {
     CollisionShape2D CollisionShape2D { get; }
-    event Action<ICarrier> OnPickedUpBy;
+    event Action<CarrierComponent> OnPickedUpBy;
     event Action<Vector2> OnDropedAt;
-    void HandlePickedUpBy(ICarrier carrier);
+    Func<CarrierComponent, bool> CanBeCarriedBy { get; set; }
+    void HandlePickedUpBy(CarrierComponent carrier);
     void HandleDropedAt(Vector2 landPos);
 }
 

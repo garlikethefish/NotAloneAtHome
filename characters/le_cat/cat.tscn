@@ -8,7 +8,6 @@
 [ext_resource type="AudioStream" uid="uid://dbqeekcm7ern" path="res://sounds/sound effects/meow4.wav" id="7_cy1mn"]
 [ext_resource type="AudioStream" uid="uid://pkgor7kaslsk" path="res://sounds/sound effects/meow5.wav" id="8_yun16"]
 [ext_resource type="AudioStream" uid="uid://bk4v0u4evgskv" path="res://sounds/sound effects/meow6.wav" id="9_d4tls"]
-[ext_resource type="PackedScene" uid="uid://vtaarm6aoww0" path="res://components/base/holder/ComponentHolder.tscn" id="9_kj5y6"]
 [ext_resource type="PackedScene" uid="uid://k2k1j0y25ebx" path="res://components/interactable/InteractableComponent.tscn" id="10_0tq2b"]
 [ext_resource type="PackedScene" uid="uid://b8odej7420g54" path="res://components/detectable/DetectableComponent.tscn" id="11_xw8lf"]
 
@@ -63,10 +62,8 @@ max_distance = 400.0
 panning_strength = 3.0
 bus = &"Sounds"
 
-[node name="ComponentHolder" parent="." unique_id=1878740538 instance=ExtResource("9_kj5y6")]
+[node name="DetectableComponent" parent="." unique_id=2037387284 instance=ExtResource("11_xw8lf")]
 
-[node name="InteractableComponent" parent="ComponentHolder" unique_id=1999549239 instance=ExtResource("10_0tq2b")]
-
-[node name="IDetectable" parent="ComponentHolder" unique_id=2037387284 instance=ExtResource("11_xw8lf")]
+[node name="InteractableComponent" parent="." unique_id=1999549239 instance=ExtResource("10_0tq2b")]
 
 [connection signal="timeout" from="MeowTimer" to="." method="_on_meow_timer_timeout"]

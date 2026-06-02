@@ -4,17 +4,17 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Godot;
-
-public partial class AreaDetectorComponent : ComponentArea2D, IAreaDetectorComponent
+#nullable enable
+[Scene]
+public partial class AreaDetectorComponent : Area2D, IAreaDetectorComponent
 {
-    [Export] public CollisionShape2D CollisionShape { get; private set; }
+    [Node] public CollisionShape2D CollisionShape2D { get; private set; } = default!;
     [Export] public bool ShowDebug = true;
     [Export] public int[] CollisionMasks = [10, 2];
     public List<Rid> ExcludedRids { get; } = [];
     public List<DetectableComponentModel> DetectablesInArea { get; } = [];
-    private IAreaDetector RootDetector => (IAreaDetector)Root;
-    public event Action<Node2D> OnBodyEntered;
-    public event Action<Node2D> OnBodyExited;
+    public event Action<DetectableComponent>? OnBodyEntered;
+    public event Action<DetectableComponent>? OnBodyExited;
 
     public override void _Ready()
     {
@@ -32,13 +32,13 @@ public partial class AreaDetectorComponent : ComponentArea2D, IAreaDetectorCompo
     {
         if (!ShowDebug) return;
 
-        if (CollisionShape.Shape is CircleShape2D circle)
-            DrawCircle(CollisionShape.Position, circle.Radius, new Color(1, 0, 0, 0.12f));
+        if (CollisionShape2D?.Shape is CircleShape2D circle)
+            DrawCircle(CollisionShape2D.Position, circle.Radius, new Color(1, 0, 0, 0.12f));
 
         foreach (var model in DetectablesInArea.ToList())
         {
             var detectable = model.Detectable;
-            var localTarget = ToLocal(detectable.DetectableComponent.CollisionShape2D.GlobalPosition);
+            var localTarget = ToLocal(detectable.CollisionShape2D.GlobalPosition);
 
             Color color = new(0, 1, 0, 0.5f);
             DrawCircle(localTarget, 2f, color);
@@ -47,42 +47,41 @@ public partial class AreaDetectorComponent : ComponentArea2D, IAreaDetectorCompo
 
     public void WhenBodyEntered(Node2D body)
     {
-        GD.Print($"[OnBodyEntered] body={body?.Name ?? "NULL"}, valid={IsInstanceValid(body)}");
-        if (!body.TryGetRoot<IDetectable>(out var detectable) 
-            || detectable.DetectableComponent.BlacklistedDetectors.Contains(RootDetector)
+        if (!body.ParentHas<DetectableComponent>(out var detectable) 
+            || detectable.BlacklistedDetectors.Contains(this)
+            || DetectablesInArea.Any(detInArea => detInArea.Detectable == detectable)
         ) return;
-        if (DetectablesInArea.Any(detInArea => detInArea.Detectable == detectable)) return;
 
         DetectablesInArea.Add(new DetectableComponentModel { Detectable = detectable });
-        detectable.DetectableComponent.HandleEnterDetectorArea(RootDetector);
-        OnBodyEntered?.Invoke(body);
+        detectable.HandleEnterDetectorArea(this);
+        OnBodyEntered?.Invoke(detectable);
     }
 
     public void WhenBodyExited(Node2D body)
     {
-        if (!body.TryGetRoot<IDetectable>(out var detectable)) return;
+        if (!body.ParentHas<DetectableComponent>(out var detectable)) return;
 
         var model = DetectablesInArea.FirstOrDefault(m => m.Detectable == detectable);
         if (model == null) return;
 
         DetectablesInArea.Remove(model);
-        detectable.DetectableComponent.HandleExitDetectorArea(RootDetector);
-        OnBodyExited?.Invoke(body);
+        detectable.HandleExitDetectorArea(this);
+        OnBodyExited?.Invoke(detectable);
     }
 
-    public void HandleBlacklistDetectable(IDetectable detectable)
+    public void HandleBlacklistDetectable(DetectableComponent detectable)
     {
-        OnBodyExited((Node2D)detectable);
+        WhenBodyExited(detectable);
     }
 
-    public virtual void HandleForceUndetectDetectable(IDetectable detectable)
+    public virtual void HandleForceUndetectDetectable(DetectableComponent detectable)
     {
         DetectablesInArea.RemoveAll(model => model.Detectable == detectable);
     }
 
-    public void HandleAttemptToEnterArea(IDetectable detectable)
+    public void HandleAttemptToEnterArea(DetectableComponent detectable)
     {
         var bodies = GetOverlappingBodies();
-        if (bodies.Contains((Node2D)detectable.DetectableComponent)) WhenBodyEntered((Node2D)detectable); 
+        if (bodies.Contains(detectable)) WhenBodyEntered(detectable); 
     }
 }

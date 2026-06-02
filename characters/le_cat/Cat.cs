@@ -5,7 +5,7 @@ using NotAloneAtHome.Components;
 using NotAloneAtHome.Tasks;
 using NotAloneAtHome.Tasks.WaterPlantsTask;
 
-public partial class Cat : CharacterBody2D, IInteractable, IDetectable
+public partial class Cat : CharacterBody2D
 {
     [Export] public float Speed = 80.0f;
     [Export] public float RoamWaitTime = 1.0f;
@@ -24,16 +24,9 @@ public partial class Cat : CharacterBody2D, IInteractable, IDetectable
     private AnimatedSprite2D _anim;
     private AudioStreamPlayer2D _meowSound;
     private Timer _meowTimer;
-    private ComponentHolder Holder;
-    public IDetectableComponent DetectableComponent { get; set; }
-    public IInteractableComponent interactableComponent { get; set; }
 
     public override void _Ready()
     {
-        Holder = GetNode<ComponentHolder>("ComponentHolder");
-        interactableComponent = Holder.InteractableComp;
-        DetectableComponent = Holder.DetectableComp;
-        
         _anim = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
         _meowSound = GetNode<AudioStreamPlayer2D>("MeowSound");
         _meowTimer = GetNode<Timer>("MeowTimer");
@@ -114,24 +107,5 @@ public partial class Cat : CharacterBody2D, IInteractable, IDetectable
     {
         _meowSound.Play();
         StartMeowTimer();
-    }
-
-    public void InteractedBy(IInteractor interactor)
-    {
-        DoCatTimes--;
-        if (DoCatTimes <= 0)
-        {
-            // complete task
-        }
-    }
-
-    public bool CanBeDetected(IAreaDetector detector)
-    {
-        return TaskManager.Instance.CurrentTask is WaterPlantsTask;
-    }
-
-    public void ExitAllDetectors()
-    {
-        DetectableComponent.HandleExitAllDetectors();
     }
 }

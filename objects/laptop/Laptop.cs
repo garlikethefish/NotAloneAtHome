@@ -2,14 +2,9 @@ using System;
 using Godot;
 using NotAloneAtHome.Components;
 
-public partial class Laptop : Sprite2D, IDetectable, IInteractable
+public partial class Laptop : Sprite2D
 {
     [Signal] public delegate void StartANewLineEventHandler();
-
-    private ComponentHolder Holder;
-    public IDetectableComponent DetectableComponent { get; set; }
-    public IInteractableComponent interactableComponent { get; set; }
-
     private Control _ui;
     private Control _vignette;
     private bool _waitingRetry = false;
@@ -20,10 +15,6 @@ public partial class Laptop : Sprite2D, IDetectable, IInteractable
 
     public override void _Ready()
     {
-        Holder              = this.TryGetComponent<ComponentHolder>();
-        DetectableComponent = Holder.DetectableComp;
-        interactableComponent = Holder.InteractableComp;
-
         _ui           = GetNode<Control>("ProgrammingMinigame");
         _vignette     = _ui.GetChild<Control>(0);
         _waitCountdownText  = GetNode<Label>("WaitCountdownText");
@@ -114,15 +105,5 @@ public partial class Laptop : Sprite2D, IDetectable, IInteractable
             _ui.Visible               = false;
             // GameManager.LockedOut     = true;
         }
-    }
-
-    public void InteractedBy(IInteractor interactor)
-    {
-    
-    }
-
-    public bool CanBeDetected(IAreaDetector detector)
-    {
-        return true;
     }
 }

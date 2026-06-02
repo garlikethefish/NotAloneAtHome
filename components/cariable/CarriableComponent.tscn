@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://bfxah7yut2ec0"]
+
+[ext_resource type="Script" uid="uid://b4objf7scu2ol" path="res://components/cariable/CarriableComponent.cs" id="1_os5sl"]
+
+[node name="CarriableComponent" type="Node2D" unique_id=883810070]
+script = ExtResource("1_os5sl")

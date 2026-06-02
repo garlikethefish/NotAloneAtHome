@@ -2,8 +2,8 @@ namespace NotAloneAtHome.Components;
 
 using System;
 using Godot;
-
-public partial class ThrowableComponent : ComponentNode2D, IThrowableComponent
+    
+public partial class ThrowableComponent : Node2D, IThrowableComponent
 {
     [Signal] public delegate void ThrownEventHandler(GodotObject thrower);
     [Signal] public delegate void LandedEventHandler(Vector2 position);
@@ -11,7 +11,7 @@ public partial class ThrowableComponent : ComponentNode2D, IThrowableComponent
     public bool IsFlying { get; private set; }
     private float _flyDuration = 0.6f;
 
-    public event Action<IThrower, Vector2> OnThrownBy;
+    public event Action<ThrowerComponent, Vector2> OnThrownBy;
     public event Action<Vector2> OnLanded;
 
     public override void _Ready()
@@ -24,7 +24,7 @@ public partial class ThrowableComponent : ComponentNode2D, IThrowableComponent
         if (landPos == Vector2.Inf) return;
 
         var tween = CreateTween();
-        tween.TweenProperty(Root, "global_position", landPos, _flyDuration)
+        tween.TweenProperty(GetParent(), "global_position", landPos, _flyDuration)
              .SetTrans(Tween.TransitionType.Cubic)
              .SetEase(Tween.EaseType.Out);
 
@@ -50,7 +50,7 @@ public partial class ThrowableComponent : ComponentNode2D, IThrowableComponent
         }));
     }
 
-    public void HandleThrownBy(IThrower thrower, Vector2 toPosition)
+    public void HandleThrownBy(ThrowerComponent thrower, Vector2 toPosition)
     {
         IsFlying = true;
         StartFlyAnimation(toPosition);

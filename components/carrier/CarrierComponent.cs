@@ -3,7 +3,8 @@ namespace NotAloneAtHome.Components;
 using Godot;
 using System.Linq;
 
-public partial class CarrierComponent : ComponentNode2D, ICarrierComponent
+[Tool]
+public partial class CarrierComponent : Node2D, ICarrierComponent
 {
     [Export] public CollisionObject2D[] ExcludedColliders = [];
     [Export] public float Reach = 40f;
@@ -14,13 +15,13 @@ public partial class CarrierComponent : ComponentNode2D, ICarrierComponent
     [Export] public int[] CollisionMasks = [];
     [Export] public Node2D CarryPointNode { get; private set; }
     public bool IsAnimating => IsPickingUp || IsDropping;
-    public bool IsCarrying  => Carriable != null;
-    public ICarriable Carriable { get; private set; }
+    public bool IsCarrying  => CarriableComp != null;
+    public CarriableComponent CarriableComp { get; private set; }
     public bool IsPickingUp = false;
     public bool IsDropping = false;
     public Vector2 FacingDirection = Vector2.Inf;
     Vector2 _validCarriableDropPosition = Vector2.Inf;
-
+   
     public override void _Ready()
     {
         base._Ready();
@@ -29,11 +30,11 @@ public partial class CarrierComponent : ComponentNode2D, ICarrierComponent
     public override void _Process(double delta)
     {
         if (ShowDebug) QueueRedraw();
-        if (Carriable == null) return;
+        if (CarriableComp == null) return;
 
         _validCarriableDropPosition = Casters.RadialyFindAValidLocationWhichFitsGivenShape(
             GetWorld2D().DirectSpaceState,
-            Carriable.CarriableComponent.CollisionShape2D,
+            CarriableComp.CollisionShape2D,
             GlobalPosition,
             Reach,
             StepSize,
@@ -44,24 +45,30 @@ public partial class CarrierComponent : ComponentNode2D, ICarrierComponent
         );
     }
 
-    public void HandlePickup(ICarriable carriable)
+    public void HandlePickup(CarriableComponent carriableComponent)
     {
-        Carriable = carriable;
+        CarriableComp = carriableComponent;
         IsPickingUp = true;
-        carriable.CarriableComponent.HandlePickedUpBy((ICarrier)Root);
+        CarriableComp.HandlePickedUpBy(this);
 
-        if (carriable is IDetectable detectable)
-            detectable.DetectableComponent.BlacklistedDetectors.Add((IAreaDetector)Root);
+        if (CarriableComp.ParentHas<DetectableComponent>(out var detectable)
+            && this.ParentHas<AreaDetectorComponent>(out var detector)
+        ) {
+            detectable.BlacklistedDetectors.Add(detector);
+        }
     }
 
     public void HandleDrop()
     {
-        var carriable = Carriable;
-        Carriable = null;
+        var carriable = CarriableComp;
+        CarriableComp = null;
         IsDropping = true;
-        carriable.CarriableComponent.HandleDropedAt(_validCarriableDropPosition);
+        carriable.HandleDropedAt(_validCarriableDropPosition);
 
-        if (carriable is IDetectable detectable)
-            detectable.DetectableComponent.BlacklistedDetectors.Remove((IAreaDetector)Root);
+        if (CarriableComp.ParentHas<DetectableComponent>(out var detectable)
+            && this.ParentHas<AreaDetectorComponent>(out var detector)
+        ) {
+            detectable.BlacklistedDetectors.Remove(detector);
+        }
     }
 }

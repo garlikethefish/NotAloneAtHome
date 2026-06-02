@@ -5,7 +5,7 @@ using System;
 #nullable enable
 public interface ICastedAreaDetectorComponent : IAreaDetectorComponent
 {
-    IDetectable? ClosestDetectable { get; }
-    event Action<IDetectable> OnSightEnter;
-    event Action<IDetectable> OnSightExit;
+    DetectableComponent? ClosestDetectable { get; }
+    event Action<DetectableComponent> OnSightEnter;
+    event Action<DetectableComponent> OnSightExit;
 }

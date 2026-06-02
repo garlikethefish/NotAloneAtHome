@@ -1,6 +1,0 @@
-[gd_scene format=3 uid="uid://vtaarm6aoww0"]
-
-[ext_resource type="Script" uid="uid://cnk2mhkgh2rwc" path="res://components/base/holder/ComponentHolder.cs" id="1_rk2iy"]
-
-[node name="ComponentHolder" type="Node2D" unique_id=1878740538]
-script = ExtResource("1_rk2iy")

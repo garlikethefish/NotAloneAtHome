@@ -3,11 +3,11 @@ namespace NotAloneAtHome.Characters.Player;
 using System;
 using System.Collections.Generic;
 using Godot;
-using GodotUtilities;
 using NotAloneAtHome.Components;
 using NotAloneAtHome.state_machines.interfaces;
 
-public partial class Player : CharacterBody2D, IThrower, ICastedAreaDetector, ICarrier, IInteractor, IStateMachine
+[Scene]
+public partial class Player : CharacterBody2D, IStateMachine
 {
     //
     // player move speed
@@ -65,21 +65,17 @@ public partial class Player : CharacterBody2D, IThrower, ICastedAreaDetector, IC
     public Vector2 FacingDirection { get; private set; }
     public Dictionary<Type, IState> States = [];
     public IState CurrentState { get; private set; }
-
-    [Node] public ComponentHolder Holder { get; private set; }    
-    [FromHolder] public IThrowerComponent ThrowerComponent { get; private set; }
-    [FromHolder] public ICarrierComponent CarrierComponent { get; private set; }
-    [FromHolder] public ICastedAreaDetectorComponent CastedAreaDetectorComponent { get; private set; }
+ 
+    [Node] public InteractorComponent InteractorComponent;
+    [Node] public ThrowerComponent ThrowerComponent;
+    [Node] public CarrierComponent CarrierComponent;
+    [Node] public CastedAreaDetectorComponent CastedAreaDetectorComponent;
     [Signal] public delegate void ShakeCameraEventHandler();
     [Signal] public delegate void StopCameraShakeEventHandler();
 
     public override void _Ready()
     {
-        // Holder = this.TryGetComponent<ComponentHolder>();
-        // ThrowerComponent            = Holder.ThrowerComp;
-        // CarrierComponent            = Holder.CarrierComp;
-        // CastedAreaDetectorComponent = Holder.CastedAreaDetectorComp;
-
+        WireNodes();
         _anim               = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
         _overlayRect        = GetNode<ColorRect>("MaskOverlay/ColorRect");
         _footstepSound      = GetNode<AudioStreamPlayer2D>("FootstepSound");
@@ -144,18 +140,19 @@ public partial class Player : CharacterBody2D, IThrower, ICastedAreaDetector, IC
         if (!CanInteract) return;
         if (Input.IsActionJustPressed("interact"))
         {
-            var detectable = CastedAreaDetectorComponent.ClosestDetectable;
-            if (detectable == null) return;
+            var detectableComp = CastedAreaDetectorComponent.ClosestDetectable;
+            if (detectableComp == null) return;
 
-            if (detectable is ICarriable carriable && carriable.CanBeCarried(this) && _canCarry)
-            {
+            GD.Print($"Interacting with {detectableComp.GetParent().Name} ");
+            if (detectableComp.ParentHas<CarriableComponent>(out var carriable) 
+                && carriable.CanBeCarriedBy(CarrierComponent) && _canCarry
+            ) {
                 Pickup(carriable);
                 ChangeState(States[typeof(CarryingState)]);
             }
-            else if (detectable is IInteractable interactable)
-            {
-                InteractWith(interactable);
-            }
+            // else if (detectableComp.ParentHas<InteractableComponent>(out var interactable)) {
+            //     interactable.HandleInteraction(InteractorComponent);
+            // }
         }
     }
 
@@ -271,11 +268,6 @@ public partial class Player : CharacterBody2D, IThrower, ICastedAreaDetector, IC
         ShowDefeatScreen("YOU WERE SHOT");
     }
 
-    public void InteractWith(IInteractable interactable)
-    {
-        
-    }
-
     public void StartAiming()
     {
         ThrowerComponent.HandleStartAiming();
@@ -291,7 +283,7 @@ public partial class Player : CharacterBody2D, IThrower, ICastedAreaDetector, IC
         FacingDirection = direction;
     }
 
-    public void Pickup(ICarriable carriable)
+    public void Pickup(CarriableComponent carriable)
     {
         _canCarry = false;
         CarrierComponent.HandlePickup(carriable);
@@ -303,7 +295,7 @@ public partial class Player : CharacterBody2D, IThrower, ICastedAreaDetector, IC
         CarrierComponent.HandleDrop();
     }
 
-    public void Throw(IThrowable throwable)
+    public void Throw(ThrowableComponent throwable)
     {
         _canCarry = true;
         ThrowerComponent.HandleThrow(throwable);

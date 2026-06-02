@@ -8,36 +8,42 @@ using Godot;
 
 public static class NodeExtensions
 {
-    public static bool Is<T>(this Node node, out T result) where T : class
+    public static bool HasChild<T>(this Node node) where T : Node
     {
-        result = node as T;
-        return result != null;
+        return node.GetChildren().OfType<T>().Any();
     }
 
-    public static T TryGetComponent<T>(this Node node) where T : Node
+    public static bool ParentHas<T>(this Node node) where T : Node
     {
-        foreach (Node child in node.GetChildren())
-            if (child is T match) return match;
-        return null;
-    }
-    public static void InvokeOrLog(this Action action,  string name = "Action")
-    {
-        if (action == null) GD.Print($"{name} has no subscribers");
-        else action();
+        return ParentHas(node, out T _);
     }
 
-    public static void InvokeOrLog<T1>(this Action<T1> action, T1 arg1, string name = "Action")
+    public static bool ParentHas<T>(this Node node, out T component) where T : Node
     {
-        if (action == null) GD.Print($"{name} has no subscribers");
-        else action(arg1);
-    }
+        if (node is T self)
+        {
+            component = self;
+            return true;
+        }
+        var parent = node.GetParent();
+        if (parent == null)
+        {
+            component = null;
+            return false;
+        }
 
-    public static void InvokeOrLog<T1, T2>(this Action<T1, T2> action, T1 arg1, T2 arg2, string name = "Action")
-    {
-        if (action == null) GD.Print($"{name} has no subscribers");
-        else action(arg1, arg2);
+        foreach (var child in parent.GetChildren())
+        {
+            GD.Print($"Checking child {child.Name} of {parent.Name} for {typeof(T).Name}");
+            if (child is T match)
+            {
+                component = match;
+                return true;
+            }
+        }
+        component = null;
+        return false;
     }
-
 }
 
 public static class HelperExtensions
@@ -80,13 +86,13 @@ public static class Utils
 
     public static bool TryGetRoot<T>(this Node componentNode, out T result) where T : class
     {
-        var root = (componentNode as IComponentInterface)?.Root;
-        if (root == null)
+        // var root = (componentNode as IComponentInterface)?.Root;
+        if (componentNode.GetParent() == null)
         {
             result = null;
             return false;
         }
-        result = root as T;
+        result = componentNode.GetParent() as T;
         return result != null;
     }
 }

@@ -2,10 +2,10 @@ namespace NotAloneAtHome.Components;
 
 using Godot;
 #nullable enable
-public interface ICarrierComponent
+public interface ICarrierComponent : INewComponent
 {
     Node2D CarryPointNode { get; }
-    ICarriable? Carriable { get; }
-    void HandlePickup(ICarriable carriable);
+    CarriableComponent? CarriableComp { get; }
+    void HandlePickup(CarriableComponent carriable);
     void HandleDrop();
 }

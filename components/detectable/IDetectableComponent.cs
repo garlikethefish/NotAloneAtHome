@@ -1,22 +1,24 @@
 namespace NotAloneAtHome.Components;
 
 using System;
+using System.Collections.Generic;
 using Godot;
 
-public interface IDetectableComponent : IComponentInterface
+public interface IDetectableComponent 
 {
     CollisionShape2D CollisionShape2D { get; } 
-    ReactiveList<IAreaDetector> BlacklistedDetectors { get; }
-    event Action<IAreaDetector> OnEnteredDetectorArea;
-    event Action<IAreaDetector> OnExitedDetectorArea;
-    event Action<IAreaDetector> OnBecameDetectorPriority;
-    event Action<IAreaDetector> OnRemovedDetectorPriority;
-    void HandleEnterDetectorArea(IAreaDetector detector);
-    void HandleExitDetectorArea(IAreaDetector detector);
-    void HandleSetAsDetectorPriority(IAreaDetector detector);
-    void HandleRemovedFromDetectorPriority(IAreaDetector detector);
-    void HandleAddToBlacklist(IAreaDetector detector);
-    void HandleRemoveFromBlacklist(IAreaDetector detector);
+    List<AreaDetectorComponent> BlacklistedDetectors { get; }
+    event Action<AreaDetectorComponent> OnEnteredDetectorArea;
+    event Action<AreaDetectorComponent> OnExitedDetectorArea;
+    event Action<AreaDetectorComponent> OnBecameDetectorPriority;
+    event Action<AreaDetectorComponent> OnRemovedDetectorPriority;
+    Func<AreaDetectorComponent, bool> CanBeDetected { get; set; }
+    void HandleEnterDetectorArea(AreaDetectorComponent detector);
+    void HandleExitDetectorArea(AreaDetectorComponent detector);
+    void HandleSetAsDetectorPriority(AreaDetectorComponent detector);
+    void HandleRemovedFromDetectorPriority(AreaDetectorComponent detector);
+    void HandleAddToBlacklist(AreaDetectorComponent detector);
+    void HandleRemoveFromBlacklist(AreaDetectorComponent detector);
     void HandleExitAllDetectors();
     Rid HandleGetRid();
 }

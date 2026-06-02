@@ -35,7 +35,7 @@ shader_parameter/dash_count = 2.7630000837425
 shader_parameter/dash_ratio = 0.48800002318
 shader_parameter/speed = 2.0
 
-[node name="IThrowable" type="Node2D" unique_id=1551366403]
+[node name="ThrowableComponent" type="Node2D" unique_id=1551366403]
 script = ExtResource("1_oe1ja")
 
 [node name="TargetNode" type="Node2D" parent="." unique_id=164840368]

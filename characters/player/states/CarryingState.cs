@@ -17,7 +17,7 @@ public partial class Player
 
         public void Update(double delta)
         {
-            if (Input.IsActionPressed("throw") && Ctx.CarrierComponent.Carriable is IThrowable)
+            if (Input.IsActionPressed("throw") && Ctx.CarrierComponent.CarriableComp.ParentHas<ThrowableComponent>())
             {
                 Ctx.StartAiming();
                 Ctx.ChangeState(Ctx.States[typeof(AimingState)]);

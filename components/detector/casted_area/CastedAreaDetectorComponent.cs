@@ -12,12 +12,9 @@ public partial class CastedAreaDetectorComponent : AreaDetectorComponent, ICaste
     public Color IsInSightColor  = Colors.Azure;
     public Color NotInSightColor = Colors.Crimson;
     public Color ClosestColor    = Colors.LimeGreen;
-
-    public event Action<IDetectable>? OnSightEnter;
-    public event Action<IDetectable>? OnSightExit;
-
-    public IDetectable? ClosestDetectable { get; private set; }
-    public ICastedAreaDetector RootCastedDetector => (ICastedAreaDetector)Root;
+    public event Action<DetectableComponent>? OnSightEnter;
+    public event Action<DetectableComponent>? OnSightExit;
+    public DetectableComponent? ClosestDetectable { get; private set; }
 
     public override void _Ready()
     {
@@ -33,24 +30,33 @@ public partial class CastedAreaDetectorComponent : AreaDetectorComponent, ICaste
 
         if (newPriority != ClosestDetectable)
         {
-            ClosestDetectable?.DetectableComponent.HandleRemovedFromDetectorPriority(RootCastedDetector);
-            newPriority?.DetectableComponent.HandleSetAsDetectorPriority(RootCastedDetector);
+            ClosestDetectable?.HandleRemovedFromDetectorPriority(this);
+            newPriority?.HandleSetAsDetectorPriority(this);
         }
 
         ClosestDetectable = newPriority;
     }
 
+    // public override string[] _GetConfigurationWarnings()
+    // {
+    //     GD.Print("warnings called, has child: " + this.HasChild<CollisionShape2D>());
+    //     if (!this.HasChild<CollisionShape2D>())
+    //         return ["A CollisionShape2D child is required."];
+
+    //     return [];
+    // }
+
     public override void _Draw()
     {
         if (!ShowDebug) return;
 
-        if (CollisionShape.Shape is CircleShape2D circle)
-            DrawCircle(CollisionShape.Position, circle.Radius, new Color(1, 0, 0, 0.12f));
+        if (CollisionShape2D?.Shape is CircleShape2D circle)
+            DrawCircle(CollisionShape2D.Position, circle.Radius, new Color(1, 0, 0, 0.12f));
 
-        foreach (var model in DetectablesInArea.ToList())
+        foreach (DetectableComponentModel model in DetectablesInArea.ToList())
         {
-            var detectable  = model.Detectable;
-            var localTarget = ToLocal(detectable.DetectableComponent.CollisionShape2D.GlobalPosition);
+            DetectableComponent detectable  = model.Detectable;
+            var localTarget = ToLocal(detectable.CollisionShape2D.GlobalPosition);
 
             Color color;
             if (detectable == ClosestDetectable)
@@ -82,14 +88,14 @@ public partial class CastedAreaDetectorComponent : AreaDetectorComponent, ICaste
 
             var otherRids = DetectablesInAreaSnapshot
                 .Where(m => m.Detectable != model.Detectable)
-                .Select(m => m.Detectable.DetectableComponent.HandleGetRid())
+                .Select(m => m.Detectable.HandleGetRid())
                 .ToList();
 
             var allExcluded = new RidArray(excludedRids.Concat(otherRids));
 
             var query = PhysicsRayQueryParameters2D.Create(
                 GlobalPosition,
-                model.Detectable.DetectableComponent.CollisionShape2D.GlobalPosition,
+                model.Detectable.CollisionShape2D.GlobalPosition,
                 combinedMask,
                 allExcluded
             );
@@ -100,9 +106,9 @@ public partial class CastedAreaDetectorComponent : AreaDetectorComponent, ICaste
             if (result.Count > 0)
             {
                 var collider = result["collider"].As<Node2D>();
-                if (collider.TryGetRoot<IDetectable>(out var detectable) &&
+                if (collider.ParentHas<DetectableComponent>(out var detectable) &&
                     detectable == model.Detectable &&
-                    detectable.CanBeDetected(RootCastedDetector)
+                    detectable.CanBeDetected(this)
                 ) {
                     if (!model.IsInLineOfSight) OnSightEnter?.Invoke(model.Detectable);
                     model.IsInLineOfSight = true;
@@ -116,18 +122,18 @@ public partial class CastedAreaDetectorComponent : AreaDetectorComponent, ICaste
         }
     }
 
-    private IDetectable? GetClosestDetectable()
+    private DetectableComponent? GetClosestDetectable()
     {
         if (DetectablesInArea.Count == 0) return null;
 
-        IDetectable? closest = null;
+        DetectableComponent? closest = null;
 
         foreach (var model in DetectablesInArea)
         {
             if (!model.IsInLineOfSight) continue;
             if (closest == null) { closest = model.Detectable; continue; }
 
-            closest = (IDetectable)GetClosestNode(this, (Node2D)closest, (Node2D)model.Detectable);
+            closest = (DetectableComponent)GetClosestNode(this, closest, model.Detectable);
         }
 
         return closest;
@@ -139,19 +145,9 @@ public partial class CastedAreaDetectorComponent : AreaDetectorComponent, ICaste
             ? first
             : second;
 
-    public override void HandleForceUndetectDetectable(IDetectable detectable)
+    public override void HandleForceUndetectDetectable(DetectableComponent detectable)
     {
         if (ClosestDetectable == detectable)
         ClosestDetectable = null;
-    }
-
-    public void HandleExitSight(IDetectable detectable)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void HandleEnterSight(IDetectable detectable)
-    {
-        throw new NotImplementedException();
     }
 }

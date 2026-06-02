@@ -8,5 +8,5 @@ public interface IThrowerComponent
     bool IsAiming { get; }
     void HandleStartAiming();
     void HandleStopAiming();
-    void HandleThrow(IThrowable throwable);
+    void HandleThrow(ThrowableComponent throwable);
 }

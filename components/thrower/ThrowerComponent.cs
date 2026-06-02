@@ -1,14 +1,10 @@
 namespace NotAloneAtHome.Components;
 
 using Godot;
-public partial class ThrowerComponent : ComponentNode2D, IThrowerComponent
+public partial class ThrowerComponent : Node2D, IThrowerComponent
 {
     [Export] public bool ShowDebug = false;
     [Export] private Node2D _targetSpriteNode;
-
-    // public Throwable   Throwable;
-    // public BlockerQueue CanBeThrownBlockers = new();
-
     public float MaxThrowRange = 100f;
     public bool IsCharging = false;
     public float CurrentCharge = 0f;
@@ -16,7 +12,7 @@ public partial class ThrowerComponent : ComponentNode2D, IThrowerComponent
     public float MaxChargeSeconds = 1f;
     public float ChargeMultiplier = 1f;
     public int[] AimColliderMasks = [2];
-    public Vector2 FacingDirection => (Root as IThrower)?.FacingDirection ?? Vector2.Zero;
+    public Vector2 FacingDirection { get; private set; }
     public bool IsAiming { get; private set; }
     Vector2 AimedAtLocation = Vector2.Inf;
 
@@ -69,14 +65,17 @@ public partial class ThrowerComponent : ComponentNode2D, IThrowerComponent
         return GlobalPosition + query.Motion * travelFraction;
     }
 
-    public void HandleThrow(IThrowable throwable)
+    public void HandleThrow(ThrowableComponent throwable)
     {
-        (throwable as Node2D).Reparent(GetTree().CurrentScene);
+        throwable.GetParent().Reparent(GetTree().CurrentScene);
 
-        if (throwable is IDetectable detectable)
-            detectable.DetectableComponent.BlacklistedDetectors.Remove((IAreaDetector)Root);
+        if (throwable.ParentHas<DetectableComponent>(out var detectable)
+            && this.ParentHas<AreaDetectorComponent>(out var detector)
+        ) {
+            detectable.BlacklistedDetectors.Remove(detector);
+        }
             
-        throwable.ThrowableComponent.HandleThrownBy((IThrower)Root, AimedAtLocation);
+        throwable.HandleThrownBy(this, AimedAtLocation);
         HandleStopAiming();
     }
 

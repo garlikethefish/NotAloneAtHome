@@ -81,7 +81,7 @@ public partial class CollectTrashTask : Node, ITask
 
     public void EmitComplete()
     {
-        OnComplete?.InvokeOrLog();
+        OnComplete?.Invoke();
     }
 
     public void EmitStepComplete(ITaskStep task) {}

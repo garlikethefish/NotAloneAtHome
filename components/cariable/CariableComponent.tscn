@@ -1,6 +1,0 @@
-[gd_scene format=3 uid="uid://bfxah7yut2ec0"]
-
-[ext_resource type="Script" uid="uid://daug3bxjl77ms" path="res://components/cariable/CariableComponent.cs" id="1_os5sl"]
-
-[node name="ICarriable" type="Node2D" unique_id=883810070]
-script = ExtResource("1_os5sl")
