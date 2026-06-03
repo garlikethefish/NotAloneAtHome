@@ -12,7 +12,4 @@ public class NodeAttribute : Attribute
 }
 
 [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
-public class MustAssignAttribute : Attribute
-{
-
-}
+public class MustAssignAttribute : Attribute { }

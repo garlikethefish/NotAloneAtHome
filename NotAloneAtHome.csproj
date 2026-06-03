@@ -4,21 +4,16 @@
         <TargetFramework Condition=" '$(GodotTargetPlatform)' == 'android' ">net9.0</TargetFramework>
         <EnableDynamicLoading>true</EnableDynamicLoading>
         <GodotGenerateBindings>false</GodotGenerateBindings>
-        <GodotDisableAssemblyReload>true</GodotDisableAssemblyReload>
+        <GodotDisableAssemblyReload>false</GodotDisableAssemblyReload>
+        <UseSharedCompilation>false</UseSharedCompilation>
+        
     </PropertyGroup>
-
-     <!-- <ItemGroup>
-        <PackageReference Include="Firebelley.GodotUtilities" Version="5.*" />
-    </ItemGroup> -->
-
     <ItemGroup>
-    <ProjectReference Include="Generators/Generators.csproj"
-                        OutputItemType="Analyzer"
-                        ReferenceOutputAssembly="false" />
+        <ProjectReference Include="Generators/Generators.csproj"
+                          OutputItemType="Analyzer"
+                          ReferenceOutputAssembly="false" />
     </ItemGroup>
-
     <ItemGroup>
         <Compile Remove="Generators/**" />
     </ItemGroup>
-
 </Project>

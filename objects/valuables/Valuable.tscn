@@ -24,7 +24,8 @@ shape = SubResource("RectangleShape2D_2vrdr")
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=2054388301]
 z_index = 3
 
-[node name="CarriableComponent" parent="." unique_id=883810070 instance=ExtResource("3_xcwdw")]
+[node name="CarriableComponent" parent="." unique_id=883810070 node_paths=PackedStringArray("CollisionShape2D") instance=ExtResource("3_xcwdw")]
+CollisionShape2D = NodePath("../CollisionShape2D")
 
 [node name="ThrowableComponent" parent="." unique_id=1551366403 instance=ExtResource("6_xcwdw")]
 

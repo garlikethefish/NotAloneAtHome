@@ -1,20 +1,33 @@
 namespace NotAloneAtHome.Components;
 
 using System;
+using System.Collections.Generic;
 using Godot;
 [Tool]
 public partial class CarriableComponent : Node2D, ICarriableComponent
 {
     [Export][MustAssign]
-    public CollisionShape2D CollisionShape2D { get; private set; }
+    public CollisionShape2D CollisionShape2D { get; private set; } = null;
     public Func<CarrierComponent, bool> CanBeCarriedBy { get; set; } = (_) => true;
     public event Action<CarrierComponent> OnPickedUpBy;
     public event Action<Vector2> OnDropedAt;
 
     public override string[] _GetConfigurationWarnings()
     {
-        if (CollisionShape2D == null) return [nameof(CollisionShape2D) + " node is not assigned."];
+        if (CollisionShape2D == null)
+            return [ "CollisionShape2D must be assigned" ];
         return [];
+    }
+
+    public override void _Ready()
+    {
+        if (Engine.IsEditorHint())
+            UpdateConfigurationWarnings();
+    }
+
+    public override void _ValidateProperty(Godot.Collections.Dictionary property)
+    {
+        UpdateConfigurationWarnings();
     }
 
     private SignalAwaiter PlayDropAnimation(Vector2 landPos)

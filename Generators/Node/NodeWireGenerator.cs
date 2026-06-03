@@ -70,7 +70,7 @@ public class NodeWireGenerator : ISourceGenerator
 
                 assignments.AppendLine($$"""
         if ({{name}} == null)
-            Godot.GD.PrintErr("WireNodes: missing node '{{nodePath}}' for {{name}}");
+            throw new System.Exception($"WireNodes: missing node for {{name}}");
         """); 
             }
 
@@ -87,7 +87,6 @@ public class NodeWireGenerator : ISourceGenerator
             """;
 
             context.AddSource($"{symbol.Name}.NodeWire.g.cs", source);
-            context.AddSource("DEBUG.txt", "// generator running");
         }
     }
 }
