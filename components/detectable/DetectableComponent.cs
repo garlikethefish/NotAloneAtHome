@@ -28,9 +28,12 @@ public partial class DetectableComponent : StaticBody2D, IDetectableComponent
         base._Ready();
     }
 
-    public override void _ExitTree()
+    public override void _Notification(int what)
     {
-        HandleExitAllDetectors();
+        if (what == NotificationPredelete)
+        {
+            HandleExitAllDetectors();
+        }
     }
 
     public void HandleEnterDetectorArea(AreaDetectorComponent detector)
@@ -56,20 +59,21 @@ public partial class DetectableComponent : StaticBody2D, IDetectableComponent
 
     public void HandleRemovedFromDetectorPriority(AreaDetectorComponent detector)
     {
+        GD.Print("I GOT REMOVED FROM DETECTOR PRIORITY: " + GetParent().Name + " - " + detector.Name);
         if (!SimpDetectors.Contains(detector)) return;
         SimpDetectors.Remove(detector);
         OnRemovedDetectorPriority?.Invoke(detector);
     }
 
-    public void HandleAddToBlacklist(AreaDetectorComponent detector)
+    public void HandleBlacklistDetector(AreaDetectorComponent detector)
     {
         BlacklistedDetectors.Add(detector);
-        detector.HandleBlacklistDetectable(this);
+        detector.HandleUndetectDetectable(this);
         SimpDetectors.Remove(detector);
         Detectors.Remove(detector);
     }
 
-    public void HandleRemoveFromBlacklist(AreaDetectorComponent detector)
+    public void HandleUnblacklistDetector(AreaDetectorComponent detector)
     {
         BlacklistedDetectors.Remove(detector);
         detector.ExcludedRids.Remove(GetRid());

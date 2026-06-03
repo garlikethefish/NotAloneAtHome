@@ -34,7 +34,7 @@ public static class NodeExtensions
 
         foreach (var child in parent.GetChildren())
         {
-            GD.Print($"Checking child {child.Name} of {parent.Name} for {typeof(T).Name}");
+            // GD.Print($"Checking child {child.Name} of {parent.Name} for {typeof(T).Name}");
             if (child is T match)
             {
                 component = match;

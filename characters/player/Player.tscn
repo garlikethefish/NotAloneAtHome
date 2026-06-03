@@ -549,7 +549,7 @@ scale_over_velocity_max = 252.68
 color_ramp = SubResource("GradientTexture1D_5vbvs")
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_po6sa"]
-radius = 90.005554
+radius = 52.03845
 
 [node name="Player" type="CharacterBody2D" unique_id=1993068751]
 z_index = 3

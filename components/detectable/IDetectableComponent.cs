@@ -17,8 +17,8 @@ public interface IDetectableComponent
     void HandleExitDetectorArea(AreaDetectorComponent detector);
     void HandleSetAsDetectorPriority(AreaDetectorComponent detector);
     void HandleRemovedFromDetectorPriority(AreaDetectorComponent detector);
-    void HandleAddToBlacklist(AreaDetectorComponent detector);
-    void HandleRemoveFromBlacklist(AreaDetectorComponent detector);
+    void HandleBlacklistDetector(AreaDetectorComponent detector);
+    void HandleUnblacklistDetector(AreaDetectorComponent detector);
     void HandleExitAllDetectors();
     Rid HandleGetRid();
 }

@@ -45,7 +45,7 @@ public partial class AreaDetectorComponent : Area2D, IAreaDetectorComponent
         }
     }
 
-    public void WhenBodyEntered(Node2D body)
+    public virtual void WhenBodyEntered(Node2D body)
     {
         if (!body.ParentHas<DetectableComponent>(out var detectable) 
             || detectable.BlacklistedDetectors.Contains(this)
@@ -57,7 +57,7 @@ public partial class AreaDetectorComponent : Area2D, IAreaDetectorComponent
         OnBodyEntered?.Invoke(detectable);
     }
 
-    public void WhenBodyExited(Node2D body)
+    public virtual void WhenBodyExited(Node2D body)
     {
         if (!body.ParentHas<DetectableComponent>(out var detectable)) return;
 
@@ -69,9 +69,15 @@ public partial class AreaDetectorComponent : Area2D, IAreaDetectorComponent
         OnBodyExited?.Invoke(detectable);
     }
 
-    public void HandleBlacklistDetectable(DetectableComponent detectable)
+    public virtual void HandleUndetectDetectable(DetectableComponent detectable)
     {
         WhenBodyExited(detectable);
+    }
+
+    public void HandleTryDetectDetectable(DetectableComponent detectable)
+    {
+        var bodies = GetOverlappingBodies();
+        if (bodies.Contains(detectable)) WhenBodyEntered(detectable);
     }
 
     public virtual void HandleForceUndetectDetectable(DetectableComponent detectable)

@@ -6,7 +6,7 @@ using Godot;
 [Tool]
 public partial class CarriableComponent : Node2D, ICarriableComponent
 {
-    [Export][MustAssign]
+    [Export]
     public CollisionShape2D CollisionShape2D { get; private set; } = null;
     public Func<CarrierComponent, bool> CanBeCarriedBy { get; set; } = (_) => true;
     public event Action<CarrierComponent> OnPickedUpBy;
@@ -58,7 +58,8 @@ public partial class CarriableComponent : Node2D, ICarriableComponent
         var tween  = CreateTween();
         var tweenX = CreateTween();
         var parent = GetParent<Node2D>();
-        
+
+
         tween.SetParallel().SetEase(Tween.EaseType.InOut).SetTrans(Tween.TransitionType.Sine);
         tween.TweenProperty(parent, "scale", new Vector2(0.3f, 0.3f), 0.2f)
             .SetTrans(Tween.TransitionType.Expo);
@@ -70,14 +71,15 @@ public partial class CarriableComponent : Node2D, ICarriableComponent
         tween.TweenProperty(parent, "position:y", endPos.Y, 0.2f);
         tween.TweenProperty(parent, "scale", Vector2.One, 0.2f)
             .SetTrans(Tween.TransitionType.Expo);
+
         
         return ToSignal(tween, Tween.SignalName.Finished);
     }
 
     public async void HandlePickedUpBy(CarrierComponent carrier)
     {
-        GetParent().Reparent(carrier.CarryPointNode, true);
-        await PlayPickUpAnimation(carrier.CarryPointNode.Position);
+        GetParent().Reparent(carrier.CarryPointNode);
+        await PlayPickUpAnimation(Vector2.Zero);
         OnPickedUpBy?.Invoke(carrier);
     }
 

@@ -11,7 +11,7 @@ public interface IAreaDetectorComponent
     CollisionShape2D CollisionShape2D { get; }
     event Action<DetectableComponent> OnBodyEntered;
     event Action<DetectableComponent> OnBodyExited;
-    void HandleBlacklistDetectable(DetectableComponent detectable);
+    void HandleUndetectDetectable(DetectableComponent detectable);
     void HandleForceUndetectDetectable(DetectableComponent detectable);
     void HandleAttemptToEnterArea(DetectableComponent detectable);
 }

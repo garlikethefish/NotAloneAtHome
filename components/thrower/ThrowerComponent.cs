@@ -12,7 +12,7 @@ public partial class ThrowerComponent : Node2D, IThrowerComponent
     public float MaxChargeSeconds = 1f;
     public float ChargeMultiplier = 1f;
     public int[] AimColliderMasks = [2];
-    public Vector2 FacingDirection { get; private set; }
+    public Vector2 FacingDirection { get; set; }
     public bool IsAiming { get; private set; }
     Vector2 AimedAtLocation = Vector2.Inf;
 
@@ -72,7 +72,8 @@ public partial class ThrowerComponent : Node2D, IThrowerComponent
         if (throwable.ParentHas<DetectableComponent>(out var detectable)
             && this.ParentHas<AreaDetectorComponent>(out var detector)
         ) {
-            detectable.BlacklistedDetectors.Remove(detector);
+            detectable.HandleUnblacklistDetector(detector);
+            detector.ExcludedRids.Remove(detectable.HandleGetRid());
         }
             
         throwable.HandleThrownBy(this, AimedAtLocation);

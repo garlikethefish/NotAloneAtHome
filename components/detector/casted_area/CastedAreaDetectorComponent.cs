@@ -30,11 +30,38 @@ public partial class CastedAreaDetectorComponent : AreaDetectorComponent, ICaste
 
         if (newPriority != ClosestDetectable)
         {
+            GD.Print("closest detectable changed from " + ClosestDetectable?.Name + " to " + newPriority?.Name);
             ClosestDetectable?.HandleRemovedFromDetectorPriority(this);
             newPriority?.HandleSetAsDetectorPriority(this);
         }
 
         ClosestDetectable = newPriority;
+    }
+
+    public override void WhenBodyExited(Node2D body)
+    {
+        if (!body.ParentHas<DetectableComponent>(out var detectable)) return;
+
+        if (detectable == ClosestDetectable)
+        {
+            GD.Print("closest detectable " + detectable.Name + " exited sight");
+            ClosestDetectable?.HandleRemovedFromDetectorPriority(this);
+            ClosestDetectable = null;
+            OnSightExit?.Invoke(detectable);
+        }
+        base.WhenBodyExited(body);
+    }
+
+    public override void HandleUndetectDetectable(DetectableComponent detectable)
+    {
+        if (detectable == ClosestDetectable)
+        {
+            GD.Print("closest detectable " + detectable.Name + " was undetected");
+            ClosestDetectable?.HandleRemovedFromDetectorPriority(this);
+            ClosestDetectable = null;
+            OnSightExit?.Invoke(detectable);
+        }
+        base.HandleUndetectDetectable(detectable);
     }
 
     // public override string[] _GetConfigurationWarnings()
@@ -147,6 +174,7 @@ public partial class CastedAreaDetectorComponent : AreaDetectorComponent, ICaste
 
     public override void HandleForceUndetectDetectable(DetectableComponent detectable)
     {
+        GD.Print("handling force undetect for " + detectable.Name);
         if (ClosestDetectable == detectable)
         ClosestDetectable = null;
     }

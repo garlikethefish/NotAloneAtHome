@@ -150,9 +150,9 @@ public partial class Player : CharacterBody2D, IStateMachine
                 Pickup(carriable);
                 ChangeState(States[typeof(CarryingState)]);
             }
-            // else if (detectableComp.ParentHas<InteractableComponent>(out var interactable)) {
-            //     interactable.HandleInteraction(InteractorComponent);
-            // }
+            else if (detectableComp.ParentHas<InteractableComponent>(out var interactable)) {
+                interactable.HandleInteraction(InteractorComponent);
+            }
         }
     }
 
@@ -281,6 +281,7 @@ public partial class Player : CharacterBody2D, IStateMachine
     public void SetFacingDirection(Vector2 direction)
     {
         FacingDirection = direction;
+        ThrowerComponent.FacingDirection = direction;
     }
 
     public void Pickup(CarriableComponent carriable)

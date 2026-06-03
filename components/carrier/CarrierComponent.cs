@@ -54,7 +54,8 @@ public partial class CarrierComponent : Node2D, ICarrierComponent
         if (CarriableComp.ParentHas<DetectableComponent>(out var detectable)
             && this.ParentHas<AreaDetectorComponent>(out var detector)
         ) {
-            detectable.BlacklistedDetectors.Add(detector);
+            detectable.HandleBlacklistDetector(detector);
+            detector.ExcludedRids.Add(detectable.HandleGetRid());
         }
     }
 
@@ -65,10 +66,11 @@ public partial class CarrierComponent : Node2D, ICarrierComponent
         IsDropping = true;
         carriable.HandleDropedAt(_validCarriableDropPosition);
 
-        if (CarriableComp.ParentHas<DetectableComponent>(out var detectable)
+        if (carriable.ParentHas<DetectableComponent>(out var detectable)
             && this.ParentHas<AreaDetectorComponent>(out var detector)
         ) {
-            detectable.BlacklistedDetectors.Remove(detector);
+            detectable.HandleUnblacklistDetector(detector);
+            detector.ExcludedRids.Remove(detectable.HandleGetRid());
         }
     }
 }

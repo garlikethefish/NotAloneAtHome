@@ -10,6 +10,10 @@
 [ext_resource type="PackedScene" uid="uid://cg7krccbajseo" path="res://objects/valuables/Valuable_Fridge.tscn" id="9_1of5j"]
 [ext_resource type="PackedScene" uid="uid://ywha5uwa0e62" path="res://objects/trash/Trash.tscn" id="9_jbd4l"]
 [ext_resource type="PackedScene" uid="uid://ckwnp346yqoti" path="res://characters/le_cat/cat.tscn" id="10_fu3ou"]
+[ext_resource type="PackedScene" uid="uid://bfxah7yut2ec0" path="res://components/cariable/CarriableComponent.tscn" id="11_bhwsq"]
+[ext_resource type="PackedScene" uid="uid://m5gqbqgarhdk" path="res://components/throwable/ThrowableComponent.tscn" id="12_xftjw"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_bhwsq"]
 
 [node name="Test" type="Node2D" unique_id=78523924]
 
@@ -50,4 +54,12 @@ position = Vector2(736, 450)
 position = Vector2(583, 326)
 
 [node name="Cat" parent="." unique_id=722993762 instance=ExtResource("10_fu3ou")]
-position = Vector2(588, 364)
+position = Vector2(556, 385)
+
+[node name="CarriableComponent" parent="Cat" unique_id=883810070 node_paths=PackedStringArray("CollisionShape2D") instance=ExtResource("11_bhwsq")]
+CollisionShape2D = NodePath("CollisionShape2D2")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Cat/CarriableComponent" unique_id=1560605237]
+shape = SubResource("CircleShape2D_bhwsq")
+
+[node name="ThrowableComponent" parent="Cat" unique_id=1551366403 instance=ExtResource("12_xftjw")]
