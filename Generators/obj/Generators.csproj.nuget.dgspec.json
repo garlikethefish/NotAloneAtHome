@@ -8,7 +8,7 @@
       "version": "1.0.0",
       "restore": {
         "projectUniqueName": "C:\\Users\\Adrians\\Documents\\Projects\\Godot\\NotAloneAtHome\\Generators\\Generators.csproj",
-        "projectName": "Generators",
+        "projectName": "NodeWire.Fody",
         "projectPath": "C:\\Users\\Adrians\\Documents\\Projects\\Godot\\NotAloneAtHome\\Generators\\Generators.csproj",
         "packagesPath": "C:\\Users\\Adrians\\.nuget\\packages\\",
         "outputPath": "C:\\Users\\Adrians\\Documents\\Projects\\Godot\\NotAloneAtHome\\Generators\\obj\\",
@@ -38,15 +38,10 @@
         "netstandard2.0": {
           "targetAlias": "netstandard2.0",
           "dependencies": {
-            "Microsoft.CodeAnalysis.Analyzers": {
+            "FodyHelpers": {
               "suppressParent": "All",
               "target": "Package",
-              "version": "[3.3.3, )"
-            },
-            "Microsoft.CodeAnalysis.CSharp": {
-              "suppressParent": "All",
-              "target": "Package",
-              "version": "[4.0.1, )"
+              "version": "[6.8.0, )"
             },
             "NETStandard.Library": {
               "suppressParent": "All",

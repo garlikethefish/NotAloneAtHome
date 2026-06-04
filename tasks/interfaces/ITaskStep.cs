@@ -1,11 +1,14 @@
-namespace NotAloneAtHome.Tasks.Interfaces;
+namespace NotAloneAtHome.Tasks;
 
+using System;
 using Godot;
 
 public interface ITaskStep
 {
     public string Name { get; }
-    public Node Context { get; }
+    public SceneTree Ctx { get; }
+    event Action<string> OnTaskStepNameChanged;
+
     /// <summary>
     /// Finishes step
     /// </summary>
@@ -21,11 +24,11 @@ public interface ITaskStep
     /// <summary>
     /// Signals to go to the next step
     /// </summary>
-    public void EmitNext();
+    public void GoStepForward();
     /// <summary>
     /// Signals to go back a step. Usualy on failure
     /// </summary>
-    public void EmitBack();
+    public void GoStepBack();
 }
 
 public interface ITaskStep<T> : ITaskStep where T : ITask

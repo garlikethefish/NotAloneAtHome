@@ -5,6 +5,6 @@ using Godot;
 
 public interface IInteractableComponent
 {
-    event Action<InteractorComponent> OnInteraction;
+    event Action<InteractorComponent> OnInteractionFrom;
     void HandleInteraction(InteractorComponent interactor);
 }

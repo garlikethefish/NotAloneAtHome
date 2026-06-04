@@ -16,7 +16,6 @@ public partial class Valuable : RigidBody2D
 
     public override void _Ready()
     {
-        WireNodes();
         Sprite.Texture = ValuableData.Valuables[Type].texture2D;
         Sprite.Material = _shaderMat;
 

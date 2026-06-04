@@ -1,6 +1,7 @@
 namespace NotAloneAtHome.Scripts.Globals;
 
 using Godot;
+using NotAloneAtHome.Tasks;
 
 public enum GameDifficulty { Easy, Medium, Hard }
 public enum GameStatus { Started, Paused, Ended }

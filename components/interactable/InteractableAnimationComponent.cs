@@ -25,7 +25,7 @@ public partial class InteractableAnimationComponent : Node2D, IInteractableAnima
 
         if (this.ParentHas<InteractableComponent>(out var interactable))
         {
-            interactable.OnInteraction += _ => PerformInteraction();
+            interactable.OnInteractionFrom += _ => PerformInteraction();
         }
     }
 

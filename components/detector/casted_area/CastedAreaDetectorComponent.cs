@@ -30,7 +30,6 @@ public partial class CastedAreaDetectorComponent : AreaDetectorComponent, ICaste
 
         if (newPriority != ClosestDetectable)
         {
-            GD.Print("closest detectable changed from " + ClosestDetectable?.Name + " to " + newPriority?.Name);
             ClosestDetectable?.HandleRemovedFromDetectorPriority(this);
             newPriority?.HandleSetAsDetectorPriority(this);
         }
@@ -44,7 +43,6 @@ public partial class CastedAreaDetectorComponent : AreaDetectorComponent, ICaste
 
         if (detectable == ClosestDetectable)
         {
-            GD.Print("closest detectable " + detectable.Name + " exited sight");
             ClosestDetectable?.HandleRemovedFromDetectorPriority(this);
             ClosestDetectable = null;
             OnSightExit?.Invoke(detectable);
@@ -56,7 +54,6 @@ public partial class CastedAreaDetectorComponent : AreaDetectorComponent, ICaste
     {
         if (detectable == ClosestDetectable)
         {
-            GD.Print("closest detectable " + detectable.Name + " was undetected");
             ClosestDetectable?.HandleRemovedFromDetectorPriority(this);
             ClosestDetectable = null;
             OnSightExit?.Invoke(detectable);
@@ -135,7 +132,7 @@ public partial class CastedAreaDetectorComponent : AreaDetectorComponent, ICaste
                 var collider = result["collider"].As<Node2D>();
                 if (collider.ParentHas<DetectableComponent>(out var detectable) &&
                     detectable == model.Detectable &&
-                    detectable.CanBeDetected(this)
+                    detectable.CanBeDetectedBy(this)
                 ) {
                     if (!model.IsInLineOfSight) OnSightEnter?.Invoke(model.Detectable);
                     model.IsInLineOfSight = true;
@@ -174,7 +171,6 @@ public partial class CastedAreaDetectorComponent : AreaDetectorComponent, ICaste
 
     public override void HandleForceUndetectDetectable(DetectableComponent detectable)
     {
-        GD.Print("handling force undetect for " + detectable.Name);
         if (ClosestDetectable == detectable)
         ClosestDetectable = null;
     }

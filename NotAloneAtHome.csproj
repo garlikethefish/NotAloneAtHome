@@ -5,15 +5,14 @@
         <EnableDynamicLoading>true</EnableDynamicLoading>
         <GodotGenerateBindings>false</GodotGenerateBindings>
         <GodotDisableAssemblyReload>false</GodotDisableAssemblyReload>
-        <UseSharedCompilation>false</UseSharedCompilation>
-        
+        <UseSharedCompilation>true</UseSharedCompilation>
     </PropertyGroup>
     <ItemGroup>
-        <ProjectReference Include="Generators/Generators.csproj"
-                          OutputItemType="Analyzer"
-                          ReferenceOutputAssembly="false" />
+        <PackageReference Include="Fody" Version="6.8.0" PrivateAssets="all" />
+        <WeaverFiles Include="$(MSBuildThisFileDirectory)Generators\bin\Debug\netstandard2.0\NodeWire.Fody.dll" />
     </ItemGroup>
     <ItemGroup>
         <Compile Remove="Generators/**" />
+        <Compile Remove="tasks/water_plants/**" />
     </ItemGroup>
 </Project>

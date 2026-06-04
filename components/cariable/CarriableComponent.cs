@@ -6,7 +6,7 @@ using Godot;
 [Tool]
 public partial class CarriableComponent : Node2D, ICarriableComponent
 {
-    [Export]
+    [Export][MustAssign]
     public CollisionShape2D CollisionShape2D { get; private set; } = null;
     public Func<CarrierComponent, bool> CanBeCarriedBy { get; set; } = (_) => true;
     public event Action<CarrierComponent> OnPickedUpBy;

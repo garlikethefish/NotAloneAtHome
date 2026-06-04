@@ -1,7 +1,5 @@
-namespace NotAloneAtHome.Tasks.WaterPlantsTask;
+namespace NotAloneAtHome.Tasks;
 
-using NotAloneAtHome.Tasks.Interfaces;
-using System;
 using Godot;
 
 public partial class WaterPlantsTask
@@ -10,7 +8,7 @@ public partial class WaterPlantsTask
     {
         public string Name => "Water the green plant";
 
-        public Node Context => Task.Context;
+        public SceneTree Ctx => Task.Context;
 
         public WaterPlantsTask Task { get; }
 

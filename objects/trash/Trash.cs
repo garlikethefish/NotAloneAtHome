@@ -1,25 +1,39 @@
+namespace NotAloneAtHome.Objects;
+
 using Godot;
 using NotAloneAtHome.Components;
+using NotAloneAtHome.Tasks;
 
+[Scene]
 public partial class Trash : Node2D
 {
     [Export] public Sprite2D sprite2D;
-    public int Health { get; private set; } = 2;
+    [Node] public DetectableComponent DetectableComponent;
+    [Node] public InteractableComponent InteractableComponent;
+    [Node] public HealthComponent HealthComponent;
 
     public override void _Ready()
     {
-        
+        GD.Print("Detectable: ", DetectableComponent);
+        DetectableComponent.CanBeDetectedBy = CanBeDetectedBy;
+        InteractableComponent.OnInteractionFrom += OnInteractionFrom;
+        HealthComponent.OnDeath += OnDeath;
+
+        HealthComponent.Health = 2;
     }
 
-    public void TakeDamage(int damage)
+    void OnInteractionFrom(InteractorComponent interactorComponent)
     {
-        Health -= damage;
-        if (Health <= 0) Die();
+        HealthComponent.TakeDamage(1);
     }
 
-    public void Die()
+    bool CanBeDetectedBy(AreaDetectorComponent detector)
     {
-        GD.Print("I Died");
+        return TaskManager.Instance.CurrentTask is CollectTrashTask;
+    }
+
+    public void OnDeath()
+    {
         QueueFree();
     }
 }

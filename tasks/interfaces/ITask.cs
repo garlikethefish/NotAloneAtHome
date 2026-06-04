@@ -1,4 +1,4 @@
-namespace NotAloneAtHome.Tasks.Interfaces;
+namespace NotAloneAtHome.Tasks;
 
 using System;
 using System.Collections.Generic;
@@ -6,34 +6,22 @@ using Godot;
 
 public interface ITask
 {
-    public Node Context { get; }
+    public string Name { get; }
+    public SceneTree Context { get; }
     public bool IsCompleted { get; }
     public event Action OnComplete;
+    public event Action<string> OnTaskNameChanged;
+    public event Action<string> OnTaskStepNameChanged;
+    public event Action<ITaskStep> OnTaskStepChangedToChanged;
     public void Start();
     /// <summary>
     /// Goes to next step
     /// </summary>
-    public void Next();
+    public void StepNext();
     /// <summary>
     /// Goes back a step
     /// </summary>
-    public void Back();
+    public void StepBack();
     public List<ITaskStep> Steps { get; }
     public ITaskStep CurrentStep { get; }
-    /// <summary>
-    /// Signals that task is completed!
-    /// </summary>
-    public void EmitComplete();
-    /// <summary>
-    /// Signals that tasks step is completed!
-    /// </summary>
-    public void EmitStepComplete(ITaskStep task);
-    /// <summary>
-    /// Signals that tasks step has failed!
-    /// </summary>
-    public void EmitStepFailed(ITaskStep task);
-    /// <summary>
-    /// Signals that tasks step has failed!
-    /// </summary>
-    public void EmitStepChanged(ITaskStep task);
 }

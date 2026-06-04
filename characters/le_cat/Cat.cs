@@ -1,9 +1,6 @@
 namespace NotAloneAtHome.Characters;
 
 using Godot;
-using NotAloneAtHome.Components;
-using NotAloneAtHome.Tasks;
-using NotAloneAtHome.Tasks.WaterPlantsTask;
 
 public partial class Cat : CharacterBody2D
 {

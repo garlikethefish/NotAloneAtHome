@@ -8,10 +8,18 @@ extends Control
 @onready var stolen_progress_bar = $StolenStuffPanel/StolenLabel/ProgressBar
 @onready var suspicious_progress_bar = $ImportantInfoPanel/SuspiciousLabel/ProgressBar
 
+var task_name = ReactiveSignal.new("")
+var task_step_name = ReactiveSignal.new("")
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	GameManager.GameStarted.connect(initialize)
-	TaskManager.TaskChanged.connect(task_changed)
+	TaskManager.TaskStepNameChanged.connect(task_step_name_changed)
+	TaskManager.TaskNameChanged.connect(task_name_changed)
+	
+	ReactiveSignal.use_effect(func():
+		objective_content_label.text = task_step_name.value;
+	)
 	
 	#GameManager.on_trash_collected.connect(updateTrashCollected)
 	#GameManager.on_suspicion_change.connect(updateSuspision)
@@ -26,8 +34,11 @@ func initialize():
 	stolen_progress_bar.value = 0
 	money_lost_count_label.text = "0$"
 	
-func task_changed(_title: String, step_name: String) -> void:
-	objective_content_label.text = step_name
+func task_step_name_changed(_name: String) -> void:
+	task_step_name.value = _name
+	
+func task_name_changed(_name: String) -> void:
+	task_name.value = _name
 	
 func updateSuspision():
 	suspicious_progress_bar.value = GameManager.suspicion

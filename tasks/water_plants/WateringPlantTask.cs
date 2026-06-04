@@ -1,26 +1,24 @@
-namespace NotAloneAtHome.Tasks.WaterPlantsTask;
+namespace NotAloneAtHome.Tasks;
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Godot;
-using NotAloneAtHome.Tasks.Interfaces;
 
-public partial class WaterPlantsTask : Node, ITask
+public partial class WaterPlantsTask : ITask
 {
-    public Node Context { get; }
-
+    public SceneTree Context { get; }
     public List<ITaskStep> Steps { get; }
-
     public ITaskStep CurrentStep { get; set; }
-
     public bool IsCompleted { get; }
-
+    public string Name { get; }
     public bool HasFilledUpWateringCan = false;
 
     public event Action OnComplete;
+    public event Action<string> OnTaskNameChanged;
+    public event Action<string> OnTaskStepNameChanged;
 
-    public WaterPlantsTask(Node ctx)
+    public WaterPlantsTask(SceneTree ctx)
     {
         Name = "Water plants";
         Context = ctx;

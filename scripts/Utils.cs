@@ -1,13 +1,24 @@
 global using RidArray = Godot.Collections.Array<Godot.Rid>;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Godot;
 
 
-
+#nullable enable
 public static class NodeExtensions
 {
+    public static int checks = 0;
+
+    public static T? GetChild<T>(this Node node) where T : Node =>
+        node.GetChildren().OfType<T>().FirstOrDefault();
+    public static bool HasChild<T>(this Node node, [NotNullWhen(true)] out T? child) where T : Node
+    {
+        child = node.GetChildren().OfType<T>().FirstOrDefault();
+        return child != null;
+    }
+
     public static bool HasChild<T>(this Node node) where T : Node
     {
         return node.GetChildren().OfType<T>().Any();
@@ -17,6 +28,8 @@ public static class NodeExtensions
     {
         return ParentHas(node, out T _);
     }
+
+    // public static 
 
     public static bool ParentHas<T>(this Node node, out T component) where T : Node
     {
@@ -34,7 +47,8 @@ public static class NodeExtensions
 
         foreach (var child in parent.GetChildren())
         {
-            // GD.Print($"Checking child {child.Name} of {parent.Name} for {typeof(T).Name}");
+            checks++;
+            // GD.Print($"Checked {child.Name} for {typeof(T).Name}, total checks: {checks}");
             if (child is T match)
             {
                 component = match;

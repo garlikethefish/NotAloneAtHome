@@ -1,45 +1,43 @@
-namespace NotAloneAtHome.Tasks.WaterPlantsTask;
+namespace NotAloneAtHome.Tasks;
 
+using System.Linq;
 using Godot;
-using NotAloneAtHome.Tasks.Interfaces;
+using NotAloneAtHome.Components;
 
 public partial class CollectTrashTask
 {
-    public class CollectTrashStep : ITaskStep<CollectTrashTask>
+    public class CollectTrashStep(CollectTrashTask task) : TaskStepBase(task), ITaskStep<CollectTrashTask>
     {
-        public string Name => "Pick up trash";
+        private readonly PackedScene _trash = GD.Load<PackedScene>("res://objects/trash/Trash.tscn");
+        public new CollectTrashTask Task { get; private set; } = task;
 
-        public Node Context => Task.Context;
-
-        public CollectTrashTask Task { get; }
-
-        public CollectTrashStep(CollectTrashTask task)
+        public override void OnStart()
         {
-            Task = task;
+            UpdateName("Trash collected: " + 0);
+            SpawnInTrash();
         }
 
-        public void EmitNext()
+        public override void OnEnd()
         {
-            Task.Next();
+            UpdateName("");
         }
 
-        public void EmitBack()
+        void SpawnInTrash()
         {
-            Task.Back();
+            if (Task._isTrashSpawnedIn) return;
+
+            var spawners = Ctx.GetNodesInGroup("task_collect_trash_spawners").Where(s => s.GetChild<SpawnerComponent>() != null);
+            foreach (var spawner in spawners) {
+                var trashNode = spawner.GetChild<SpawnerComponent>()?.HandleSpawn(_trash);
+                trashNode.GetChild<HealthComponent>().OnDeath += CollectTrash;
+            }
         }
 
-        public void Start()
+        public void CollectTrash()
         {
-            // spawn in and get refs to all trash
-            
-        }
-
-        public void End() {}
-
-        public void Finish()
-        {
-            
-            EmitNext();
+            Task._trashCollected++;
+            UpdateName("Trash collected: " + Task._trashCollected);
+            if (Task._trashCollected >= Task._trashToCollect) Finish();
         }
     }
 }

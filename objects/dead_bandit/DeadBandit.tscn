@@ -1,0 +1,29 @@
+[gd_scene format=3 uid="uid://b2xpj2tshxe1h"]
+
+[ext_resource type="Script" uid="uid://dawssled5ac0g" path="res://objects/dead_bandit/DeadBandit.cs" id="1_0envf"]
+[ext_resource type="PackedScene" uid="uid://b8odej7420g54" path="res://components/detectable/DetectableComponent.tscn" id="2_lhcsh"]
+[ext_resource type="PackedScene" uid="uid://bfxah7yut2ec0" path="res://components/cariable/CarriableComponent.tscn" id="3_1fsfd"]
+[ext_resource type="PackedScene" uid="uid://k2k1j0y25ebx" path="res://components/interactable/InteractableComponent.tscn" id="4_1fsfd"]
+[ext_resource type="Texture2D" uid="uid://cthin8wf24dcc" path="res://sprites/bandit_dead.png" id="4_gqoa0"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cgu5o"]
+size = Vector2(13, 27)
+
+[node name="DeadBandit" type="RigidBody2D" unique_id=843662598]
+collision_mask = 2
+gravity_scale = 0.0
+script = ExtResource("1_0envf")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1422518211]
+position = Vector2(-0.5, 2.5)
+shape = SubResource("RectangleShape2D_cgu5o")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1299734846]
+texture = ExtResource("4_gqoa0")
+
+[node name="DetectableComponent" parent="." unique_id=2037387284 instance=ExtResource("2_lhcsh")]
+
+[node name="CarriableComponent" parent="." unique_id=883810070 node_paths=PackedStringArray("CollisionShape2D") instance=ExtResource("3_1fsfd")]
+CollisionShape2D = NodePath("../CollisionShape2D")
+
+[node name="InteractableComponent" parent="." unique_id=1999549239 instance=ExtResource("4_1fsfd")]

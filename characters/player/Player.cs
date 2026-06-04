@@ -75,7 +75,6 @@ public partial class Player : CharacterBody2D, IStateMachine
 
     public override void _Ready()
     {
-        WireNodes();
         _anim               = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
         _overlayRect        = GetNode<ColorRect>("MaskOverlay/ColorRect");
         _footstepSound      = GetNode<AudioStreamPlayer2D>("FootstepSound");
@@ -143,7 +142,7 @@ public partial class Player : CharacterBody2D, IStateMachine
             var detectableComp = CastedAreaDetectorComponent.ClosestDetectable;
             if (detectableComp == null) return;
 
-            GD.Print($"Interacting with {detectableComp.GetParent().Name} ");
+            // GD.Print($"Interacting with {detectableComp.GetParent().Name} ");
             if (detectableComp.ParentHas<CarriableComponent>(out var carriable) 
                 && carriable.CanBeCarriedBy(CarrierComponent) && _canCarry
             ) {

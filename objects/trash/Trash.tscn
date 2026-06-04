@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://crdi4vojlev1e" path="res://canvas_textures/trash1_texture.tres" id="3_johhi"]
 [ext_resource type="PackedScene" uid="uid://k2k1j0y25ebx" path="res://components/interactable/InteractableComponent.tscn" id="4_l2neo"]
 [ext_resource type="PackedScene" uid="uid://b8odej7420g54" path="res://components/detectable/DetectableComponent.tscn" id="5_l2neo"]
-[ext_resource type="Script" uid="uid://gjtxig8ce41w" path="res://components/interactable/InteractableAnimationComponent.cs" id="5_ppalq"]
+[ext_resource type="PackedScene" uid="uid://ddh3xe8ve8hvx" path="res://components/health/HealthComponent.tscn" id="5_ppalq"]
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_johhi"]
 polygon = PackedVector2Array(-5, -10, -3, -4, -11, 1, -12, 5, -9, 10, -6, 13, 5, 13, 11, 6, 11, 3, 8, 0, 3, -3, 3, -7, 5, -10)
@@ -23,4 +23,5 @@ occluder = SubResource("OccluderPolygon2D_johhi")
 [node name="DetectableComponent" parent="." unique_id=2037387284 instance=ExtResource("5_l2neo")]
 
 [node name="InteractableComponent" parent="." unique_id=1999549239 instance=ExtResource("4_l2neo")]
-AnimationScript = ExtResource("5_ppalq")
+
+[node name="HealthComponent" parent="." unique_id=1054366147 instance=ExtResource("5_ppalq")]

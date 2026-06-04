@@ -15,7 +15,7 @@ public partial class DetectableComponent : StaticBody2D, IDetectableComponent
 {
     [Export] public CollisionShape2D CollisionShape2D { get; private set; } = default!;
     public List<AreaDetectorComponent> BlacklistedDetectors { get; } = new();
-    public Func<AreaDetectorComponent, bool> CanBeDetected { get; set; } = _ => true;
+    public Func<AreaDetectorComponent, bool> CanBeDetectedBy { get; set; } = _ => true;
     public List<AreaDetectorComponent> Detectors = [];
     public List<AreaDetectorComponent> SimpDetectors = []; // Detectors that have this detectable as priority
     public event Action<AreaDetectorComponent>? OnEnteredDetectorArea;
@@ -59,7 +59,6 @@ public partial class DetectableComponent : StaticBody2D, IDetectableComponent
 
     public void HandleRemovedFromDetectorPriority(AreaDetectorComponent detector)
     {
-        GD.Print("I GOT REMOVED FROM DETECTOR PRIORITY: " + GetParent().Name + " - " + detector.Name);
         if (!SimpDetectors.Contains(detector)) return;
         SimpDetectors.Remove(detector);
         OnRemovedDetectorPriority?.Invoke(detector);
