@@ -13,10 +13,10 @@ func _ready() -> void:
 	GameManager.GameStarted.connect(initialize)
 	TaskManager.TaskChanged.connect(task_changed)
 	
-	GameManager.on_trash_collected.connect(updateTrashCollected)
-	GameManager.on_suspicion_change.connect(updateSuspision)
-	GameManager.on_item_steal.connect(upadteItemStealed)
-	GameManager.on_line_completed.connect(updateLinesDone)
+	#GameManager.on_trash_collected.connect(updateTrashCollected)
+	#GameManager.on_suspicion_change.connect(updateSuspision)
+	#GameManager.on_item_steal.connect(upadteItemStealed)
+	#GameManager.on_line_completed.connect(updateLinesDone)
 	
 func initialize():
 	objective_content_label.text = GameManager.game_objectives[GameManager.current_objective].text

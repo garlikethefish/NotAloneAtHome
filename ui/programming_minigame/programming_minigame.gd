@@ -35,9 +35,9 @@ var active_line: int = 0
 func _ready() -> void:
 	source_lines = source_label.text.split("\n", false)
 
-	if source_lines.size() < GameManager.max_lines:
-		push_error("Source text must have at least %d lines" % GameManager.max_lines)
-		return
+	#if source_lines.size() < GameManager.max_lines:
+		#push_error("Source text must have at least %d lines" % GameManager.max_lines)
+		#return
 
 	for i in range(inputs.size()):
 		var line_edit: LineEdit = inputs[i]
@@ -115,8 +115,8 @@ func _advance_line() -> void:
 	for indicator in indicators:
 		indicator.texture = inactive_light
 		indicator.get_child(0).visible = false
-	
-	GameManager.complete_objective(ObjectiveModel.Objective.WriteCode)
+	#
+	#GameManager.complete_objective(ObjectiveModel.Objective.WriteCode)
 	
 	_kick_player(false)
 
