@@ -9,9 +9,8 @@ using Godot;
 public partial class AreaDetectorComponent : Area2D, IAreaDetectorComponent
 {
     [Node] public CollisionShape2D CollisionShape2D { get; private set; } = default!;
-    [Export] public bool ShowDebug = true;
-    [Export] public int[] CollisionMasks = [10, 2];
-    public List<Rid> ExcludedRids { get; } = [];
+    [Export] public bool ShowDebug = true;    
+    public List<Rid> ExcludedRids { get; set; } = [];
     public List<DetectableComponentModel> DetectablesInArea { get; } = [];
     public event Action<DetectableComponent>? OnBodyEntered;
     public event Action<DetectableComponent>? OnBodyExited;

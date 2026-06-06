@@ -81,9 +81,7 @@ public partial class Player : CharacterBody2D, IStateMachine
         _maskSound          = GetNode<AudioStreamPlayer2D>("Breathe");
         _breathingParticles = GetNode<GpuParticles2D>("BreathingParticles");
         _nearnessDetector   = GetNode<Area2D>("BanditNearnessDetector");
-
-        AddToGroup("player");
-
+        
         // populating states
         States[typeof(IdleState)]      = new IdleState(this);
         States[typeof(AimingState)]    = new AimingState(this);

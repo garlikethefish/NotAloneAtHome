@@ -12,8 +12,9 @@ func _ready():
 			#appear()
 	#)
 
-func _on_area_2d_body_entered(body: Node2D):
-	var player = body.get_script()
+func _on_area_2d_body_entered(_body: Node2D):
+	pass
+	#var player = body.get_script()
 	
 	#if is_instance_of(player, PlayerCharacter) and canEscape():
 		#GameManager.complete_objective(ObjectiveModel.Objective.Escape)

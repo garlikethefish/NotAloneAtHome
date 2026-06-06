@@ -3,6 +3,7 @@ namespace NotAloneAtHome.Components;
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 #nullable enable
 
 public class DetectableComponentModel
@@ -11,13 +12,14 @@ public class DetectableComponentModel
     public bool IsInLineOfSight;
 }
 
-public partial class DetectableComponent : StaticBody2D, IDetectableComponent
+public partial class DetectableComponent : AnimatableBody2D, IDetectableComponent
 {
     [Export] public CollisionShape2D CollisionShape2D { get; private set; } = default!;
     public List<AreaDetectorComponent> BlacklistedDetectors { get; } = new();
     public Func<AreaDetectorComponent, bool> CanBeDetectedBy { get; set; } = _ => true;
     public List<AreaDetectorComponent> Detectors = [];
     public List<AreaDetectorComponent> SimpDetectors = []; // Detectors that have this detectable as priority
+    private Vector2 _startingPosition; // FUCK GODOT
     public event Action<AreaDetectorComponent>? OnEnteredDetectorArea;
     public event Action<AreaDetectorComponent>? OnExitedDetectorArea;
     public event Action<AreaDetectorComponent>? OnBecameDetectorPriority;
@@ -26,6 +28,17 @@ public partial class DetectableComponent : StaticBody2D, IDetectableComponent
     public override void _Ready()
     {
         base._Ready();
+        _startingPosition = Position; // FUCK GODOT
+
+        if (this.ParentHas<AreaDetectorComponent>(out var areaDetector))
+        {
+            HandleBlacklistDetector(areaDetector);
+        }
+    }
+
+    public override void _PhysicsProcess(double delta)
+    {
+        Position = _startingPosition; // FUCK GODOT
     }
 
     public override void _Notification(int what)
@@ -68,6 +81,7 @@ public partial class DetectableComponent : StaticBody2D, IDetectableComponent
     {
         BlacklistedDetectors.Add(detector);
         detector.HandleUndetectDetectable(this);
+        detector.ExcludedRids.Add(HandleGetRid());
         SimpDetectors.Remove(detector);
         Detectors.Remove(detector);
     }

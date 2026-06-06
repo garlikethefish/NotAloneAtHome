@@ -1,5 +1,6 @@
 namespace NotAloneAtHome.Components;
 
+using System;
 using Godot;
 public partial class ThrowerComponent : Node2D, IThrowerComponent
 {
@@ -15,6 +16,7 @@ public partial class ThrowerComponent : Node2D, IThrowerComponent
     public Vector2 FacingDirection { get; set; }
     public bool IsAiming { get; private set; }
     Vector2 AimedAtLocation = Vector2.Inf;
+    public event Action<ThrowableComponent> OnThrow;
 
     public override void _Ready()
     {
@@ -77,6 +79,7 @@ public partial class ThrowerComponent : Node2D, IThrowerComponent
         }
             
         throwable.HandleThrownBy(this, AimedAtLocation);
+        OnThrow?.Invoke(throwable);
         HandleStopAiming();
     }
 

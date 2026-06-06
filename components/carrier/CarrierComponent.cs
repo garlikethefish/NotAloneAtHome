@@ -1,6 +1,7 @@
 namespace NotAloneAtHome.Components;
 
 using Godot;
+using System;
 using System.Linq;
 
 [Tool]
@@ -14,9 +15,26 @@ public partial class CarrierComponent : Node2D, ICarrierComponent
     [Export] public bool ShowDebug = true;
     [Export] public int[] CollisionMasks = [];
     [Export] public Node2D CarryPointNode { get; private set; }
+    public event Action<CarriableComponent> OnCarriableAssigned;
+    public event Action<CarriableComponent> OnCarriableRemoved;
     public bool IsAnimating => IsPickingUp || IsDropping;
     public bool IsCarrying  => CarriableComp != null;
-    public CarriableComponent CarriableComp { get; private set; }
+    private CarriableComponent _carriableComponent;
+    public CarriableComponent CarriableComp {
+        get => _carriableComponent;
+        private set
+        {
+            if (value == null)
+            {
+                OnCarriableRemoved?.Invoke(_carriableComponent);
+            }
+            else
+            {
+                OnCarriableAssigned?.Invoke(value);
+            }
+            _carriableComponent = value;
+        } 
+    }
     public bool IsPickingUp = false;
     public bool IsDropping = false;
     public Vector2 FacingDirection = Vector2.Inf;
@@ -25,6 +43,17 @@ public partial class CarrierComponent : Node2D, ICarrierComponent
     public override void _Ready()
     {
         base._Ready();
+
+        if (this.ParentHas<ThrowerComponent>(out var thrower))
+        {
+            thrower.OnThrow += throwable =>
+            {
+                if (throwable.ParentHas<CarriableComponent>(out var car) && car == CarriableComp)
+                {
+                    CarriableComp = null;
+                }  
+            };
+        }
     }
 
     public override void _Process(double delta)

@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("NodeWire.Fody")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+609437f5b5a2aab9cbcd277800d4813ccb158b04")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+eb64846ce6aa5bb0327d24a65b3738c24e8687f2")]
 [assembly: System.Reflection.AssemblyProductAttribute("NodeWire.Fody")]
 [assembly: System.Reflection.AssemblyTitleAttribute("NodeWire.Fody")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

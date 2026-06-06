@@ -8,40 +8,21 @@ public partial class Valuable : RigidBody2D
 {
     [Export] public ValuableType Type;
     [Export] public Sprite2D Sprite;
-    private ShaderMaterial _shaderMat = GD.Load<ShaderMaterial>("uid://cnuuc1ep5p6ia");
+    [Node] public AnimationPlayer AnimationPlayer;
     [Node] public DetectableComponent DetectableComponent;
-    [Node] public CarriableComponent CarriableComponent;
-    [Node] public ThrowableComponent ThrowableComponent;
-    [Node] public InteractableComponent InteractableComponent;
+    // private ShaderMaterial _shaderMat = GD.Load<ShaderMaterial>("uid://cnuuc1ep5p6ia");
 
     public override void _Ready()
     {
         Sprite.Texture = ValuableData.Valuables[Type].texture2D;
-        Sprite.Material = _shaderMat;
-
-        ThrowableComponent.OnThrownBy += ThrownBy;
-        CarriableComponent.OnPickedUpBy += PickedUpBy;
-        CarriableComponent.OnDropedAt += DropedAt;
+        // Sprite.Material = _shaderMat;
     }
 
-    
-
-    public void Sell(Node2D node)
+    public void Sell()
     {
         GD.Print("Sold!");
+        AnimationPlayer.Play("sell");
+        AnimationPlayer.AnimationFinished += _ => QueueFree();
+        DetectableComponent.CanBeDetectedBy = _ => false;
     }
-
-    void ThrownBy(ThrowerComponent thrower, Vector2 pos)
-    {
-        
-    }
-
-    void PickedUpBy(CarrierComponent carrier)
-    {
-    }
-
-    void DropedAt(Vector2 pos)
-    {
-    }
-
 }

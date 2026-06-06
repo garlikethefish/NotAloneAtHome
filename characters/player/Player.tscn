@@ -14,6 +14,7 @@
 [ext_resource type="PackedScene" uid="uid://d1lv148xxd5ec" path="res://components/carrier/CarrierComponent.tscn" id="14_5dd86"]
 [ext_resource type="PackedScene" uid="uid://c7wvmwmhhdcnr" path="res://components/interactor/InteractorComponent.tscn" id="15_ir81o"]
 [ext_resource type="PackedScene" uid="uid://di1gufwmxsr11" path="res://components/detector/casted_area/CastedAreaDetectorComponent.tscn" id="15_ohrde"]
+[ext_resource type="PackedScene" uid="uid://b8odej7420g54" path="res://components/detectable/DetectableComponent.tscn" id="17_7aoru"]
 [ext_resource type="PackedScene" uid="uid://u0mnqyu6x1q3" path="res://objects/raycasted_shape/RaycastedVisionShape.tscn" id="17_67shi"]
 [ext_resource type="PackedScene" uid="uid://s2g10onqsl60" path="res://components/thrower/ThrowerComponent.tscn" id="17_u7nq2"]
 
@@ -551,9 +552,9 @@ color_ramp = SubResource("GradientTexture1D_5vbvs")
 [sub_resource type="CircleShape2D" id="CircleShape2D_po6sa"]
 radius = 52.03845
 
-[node name="Player" type="CharacterBody2D" unique_id=1993068751]
+[node name="Player" type="CharacterBody2D" unique_id=1993068751 groups=["player"]]
 z_index = 3
-collision_mask = 2
+collision_mask = 0
 script = ExtResource("1_mv25b")
 VisionShrinkSpeed = 1.0
 
@@ -652,5 +653,7 @@ position = Vector2(0, -11.71)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CastedAreaDetectorComponent" unique_id=673846074]
 shape = SubResource("CircleShape2D_po6sa")
+
+[node name="DetectableComponent" parent="." unique_id=2037387284 instance=ExtResource("17_7aoru")]
 
 [editable path="CarrierComponent"]

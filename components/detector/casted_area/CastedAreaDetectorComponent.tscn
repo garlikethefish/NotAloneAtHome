@@ -5,6 +5,3 @@
 [node name="CastedAreaDetectorComponent" type="Area2D" unique_id=145267381]
 collision_mask = 512
 script = ExtResource("1_onins")
-
-[connection signal="body_entered" from="." to="." method="_on_body_entered"]
-[connection signal="body_exited" from="." to="." method="_on_body_exited"]

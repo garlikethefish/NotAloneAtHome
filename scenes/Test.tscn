@@ -12,13 +12,20 @@
 [ext_resource type="PackedScene" uid="uid://ckwnp346yqoti" path="res://characters/le_cat/cat.tscn" id="10_fu3ou"]
 [ext_resource type="PackedScene" uid="uid://bfxah7yut2ec0" path="res://components/cariable/CarriableComponent.tscn" id="11_bhwsq"]
 [ext_resource type="PackedScene" uid="uid://m5gqbqgarhdk" path="res://components/throwable/ThrowableComponent.tscn" id="12_xftjw"]
+[ext_resource type="PackedScene" uid="uid://cah3urn1fwd1d" path="res://zones/sell_zone/SellZone.tscn" id="13_8bdjt"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_1of5j"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_bhwsq"]
 
 [node name="Test" type="Node2D" unique_id=78523924]
 
 [node name="Player" parent="." unique_id=1993068751 instance=ExtResource("1_w8un3")]
-position = Vector2(678, 371)
+position = Vector2(1004, 410)
+collision_layer = 0
+
+[node name="DetectableComponent" parent="Player" index="15" unique_id=2037387284]
+physics_material_override = SubResource("PhysicsMaterial_1of5j")
 
 [node name="Valuable" parent="." unique_id=1917833229 instance=ExtResource("3_jbd4l")]
 position = Vector2(409, 277)
@@ -63,3 +70,9 @@ CollisionShape2D = NodePath("CollisionShape2D2")
 shape = SubResource("CircleShape2D_bhwsq")
 
 [node name="ThrowableComponent" parent="Cat" unique_id=1551366403 instance=ExtResource("12_xftjw")]
+
+[node name="SellZone" parent="." unique_id=377854475 instance=ExtResource("13_8bdjt")]
+position = Vector2(1201, 444)
+
+[editable path="Player"]
+[editable path="Player/CarrierComponent"]
