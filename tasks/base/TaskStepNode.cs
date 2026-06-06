@@ -3,7 +3,6 @@ namespace NotAloneAtHome.Tasks;
 using System;
 using System.Linq;
 using Godot;
-using NotAloneAtHome.Components;
 
 public abstract class TaskStepBase : ITaskStep
 {
@@ -32,14 +31,21 @@ public abstract class TaskStepBase : ITaskStep
         OnStart();
     }
 
-    public void End()
+    public void StepEnd()
     {
         UpdateName("");
-        OnEnd();
+        OnStepEnd();
+    }
+
+    public void TaskEnd()
+    {
+        UpdateName("");
+        OnTaskEnd();
     }
 
     public abstract void OnStart();
-    public abstract void OnEnd();
+    public abstract void OnStepEnd();
+    public abstract void OnTaskEnd();
 
     public void UpdateName(string name)
     {
@@ -49,7 +55,12 @@ public abstract class TaskStepBase : ITaskStep
  
     public void Finish()
     {
-        End();
+        StepEnd();
         GoStepForward();
+    }
+
+    public void Log(string value)
+    {
+        GD.Print($"[Task | {Task.GetType().Name} | Step | {GetType().Name}] {value}");
     }
 }

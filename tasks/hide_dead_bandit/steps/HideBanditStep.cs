@@ -31,8 +31,20 @@ public partial class HideDeadBanditTask
             }
         }
 
-        public override void OnEnd()
+        public override void OnStepEnd()
         {
+            if (closet?.HasChild<InteractableComponent>(out var interactable) == true)
+            {
+                interactable.OnInteractionFrom -= OnInteractionFrom;
+            }
+        }
+
+        public override void OnTaskEnd()
+        {
+            if (closet?.HasChild<InteractableComponent>(out var interactable) == true)
+            {
+                interactable.OnInteractionFrom -= OnInteractionFrom;
+            }
         }
 
         void OnInteractionFrom(InteractorComponent interactor)

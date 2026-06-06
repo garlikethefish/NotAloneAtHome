@@ -20,7 +20,8 @@ public interface ITaskStep
     /// <summary>
     /// Triggered on step's lifecicle end
     /// </summary>
-    public void End();
+    public void StepEnd();
+    public void TaskEnd();
     /// <summary>
     /// Signals to go to the next step
     /// </summary>

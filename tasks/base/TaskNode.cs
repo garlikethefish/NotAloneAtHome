@@ -14,7 +14,7 @@ public abstract partial class TaskNode : ITask
     public event Action OnComplete;
     public event Action<string> OnTaskNameChanged;
     public event Action<string> OnTaskStepNameChanged;
-    public event Action<ITaskStep> OnTaskStepChangedToChanged;
+    public event Action<ITaskStep> OnTaskStepChangeTo;
 
     public TaskNode(SceneTree ctx)
     {
@@ -56,26 +56,35 @@ public abstract partial class TaskNode : ITask
         OnStart();
     }
 
+    public void End()
+    {
+        Steps.ForEach(step => step.TaskEnd());
+        UpdateName("");
+        OnEnd();
+    }
+
     public void Finish()
     {
+        End();
         OnFinish();
         OnComplete?.Invoke();
     }
 
     public abstract void OnStart();
+    public abstract void OnEnd();
     public abstract void OnFinish();
 
     private void TransitionToStep(ITaskStep newStep)
     {
         if (CurrentStep != null)
         {
-            CurrentStep.End();
+            CurrentStep.StepEnd();
             CurrentStep.OnTaskStepNameChanged -= OnTaskStepNameChanged;
         }
         CurrentStep = newStep;
         CurrentStep.OnTaskStepNameChanged += OnTaskStepNameChanged;
         CurrentStep.Start();
-        OnTaskStepChangedToChanged?.Invoke(newStep);
+        OnTaskStepChangeTo?.Invoke(newStep);
     }
 
     public void UpdateName(string name)
@@ -90,9 +99,9 @@ public abstract partial class TaskNode : ITask
         step.OnTaskStepNameChanged += OnTaskStepNameChanged;
     }
 
-    public static void Log(string value)
+    public void Log(string value)
     {
-        GD.Print($"[Task | {typeof(TaskNode).Name}] {value}");
+        GD.Print($"[Task | {GetType().Name}] {value}");
     }
 }
 

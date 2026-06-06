@@ -22,9 +22,14 @@ public partial class CollectTrashTask : TaskNode, ITask
         UpdateName("Collect trash");
     }
 
+    public override void OnEnd()
+    {
+        
+    }
+
     public override void OnFinish()
     {
-        UpdateName("");
+        
     }
 }
 

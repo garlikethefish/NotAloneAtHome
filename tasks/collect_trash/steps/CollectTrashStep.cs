@@ -13,13 +13,18 @@ public partial class CollectTrashTask
 
         public override void OnStart()
         {
-            UpdateName("Trash collected: " + 0);
+            UpdateName($"Trash collected: {Task._trashCollected} / {Task._trashToCollect}");
             SpawnInTrash();
         }
 
-        public override void OnEnd()
+        public override void OnStepEnd()
         {
             UpdateName("");
+        }
+
+        public override void OnTaskEnd()
+        {
+            
         }
 
         void SpawnInTrash()
@@ -36,7 +41,8 @@ public partial class CollectTrashTask
         public void CollectTrash()
         {
             Task._trashCollected++;
-            UpdateName("Trash collected: " + Task._trashCollected);
+            UpdateName($"Trash collected: {Task._trashCollected} / {Task._trashToCollect}");
+
             if (Task._trashCollected >= Task._trashToCollect) Finish();
         }
     }

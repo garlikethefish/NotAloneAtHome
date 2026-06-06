@@ -26,12 +26,12 @@ public static class NodeExtensions
 
     public static bool ParentHas<T>(this Node node) where T : Node
     {
-        return ParentHas(node, out T _);
+        return ParentHas(node, out T? _);
     }
 
     // public static 
 
-    public static bool ParentHas<T>(this Node node, out T component) where T : Node
+    public static bool ParentHas<T>(this Node node, [NotNullWhen(true)] out T? component) where T : Node
     {
         if (node is T self)
         {
@@ -62,30 +62,30 @@ public static class NodeExtensions
 
 public static class HelperExtensions
 {
-    public static T GetSibling<T>(this Node node) where T : Node =>
+    public static T? GetSibling<T>(this Node node) where T : Node =>
         node.GetParent().GetChildren().OfType<T>().FirstOrDefault();
 }
 
 public static class Extensions
 {
-    public static bool TryNextItem<T>(this List<T> list, T current, out T next)
+    public static bool TryNextItem<T>(this List<T> list, T current, [NotNullWhen(true)] out T? next)
     {
         var index = list.IndexOf(current);
         if (index >= 0 && index < list.Count - 1)
         {
-            next = list[index + 1];
+            next = list[index + 1]!;
             return true;
         }
         next = default;
         return false;
     }
 
-    public static bool TryPreviousItem<T>(this List<T> list, T current, out T previous)
+    public static bool TryPreviousItem<T>(this List<T> list, T current, [NotNullWhen(true)] out T? previous)
     {
         var index = list.IndexOf(current);
-        if (index > 0)
+        if (index > 0 && index < list.Count)
         {
-            previous = list[index - 1];
+            previous = list[index - 1]!;
             return true;
         }
         previous = default;
@@ -97,18 +97,6 @@ public static class Utils
 {
     public static uint GetCombinedMask(IEnumerable<int> masks) =>
         (uint)masks.Aggregate(0, (combined, mask) => combined | (1 << (mask - 1)));
-
-    public static bool TryGetRoot<T>(this Node componentNode, out T result) where T : class
-    {
-        // var root = (componentNode as IComponentInterface)?.Root;
-        if (componentNode.GetParent() == null)
-        {
-            result = null;
-            return false;
-        }
-        result = componentNode.GetParent() as T;
-        return result != null;
-    }
 }
 
 public static class Casters

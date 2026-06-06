@@ -16,13 +16,7 @@ public partial class HideDeadBanditTask
         public override void OnStart()
         {
             UpdateName("Pick up sleepin bandit");
-            Log(string.Join(",", Ctx.GetNodesInGroup("task_hide_dead_bandit").Select(item => item.Name)));
             bandit = Ctx.GetNodesInGroup("task_hide_dead_bandit").OfType<DeadBandit>().FirstOrDefault();
-
-            foreach (var node in Ctx.GetNodesInGroup("task_hide_dead_bandit"))
-            {
-                Log($"{node.Name} - {node.GetType().FullName}");
-            }
 
             if (bandit == null)
             {
@@ -33,22 +27,39 @@ public partial class HideDeadBanditTask
             if (bandit.HasChild<CarriableComponent>(out var carriable))
             {
                 carriable.OnPickedUpBy += OnPickedUpBy;
-                carriable.OnDropedAt += OnDropedAt;
             }
         }
 
-        public override void OnEnd()
+        public override void OnStepEnd()
         {
             
         }
 
+        public override void OnTaskEnd()
+        {
+            if (bandit?.HasChild<CarriableComponent>(out var carriable) == true)
+            {
+                carriable.OnPickedUpBy -= OnPickedUpBy;
+                carriable.OnDropedAt -= OnDropedAt;
+            }
+        }
+
         void OnDropedAt(Vector2 pos)
         {
+            if (bandit?.HasChild<CarriableComponent>(out var carriable) == true)
+            {
+                carriable.OnDropedAt -= OnDropedAt;
+            }
             GoStepBack();
         }
 
         void OnPickedUpBy(CarrierComponent carrier)
         {
+            if (bandit?.HasChild<CarriableComponent>(out var carriable) == true)
+            {
+                carriable.OnPickedUpBy -= OnPickedUpBy;
+                carriable.OnDropedAt += OnDropedAt;
+            }
             GoStepForward();
         }
     }

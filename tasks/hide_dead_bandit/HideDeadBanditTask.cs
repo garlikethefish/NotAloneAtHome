@@ -11,14 +11,18 @@ public partial class HideDeadBanditTask : TaskNode, ITask
         AddStep(new PickUpBanditStep(this));
         AddStep(new HideBanditStep(this));
     }
+    
     public override void OnStart()
     {
         UpdateName("Hide laying bandit");
     }
 
+    public override void OnEnd()
+    {
+    }
+
     public override void OnFinish()
     {
-        UpdateName("");
     }
 }
 
