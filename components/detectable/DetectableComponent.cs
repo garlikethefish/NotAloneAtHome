@@ -15,8 +15,19 @@ public class DetectableComponentModel
 public partial class DetectableComponent : AnimatableBody2D, IDetectableComponent
 {
     [Export] public CollisionShape2D CollisionShape2D { get; private set; } = default!;
-    public List<AreaDetectorComponent> BlacklistedDetectors { get; } = new();
-    public Func<AreaDetectorComponent, bool> CanBeDetectedBy { get; set; } = _ => true;
+    public List<AreaDetectorComponent> BlacklistedDetectors { get; } = [];
+    public Func<AreaDetectorComponent, bool> CustomCanBeDetectedBy { get; set; } = _ => true;
+    private bool _isDetectable = true;
+    public bool IsDetectable
+    {
+        get => _isDetectable;
+        set
+        {
+            _isDetectable = value;
+            if (!value)
+                HandleExitAllDetectors();
+        }
+    }
     public List<AreaDetectorComponent> Detectors = [];
     public List<AreaDetectorComponent> SimpDetectors = []; // Detectors that have this detectable as priority
     private Vector2 _startingPosition; // FUCK GODOT
@@ -48,6 +59,8 @@ public partial class DetectableComponent : AnimatableBody2D, IDetectableComponen
             HandleExitAllDetectors();
         }
     }
+
+    public bool CanDetect(AreaDetectorComponent detector) => _isDetectable && CustomCanBeDetectedBy(detector);
 
     public void HandleEnterDetectorArea(AreaDetectorComponent detector)
     {
@@ -95,8 +108,8 @@ public partial class DetectableComponent : AnimatableBody2D, IDetectableComponen
 
     public void HandleExitAllDetectors()
     {
-        Detectors.ForEach(item => item.HandleForceUndetectDetectable(this));
-        SimpDetectors.ForEach(item => item.HandleForceUndetectDetectable(this));
+        Detectors.ToList().ForEach(item => item.HandleUndetectDetectable(this));
+        SimpDetectors.ToList().ForEach(item => item.HandleUndetectDetectable(this));
     }
 
     public Rid HandleGetRid()=>GetRid();

@@ -132,7 +132,7 @@ public partial class CastedAreaDetectorComponent : AreaDetectorComponent, ICaste
                 var collider = result["collider"].As<Node2D>();
                 if (collider.ParentHas<DetectableComponent>(out var detectable) &&
                     detectable == model.Detectable &&
-                    detectable.CanBeDetectedBy(this)
+                    detectable.CanDetect(this)
                 ) {
                     if (!model.IsInLineOfSight) OnSightEnter?.Invoke(model.Detectable);
                     model.IsInLineOfSight = true;
@@ -168,10 +168,4 @@ public partial class CastedAreaDetectorComponent : AreaDetectorComponent, ICaste
         point.GlobalPosition.DistanceTo(second.GlobalPosition)
             ? first
             : second;
-
-    public override void HandleForceUndetectDetectable(DetectableComponent detectable)
-    {
-        if (ClosestDetectable == detectable)
-        ClosestDetectable = null;
-    }
 }

@@ -15,7 +15,7 @@ public partial class Trash : Node2D
     public override void _Ready()
     {
         GD.Print("Detectable: ", DetectableComponent);
-        DetectableComponent.CanBeDetectedBy = CanBeDetectedBy;
+        DetectableComponent.CustomCanBeDetectedBy = CanBeDetectedBy;
         InteractableComponent.OnInteractionFrom += OnInteractionFrom;
         HealthComponent.OnDeath += OnDeath;
 

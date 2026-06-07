@@ -12,7 +12,8 @@ public interface IDetectableComponent
     event Action<AreaDetectorComponent> OnExitedDetectorArea;
     event Action<AreaDetectorComponent> OnBecameDetectorPriority;
     event Action<AreaDetectorComponent> OnRemovedDetectorPriority;
-    Func<AreaDetectorComponent, bool> CanBeDetectedBy { get; set; }
+    Func<AreaDetectorComponent, bool> CustomCanBeDetectedBy { set; }
+    bool IsDetectable { get; set; }
     void HandleEnterDetectorArea(AreaDetectorComponent detector);
     void HandleExitDetectorArea(AreaDetectorComponent detector);
     void HandleSetAsDetectorPriority(AreaDetectorComponent detector);

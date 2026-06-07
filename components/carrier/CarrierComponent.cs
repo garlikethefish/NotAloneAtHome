@@ -83,6 +83,7 @@ public partial class CarrierComponent : Node2D, ICarrierComponent
         if (CarriableComp.ParentHas<DetectableComponent>(out var detectable)
             && this.ParentHas<AreaDetectorComponent>(out var detector)
         ) {
+            detectable.IsDetectable = false;
             detectable.HandleBlacklistDetector(detector);
             detector.ExcludedRids.Add(detectable.HandleGetRid());
         }
@@ -98,6 +99,7 @@ public partial class CarrierComponent : Node2D, ICarrierComponent
         if (carriable.ParentHas<DetectableComponent>(out var detectable)
             && this.ParentHas<AreaDetectorComponent>(out var detector)
         ) {
+            detectable.IsDetectable = true;
             detectable.HandleUnblacklistDetector(detector);
             detector.ExcludedRids.Remove(detectable.HandleGetRid());
         }

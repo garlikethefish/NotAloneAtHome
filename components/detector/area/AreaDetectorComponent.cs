@@ -47,6 +47,7 @@ public partial class AreaDetectorComponent : Area2D, IAreaDetectorComponent
     public virtual void WhenBodyEntered(Node2D body)
     {
         if (!body.ParentHas<DetectableComponent>(out var detectable) 
+            || !detectable.IsDetectable
             || detectable.BlacklistedDetectors.Contains(this)
             || DetectablesInArea.Any(detInArea => detInArea.Detectable == detectable)
         ) return;
@@ -77,11 +78,6 @@ public partial class AreaDetectorComponent : Area2D, IAreaDetectorComponent
     {
         var bodies = GetOverlappingBodies();
         if (bodies.Contains(detectable)) WhenBodyEntered(detectable);
-    }
-
-    public virtual void HandleForceUndetectDetectable(DetectableComponent detectable)
-    {
-        DetectablesInArea.RemoveAll(model => model.Detectable == detectable);
     }
 
     public void HandleAttemptToEnterArea(DetectableComponent detectable)

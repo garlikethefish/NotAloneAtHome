@@ -12,7 +12,7 @@ public partial class DeadBandit : Node2D
     public override void _Ready()
     {
         base._Ready();
-        DetectableComponent.CanBeDetectedBy = CanBeDetectedBy;
+        DetectableComponent.CustomCanBeDetectedBy = CanBeDetectedBy;
     }
 
     bool CanBeDetectedBy(AreaDetectorComponent detector)

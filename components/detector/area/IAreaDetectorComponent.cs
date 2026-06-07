@@ -12,6 +12,5 @@ public interface IAreaDetectorComponent
     event Action<DetectableComponent> OnBodyEntered;
     event Action<DetectableComponent> OnBodyExited;
     void HandleUndetectDetectable(DetectableComponent detectable);
-    void HandleForceUndetectDetectable(DetectableComponent detectable);
     void HandleAttemptToEnterArea(DetectableComponent detectable);
 }

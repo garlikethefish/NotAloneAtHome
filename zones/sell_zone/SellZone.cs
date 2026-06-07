@@ -23,19 +23,18 @@ public partial class SellZone : Node2D
 
         if (_player.HasChild<CarrierComponent>(out var carrier))
         {
-            carrier.OnCarriableAssigned += Appear;
-            carrier.OnCarriableRemoved += Disappear;
+            carrier.OnCarriableAssigned += OnCarriableAssign;
+            carrier.OnCarriableRemoved += OnCarriableRemove;
         }
 
         AreaDetectorComponent.OnBodyEntered += BodyEnter;
-        AreaDetectorComponent.OnBodyExited += BodyExit;
     }
 
     public override void _Process(double delta)
     {
         base._Process(delta);
 
-        if (_detectableInArea.Any(item => item.GetParent() is Valuable))
+        if (_detectableInArea.Any(item => IsInstanceValid(item) && item.GetParent() is Valuable))
         {
             if (!_stayVisible && !_isVisible)
             {
@@ -61,16 +60,12 @@ public partial class SellZone : Node2D
 
         if (detectable.GetParent() is Valuable valuable)
         {
+            valuable.OnSold += () => _detectableInArea.Remove(detectable);
             valuable.Sell();
         }
     }
 
-    void BodyExit(DetectableComponent detectable)
-    {
-        _detectableInArea.Remove(detectable);
-    }
-
-    public void Appear(CarriableComponent carriable)
+    public void OnCarriableAssign(CarriableComponent carriable)
     {
         _isPlayerCarryingValuable = true;
         if (carriable.GetParent() is Valuable && !_isVisible)
@@ -80,7 +75,7 @@ public partial class SellZone : Node2D
         }
     }
 
-    public void Disappear(CarriableComponent carriable)
+    public void OnCarriableRemove(CarriableComponent carriable)
     {
         _isPlayerCarryingValuable = false;
         if (carriable.GetParent() is Valuable && !_stayVisible && _isVisible)

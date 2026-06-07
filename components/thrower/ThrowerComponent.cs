@@ -74,6 +74,7 @@ public partial class ThrowerComponent : Node2D, IThrowerComponent
         if (throwable.ParentHas<DetectableComponent>(out var detectable)
             && this.ParentHas<AreaDetectorComponent>(out var detector)
         ) {
+            detectable.IsDetectable = true;
             detectable.HandleUnblacklistDetector(detector);
             detector.ExcludedRids.Remove(detectable.HandleGetRid());
         }
