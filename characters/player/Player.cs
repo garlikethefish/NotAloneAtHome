@@ -20,12 +20,11 @@ public partial class Player : CharacterBody2D, IStateMachine
     //
     // player vision
     //
-    [Export] public double MaxVisionRadius = 0.35;
-    [Export] public double MinVisionRadius = 0.08;
-    [Export] public double VisionShrinkSpeed = 0.05;
-    [Export] public double VisionExpandSpeed = 0.25;
-    [Export] public double AtmosphereRadius = 0.35;
-    [Export] public double maskedVisionRadiuss = 5;
+    [ExportGroup("Vision")]
+    [Export] public double VisionShrinkSpeed = 50;
+    [Export] public double VisionExpandSpeed = 25;
+    [Export] public double defaultUnmaskedVisionRadiuss = 75;
+    [Export] public double defaultMaskedVisionRadiuss = 5;
     private double _targetVisionRadius = 0;
     private double _currentVisionRadius = 0.35;
     
@@ -70,6 +69,7 @@ public partial class Player : CharacterBody2D, IStateMachine
     [Node] public ThrowerComponent ThrowerComponent;
     [Node] public CarrierComponent CarrierComponent;
     [Node] public CastedAreaDetectorComponent CastedAreaDetectorComponent;
+    [Node] public Node2D RaycastedShape;
     [Signal] public delegate void ShakeCameraEventHandler();
     [Signal] public delegate void StopCameraShakeEventHandler();
 
@@ -92,17 +92,7 @@ public partial class Player : CharacterBody2D, IStateMachine
 
         ChangeState(States[typeof(IdleState)]);
 
-        _targetVisionRadius = MaxVisionRadius;
-
-        if (_overlayRect != null)
-        {
-            _overlayRect.Visible = true;
-            if (_overlayRect.Material is ShaderMaterial mat)
-            {
-                mat.SetShaderParameter("center", new Vector2(0.5f, 0.5f));
-                mat.SetShaderParameter("radius", AtmosphereRadius);
-            }
-        }
+        _targetVisionRadius = defaultUnmaskedVisionRadiuss;
     }
 
     public override void _Process(double delta)
@@ -181,16 +171,14 @@ public partial class Player : CharacterBody2D, IStateMachine
 
     public void TransitionVisionRadius(double delta, double targetRadius)
     {
-        if (_overlayRect?.Material is not ShaderMaterial mat) return;
-        if (_currentVisionRadius == targetRadius) return;
-        mat.SetShaderParameter("center", new Vector2(0.5f, 0.5f));
+        if (RaycastedShape == null || _currentVisionRadius == targetRadius) return;
 
         double transitionSpeed = targetRadius > _currentVisionRadius  
-            ? VisionShrinkSpeed
-            : VisionExpandSpeed;
+            ? VisionExpandSpeed
+            : VisionShrinkSpeed;
         _currentVisionRadius =  Mathf.MoveToward(_currentVisionRadius, targetRadius, transitionSpeed * delta);
 
-        mat.SetShaderParameter("radius", _currentVisionRadius);
+        RaycastedShape.Set("reach", _currentVisionRadius);
     }
 
     private void UpdateAnimation(Vector2 dir)

@@ -245,16 +245,16 @@ grow_vertical = 2
 layer = 0
 visible = false
 
-[node name="SubViewportContainer" parent="UILayers/VHSEffectCanvasLayer" unique_id=480592156 node_paths=PackedStringArray("player_vision_node", "player_camera_node", "visible_area_polygons") instance=ExtResource("27_ma7h6")]
+[node name="SubViewportContainer" parent="UILayers/VHSEffectCanvasLayer" unique_id=480592156 node_paths=PackedStringArray("player_vision_node", "player_camera_node") instance=ExtResource("27_ma7h6")]
 player_vision_node = NodePath("../../../Player/RaycastedShape")
 player_camera_node = NodePath("../../../Player/Camera2D")
-visible_area_polygons = [NodePath("../../../Polygon2D")]
 
 [node name="Lights" type="Node" parent="." unique_id=1159113441]
 
 [node name="DirectionalLight2D" type="DirectionalLight2D" parent="Lights" unique_id=1073051661]
 z_index = 4
-color = Color(0.4122449, 0.48960567, 0.6017795, 1)
+color = Color(0.09776529, 0.12232088, 0.2989085, 1)
+energy = 0.75
 blend_mode = 2
 range_z_max = 4
 
@@ -782,7 +782,7 @@ max_active_lights = 7
 
 [node name="Player" parent="." unique_id=1993068751 instance=ExtResource("1_rgh2o")]
 position = Vector2(474, 302)
-collision_mask = 2
+VisionShrinkSpeed = 50.0
 
 [node name="Cat" parent="." unique_id=722993762 instance=ExtResource("4_nxtc6")]
 position = Vector2(365, 399)

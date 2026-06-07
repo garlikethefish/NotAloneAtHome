@@ -3,7 +3,6 @@
 [ext_resource type="Script" uid="uid://dkpg1lbr7w4r6" path="res://characters/player/Player.cs" id="1_mv25b"]
 [ext_resource type="Texture2D" uid="uid://d16fbhghe53wp" path="res://sprites/Player-Sheet.png" id="2_gndvh"]
 [ext_resource type="Script" uid="uid://bhs7qgb1e4mvf" path="res://objects/camera.gd" id="2_jjyn6"]
-[ext_resource type="Material" uid="uid://b3npoc6e68ph1" path="res://shaders/MaskVignette.tres" id="3_5vbvs"]
 [ext_resource type="Texture2D" uid="uid://brlqbui27jqjn" path="res://sprites/shadow.png" id="6_sderm"]
 [ext_resource type="AudioStream" uid="uid://c1kfy4eoowro1" path="res://sounds/sound effects/footstep1.wav" id="7_reqkl"]
 [ext_resource type="AudioStream" uid="uid://b4ci1dsd86esk" path="res://sounds/sound effects/footstep2.wav" id="8_jqsbg"]
@@ -556,7 +555,10 @@ radius = 52.03845
 z_index = 3
 collision_mask = 2
 script = ExtResource("1_mv25b")
-VisionShrinkSpeed = 1.0
+VisionShrinkSpeed = 125.0
+VisionExpandSpeed = 50.0
+defaultUnmaskedVisionRadiuss = 125.0
+defaultMaskedVisionRadiuss = 15.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1767608192]
 visibility_layer = 15
@@ -578,22 +580,6 @@ sprite_frames = SubResource("SpriteFrames_jp248")
 animation = &"walk_side_mask"
 frame = 1
 frame_progress = 0.0026698245
-
-[node name="MaskOverlay" type="CanvasLayer" parent="." unique_id=167265925 groups=["mask_overlay"]]
-layer = 0
-visible = false
-
-[node name="ColorRect" type="ColorRect" parent="MaskOverlay" unique_id=427046387]
-visible = false
-material = ExtResource("3_5vbvs")
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-metadata/_edit_use_anchors_ = true
 
 [node name="BanditNearnessDetector" type="Area2D" parent="." unique_id=2046794680]
 monitorable = false

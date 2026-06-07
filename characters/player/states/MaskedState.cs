@@ -31,7 +31,7 @@ public partial class Player
         {
             Ctx.isWearingMask = true;
             Ctx._currentSpeed = Ctx.NormalSpeed * Ctx.MaskSpeedMultiplier;
-            Ctx._targetVisionRadius = Ctx.maskedVisionRadiuss;
+            Ctx._targetVisionRadius = Ctx.defaultMaskedVisionRadiuss;
         }
 
         public void Exit()
@@ -39,7 +39,7 @@ public partial class Player
             Ctx.isWearingMask = false;
             Ctx._maskSound.Stop();
             Ctx._currentSpeed = Ctx.NormalSpeed;
-            Ctx._targetVisionRadius = Ctx.MaxVisionRadius;
+            Ctx._targetVisionRadius = Ctx.defaultUnmaskedVisionRadiuss;
         }
 
         public void PhysicsUpdate(double delta)
