@@ -16,6 +16,9 @@
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_1of5j"]
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1of5j"]
+resource_local_to_scene = true
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_bhwsq"]
 
 [node name="Test" type="Node2D" unique_id=78523924]
@@ -24,7 +27,7 @@
 position = Vector2(1004, 410)
 collision_layer = 0
 
-[node name="DetectableComponent" parent="Player" index="15" unique_id=2037387284]
+[node name="DetectableComponent" parent="Player" index="14" unique_id=2037387284]
 physics_material_override = SubResource("PhysicsMaterial_1of5j")
 
 [node name="Valuable" parent="." unique_id=1917833229 instance=ExtResource("3_jbd4l")]
@@ -39,17 +42,17 @@ position = Vector2(405, 478)
 [node name="Valuable4" parent="." unique_id=1789179876 instance=ExtResource("6_xftjw")]
 position = Vector2(941, 495)
 
+[node name="Sprite2D" parent="Valuable4" index="1" unique_id=2054388301]
+material = SubResource("ShaderMaterial_1of5j")
+
 [node name="Valuable5" parent="." unique_id=1054021440 instance=ExtResource("7_8bdjt")]
 position = Vector2(665, 482)
-Type = 7
 
 [node name="Valuable6" parent="." unique_id=984273387 instance=ExtResource("8_wnywe")]
 position = Vector2(664, 280)
-Type = 7
 
 [node name="Valuable7" parent="." unique_id=678477915 instance=ExtResource("9_1of5j")]
 position = Vector2(793, 269)
-Type = 7
 
 [node name="Trash" parent="." unique_id=189504567 instance=ExtResource("9_jbd4l")]
 position = Vector2(525, 448)
@@ -76,3 +79,4 @@ position = Vector2(1201, 444)
 
 [editable path="Player"]
 [editable path="Player/CarrierComponent"]
+[editable path="Valuable4"]
