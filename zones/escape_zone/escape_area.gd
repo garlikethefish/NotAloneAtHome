@@ -7,19 +7,20 @@ var tween: Tween
 
 func _ready():
 	scale = Vector2(0,0)
-	GameManager.on_objective_completed.connect(func (objective: ObjectiveModel.Objective) -> void:
-		if objective == ObjectiveModel.Objective.WriteCode:
-			appear()
-	)
+	#GameManager.on_objective_completed.connect(func (objective: ObjectiveModel.Objective) -> void:
+		#if objective == ObjectiveModel.Objective.WriteCode:
+			#appear()
+	#)
 
-func _on_area_2d_body_entered(body: Node2D):
-	var player = body.get_script()
+func _on_area_2d_body_entered(_body: Node2D):
+	pass
+	#var player = body.get_script()
 	
-	if is_instance_of(player, PlayerCharacter) and canEscape():
-		GameManager.complete_objective(ObjectiveModel.Objective.Escape)
+	#if is_instance_of(player, PlayerCharacter) and canEscape():
+		#GameManager.complete_objective(ObjectiveModel.Objective.Escape)
 
 func canEscape():
-	return GameManager.game_objectives[ObjectiveModel.Objective.WriteCode].isCompleted
+	return false; # GameManager.game_objectives[ObjectiveModel.Objective.WriteCode].isCompleted
 	
 func appear():
 	if tween: tween.kill()

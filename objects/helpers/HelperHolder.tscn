@@ -1,6 +1,0 @@
-[gd_scene format=3 uid="uid://15v7pc0tt852"]
-
-[ext_resource type="Script" uid="uid://dpcmcfcyk4yu7" path="res://scripts/interfaces/helper_holder.gd" id="1_ngel6"]
-
-[node name="HelperHolder" type="Node2D" unique_id=1620592727]
-script = ExtResource("1_ngel6")

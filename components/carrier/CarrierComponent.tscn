@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://d1lv148xxd5ec"]
+
+[ext_resource type="Script" uid="uid://lswegh4oejpm" path="res://components/carrier/CarrierComponent.cs" id="1_vtbvt"]
+
+[node name="CarrierComponent" type="Node2D" unique_id=1421703381 node_paths=PackedStringArray("CarryPointNode")]
+script = ExtResource("1_vtbvt")
+CarryPointNode = NodePath("CarryPoint")
+
+[node name="CarryPoint" type="Node2D" parent="." unique_id=1304302565]

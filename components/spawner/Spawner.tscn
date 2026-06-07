@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://q27ik5xajev6"]
+
+[ext_resource type="PackedScene" uid="uid://cj3n0evy767qs" path="res://components/spawner/SpawnerComponent.tscn" id="1_5llff"]
+
+[node name="Spawner" type="Node2D" unique_id=1406183670]
+
+[node name="SpawnerComponent" parent="." unique_id=66854138 instance=ExtResource("1_5llff")]

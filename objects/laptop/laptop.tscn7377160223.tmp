@@ -1,0 +1,43 @@
+[gd_scene format=3 uid="uid://dfbnrpvmioq7g"]
+
+[ext_resource type="Texture2D" uid="uid://d1u4stp3o8b5e" path="res://sprites/laptop.png" id="1_wu6ei"]
+[ext_resource type="Script" uid="uid://de4186bnvdg8l" path="res://objects/laptop/laptop.gd" id="2_j6x1g"]
+[ext_resource type="PackedScene" uid="uid://kii0qs3xbrod" path="res://ui/programming_minigame/programming_minigame.tscn" id="4_j6x1g"]
+[ext_resource type="PackedScene" uid="uid://vtaarm6aoww0" path="res://components/base/holder/ComponentHolder.tscn" id="5_81cjl"]
+[ext_resource type="FontFile" uid="uid://m4c4ejijque2" path="res://fonts/Karma Suture.otf" id="5_ni5dh"]
+[ext_resource type="PackedScene" uid="uid://b8odej7420g54" path="res://components/detectable/DetectableComponent.tscn" id="6_lvmr3"]
+[ext_resource type="PackedScene" uid="uid://k2k1j0y25ebx" path="res://components/interactable/InteractableComponent.tscn" id="7_cfx8w"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_ni5dh"]
+light_mode = 1
+
+[node name="Laptop" type="Sprite2D" unique_id=2105277080]
+texture = ExtResource("1_wu6ei")
+script = ExtResource("2_j6x1g")
+
+[node name="ProgrammingMinigame" parent="." unique_id=409070707 instance=ExtResource("4_j6x1g")]
+visible = false
+
+[node name="WaitCountdownText" type="Label" parent="." unique_id=1672437297]
+visible = false
+light_mask = 2
+z_index = 5
+material = SubResource("CanvasItemMaterial_ni5dh")
+offset_left = -13.0
+offset_top = -32.0
+offset_right = 12.0
+offset_bottom = -11.0
+theme_override_fonts/font = ExtResource("5_ni5dh")
+text = "20"
+horizontal_alignment = 1
+
+[node name="WaitCountdownTimer" type="Timer" parent="." unique_id=1699032290]
+
+[node name="ComponentHolder" parent="." unique_id=1878740538 instance=ExtResource("5_81cjl")]
+
+[node name="DetectableComponent" parent="ComponentHolder" unique_id=2037387284 instance=ExtResource("6_lvmr3")]
+
+[node name="InteractableComponent" parent="ComponentHolder" unique_id=1999549239 instance=ExtResource("7_cfx8w")]
+
+[connection signal="ready" from="." to="." method="_on_ready"]
+[connection signal="timeout" from="WaitCountdownTimer" to="." method="_on_wait_countdown_timer_timeout"]

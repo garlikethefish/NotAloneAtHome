@@ -1,0 +1,36 @@
+[gd_scene format=3 uid="uid://blm3resaadrtl"]
+
+[ext_resource type="Script" uid="uid://bvjjuxeks3xmd" path="res://characters/closet_thief/DeadThiefCloset.cs" id="1_neiu5"]
+[ext_resource type="PackedScene" uid="uid://vtaarm6aoww0" path="res://components/base/holder/ComponentHolder.tscn" id="3_neiu5"]
+[ext_resource type="Texture2D" uid="uid://bsgla858atp8i" path="res://canvas_textures/closet_open_texture.tres" id="3_px37c"]
+[ext_resource type="PackedScene" uid="uid://b8odej7420g54" path="res://components/detectable/DetectableComponent.tscn" id="4_58pnl"]
+[ext_resource type="PackedScene" uid="uid://k2k1j0y25ebx" path="res://components/interactable/InteractableComponent.tscn" id="5_yqfca"]
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_gm45k"]
+polygon = PackedVector2Array(-16, -32, -16, 32, -12, 32, -12, 31, 12, 31, 12, 32, 16, 32, 16, -32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_px37c"]
+size = Vector2(32, 42)
+
+[node name="DeadThiefCloset" type="Node2D" unique_id=1749090602]
+script = ExtResource("1_neiu5")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1286432353]
+texture = ExtResource("3_px37c")
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="Sprite2D" unique_id=1924268546]
+occluder = SubResource("OccluderPolygon2D_gm45k")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=1091579881]
+collision_layer = 3
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=1377282174]
+position = Vector2(0, 11)
+shape = SubResource("RectangleShape2D_px37c")
+
+[node name="ComponentHolder" parent="." unique_id=1878740538 instance=ExtResource("3_neiu5")]
+
+[node name="IDetectable" parent="ComponentHolder" unique_id=2037387284 instance=ExtResource("4_58pnl")]
+
+[node name="InteractableComponent" parent="ComponentHolder" unique_id=1999549239 instance=ExtResource("5_yqfca")]

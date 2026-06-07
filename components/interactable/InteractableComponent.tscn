@@ -1,0 +1,194 @@
+[gd_scene format=3 uid="uid://k2k1j0y25ebx"]
+
+[ext_resource type="Script" uid="uid://b7iah78ghhrj5" path="res://components/interactable/InteractableComponent.cs" id="1_m7v26"]
+[ext_resource type="Texture2D" uid="uid://drlnlgvgspjqk" path="res://sprites/ui/e_button_ui.png" id="2_3arj4"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_3arj4"]
+light_mode = 1
+
+[sub_resource type="Animation" id="Animation_m7v26"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("InteractionKey:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("InteractionKey:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("InteractionKey:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_abgws"]
+resource_name = "appear"
+length = 0.5
+capture_included = true
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("InteractionKey:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.5),
+"transitions": PackedFloat32Array(1),
+"update": 2,
+"values": [Vector2(0, -30)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("InteractionKey:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.03333333),
+"transitions": PackedFloat32Array(1, 1),
+"update": 2,
+"values": [false, true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("InteractionKey:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.5),
+"transitions": PackedFloat32Array(1),
+"update": 2,
+"values": [Vector2(1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_ptbw1"]
+resource_name = "disappear"
+length = 0.5
+capture_included = true
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("InteractionKey:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 2,
+"values": [true, false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("InteractionKey:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.5),
+"transitions": PackedFloat32Array(1),
+"update": 2,
+"values": [Vector2(0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("InteractionKey:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.5),
+"transitions": PackedFloat32Array(1),
+"update": 2,
+"values": [Vector2(0.115, 0.115)]
+}
+
+[sub_resource type="Animation" id="Animation_o7bav"]
+resource_name = "interact"
+length = 0.5
+capture_included = true
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("InteractionKey:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.1535, 0.5),
+"transitions": PackedFloat32Array(3.8637452, 1),
+"update": 2,
+"values": [Vector2(0, -23.555492), Vector2(0, -30)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("InteractionKey:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 2,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("InteractionKey:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.14212812, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 2,
+"values": [Vector2(1.155, 0.87), Vector2(1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ptbw1"]
+_data = {
+&"RESET": SubResource("Animation_m7v26"),
+&"appear": SubResource("Animation_abgws"),
+&"disappear": SubResource("Animation_ptbw1"),
+&"interact": SubResource("Animation_o7bav")
+}
+
+[node name="InteractableComponent" type="Node2D" unique_id=1999549239 node_paths=PackedStringArray("AnimationPlayer")]
+light_mask = 2
+script = ExtResource("1_m7v26")
+AnimationPlayer = NodePath("AnimationPlayer")
+
+[node name="InteractionKey" type="Sprite2D" parent="." unique_id=1457446261]
+visible = false
+light_mask = 2
+z_index = 5
+material = SubResource("CanvasItemMaterial_3arj4")
+texture = ExtResource("2_3arj4")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1038444833]
+libraries/ = SubResource("AnimationLibrary_ptbw1")
+playback_auto_capture_transition_type = 7
+speed_scale = 2.0

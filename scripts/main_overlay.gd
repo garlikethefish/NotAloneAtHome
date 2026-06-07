@@ -8,20 +8,23 @@ extends Control
 @onready var stolen_progress_bar = $StolenStuffPanel/StolenLabel/ProgressBar
 @onready var suspicious_progress_bar = $ImportantInfoPanel/SuspiciousLabel/ProgressBar
 
+var task_name = ReactiveSignal.new("")
+var task_step_name = ReactiveSignal.new("")
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	GameManager.on_start.connect(initialize)
-	GameManager.on_objective_completed.connect(func (objective: ObjectiveModel.Objective) -> void:
-		if objective == ObjectiveModel.Objective.CleanHome:
-			finishTrashColection()
+	GameManager.GameStarted.connect(initialize)
+	TaskManager.TaskStepNameChanged.connect(task_step_name_changed)
+	TaskManager.TaskNameChanged.connect(task_name_changed)
+	
+	ReactiveSignal.use_effect(func():
+		objective_content_label.text = task_step_name.value;
 	)
-	GameManager.on_objective_update.connect(func (objective: ObjectiveModel.Objective) -> void:
-		objective_content_label.text = GameManager.game_objectives[objective].text
-	)
-	GameManager.on_trash_collected.connect(updateTrashCollected)
-	GameManager.on_suspicion_change.connect(updateSuspision)
-	GameManager.on_item_steal.connect(upadteItemStealed)
-	GameManager.on_line_completed.connect(updateLinesDone)
+	
+	#GameManager.on_trash_collected.connect(updateTrashCollected)
+	#GameManager.on_suspicion_change.connect(updateSuspision)
+	#GameManager.on_item_steal.connect(upadteItemStealed)
+	#GameManager.on_line_completed.connect(updateLinesDone)
 	
 func initialize():
 	objective_content_label.text = GameManager.game_objectives[GameManager.current_objective].text
@@ -30,6 +33,12 @@ func initialize():
 	lines_done_count_label.text = "0/4"
 	stolen_progress_bar.value = 0
 	money_lost_count_label.text = "0$"
+	
+func task_step_name_changed(_name: String) -> void:
+	task_step_name.value = _name
+	
+func task_name_changed(_name: String) -> void:
+	task_name.value = _name
 	
 func updateSuspision():
 	suspicious_progress_bar.value = GameManager.suspicion

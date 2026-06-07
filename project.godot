@@ -21,8 +21,9 @@ buses/default_bus_layout="uid://646n5sgnpnfp"
 
 [autoload]
 
-GameManager="*uid://khcy1rbiah63"
 FogShapes="*uid://bcvmd3sqn3lwm"
+GameManager="*uid://cid1uama0hiub"
+TaskManager="*uid://6by5ogm5p27v"
 
 [display]
 
@@ -41,6 +42,7 @@ project/assembly_name="NotAloneAtHome"
 mask_overlay=""
 DoableObjectGroup=""
 dynamic_lights=""
+player="THEEE ONNEEE THHEEE OONNLLLLYYYYY!!!"
 
 [input]
 

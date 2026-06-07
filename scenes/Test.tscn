@@ -1,0 +1,78 @@
+[gd_scene format=3 uid="uid://45b72bnlu6ms"]
+
+[ext_resource type="PackedScene" uid="uid://be8qbmt0fe144" path="res://characters/player/Player.tscn" id="1_w8un3"]
+[ext_resource type="PackedScene" uid="uid://hnye7wtm1w0e" path="res://objects/valuables/Valuable.tscn" id="3_jbd4l"]
+[ext_resource type="PackedScene" uid="uid://dq60rr28wyibf" path="res://objects/valuables/ValuableCabinet.tscn" id="4_fu3ou"]
+[ext_resource type="PackedScene" uid="uid://djmsje8kmaa6o" path="res://objects/valuables/valuable_Bed.tscn" id="5_bhwsq"]
+[ext_resource type="PackedScene" uid="uid://dfttis2qx6job" path="res://objects/valuables/Valuable_Chair1.tscn" id="6_xftjw"]
+[ext_resource type="PackedScene" uid="uid://3pms5s3tmqpj" path="res://objects/valuables/Valuable_Chair2.tscn" id="7_8bdjt"]
+[ext_resource type="PackedScene" uid="uid://d3rn5wbx4px5w" path="res://objects/valuables/Valuable_Closet.tscn" id="8_wnywe"]
+[ext_resource type="PackedScene" uid="uid://cg7krccbajseo" path="res://objects/valuables/Valuable_Fridge.tscn" id="9_1of5j"]
+[ext_resource type="PackedScene" uid="uid://ywha5uwa0e62" path="res://objects/trash/Trash.tscn" id="9_jbd4l"]
+[ext_resource type="PackedScene" uid="uid://ckwnp346yqoti" path="res://characters/le_cat/cat.tscn" id="10_fu3ou"]
+[ext_resource type="PackedScene" uid="uid://bfxah7yut2ec0" path="res://components/cariable/CarriableComponent.tscn" id="11_bhwsq"]
+[ext_resource type="PackedScene" uid="uid://m5gqbqgarhdk" path="res://components/throwable/ThrowableComponent.tscn" id="12_xftjw"]
+[ext_resource type="PackedScene" uid="uid://cah3urn1fwd1d" path="res://zones/sell_zone/SellZone.tscn" id="13_8bdjt"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_1of5j"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_bhwsq"]
+
+[node name="Test" type="Node2D" unique_id=78523924]
+
+[node name="Player" parent="." unique_id=1993068751 instance=ExtResource("1_w8un3")]
+position = Vector2(1004, 410)
+collision_layer = 0
+
+[node name="DetectableComponent" parent="Player" index="15" unique_id=2037387284]
+physics_material_override = SubResource("PhysicsMaterial_1of5j")
+
+[node name="Valuable" parent="." unique_id=1917833229 instance=ExtResource("3_jbd4l")]
+position = Vector2(409, 277)
+
+[node name="Valuable2" parent="." unique_id=2061310895 instance=ExtResource("4_fu3ou")]
+position = Vector2(982, 256)
+
+[node name="Valuable3" parent="." unique_id=438965817 instance=ExtResource("5_bhwsq")]
+position = Vector2(405, 478)
+
+[node name="Valuable4" parent="." unique_id=1789179876 instance=ExtResource("6_xftjw")]
+position = Vector2(941, 495)
+
+[node name="Valuable5" parent="." unique_id=1054021440 instance=ExtResource("7_8bdjt")]
+position = Vector2(665, 482)
+Type = 7
+
+[node name="Valuable6" parent="." unique_id=984273387 instance=ExtResource("8_wnywe")]
+position = Vector2(664, 280)
+Type = 7
+
+[node name="Valuable7" parent="." unique_id=678477915 instance=ExtResource("9_1of5j")]
+position = Vector2(793, 269)
+Type = 7
+
+[node name="Trash" parent="." unique_id=189504567 instance=ExtResource("9_jbd4l")]
+position = Vector2(525, 448)
+
+[node name="Trash2" parent="." unique_id=628008687 instance=ExtResource("9_jbd4l")]
+position = Vector2(736, 450)
+
+[node name="Trash3" parent="." unique_id=1175326664 instance=ExtResource("9_jbd4l")]
+position = Vector2(583, 326)
+
+[node name="Cat" parent="." unique_id=722993762 instance=ExtResource("10_fu3ou")]
+position = Vector2(556, 385)
+
+[node name="CarriableComponent" parent="Cat" unique_id=883810070 node_paths=PackedStringArray("CollisionShape2D") instance=ExtResource("11_bhwsq")]
+CollisionShape2D = NodePath("CollisionShape2D2")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Cat/CarriableComponent" unique_id=1560605237]
+shape = SubResource("CircleShape2D_bhwsq")
+
+[node name="ThrowableComponent" parent="Cat" unique_id=1551366403 instance=ExtResource("12_xftjw")]
+
+[node name="SellZone" parent="." unique_id=377854475 instance=ExtResource("13_8bdjt")]
+position = Vector2(1201, 444)
+
+[editable path="Player"]
+[editable path="Player/CarrierComponent"]

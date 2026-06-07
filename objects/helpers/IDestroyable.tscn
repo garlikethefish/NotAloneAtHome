@@ -1,6 +1,0 @@
-[gd_scene format=3 uid="uid://v2kc0hxagcr"]
-
-[ext_resource type="Script" uid="uid://dfmfyqj8xptjq" path="res://scripts/interfaces/i_destroyable.gd" id="1_5c81e"]
-
-[node name="IDestroyable" type="Node2D" unique_id=762967278]
-script = ExtResource("1_5c81e")

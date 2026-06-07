@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bmvgwyelxjr6q"]
 
-[ext_resource type="Script" uid="uid://bflx038o74dvh" path="res://characters/plain_thief/Bandit.gd" id="1_nuupm"]
+[ext_resource type="Script" uid="uid://c5yg6ipwu1sjs" path="res://characters/plain_thief/Bandit.cs" id="1_beyja"]
 [ext_resource type="Texture2D" uid="uid://pt5voa6u84nw" path="res://sprites/Bandit-Sheet.png" id="2_1v8oq"]
 [ext_resource type="AudioStream" uid="uid://d1w6ghitekdav" path="res://sounds/sound effects/Mag_Unload_Sound.wav" id="3_1v8oq"]
 [ext_resource type="Texture2D" uid="uid://brlqbui27jqjn" path="res://sprites/shadow.png" id="3_so3fp"]
@@ -9,7 +9,6 @@
 [ext_resource type="AudioStream" uid="uid://cfsfletqwk7r2" path="res://sounds/sound effects/bandit_footstep3.wav" id="7_ers6e"]
 [ext_resource type="AudioStream" uid="uid://c5mgu2784a6dr" path="res://sounds/sound effects/bandit_footstep4.wav" id="8_atxhn"]
 [ext_resource type="AudioStream" uid="uid://djh3kwdicro7r" path="res://sounds/sound effects/bandit_breathe.mp3" id="9_1skd5"]
-
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_1skd5"]
 radius = 17.0
@@ -291,8 +290,7 @@ stream_3/stream = ExtResource("8_atxhn")
 
 [node name="Bandit" type="CharacterBody2D" unique_id=136410527]
 safe_margin = 0.2
-script = ExtResource("1_nuupm")
-roam_wait_time = 0.1
+script = ExtResource("1_beyja")
 
 [node name="Area2D" type="Area2D" parent="." unique_id=2139388755]
 monitoring = false
