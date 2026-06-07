@@ -782,6 +782,7 @@ max_active_lights = 7
 
 [node name="Player" parent="." unique_id=1993068751 instance=ExtResource("1_rgh2o")]
 position = Vector2(474, 302)
+collision_mask = 2
 
 [node name="Cat" parent="." unique_id=722993762 instance=ExtResource("4_nxtc6")]
 position = Vector2(365, 399)
