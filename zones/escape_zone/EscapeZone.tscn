@@ -1,0 +1,195 @@
+[gd_scene format=3 uid="uid://4qlmy32o1i1f"]
+
+[ext_resource type="Script" uid="uid://h25oedxyku2l" path="res://zones/escape_zone/EscapeZone.cs" id="1_nbn18"]
+[ext_resource type="Shader" uid="uid://bp4xal8jmdr6p" path="res://shaders/dashed_outline.gdshader" id="2_8hd4h"]
+[ext_resource type="Texture2D" uid="uid://dc28r33w4yiik" path="res://sprites/whiteCube.png" id="3_ljbf8"]
+[ext_resource type="Theme" uid="uid://c68li1l2cs3o4" path="res://themes/default_theme.tres" id="4_ljbf8"]
+[ext_resource type="PackedScene" uid="uid://b6lsnal5uysly" path="res://components/detector/area/AreaDetectorComponent.tscn" id="5_fiqaq"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4kwu7"]
+shader = ExtResource("2_8hd4h")
+shader_parameter/radius = 46.78400222224
+shader_parameter/thickness = 12.8400006099
+shader_parameter/color = Color(1, 1, 1, 1)
+shader_parameter/dash_count = 33.00000152
+shader_parameter/dash_ratio = 0.5550000263625
+shader_parameter/speed = 0.475
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vqniu"]
+size = Vector2(1.007335, 0.9445512)
+
+[sub_resource type="Animation" id="Animation_1edbj"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1.105, 1.105)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sprite2D:material:shader_parameter/color")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_uuocy"]
+resource_name = "appear"
+length = 0.5
+capture_included = true
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 2,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.11379787, 0.441367),
+"transitions": PackedFloat32Array(0.4204483, 1),
+"update": 2,
+"values": [Vector2(0.825, 0.825), Vector2(1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sprite2D:material:shader_parameter/color")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_kx7al"]
+resource_name = "disappear"
+length = 0.5
+capture_included = true
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.42325258),
+"transitions": PackedFloat32Array(1, 1),
+"update": 2,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.030233834, 0.1802162, 0.40050387),
+"transitions": PackedFloat32Array(1, 6.9643984, 3.7321281),
+"update": 2,
+"values": [Vector2(1, 1), Vector2(1.1, 1.1), Vector2(0.9, 0.9)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sprite2D:material:shader_parameter/color")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.42325258),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_fgkrp"]
+_data = {
+&"RESET": SubResource("Animation_1edbj"),
+&"appear": SubResource("Animation_uuocy"),
+&"disappear": SubResource("Animation_kx7al")
+}
+
+[node name="EscapeZone" type="Node2D" unique_id=1530702801]
+scale = Vector2(1.105, 1.105)
+script = ExtResource("1_nbn18")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=478984087]
+material = SubResource("ShaderMaterial_4kwu7")
+scale = Vector2(0.255, 0.255)
+texture = ExtResource("3_ljbf8")
+
+[node name="Label" type="Label" parent="." unique_id=1300228291]
+texture_filter = 1
+offset_left = -47.058823
+offset_top = -73.30317
+offset_right = 52.941177
+offset_bottom = 26.69683
+theme = ExtResource("4_ljbf8")
+theme_override_colors/font_color = Color(0.987071, 0.7993509, 0.36641434, 1)
+theme_override_colors/font_shadow_color = Color(0.42352942, 0.32156864, 0.29803923, 0.6039216)
+text = "Escape"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="AreaDetectorComponent" parent="." unique_id=1516267633 instance=ExtResource("5_fiqaq")]
+scale = Vector2(125.665, 125.665)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AreaDetectorComponent" unique_id=264964330]
+shape = SubResource("RectangleShape2D_vqniu")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=977916316]
+libraries/ = SubResource("AnimationLibrary_fgkrp")
+
+[node name="Timer" type="Timer" parent="." unique_id=781772001]
+
+[node name="CountdownLabel" type="Label" parent="." unique_id=1988944440]
+texture_filter = 1
+offset_left = -48.86878
+offset_top = -27.149323
+offset_right = 51.13122
+offset_bottom = 72.85069
+theme = ExtResource("4_ljbf8")
+theme_override_colors/font_color = Color(0.987071, 0.7993509, 0.36641434, 1)
+theme_override_colors/font_shadow_color = Color(0.42352942, 0.32156864, 0.29803923, 0.6039216)
+text = "1"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3

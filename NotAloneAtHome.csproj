@@ -15,6 +15,6 @@
     </ItemGroup>
     <ItemGroup>
         <Compile Remove="Generators/**" />
-        <Compile Remove="tasks/water_plants/**" />
+        <Compile Remove="tasks/example_task/**" />
     </ItemGroup>
 </Project>

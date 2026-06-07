@@ -58,6 +58,11 @@ public static class NodeExtensions
         component = null;
         return false;
     }
+
+    public static T? GetNodeFromGroup<T>(this SceneTree tree, string group) where T : Node
+    {
+        return tree.GetNodesInGroup(group).OfType<T>().FirstOrDefault();
+    }
 }
 
 public static class HelperExtensions

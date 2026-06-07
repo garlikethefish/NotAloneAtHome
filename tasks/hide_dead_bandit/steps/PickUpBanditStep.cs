@@ -16,7 +16,7 @@ public partial class HideDeadBanditTask
         public override void OnStart()
         {
             UpdateName("Pick up sleepin bandit");
-            bandit = Ctx.GetNodesInGroup("task_hide_dead_bandit").OfType<DeadBandit>().FirstOrDefault();
+            bandit = Ctx.GetNodeFromGroup<DeadBandit>("task_hide_dead_bandit");
 
             if (bandit == null)
             {

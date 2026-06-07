@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://bqall3c1irqec"]
+
+[ext_resource type="Script" uid="uid://boqpqegb4lo15" path="res://objects/cat_bowl/CatBowl.cs" id="1_qssht"]
+[ext_resource type="Texture2D" uid="uid://c27480eqiub7x" path="res://sprites/catbow_emptyl.png" id="2_4g67d"]
+[ext_resource type="PackedScene" uid="uid://b8odej7420g54" path="res://components/detectable/DetectableComponent.tscn" id="3_taljo"]
+[ext_resource type="PackedScene" uid="uid://k2k1j0y25ebx" path="res://components/interactable/InteractableComponent.tscn" id="4_42t01"]
+
+[node name="CatBowl" type="Node2D" unique_id=472273701]
+script = ExtResource("1_qssht")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=229711321]
+texture = ExtResource("2_4g67d")
+
+[node name="DetectableComponent" parent="." unique_id=1660920776 instance=ExtResource("3_taljo")]
+
+[node name="InteractableComponent" parent="." unique_id=1999549239 instance=ExtResource("4_42t01")]

@@ -31,13 +31,13 @@ public partial class Player : CharacterBody2D, IStateMachine
     
     [ExportGroup("Debug")]
     [Export] public bool DebugState = false;
-    public bool isWearingMask = false;
     //
     // internal flags
     //
     public bool IsAiming { get; private set; }
     public bool CanInteract { get; set; } = true;
     private bool _canCarry = true;
+    public bool isWearingMask = false;
 
     public bool IsDead = false;
     public bool HasMask = true;
@@ -47,7 +47,7 @@ public partial class Player : CharacterBody2D, IStateMachine
     private Vector2 _banditBody;
     private float _distance;
     private Vector2 _moveDirection = Vector2.Zero;
-    private AnimatedSprite2D _anim;
+    [Node("AnimatedSprite2D")] private AnimatedSprite2D _anim;
     private AudioStreamPlayer2D _footstepSound;
     private AudioStreamPlayer2D _maskSound;
     private GpuParticles2D _breathingParticles;
@@ -71,7 +71,6 @@ public partial class Player : CharacterBody2D, IStateMachine
 
     public override void _Ready()
     {
-        _anim               = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
         _footstepSound      = GetNode<AudioStreamPlayer2D>("FootstepSound");
         _maskSound          = GetNode<AudioStreamPlayer2D>("Breathe");
         _breathingParticles = GetNode<GpuParticles2D>("BreathingParticles");

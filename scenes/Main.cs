@@ -8,6 +8,7 @@ public partial class Main : Node2D
 	public override void _Ready()
     {
         GD.Print($"Starting game on scene {GetTree().CurrentScene.Name}");
+        TaskManager.Instance.AddTask(new FeedCatTask(GetTree()));
         TaskManager.Instance.AddTask(new HideDeadBanditTask(GetTree()));
         TaskManager.Instance.AddTask(new CollectTrashTask(GetTree(), 4));
     }

@@ -78,7 +78,6 @@ public partial class CarriableComponent : Node2D, ICarriableComponent
         var tweenX = CreateTween();
         var parent = GetParent<Node2D>();
 
-
         tween.SetParallel().SetEase(Tween.EaseType.InOut).SetTrans(Tween.TransitionType.Sine);
         tween.TweenProperty(parent, "scale", new Vector2(0.3f, 0.3f), 0.2f)
             .SetTrans(Tween.TransitionType.Expo);
