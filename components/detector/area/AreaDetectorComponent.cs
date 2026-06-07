@@ -37,7 +37,7 @@ public partial class AreaDetectorComponent : Area2D, IAreaDetectorComponent
         foreach (var model in DetectablesInArea.ToList())
         {
             var detectable = model.Detectable;
-            var localTarget = ToLocal(detectable.CollisionShape2D.GlobalPosition);
+            var localTarget = ToLocal(detectable.GlobalPosition);
 
             Color color = new(0, 1, 0, 0.5f);
             DrawCircle(localTarget, 2f, color);

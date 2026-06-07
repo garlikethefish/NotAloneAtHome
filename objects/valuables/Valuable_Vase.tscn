@@ -2,22 +2,29 @@
 
 [ext_resource type="PackedScene" uid="uid://hnye7wtm1w0e" path="res://objects/valuables/Valuable.tscn" id="1_2fm6i"]
 [ext_resource type="Texture2D" uid="uid://qo8tgu65sjrw" path="res://canvas_textures/vase2_texture.tres" id="2_f1ixd"]
+[ext_resource type="Shader" uid="uid://wb2c8vb2gt3i" path="res://shaders/WhiteFlash.gdshader" id="2_o60eu"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_f1ixd"]
 size = Vector2(14, 23)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_282do"]
+resource_local_to_scene = true
+shader = ExtResource("2_o60eu")
+shader_parameter/white_amount = 0.0
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_f1ixd"]
 polygon = PackedVector2Array(-7, -6, -4, -4, -4, 0, -8, 4, -7, 10, -4, 13, -7, 16, 7, 16, 4, 13, 7, 10, 8, 4, 4, 0, 4, -4, 7, -6)
 
 [node name="Valuable" unique_id=2061310895 instance=ExtResource("1_2fm6i")]
 texture_filter = 0
-type = 7
+value = 5.0
 
 [node name="CollisionShape2D" parent="." index="0" unique_id=168771423]
 position = Vector2(0, 4.5)
 shape = SubResource("RectangleShape2D_f1ixd")
 
 [node name="Sprite2D" parent="." index="1" unique_id=2054388301]
+material = SubResource("ShaderMaterial_282do")
 texture = ExtResource("2_f1ixd")
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="Sprite2D" index="0" unique_id=1258730077]

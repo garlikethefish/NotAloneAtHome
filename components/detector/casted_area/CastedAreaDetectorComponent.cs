@@ -80,7 +80,7 @@ public partial class CastedAreaDetectorComponent : AreaDetectorComponent, ICaste
         foreach (DetectableComponentModel model in DetectablesInArea.ToList())
         {
             DetectableComponent detectable  = model.Detectable;
-            var localTarget = ToLocal(detectable.CollisionShape2D.GlobalPosition);
+            var localTarget = ToLocal(detectable.GlobalPosition);
 
             Color color;
             if (detectable == ClosestDetectable)
@@ -119,7 +119,7 @@ public partial class CastedAreaDetectorComponent : AreaDetectorComponent, ICaste
 
             var query = PhysicsRayQueryParameters2D.Create(
                 GlobalPosition,
-                model.Detectable.CollisionShape2D.GlobalPosition,
+                model.Detectable.GlobalPosition,
                 combinedMask,
                 allExcluded
             );

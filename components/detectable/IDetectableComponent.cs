@@ -5,8 +5,7 @@ using System.Collections.Generic;
 using Godot;
 
 public interface IDetectableComponent 
-{
-    CollisionShape2D CollisionShape2D { get; } 
+{     
     List<AreaDetectorComponent> BlacklistedDetectors { get; }
     event Action<AreaDetectorComponent> OnEnteredDetectorArea;
     event Action<AreaDetectorComponent> OnExitedDetectorArea;

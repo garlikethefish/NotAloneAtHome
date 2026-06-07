@@ -11,6 +11,25 @@ public partial class CarriableComponent : Node2D, ICarriableComponent
     public Func<CarrierComponent, bool> CanBeCarriedBy { get; set; } = (_) => true;
     public event Action<CarrierComponent> OnPickedUpBy;
     public event Action<Vector2> OnDropedAt;
+    private bool _isCarried = false;
+    public bool IsCarried { 
+        get => _isCarried; 
+        set
+        {
+            if (GetParent() is RigidBody2D rigid)
+            {
+                if (value)
+                {
+                    rigid.Freeze = true;
+                }
+                else
+                {
+                    rigid.Freeze = false;
+                }
+            }
+            _isCarried = value;
+        } 
+    }
 
     public override string[] _GetConfigurationWarnings()
     {
@@ -78,6 +97,7 @@ public partial class CarriableComponent : Node2D, ICarriableComponent
 
     public async void HandlePickedUpBy(CarrierComponent carrier)
     {
+        IsCarried = true;
         GetParent().Reparent(carrier.CarryPointNode);
         await PlayPickUpAnimation(Vector2.Zero);
         OnPickedUpBy?.Invoke(carrier);
@@ -85,7 +105,8 @@ public partial class CarriableComponent : Node2D, ICarriableComponent
 
     public async void HandleDropedAt(Vector2 landPos)
     {
-        GetParent().Reparent(GetTree().CurrentScene, true);
+        IsCarried = false;
+        GetParent().Reparent(GetTree().CurrentScene);
         await PlayDropAnimation(landPos);
         OnDropedAt?.Invoke(landPos);
     }

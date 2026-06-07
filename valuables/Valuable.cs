@@ -8,19 +8,16 @@ using NotAloneAtHome.Scripts.Globals;
 [Scene]
 public partial class Valuable : RigidBody2D
 {
-    [Export] public ValuableType Type;
     [Export] public Sprite2D Sprite;
+    [Export] public double value = 0;
     [Node] public AnimationPlayer AnimationPlayer;
     [Node] public DetectableComponent DetectableComponent;
-    public double value;
     public event Action OnSold;
     private bool _isSelling;
     // private ShaderMaterial _shaderMat = GD.Load<ShaderMaterial>("uid://cnuuc1ep5p6ia");
 
     public override void _Ready()
     {
-        Sprite.Texture = ValuableData.Valuables[Type].texture2D;
-        value = ValuableData.Valuables[Type].StealValue;
         // Sprite.Material = _shaderMat;
     }
 

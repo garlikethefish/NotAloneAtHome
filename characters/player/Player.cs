@@ -12,6 +12,7 @@ public partial class Player : CharacterBody2D, IStateMachine
     //
     // player move speed
     //
+    [ExportGroup("Movement")]
     [Export] public float NormalSpeed = 100.0f;
     [Export] public float SprintMultiplier = 2.0f;
     [Export] public float MaskSpeedMultiplier = 0.6f;
@@ -45,12 +46,8 @@ public partial class Player : CharacterBody2D, IStateMachine
     private bool _banditNear = false;
     private Vector2 _banditBody;
     private float _distance;
-
     private Vector2 _moveDirection = Vector2.Zero;
-
-    // components
     private AnimatedSprite2D _anim;
-    private ColorRect _overlayRect;
     private AudioStreamPlayer2D _footstepSound;
     private AudioStreamPlayer2D _maskSound;
     private GpuParticles2D _breathingParticles;
@@ -61,7 +58,6 @@ public partial class Player : CharacterBody2D, IStateMachine
     private bool _sprinting = false;
     private bool _waitParticles = false;
     private bool _shakingCamera = false;
-    public Vector2 FacingDirection { get; private set; }
     public Dictionary<Type, IState> States = [];
     public IState CurrentState { get; private set; }
  
@@ -76,7 +72,6 @@ public partial class Player : CharacterBody2D, IStateMachine
     public override void _Ready()
     {
         _anim               = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
-        _overlayRect        = GetNode<ColorRect>("MaskOverlay/ColorRect");
         _footstepSound      = GetNode<AudioStreamPlayer2D>("FootstepSound");
         _maskSound          = GetNode<AudioStreamPlayer2D>("Breathe");
         _breathingParticles = GetNode<GpuParticles2D>("BreathingParticles");
@@ -265,7 +260,6 @@ public partial class Player : CharacterBody2D, IStateMachine
 
     public void SetFacingDirection(Vector2 direction)
     {
-        FacingDirection = direction;
         ThrowerComponent.FacingDirection = direction;
     }
 

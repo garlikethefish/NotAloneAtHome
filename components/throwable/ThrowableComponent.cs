@@ -53,6 +53,12 @@ public partial class ThrowableComponent : Node2D, IThrowableComponent
     public void HandleThrownBy(ThrowerComponent thrower, Vector2 toPosition)
     {
         IsFlying = true;
+
+        if (this.ParentHas<CarriableComponent>(out var carriable))
+        {
+            carriable.IsCarried = false;
+        }
+
         StartFlyAnimation(toPosition);
         OnThrownBy?.Invoke(thrower, toPosition);
     }

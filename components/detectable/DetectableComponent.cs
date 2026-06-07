@@ -14,7 +14,6 @@ public class DetectableComponentModel
 
 public partial class DetectableComponent : AnimatableBody2D, IDetectableComponent
 {
-    [Export] public CollisionShape2D CollisionShape2D { get; private set; } = default!;
     public List<AreaDetectorComponent> BlacklistedDetectors { get; } = [];
     public Func<AreaDetectorComponent, bool> CustomCanBeDetectedBy { get; set; } = _ => true;
     private bool _isDetectable = true;
