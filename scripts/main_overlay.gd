@@ -7,6 +7,8 @@ extends Control
 @onready var money_lost_count_label = $StolenStuffPanel/MoneyLostCountLabel
 @onready var stolen_progress_bar = $StolenStuffPanel/StolenLabel/ProgressBar
 @onready var suspicious_progress_bar = $ImportantInfoPanel/SuspiciousLabel/ProgressBar
+@export var MaskKeyTexture: TextureRect;
+@export var SprintKeyTexture: TextureRect;
 
 var task_name = ReactiveSignal.new("")
 var task_step_name = ReactiveSignal.new("")
@@ -21,11 +23,32 @@ func _ready() -> void:
 		objective_content_label.text = task_step_name.value;
 	)
 	
-	#GameManager.on_trash_collected.connect(updateTrashCollected)
-	#GameManager.on_suspicion_change.connect(updateSuspision)
-	#GameManager.on_item_steal.connect(upadteItemStealed)
-	#GameManager.on_line_completed.connect(updateLinesDone)
+	_mask_original_y = MaskKeyTexture.position.y
+	_sprint_original_y = SprintKeyTexture.position.y
 	
+var _mask_original_y: float
+var _sprint_original_y: float
+
+func _process(_delta: float) -> void:
+	if Input.is_action_just_pressed("toggle_mask"):
+		press_down(MaskKeyTexture, _mask_original_y)
+	if Input.is_action_just_released("toggle_mask"):
+		press_up(MaskKeyTexture, _mask_original_y)
+	if Input.is_action_just_pressed("sprint"):
+		press_down(SprintKeyTexture, _sprint_original_y)
+	if Input.is_action_just_released("sprint"):
+		press_up(SprintKeyTexture, _sprint_original_y)
+
+func press_down(control: Control, original_y: float) -> void:
+	var tween = control.create_tween()
+	tween.tween_property(control, "position:y", original_y + 5, 0.08)\
+		.set_trans(Tween.TRANS_SINE)
+
+func press_up(control: Control, original_y: float) -> void:
+	var tween = control.create_tween()
+	tween.tween_property(control, "position:y", original_y, 0.08)\
+		.set_trans(Tween.TRANS_SINE)
+		
 func initialize():
 	objective_content_label.text = GameManager.game_objectives[GameManager.current_objective].text
 	stolen_progress_bar.max_value = GameManager.maxStealableItems
