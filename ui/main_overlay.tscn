@@ -13,7 +13,7 @@ corner_radius_bottom_left = 47
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n4vjp"]
 bg_color = Color(0.8352941, 0, 0.16470589, 1)
 
-[node name="MainOverlay" type="Control" unique_id=1661248365 node_paths=PackedStringArray("MaskKeyTexture", "SprintKeyTexture")]
+[node name="MainOverlay" type="Control" unique_id=1661248365 node_paths=PackedStringArray("MaskKeyTexture", "SprintKeyTexture", "SprintToolTip", "MaskToolTip")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -24,6 +24,8 @@ size_flags_horizontal = 4
 script = ExtResource("1_mmsv4")
 MaskKeyTexture = NodePath("MaskTip/MaskKeyTexture")
 SprintKeyTexture = NodePath("ToolTip/SprintKeyTexture")
+SprintToolTip = NodePath("ToolTip")
+MaskToolTip = NodePath("MaskTip")
 
 [node name="ImportantInfoPanel" type="Panel" parent="." unique_id=541526941]
 layout_mode = 1

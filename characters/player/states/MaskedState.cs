@@ -30,6 +30,9 @@ public partial class Player
         public void Enter()
         {
             Ctx.isWearingMask = true;
+            Ctx.CanSprint = false;
+            Ctx.CanToggleMask = true;
+
             Ctx._currentSpeed = Ctx.NormalSpeed * Ctx.MaskSpeedMultiplier;
             Ctx._targetVisionRadius = Ctx.defaultMaskedVisionRadiuss;
         }

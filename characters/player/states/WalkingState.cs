@@ -33,6 +33,8 @@ public partial class Player
         public void Enter()
         {
             Ctx.CanInteract = true;
+            Ctx.CanSprint = true;
+            Ctx.CanToggleMask = false;
         }
 
         public void Exit()

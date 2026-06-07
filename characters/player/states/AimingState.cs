@@ -30,6 +30,8 @@ public partial class Player
         public void Enter()
         {
             Ctx.IsAiming = true;
+            Ctx.CanSprint = false;
+            Ctx.CanToggleMask = false;
         }
 
         public void Exit()

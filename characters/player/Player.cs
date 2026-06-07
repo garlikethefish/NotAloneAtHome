@@ -9,6 +9,9 @@ using NotAloneAtHome.state_machines.interfaces;
 [Scene]
 public partial class Player : CharacterBody2D, IStateMachine
 {
+    [Signal] public delegate void NewStateEventHandler(string state);
+    [Signal] public delegate void CanSprintChangedEventHandler(bool value);
+    [Signal] public delegate void CanToggleMaskChangedEventHandler(bool value);
     //
     // player move speed
     //
@@ -36,6 +39,28 @@ public partial class Player : CharacterBody2D, IStateMachine
     //
     public bool IsAiming { get; private set; }
     public bool CanInteract { get; set; } = true;
+    private bool _canSprint = false;
+    public bool CanSprint
+    {
+        get => _canSprint;
+        set
+        {
+            if (_canSprint == value) return;
+            _canSprint = value;
+            EmitSignal(SignalName.CanSprintChanged, value);
+        }
+    }
+    private bool _canToggleMask = false;
+    public bool CanToggleMask
+    {
+        get => _canToggleMask;
+        set
+        {
+            if (_canToggleMask == value) return;
+            _canToggleMask = value;
+            EmitSignal(SignalName.CanToggleMaskChanged, value);
+        }
+    }
     private bool _canCarry = true;
     public bool isWearingMask = false;
 
@@ -290,6 +315,8 @@ public partial class Player : CharacterBody2D, IStateMachine
         CurrentState?.Exit();
         CurrentState = next;
         CurrentState?.Enter();
+
+        EmitSignal(SignalName.NewState, CurrentState?.GetType().Name ?? "None");
     }
 
     public void Update(double delta)

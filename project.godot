@@ -24,6 +24,7 @@ buses/default_bus_layout="uid://646n5sgnpnfp"
 FogShapes="*uid://bcvmd3sqn3lwm"
 GameManager="*uid://cid1uama0hiub"
 TaskManager="*uid://6by5ogm5p27v"
+Animations="*uid://diplwldmjsrvt"
 
 [display]
 

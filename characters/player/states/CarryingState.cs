@@ -33,6 +33,8 @@ public partial class Player
         public void Enter()
         {
             Ctx.CanInteract = true;
+            Ctx.CanSprint = false;
+            Ctx.CanToggleMask = false;
             Ctx._currentSpeed = Ctx.NormalSpeed * Ctx.CarrySpeedMultiplier;
         }
 
