@@ -1,7 +1,9 @@
 namespace NotAloneAtHome.Characters;
 
 using Godot;
+using NotAloneAtHome.Components;
 
+[Scene]
 public partial class Cat : CharacterBody2D
 {
     [Export] public float Speed = 80.0f;
@@ -11,6 +13,8 @@ public partial class Cat : CharacterBody2D
     [Export] public float MinY = -100.0f;
     [Export] public float MaxY = 600.0f;
     [Export] public int DoCatTimes = 5;
+    [Node] public InteractableComponent InteractableComponent;
+    [Node] public NoiseMaker NoiseMaker;
 
     private NavigationAgent2D _navAgent;
     private float _roamTimer = 0.0f;
@@ -30,6 +34,11 @@ public partial class Cat : CharacterBody2D
 
         _navAgent = GetNode<NavigationAgent2D>("NavigationAgent2D");
         StartMeowTimer();
+        InteractableComponent.OnInteractionFrom += _ =>
+        {
+            NoiseMaker.MakeNoise(100, 100);
+            GD.Print("MJAU!");
+        };
     }
 
     private void StartMeowTimer()

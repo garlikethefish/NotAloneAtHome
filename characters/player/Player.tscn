@@ -13,6 +13,7 @@
 [ext_resource type="PackedScene" uid="uid://d1lv148xxd5ec" path="res://components/carrier/CarrierComponent.tscn" id="14_5dd86"]
 [ext_resource type="PackedScene" uid="uid://c7wvmwmhhdcnr" path="res://components/interactor/InteractorComponent.tscn" id="15_ir81o"]
 [ext_resource type="PackedScene" uid="uid://di1gufwmxsr11" path="res://components/detector/casted_area/CastedAreaDetectorComponent.tscn" id="15_ohrde"]
+[ext_resource type="PackedScene" uid="uid://dim6u5hasqq78" path="res://components/noise/reciever/NoiseReciever.tscn" id="17_5dd86"]
 [ext_resource type="PackedScene" uid="uid://b8odej7420g54" path="res://components/detectable/DetectableComponent.tscn" id="17_7aoru"]
 [ext_resource type="PackedScene" uid="uid://u0mnqyu6x1q3" path="res://objects/raycasted_shape/RaycastedVisionShape.tscn" id="17_67shi"]
 [ext_resource type="PackedScene" uid="uid://s2g10onqsl60" path="res://components/thrower/ThrowerComponent.tscn" id="17_u7nq2"]
@@ -641,5 +642,7 @@ position = Vector2(0, -11.71)
 shape = SubResource("CircleShape2D_po6sa")
 
 [node name="DetectableComponent" parent="." unique_id=2037387284 instance=ExtResource("17_7aoru")]
+
+[node name="NoiseReciever" parent="." unique_id=95553008 instance=ExtResource("17_5dd86")]
 
 [editable path="CarrierComponent"]

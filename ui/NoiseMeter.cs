@@ -1,30 +1,24 @@
 using Godot;
+using NotAloneAtHome.Characters.Player;
 using System;
 using System.Runtime.CompilerServices;
 
 public partial class NoiseMeter : TextureProgressBar
 {
- 
+    NoiseReciever _noiseReciever;
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
     {
-        
+        _noiseReciever = GetTree().GetNodeFromGroup<Player>("player").GetChild<NoiseReciever>();
+        if (_noiseReciever == null)
+        {
+            GD.Print("NO PLAYER");
+        }
     }
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
     {
-        Value -= delta * 50;
-        if (Input.IsActionJustPressed("sprint"))
-        {
-            AddNoise(20);
-        }
-        // GD.Print(Value);
-    }
-
-    public void AddNoise(double amount)
-    {
-        GD.Print("added noise");
-        Value += amount;
+        Value = _noiseReciever.CurrentNoise;
     }
 }

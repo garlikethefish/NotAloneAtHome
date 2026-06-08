@@ -3,6 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://be8qbmt0fe144" path="res://characters/player/Player.tscn" id="1_w8un3"]
 [ext_resource type="PackedScene" uid="uid://hnye7wtm1w0e" path="res://objects/valuables/Valuable.tscn" id="3_jbd4l"]
 [ext_resource type="PackedScene" uid="uid://dq60rr28wyibf" path="res://objects/valuables/ValuableCabinet.tscn" id="4_fu3ou"]
+[ext_resource type="PackedScene" uid="uid://bfs7aolno5hcx" path="res://components/noise/maker/NoiseMaker.tscn" id="4_wnywe"]
 [ext_resource type="PackedScene" uid="uid://djmsje8kmaa6o" path="res://objects/valuables/valuable_Bed.tscn" id="5_bhwsq"]
 [ext_resource type="PackedScene" uid="uid://dfttis2qx6job" path="res://objects/valuables/Valuable_Chair1.tscn" id="6_xftjw"]
 [ext_resource type="PackedScene" uid="uid://3pms5s3tmqpj" path="res://objects/valuables/Valuable_Chair2.tscn" id="7_8bdjt"]
@@ -13,6 +14,7 @@
 [ext_resource type="PackedScene" uid="uid://bfxah7yut2ec0" path="res://components/cariable/CarriableComponent.tscn" id="11_bhwsq"]
 [ext_resource type="PackedScene" uid="uid://m5gqbqgarhdk" path="res://components/throwable/ThrowableComponent.tscn" id="12_xftjw"]
 [ext_resource type="PackedScene" uid="uid://cah3urn1fwd1d" path="res://zones/sell_zone/SellZone.tscn" id="13_8bdjt"]
+[ext_resource type="PackedScene" uid="uid://cbcifivthchns" path="res://ui/ui_overlay.tscn" id="15_1of5j"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_1of5j"]
 
@@ -30,11 +32,16 @@ collision_layer = 0
 [node name="DetectableComponent" parent="Player" index="14" unique_id=2037387284]
 physics_material_override = SubResource("PhysicsMaterial_1of5j")
 
+[node name="NoiseReciever" parent="Player" index="15" unique_id=95553008]
+_maxNoiseDisturbance = 5.0
+
 [node name="Valuable" parent="." unique_id=1917833229 instance=ExtResource("3_jbd4l")]
 position = Vector2(409, 277)
 
 [node name="Valuable2" parent="." unique_id=2061310895 instance=ExtResource("4_fu3ou")]
 position = Vector2(982, 256)
+
+[node name="NoiseMaker" parent="Valuable2" unique_id=129743411 instance=ExtResource("4_wnywe")]
 
 [node name="Valuable3" parent="." unique_id=438965817 instance=ExtResource("5_bhwsq")]
 position = Vector2(405, 478)
@@ -53,6 +60,8 @@ position = Vector2(664, 280)
 
 [node name="Valuable7" parent="." unique_id=678477915 instance=ExtResource("9_1of5j")]
 position = Vector2(793, 269)
+
+[node name="NoiseMaker" parent="Valuable7" unique_id=444381663 instance=ExtResource("4_wnywe")]
 
 [node name="Trash" parent="." unique_id=189504567 instance=ExtResource("9_jbd4l")]
 position = Vector2(525, 448)
@@ -76,6 +85,8 @@ shape = SubResource("CircleShape2D_bhwsq")
 
 [node name="SellZone" parent="." unique_id=377854475 instance=ExtResource("13_8bdjt")]
 position = Vector2(1201, 444)
+
+[node name="UIOverlay" parent="." unique_id=466827575 instance=ExtResource("15_1of5j")]
 
 [editable path="Player"]
 [editable path="Player/CarrierComponent"]

@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://dim6u5hasqq78"]
+
+[ext_resource type="Script" uid="uid://c2m8g1ru66iq4" path="res://components/noise/reciever/NoiseReciever.cs" id="1_x1k5v"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_mt0p5"]
+
+[node name="NoiseReciever" type="Area2D" unique_id=1454098766]
+script = ExtResource("1_x1k5v")
+_maxNoiseDisturbance = 10.0
+stiffness = 300.0
+damping = 10.0
+
+[node name="Range" type="CollisionShape2D" parent="." unique_id=1564899267]
+shape = SubResource("CircleShape2D_mt0p5")
