@@ -245,7 +245,6 @@ grow_vertical = 2
 
 [node name="VHSEffectCanvasLayer" type="CanvasLayer" parent="UILayers" unique_id=902195982]
 layer = 0
-visible = false
 
 [node name="SubViewportContainer" parent="UILayers/VHSEffectCanvasLayer" unique_id=480592156 node_paths=PackedStringArray("player_vision_node", "player_camera_node") instance=ExtResource("27_ma7h6")]
 player_vision_node = NodePath("../../../Player/RaycastedShape")
@@ -779,7 +778,12 @@ max_active_lights = 7
 
 [node name="Player" parent="." unique_id=1993068751 instance=ExtResource("1_rgh2o")]
 position = Vector2(474, 302)
-VisionShrinkSpeed = 50.0
+VisionShrinkSpeed = 100.0
+VisionExpandSpeed = 100.0
+defaultUnmaskedVisionRadiuss = 200.0
+
+[node name="RaycastedShape" parent="Player" index="9" unique_id=876828578]
+reach = 300.0
 
 [node name="Cat" parent="." unique_id=722993762 instance=ExtResource("4_nxtc6")]
 position = Vector2(365, 399)

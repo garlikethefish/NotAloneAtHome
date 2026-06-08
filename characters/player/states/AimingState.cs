@@ -17,7 +17,10 @@ public partial class Player
 
         public void Update(double delta)
         {
-            Ctx.SetFacingDirection(Ctx.GetGlobalMousePosition() - Ctx.GlobalPosition);
+            Ctx.ThrowerComponent.FacingDirection = Ctx.GetGlobalMousePosition() - Ctx.GlobalPosition;
+            Ctx.CameraTargetPosition = Ctx.ToLocal(Ctx.ThrowerComponent.AimedAtLocation);
+
+
 
             if (Input.IsActionJustReleased("throw") 
                 && Ctx.CarrierComponent.CarriableComp.ParentHas<ThrowableComponent>(out var throwable)

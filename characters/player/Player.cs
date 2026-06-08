@@ -3,6 +3,7 @@ namespace NotAloneAtHome.Characters.Player;
 using System;
 using System.Collections.Generic;
 using Godot;
+using GTweensGodot.Extensions;
 using NotAloneAtHome.Components;
 using NotAloneAtHome.state_machines.interfaces;
 
@@ -63,6 +64,8 @@ public partial class Player : CharacterBody2D, IStateMachine
     }
     private bool _canCarry = true;
     public bool isWearingMask = false;
+    public Vector2 FacingDirection;
+    public Vector2 CameraTargetPosition;
 
     public bool IsDead = false;
     public bool HasMask = true;
@@ -85,12 +88,14 @@ public partial class Player : CharacterBody2D, IStateMachine
     private bool _shakingCamera = false;
     public Dictionary<Type, IState> States = [];
     public IState CurrentState { get; private set; }
+    private SpringVector2 _positionSpring = new(stiffness: 100f, damping: 20f);
  
     [Node] public InteractorComponent InteractorComponent;
     [Node] public ThrowerComponent ThrowerComponent;
     [Node] public CarrierComponent CarrierComponent;
     [Node] public CastedAreaDetectorComponent CastedAreaDetectorComponent;
     [Node] public Node2D RaycastedShape;
+    [Node("Camera2D")] private Camera2D _camera;
     [Signal] public delegate void ShakeCameraEventHandler();
     [Signal] public delegate void StopCameraShakeEventHandler();
 
@@ -120,6 +125,7 @@ public partial class Player : CharacterBody2D, IStateMachine
         HandleInteraction();
         HandleShaking();
         TransitionVisionRadius(delta, _targetVisionRadius);
+        MoveCamera(CameraTargetPosition);
     }
 
     public override void _PhysicsProcess(double delta)
@@ -128,7 +134,10 @@ public partial class Player : CharacterBody2D, IStateMachine
         _moveDirection.Y = Input.GetActionStrength("move_down") - Input.GetActionStrength("move_up");
         _moveDirection = _moveDirection.Normalized();
 
-        if (!IsAiming) SetFacingDirection(Velocity);
+        if (!IsAiming) {
+            FacingDirection = Velocity.Normalized();
+            CameraTargetPosition = FacingDirection * 10;
+        }
 
         Velocity = _moveDirection * _currentSpeed;
         MoveAndSlide();
@@ -139,6 +148,12 @@ public partial class Player : CharacterBody2D, IStateMachine
 
         if (IsDead)
             return;
+    }
+
+    public void MoveCamera(Vector2 position)
+    {
+        _positionSpring.Tick(position, (float)GetProcessDeltaTime());
+        _camera.Position = _positionSpring.Current;
     }
 
     public void HandleInteraction()
@@ -280,11 +295,6 @@ public partial class Player : CharacterBody2D, IStateMachine
     public void StopAiming()
     {
         ThrowerComponent.HandleStopAiming();
-    }
-
-    public void SetFacingDirection(Vector2 direction)
-    {
-        ThrowerComponent.FacingDirection = direction;
     }
 
     public void Pickup(CarriableComponent carriable)

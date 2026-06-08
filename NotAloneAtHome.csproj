@@ -9,9 +9,8 @@
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="Fody" Version="6.8.0" PrivateAssets="all" />
-        <WeaverFiles
-            Include="$(MSBuildThisFileDirectory)Generators\bin\Debug\netstandard2.0\NodeWire.Fody.dll"
-            WeaverClassNames="NodeWireWeaver;MustAssignWeaver" />
+        <PackageReference Include="GTweensGodot" Version="6.0.0" />
+        <WeaverFiles Include="$(MSBuildThisFileDirectory)Generators\bin\Debug\netstandard2.0\NodeWire.Fody.dll" WeaverClassNames="NodeWireWeaver;MustAssignWeaver" />
     </ItemGroup>
     <ItemGroup>
         <Compile Remove="Generators/**" />

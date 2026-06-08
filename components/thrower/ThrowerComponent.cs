@@ -15,7 +15,7 @@ public partial class ThrowerComponent : Node2D, IThrowerComponent
     public int[] AimColliderMasks = [2];
     public Vector2 FacingDirection { get; set; }
     public bool IsAiming { get; private set; }
-    Vector2 AimedAtLocation = Vector2.Inf;
+    public Vector2 AimedAtLocation = Vector2.Zero;
     public event Action<ThrowableComponent> OnThrow;
 
     public override void _Ready()
@@ -37,7 +37,7 @@ public partial class ThrowerComponent : Node2D, IThrowerComponent
 
     public override void _Draw()
     {
-        if (!ShowDebug || AimedAtLocation == Vector2.Inf) return;
+        if (!ShowDebug || AimedAtLocation == Vector2.Zero) return;
 
         var localTarget = ToLocal(AimedAtLocation);
         DrawCircle(localTarget, 12f, new Color(0, 1, 0, 0.5f));
@@ -95,9 +95,9 @@ public partial class ThrowerComponent : Node2D, IThrowerComponent
     {
         IsCharging      = false;
         CurrentCharge   = 0;
-        AimedAtLocation = Vector2.Inf;
+        AimedAtLocation = Vector2.Zero;
         
-        _targetSpriteNode.GlobalPosition = Vector2.Inf;
+        _targetSpriteNode.GlobalPosition = Vector2.Zero;
         _targetSpriteNode.Visible = false;
         QueueRedraw();
     }
