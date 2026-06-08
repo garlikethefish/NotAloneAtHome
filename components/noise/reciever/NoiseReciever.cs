@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 public partial class NoiseReciever : Area2D
 {
@@ -29,7 +30,6 @@ public partial class NoiseReciever : Area2D
         _targetNoise += combinedPassiveNoise;
         _targetNoise = Math.Clamp(_targetNoise, 0, 100);
         CurrentNoise = TransitionNoiseArea(delta, CurrentNoise, _targetNoise, stiffness, damping);
-        // GD.Print("End noise: ", CurrentNoise, " Combined passive: ", combinedPassiveNoise);
     }
 
     private void OnAreaEnter(Node2D body)
@@ -47,7 +47,7 @@ public partial class NoiseReciever : Area2D
     float GetCombinedPassiveNoise()
     {
         float combinedNoise = 0f;
-        foreach (var noiseMaker in _passiveNoiseMakers)
+        foreach (var noiseMaker in _passiveNoiseMakers.ToList())
         {
             combinedNoise += noiseMaker.GetReceivedNoise(GlobalPosition);
         }

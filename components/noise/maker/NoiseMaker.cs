@@ -31,9 +31,9 @@ public partial class NoiseMaker : StaticBody2D
 
     public float GetReceivedNoise(Vector2 globalPosition)
     {
+        if (_currentNoiseArea == 0f) return _currentNoise;
         float distance = GlobalPosition.DistanceTo(globalPosition);
-        // GD.Print("area radius: ", _currentNoiseArea, " distance: ", distance);
-        return _currentNoise * (1f - distance / _currentNoiseArea);
+        return Math.Clamp(_currentNoise * (1f - distance / _currentNoiseArea), 0, 100);
     }
 
     public void TransitionNoiseArea(float delta, float targetRadius)
