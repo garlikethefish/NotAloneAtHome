@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://c5kv4m6r171hr"]
+
+[node name="TestViewports" type="Node2D" unique_id=1755900109]
+
+[node name="SubViewport" type="SubViewport" parent="." unique_id=74387917]
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(1920, 1080)
+render_target_update_mode = 4
+
+[node name="BlackRect" type="ColorRect" parent="SubViewport" unique_id=65436632]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
