@@ -7,8 +7,8 @@ public partial class NoiseMaker : StaticBody2D
     private float _currentNoise;
     private float _currentNoiseArea;
     private float _targetNoiseArea;
-    [Export] private float _soundExpandSpeed = 100;
-    [Export] private float _soundShrinkSpeed = 50;
+    [Export] private float _soundExpandSpeed = 150;
+    [Export] private float _soundShrinkSpeed = 100;
     public bool IsMakingNoise => _currentNoise > 0;
     [Node("NoiseShape")] private CollisionShape2D _noiseCollisionShape; 
 
@@ -36,7 +36,7 @@ public partial class NoiseMaker : StaticBody2D
         return Math.Clamp(_currentNoise * (1f - distance / _currentNoiseArea), 0, 100);
     }
 
-    public void TransitionNoiseArea(float delta, float targetRadius)
+    void TransitionNoiseArea(float delta, float targetRadius)
     {
         if (_currentNoiseArea == targetRadius) return;
 

@@ -26,8 +26,7 @@ public partial class NoiseReciever : Area2D
     {
         _targetNoise = 0;
         _targetNoise += _maxNoiseDisturbance * GD.Randf();
-        float combinedPassiveNoise = GetCombinedPassiveNoise();
-        _targetNoise += combinedPassiveNoise;
+        _targetNoise += GetCombinedPassiveNoise();
         _targetNoise = Math.Clamp(_targetNoise, 0, 100);
         CurrentNoise = TransitionNoiseArea(delta, CurrentNoise, _targetNoise, stiffness, damping);
     }
