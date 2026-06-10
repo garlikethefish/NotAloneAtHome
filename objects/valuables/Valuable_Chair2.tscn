@@ -7,7 +7,7 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_00qqt"]
 size = Vector2(21, 29)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_laqej"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_c10vt"]
 resource_local_to_scene = true
 shader = ExtResource("2_c10vt")
 shader_parameter/white_amount = 0.0
@@ -24,7 +24,7 @@ position = Vector2(-0.5, 0.5)
 shape = SubResource("RectangleShape2D_00qqt")
 
 [node name="Sprite2D" parent="." index="1" unique_id=2054388301]
-material = SubResource("ShaderMaterial_laqej")
+material = SubResource("ShaderMaterial_c10vt")
 texture = ExtResource("2_00qqt")
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="Sprite2D" index="0" unique_id=501422938]
