@@ -12,6 +12,7 @@
 [ext_resource type="Script" uid="uid://cmja5kkw6npgr" path="res://scenes/DrawPoligon.cs" id="7_36rkl"]
 [ext_resource type="Script" uid="uid://c8citj2m8ikhk" path="res://scenes/RoomLight.cs" id="7_xa025"]
 [ext_resource type="PackedScene" uid="uid://cah3urn1fwd1d" path="res://zones/sell_zone/SellZone.tscn" id="8_jlsqs"]
+[ext_resource type="PackedScene" uid="uid://bmvgwyelxjr6q" path="res://characters/plain_thief/Bandit.tscn" id="10_ebg2g"]
 [ext_resource type="PackedScene" uid="uid://djmsje8kmaa6o" path="res://objects/valuables/valuable_Bed.tscn" id="11_1iba3"]
 [ext_resource type="PackedScene" uid="uid://blm3resaadrtl" path="res://characters/closet_thief/DeadBanditCloset.tscn" id="13_mwfav"]
 [ext_resource type="PackedScene" uid="uid://q27ik5xajev6" path="res://components/spawner/Spawner.tscn" id="15_3p2gp"]
@@ -332,6 +333,9 @@ position = Vector2(474, 302)
 VisionShrinkSpeed = 100.0
 VisionExpandSpeed = 100.0
 defaultUnmaskedVisionRadiuss = 200.0
+
+[node name="RaycastedShape" parent="Player" index="9" unique_id=876828578]
+reach = 300.0
 
 [node name="Rooms" type="Node" parent="." unique_id=761107786]
 
@@ -925,6 +929,8 @@ position = Vector2(504, 312)
 script = ExtResource("24_2ofn6")
 player = NodePath("../Player")
 max_active_lights = 7
+
+[node name="Bandit" parent="." unique_id=136410527 instance=ExtResource("10_ebg2g")]
 
 [node name="Cat" parent="." unique_id=722993762 instance=ExtResource("4_nxtc6")]
 position = Vector2(365, 399)
