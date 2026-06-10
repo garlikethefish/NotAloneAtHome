@@ -240,6 +240,7 @@ metadata/_edit_vertical_guides_ = [-1302.0, -145.0, 887.0, -3874.0]
 [node name="UILayers" type="Node" parent="." unique_id=1785141639]
 
 [node name="UIOverlay" parent="UILayers" unique_id=466827575 instance=ExtResource("1_vcsgt")]
+layer = 3
 
 [node name="VHSFilter" type="ColorRect" parent="UILayers/UIOverlay" unique_id=961030738]
 material = SubResource("ShaderMaterial_ebg2g")
@@ -250,7 +251,6 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="PlayerVision" type="CanvasLayer" parent="UILayers" unique_id=1765145660]
-layer = 0
 
 [node name="ColorRect" type="ColorRect" parent="UILayers/PlayerVision" unique_id=31126122]
 material = SubResource("ShaderMaterial_xa025")
