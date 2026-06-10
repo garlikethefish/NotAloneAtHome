@@ -25,6 +25,7 @@
 [ext_resource type="PackedScene" uid="uid://4qlmy32o1i1f" path="res://zones/escape_zone/EscapeZone.tscn" id="21_1iba3"]
 [ext_resource type="Shader" uid="uid://cuielptcsyeb5" path="res://shaders/vhs_filter.gdshader" id="22_yxlcp"]
 [ext_resource type="Script" uid="uid://psn8bmpins46" path="res://scripts/light_manager.gd" id="24_2ofn6"]
+[ext_resource type="PackedScene" uid="uid://cp53c124r55di" path="res://objects/fog_of_war/FogOfWarViewportTexture.tscn" id="27_ma7h6"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ebg2g"]
 shader = ExtResource("22_yxlcp")
@@ -34,7 +35,7 @@ shader_parameter/color_offset = 0.00100000330737999
 shader_parameter/blur_amount = 1.20000001788144
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_2ofn6"]
-viewport_path = NodePath("UILayers/PlayerVision/Light Rooms")
+viewport_path = NodePath("UILayers/Light Rooms")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_xa025"]
 resource_local_to_scene = true
@@ -252,10 +253,16 @@ grow_vertical = 2
 [node name="VHSEffectCanvasLayer" type="CanvasLayer" parent="UILayers" unique_id=902195982]
 visible = false
 
-[node name="PlayerVision" type="CanvasLayer" parent="UILayers" unique_id=1765145660]
+[node name="SubViewportContainer" parent="UILayers/VHSEffectCanvasLayer" unique_id=480592156 node_paths=PackedStringArray("player_vision_node", "player_camera_node", "visible_area_polygons") instance=ExtResource("27_ma7h6")]
+stretch = false
+player_vision_node = NodePath("../../../Player/RaycastedShape")
+player_camera_node = NodePath("../../../Player/Camera2D")
+visible_area_polygons = [NodePath("../../Light Rooms/GoonRoomLight"), NodePath("../../Light Rooms/BedroomLight1"), NodePath("../../Light Rooms/HallwayLight")]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="UILayers" unique_id=1765145660]
 layer = 0
 
-[node name="ColorRect" type="ColorRect" parent="UILayers/PlayerVision" unique_id=31126122]
+[node name="ColorRect" type="ColorRect" parent="UILayers/CanvasLayer" unique_id=31126122]
 material = SubResource("ShaderMaterial_xa025")
 anchors_preset = 15
 anchor_right = 1.0
@@ -264,74 +271,67 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
-[node name="Light Rooms" type="SubViewport" parent="UILayers/PlayerVision" unique_id=97671060]
+[node name="Light Rooms" type="SubViewport" parent="UILayers" unique_id=97671060]
 disable_3d = true
 transparent_bg = true
 size = Vector2i(1920, 1080)
 
-[node name="Camera2D" type="Camera2D" parent="UILayers/PlayerVision/Light Rooms" unique_id=1450985412 node_paths=PackedStringArray("_cameraToMirror", "_subvp")]
+[node name="Camera2D" type="Camera2D" parent="UILayers/Light Rooms" unique_id=1450985412 node_paths=PackedStringArray("_cameraToMirror", "_subvp")]
 process_callback = 0
 script = ExtResource("6_2ofn6")
-_cameraToMirror = NodePath("../../../../Player/Camera2D")
+_cameraToMirror = NodePath("../../../Player/Camera2D")
 _subvp = NodePath("..")
 
-[node name="GoonRoomLight" type="Polygon2D" parent="UILayers/PlayerVision/Light Rooms" unique_id=1514240248]
+[node name="GoonRoomLight" type="Polygon2D" parent="UILayers/Light Rooms" unique_id=1514240248]
 position = Vector2(322.10455, 390.15613)
 scale = Vector2(0.45249248, 0.40978467)
 polygon = PackedVector2Array(4.188904, 148.47766, -205.75934, 148.47766, -205.75934, -83.35144, 4.188904, -83.35144)
 uv = PackedVector2Array(-100.5, -42.5, 59.5, -43, 65, 40, -101.5, 38.5)
 
-[node name="BedroomLight2" type="Polygon2D" parent="UILayers/PlayerVision/Light Rooms" unique_id=1712930094]
+[node name="BedroomLight2" type="Polygon2D" parent="UILayers/Light Rooms" unique_id=1712930094]
 position = Vector2(23810.799, -1496.0057)
 scale = Vector2(127.70566, 12.580691)
 polygon = PackedVector2Array(-179.4345, 167.24088, -182.9034, 167.24088, -182.9034, 149.75377, -181.89326, 149.75377, -181.89326, 147.36916, -180.88313, 147.36916, -180.88313, 149.43582, -179.4345, 149.43582)
 uv = PackedVector2Array(-100.5, -42.5, 59.5, -43, 65, 40, -101.5, 38.5)
 
-[node name="LivingRoomLight" type="Polygon2D" parent="UILayers/PlayerVision/Light Rooms" unique_id=1083012139]
+[node name="LivingRoomLight" type="Polygon2D" parent="UILayers/Light Rooms" unique_id=1083012139]
 position = Vector2(1153.5908, 283.59424)
 scale = Vector2(1.720065, 1.3045223)
 polygon = PackedVector2Array(-536.36975, 179.68706, -536.36975, 296.9713, -670.667, 296.9713, -670.667, 104.56377, -537.5325, 104.56377, -537.5325, 128.32726, -482.302, 128.32726, -482.302, -67.91316, -332.30768, -67.91316, -332.30768, 80.03371, -407.30484, 80.03371, -407.30484, 179.68706)
 uv = PackedVector2Array(-100.5, -42.5, 59.5, -43, 65, 40, -101.5, 38.5)
 
-[node name="StorageLight" type="Polygon2D" parent="UILayers/PlayerVision/Light Rooms" unique_id=1961311177]
+[node name="StorageLight" type="Polygon2D" parent="UILayers/Light Rooms" unique_id=1961311177]
 position = Vector2(13856, -1048)
 scale = Vector2(76.62296, 8.387104)
 polygon = PackedVector2Array(-179.64587, 166.32678, -182.86946, 166.32678, -182.86946, 148.32295, -179.64587, 148.32295)
 uv = PackedVector2Array(-100.5, -42.5, 59.5, -43, 65, 40, -101.5, 38.5)
 
-[node name="BedroomLight1" type="Polygon2D" parent="UILayers/PlayerVision/Light Rooms" unique_id=86971168]
+[node name="BedroomLight1" type="Polygon2D" parent="UILayers/Light Rooms" unique_id=86971168]
 position = Vector2(1544.0001, -416)
 scale = Vector2(8.753454, 2.8960497)
 polygon = PackedVector2Array(-150.22641, 167.12419, -184.27011, 167.12419, -184.27011, 74.92965, -150.22641, 74.92965)
 uv = PackedVector2Array(-100.5, -42.5, 59.5, -43, 65, 40, -101.5, 38.5)
 
-[node name="KichenLight" type="Polygon2D" parent="UILayers/PlayerVision/Light Rooms" unique_id=1142495863]
+[node name="KichenLight" type="Polygon2D" parent="UILayers/Light Rooms" unique_id=1142495863]
 position = Vector2(759.9999, -199.99997)
 scale = Vector2(2.9586236, 1.7017784)
 polygon = PackedVector2Array(-107.144394, 157.48232, -179.47533, 157.48232, -179.47533, 61.70015, -107.144394, 61.70015)
 uv = PackedVector2Array(-100.5, -42.5, 59.5, -43, 65, 40, -101.5, 38.5)
 
-[node name="BathroomLight" type="Polygon2D" parent="UILayers/PlayerVision/Light Rooms" unique_id=874341465]
+[node name="BathroomLight" type="Polygon2D" parent="UILayers/Light Rooms" unique_id=874341465]
 position = Vector2(776, -128)
 scale = Vector2(1.720065, 1.3045223)
 polygon = PackedVector2Array(-1.1627502, 150.24657, -193.59735, 150.24657, -193.59735, -78.9561, -1.1627502, -78.9561)
 uv = PackedVector2Array(-100.5, -42.5, 59.5, -43, 65, 40, -101.5, 38.5)
 
-[node name="HallwayLight" type="Polygon2D" parent="UILayers/PlayerVision/Light Rooms" unique_id=2071421769]
+[node name="HallwayLight" type="Polygon2D" parent="UILayers/Light Rooms" unique_id=2071421769]
 position = Vector2(499.06323, 132.38725)
 scale = Vector2(1.3115125, 1.1421568)
 polygon = PackedVector2Array(160.83478, -56.373394, 161.59723, 197.5322, 63.23752, 197.5322, 63.23752, 54.819748, -133.48193, 54.819748, -133.48193, 195.78113, -205.91739, 195.78113, -205.91739, 251.81546, -401.11188, 251.81546, -401.11188, 187.9013, -311.1394, 187.9013, -311.1394, 55.695282, -385.09982, 55.695282, -385.09982, -56.373394)
 uv = PackedVector2Array(-100.5, -42.5, 59.5, -43, 65, 40, -101.5, 38.5)
 
-[node name="PlayerVision" type="Polygon2D" parent="UILayers/PlayerVision/Light Rooms" unique_id=1536641351 node_paths=PackedStringArray("_source")]
+[node name="VisibleAreaPolygonDrawer" type="Node2D" parent="UILayers/Light Rooms" unique_id=58294584]
 script = ExtResource("7_36rkl")
-_source = NodePath("../../../../Player/RaycastedShape")
-
-[node name="Player" parent="." unique_id=1993068751 instance=ExtResource("1_rgh2o")]
-position = Vector2(474, 302)
-VisionShrinkSpeed = 100.0
-VisionExpandSpeed = 100.0
-defaultUnmaskedVisionRadiuss = 200.0
 
 [node name="Rooms" type="Node" parent="." unique_id=761107786]
 
@@ -339,7 +339,7 @@ defaultUnmaskedVisionRadiuss = 200.0
 position = Vector2(1544.0001, -416)
 scale = Vector2(8.753454, 2.8960497)
 script = ExtResource("7_xa025")
-_lightPolygon = NodePath("../../UILayers/PlayerVision/Light Rooms/GoonRoomLight")
+_lightPolygon = NodePath("../../UILayers/Light Rooms/GoonRoomLight")
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Rooms/GoonRoomLight" unique_id=950141479]
 
@@ -347,7 +347,7 @@ _lightPolygon = NodePath("../../UILayers/PlayerVision/Light Rooms/GoonRoomLight"
 position = Vector2(1544.0001, -416)
 scale = Vector2(8.753454, 2.8960497)
 script = ExtResource("7_xa025")
-_lightPolygon = NodePath("../../UILayers/PlayerVision/Light Rooms/BedroomLight2")
+_lightPolygon = NodePath("../../UILayers/Light Rooms/BedroomLight2")
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Rooms/Bedroom2RoomLight2" unique_id=28554036]
 
@@ -355,7 +355,7 @@ _lightPolygon = NodePath("../../UILayers/PlayerVision/Light Rooms/BedroomLight2"
 position = Vector2(1544.0001, -416)
 scale = Vector2(8.753454, 2.8960497)
 script = ExtResource("7_xa025")
-_lightPolygon = NodePath("../../UILayers/PlayerVision/Light Rooms/LivingRoomLight")
+_lightPolygon = NodePath("../../UILayers/Light Rooms/LivingRoomLight")
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Rooms/LivingRoomLight3" unique_id=570623843]
 
@@ -363,7 +363,7 @@ _lightPolygon = NodePath("../../UILayers/PlayerVision/Light Rooms/LivingRoomLigh
 position = Vector2(1544.0001, -416)
 scale = Vector2(8.753454, 2.8960497)
 script = ExtResource("7_xa025")
-_lightPolygon = NodePath("../../UILayers/PlayerVision/Light Rooms/StorageLight")
+_lightPolygon = NodePath("../../UILayers/Light Rooms/StorageLight")
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Rooms/StorageRoomLight4" unique_id=1673596467]
 
@@ -371,7 +371,7 @@ _lightPolygon = NodePath("../../UILayers/PlayerVision/Light Rooms/StorageLight")
 position = Vector2(1544.0001, -416)
 scale = Vector2(8.753454, 2.8960497)
 script = ExtResource("7_xa025")
-_lightPolygon = NodePath("../../UILayers/PlayerVision/Light Rooms/BedroomLight1")
+_lightPolygon = NodePath("../../UILayers/Light Rooms/BedroomLight1")
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Rooms/Bedroom1RoomLight5" unique_id=1962099206]
 
@@ -379,7 +379,7 @@ _lightPolygon = NodePath("../../UILayers/PlayerVision/Light Rooms/BedroomLight1"
 position = Vector2(1544.0001, -416)
 scale = Vector2(8.753454, 2.8960497)
 script = ExtResource("7_xa025")
-_lightPolygon = NodePath("../../UILayers/PlayerVision/Light Rooms/KichenLight")
+_lightPolygon = NodePath("../../UILayers/Light Rooms/KichenLight")
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Rooms/KitchenRoomLight6" unique_id=153128347]
 
@@ -387,7 +387,7 @@ _lightPolygon = NodePath("../../UILayers/PlayerVision/Light Rooms/KichenLight")
 position = Vector2(1544.0001, -416)
 scale = Vector2(8.753454, 2.8960497)
 script = ExtResource("7_xa025")
-_lightPolygon = NodePath("../../UILayers/PlayerVision/Light Rooms/BathroomLight")
+_lightPolygon = NodePath("../../UILayers/Light Rooms/BathroomLight")
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Rooms/BathRoomLight7" unique_id=1319999786]
 
@@ -395,7 +395,7 @@ _lightPolygon = NodePath("../../UILayers/PlayerVision/Light Rooms/BathroomLight"
 position = Vector2(15059.334, -1620.7567)
 scale = Vector2(76.62296, 8.387104)
 script = ExtResource("7_xa025")
-_lightPolygon = NodePath("../../UILayers/PlayerVision/Light Rooms/HallwayLight")
+_lightPolygon = NodePath("../../UILayers/Light Rooms/HallwayLight")
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Rooms/HallwayRoomLight8" unique_id=207385327]
 
@@ -926,6 +926,15 @@ script = ExtResource("24_2ofn6")
 player = NodePath("../Player")
 max_active_lights = 7
 
+[node name="Player" parent="." unique_id=1993068751 instance=ExtResource("1_rgh2o")]
+position = Vector2(474, 302)
+VisionShrinkSpeed = 100.0
+VisionExpandSpeed = 100.0
+defaultUnmaskedVisionRadiuss = 200.0
+
+[node name="RaycastedShape" parent="Player" index="9" unique_id=876828578]
+reach = 300.0
+
 [node name="Cat" parent="." unique_id=722993762 instance=ExtResource("4_nxtc6")]
 position = Vector2(365, 399)
 
@@ -988,6 +997,6 @@ scale = Vector2(0.60236263, 0.5799344)
 
 [node name="EscapeZone" parent="ZoneWrapper2" unique_id=1530702801 instance=ExtResource("21_1iba3")]
 
+[editable path="Tilemaps"]
 [editable path="Player"]
 [editable path="Player/CarrierComponent"]
-[editable path="Tilemaps"]

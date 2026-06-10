@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://u0mnqyu6x1q3"]
+
+[ext_resource type="Script" uid="uid://drn8ji225nnvt" path="res://objects/raycasted_shape/RaycastedPolygon2D.cs" id="1_40nv0"]
+
+[node name="RaycastedPolygon2D" type="Polygon2D" unique_id=1836596359]
+script = ExtResource("1_40nv0")

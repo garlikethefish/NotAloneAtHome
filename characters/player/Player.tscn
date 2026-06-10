@@ -15,7 +15,7 @@
 [ext_resource type="PackedScene" uid="uid://di1gufwmxsr11" path="res://components/detector/casted_area/CastedAreaDetectorComponent.tscn" id="15_ohrde"]
 [ext_resource type="PackedScene" uid="uid://dim6u5hasqq78" path="res://components/noise/reciever/NoiseReciever.tscn" id="17_5dd86"]
 [ext_resource type="PackedScene" uid="uid://b8odej7420g54" path="res://components/detectable/DetectableComponent.tscn" id="17_7aoru"]
-[ext_resource type="PackedScene" uid="uid://u0mnqyu6x1q3" path="res://objects/raycasted_shape/RaycastedVisionShape.tscn" id="17_67shi"]
+[ext_resource type="PackedScene" uid="uid://u0mnqyu6x1q3" path="res://objects/raycasted_shape/RaycastedPolygon2D.tscn" id="17_67shi"]
 [ext_resource type="PackedScene" uid="uid://s2g10onqsl60" path="res://components/thrower/ThrowerComponent.tscn" id="17_u7nq2"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_seukq"]
@@ -623,9 +623,7 @@ one_shot = true
 process_material = SubResource("ParticleProcessMaterial_jjyn6")
 
 [node name="RaycastedShape" parent="." unique_id=876828578 instance=ExtResource("17_67shi")]
-start_offset = 0.0
-ray_count = 180
-collision_masks = Array[int]([3])
+rayCount = 128
 
 [node name="ThrowerComponent" parent="." unique_id=2059326990 instance=ExtResource("17_u7nq2")]
 
