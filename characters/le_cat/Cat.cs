@@ -36,7 +36,7 @@ public partial class Cat : CharacterBody2D
         StartMeowTimer();
         InteractableComponent.OnInteractionFrom += _ =>
         {
-            NoiseMaker.MakeNoise(100, 100);
+            NoiseMaker.MakeNoise(100, 1);
             GD.Print("MJAU!");
         };
     }

@@ -12,14 +12,9 @@ public partial class Valuable : RigidBody2D
     [Export] public double value = 0;
     [Node] public AnimationPlayer AnimationPlayer;
     [Node] public DetectableComponent DetectableComponent;
+    [Node] public NoiseMaker NoiseMaker;
     public event Action OnSold;
     private bool _isSelling;
-    // private ShaderMaterial _shaderMat = GD.Load<ShaderMaterial>("uid://cnuuc1ep5p6ia");
-
-    public override void _Ready()
-    {
-        // Sprite.Material = _shaderMat;
-    }
 
     public void Sell()
     {

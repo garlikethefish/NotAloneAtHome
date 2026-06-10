@@ -2,11 +2,15 @@
 
 [ext_resource type="Script" uid="uid://cn4od83gx3oy8" path="res://components/noise/maker/NoiseMaker.cs" id="1_8vrsr"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_0kvs7"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_8vrsr"]
+resource_local_to_scene = true
 radius = 1.0
 
 [node name="NoiseMaker" type="StaticBody2D" unique_id=129743411]
 script = ExtResource("1_8vrsr")
+_unitPerDecibelMultiplier = 2.0
+_soundExpandSpeed = 500.0
+_soundShrinkSpeed = 300.0
 
 [node name="NoiseShape" type="CollisionShape2D" parent="." unique_id=1232622539]
-shape = SubResource("CircleShape2D_0kvs7")
+shape = SubResource("CircleShape2D_8vrsr")

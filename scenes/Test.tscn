@@ -1,60 +1,44 @@
 [gd_scene format=3 uid="uid://45b72bnlu6ms"]
 
+[ext_resource type="PackedScene" uid="uid://cbcifivthchns" path="res://ui/ui_overlay.tscn" id="1_qca6q"]
 [ext_resource type="PackedScene" uid="uid://be8qbmt0fe144" path="res://characters/player/Player.tscn" id="1_w8un3"]
-[ext_resource type="Texture2D" uid="uid://c4c6ti2k5b2in" path="res://sprites/white.png" id="2_w8un3"]
+[ext_resource type="Shader" uid="uid://cuielptcsyeb5" path="res://shaders/vhs_filter.gdshader" id="2_2loec"]
+[ext_resource type="PackedScene" uid="uid://dq60rr28wyibf" path="res://objects/valuables/ValuableCabinet.tscn" id="2_iscks"]
+[ext_resource type="PackedScene" uid="uid://djmsje8kmaa6o" path="res://objects/valuables/valuable_Bed.tscn" id="3_amo3t"]
+[ext_resource type="PackedScene" uid="uid://cfsot4oxbkssw" path="res://objects/valuables/Valuable_Sink.tscn" id="4_qca6q"]
+[ext_resource type="PackedScene" uid="uid://dyuyf26s3aqqs" path="res://objects/valuables/Valuable_Sofa.tscn" id="5_2loec"]
 
-[node name="Test" type="SubViewportContainer" unique_id=1745484592]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jbd4l"]
+shader = ExtResource("2_2loec")
+shader_parameter/color_offset_multiplier = 0.0010000000475
+shader_parameter/black_offset_multiplier = 0.062000002945
+shader_parameter/color_offset = 0.00100000330737999
+shader_parameter/blur_amount = 1.20000001788144
+
+[node name="Test" type="Node2D" unique_id=705430855]
+
+[node name="UIOverlay" parent="." unique_id=466827575 instance=ExtResource("1_qca6q")]
+layer = 3
+
+[node name="VHSFilter" type="ColorRect" parent="UIOverlay" unique_id=1610660356]
+material = SubResource("ShaderMaterial_jbd4l")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-stretch = true
 
-[node name="SubViewport" type="SubViewport" parent="." unique_id=1643815196]
-transparent_bg = true
-handle_input_locally = false
-size = Vector2i(1920, 1080)
-render_target_update_mode = 4
+[node name="Player" parent="." unique_id=1993068751 instance=ExtResource("1_w8un3")]
+position = Vector2(37, 44)
 
-[node name="BlackRect" type="ColorRect" parent="SubViewport" unique_id=1411150370]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0, 0, 0, 1)
+[node name="Valuable" parent="." unique_id=2061310895 instance=ExtResource("2_iscks")]
+position = Vector2(170, -40)
 
-[node name="TextureRect" type="TextureRect" parent="SubViewport" unique_id=669707092]
-offset_left = 539.0481
-offset_top = 142.67986
-offset_right = 1180.0
-offset_bottom = 173.0
-texture = ExtResource("2_w8un3")
+[node name="Valuable2" parent="." unique_id=653923159 instance=ExtResource("3_amo3t")]
+position = Vector2(176, 122)
 
-[node name="TextureRect" type="TextureRect" parent="SubViewport/TextureRect" unique_id=705820762]
-layout_mode = 0
-offset_left = -4.0480957
-offset_top = 348.32013
-offset_right = 636.9038
-offset_bottom = 378.64026
-texture = ExtResource("2_w8un3")
+[node name="Valuable3" parent="." unique_id=379608039 instance=ExtResource("4_qca6q")]
+position = Vector2(-35, 143)
 
-[node name="TextureRect" type="TextureRect" parent="SubViewport/TextureRect/TextureRect" unique_id=436536310]
-layout_mode = 0
-offset_left = 608.0
-offset_top = -335.0
-offset_right = 644.0
-offset_bottom = 28.0
-texture = ExtResource("2_w8un3")
-
-[node name="TextureRect" type="TextureRect" parent="SubViewport/TextureRect/TextureRect/TextureRect" unique_id=711914409]
-layout_mode = 0
-offset_left = -608.0
-offset_top = -7.0
-offset_right = -572.0
-offset_bottom = 356.0
-texture = ExtResource("2_w8un3")
-
-[node name="Player" parent="SubViewport" unique_id=1993068751 instance=ExtResource("1_w8un3")]
-position = Vector2(848, 332)
+[node name="Valuable4" parent="." unique_id=148048893 instance=ExtResource("5_2loec")]
+position = Vector2(-43, -37)

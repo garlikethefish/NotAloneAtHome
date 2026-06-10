@@ -1,11 +1,12 @@
 [gd_scene format=3 uid="uid://hnye7wtm1w0e"]
 
-[ext_resource type="Script" uid="uid://dhqwec757yqdt" path="res://valuables/Valuable.cs" id="1_7p2l0"]
+[ext_resource type="Script" uid="uid://dhqwec757yqdt" path="res://objects/valuables/Valuable.cs" id="1_7p2l0"]
 [ext_resource type="Shader" uid="uid://wb2c8vb2gt3i" path="res://shaders/WhiteFlash.gdshader" id="2_xcwdw"]
 [ext_resource type="PackedScene" uid="uid://bfxah7yut2ec0" path="res://components/cariable/CarriableComponent.tscn" id="3_xcwdw"]
 [ext_resource type="PackedScene" uid="uid://b8odej7420g54" path="res://components/detectable/DetectableComponent.tscn" id="4_apino"]
 [ext_resource type="PackedScene" uid="uid://k2k1j0y25ebx" path="res://components/interactable/InteractableComponent.tscn" id="5_2vrdr"]
 [ext_resource type="PackedScene" uid="uid://m5gqbqgarhdk" path="res://components/throwable/ThrowableComponent.tscn" id="6_xcwdw"]
+[ext_resource type="PackedScene" uid="uid://bfs7aolno5hcx" path="res://components/noise/maker/NoiseMaker.tscn" id="7_apino"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2vrdr"]
 size = Vector2(31, 65)
@@ -127,3 +128,5 @@ CollisionShape2D = NodePath("../CollisionShape2D")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=225365715]
 libraries/ = SubResource("AnimationLibrary_apino")
+
+[node name="NoiseMaker" parent="." unique_id=129743411 instance=ExtResource("7_apino")]

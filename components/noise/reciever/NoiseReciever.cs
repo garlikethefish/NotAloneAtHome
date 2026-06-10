@@ -3,30 +3,46 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-public partial class NoiseReciever : Area2D
+[Scene][Tool]
+public partial class NoiseReciever : StaticBody2D
 {
     public float CurrentNoise;
     private float _targetNoise;
     private float _addedNoise;
     private float _passiveMinimumNoise;
+    [ExportGroup("Noise transition")]
     [Export] private float _maxNoiseDisturbance;
     [Export] private float stiffness;
     [Export] private float damping;
+
+    [ExportGroup("Area sizes")]
+    private float _pickupRadius;
+    [Export]
+    private float PickupRadius
+    {
+        get => _pickupRadius;
+        set
+        {
+            _pickupRadius = value;
+            var shape = GetNodeOrNull<CollisionShape2D>("NoiseDetector/PickupRange");
+            if (shape?.Shape is CircleShape2D circle) circle.Radius = _pickupRadius;
+        }
+    }
+    [Node("NoiseDetector")] private Area2D _noiseDetectorArea;
     private float _noiseTimer = 0f;
     private float _noiseVelocity = 0f;
     private HashSet<NoiseMaker> _passiveNoiseMakers = [];
 
     public override void _Ready()
     {
-        BodyEntered += OnAreaEnter;
-        BodyExited += OnAreaExit;
+        _noiseDetectorArea.BodyEntered += OnAreaEnter;
+        _noiseDetectorArea.BodyExited += OnAreaExit;
     }
 
     public override void _Process(double delta)
     {
-        _targetNoise = 0;
+        _targetNoise = GetCombinedPassiveNoise();
         _targetNoise += _maxNoiseDisturbance * GD.Randf();
-        _targetNoise += GetCombinedPassiveNoise();
         _targetNoise = Math.Clamp(_targetNoise, 0, 100);
         CurrentNoise = TransitionNoiseArea(delta, CurrentNoise, _targetNoise, stiffness, damping);
     }
@@ -51,11 +67,6 @@ public partial class NoiseReciever : Area2D
             combinedNoise += noiseMaker.GetReceivedNoise(GlobalPosition);
         }
         return combinedNoise;
-    }
-
-    public void AddNoise(float noise)
-    {
-        _addedNoise += noise;
     }
 
     public float TransitionNoiseArea(
