@@ -12,7 +12,6 @@
 [ext_resource type="Script" uid="uid://cmja5kkw6npgr" path="res://scenes/DrawPoligon.cs" id="7_36rkl"]
 [ext_resource type="Script" uid="uid://c8citj2m8ikhk" path="res://scenes/RoomLight.cs" id="7_xa025"]
 [ext_resource type="PackedScene" uid="uid://cah3urn1fwd1d" path="res://zones/sell_zone/SellZone.tscn" id="8_jlsqs"]
-[ext_resource type="PackedScene" uid="uid://bmvgwyelxjr6q" path="res://characters/plain_thief/Bandit.tscn" id="10_ebg2g"]
 [ext_resource type="PackedScene" uid="uid://djmsje8kmaa6o" path="res://objects/valuables/valuable_Bed.tscn" id="11_1iba3"]
 [ext_resource type="PackedScene" uid="uid://blm3resaadrtl" path="res://characters/closet_thief/DeadBanditCloset.tscn" id="13_mwfav"]
 [ext_resource type="PackedScene" uid="uid://q27ik5xajev6" path="res://components/spawner/Spawner.tscn" id="15_3p2gp"]
@@ -240,7 +239,6 @@ metadata/_edit_vertical_guides_ = [-1302.0, -145.0, 887.0, -3874.0]
 [node name="UILayers" type="Node" parent="." unique_id=1785141639]
 
 [node name="UIOverlay" parent="UILayers" unique_id=466827575 instance=ExtResource("1_vcsgt")]
-layer = 2
 
 [node name="ColorRect" type="ColorRect" parent="UILayers/UIOverlay" unique_id=961030738]
 material = SubResource("ShaderMaterial_ebg2g")
@@ -249,9 +247,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-
-[node name="VHSEffectCanvasLayer" type="CanvasLayer" parent="UILayers" unique_id=902195982]
-visible = false
 
 [node name="PlayerVision" type="CanvasLayer" parent="UILayers" unique_id=1765145660]
 layer = 0
@@ -333,9 +328,11 @@ position = Vector2(474, 302)
 VisionShrinkSpeed = 100.0
 VisionExpandSpeed = 100.0
 defaultUnmaskedVisionRadiuss = 200.0
+DebugState = null
 
-[node name="RaycastedShape" parent="Player" index="9" unique_id=876828578]
-reach = 300.0
+[node name="CastedAreaDetectorComponent" parent="Player" index="13" unique_id=145267381]
+RaycastCollisionMasks = null
+ShowDebug = null
 
 [node name="Rooms" type="Node" parent="." unique_id=761107786]
 
@@ -930,10 +927,15 @@ script = ExtResource("24_2ofn6")
 player = NodePath("../Player")
 max_active_lights = 7
 
-[node name="Bandit" parent="." unique_id=136410527 instance=ExtResource("10_ebg2g")]
-
 [node name="Cat" parent="." unique_id=722993762 instance=ExtResource("4_nxtc6")]
 position = Vector2(365, 399)
+Speed = null
+RoamWaitTime = null
+MinX = null
+MaxX = null
+MinY = null
+MaxY = null
+DoCatTimes = null
 
 [node name="- TaskNodes" type="Node" parent="." unique_id=448653341]
 

@@ -338,7 +338,7 @@ neighbor_distance = 7763.51
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=88663116]
 stream = ExtResource("3_1v8oq")
-volume_db = 24.0
+volume_db = -80.0
 pitch_scale = 4.0
 bus = &"No Reverb Sounds"
 

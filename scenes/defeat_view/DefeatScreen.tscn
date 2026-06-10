@@ -6,6 +6,7 @@
 [ext_resource type="AudioStream" uid="uid://eipix70ilsb4" path="res://scenes/creepy-atmosphere-145465.mp3" id="4_vshbo"]
 
 [node name="DefeatScreen" type="CanvasLayer" unique_id=1356816678]
+layer = 1000
 script = ExtResource("1_7daik")
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=211647894]
@@ -56,3 +57,5 @@ text = "Retry"
 stream = ExtResource("4_vshbo")
 autoplay = true
 parameters/looping = true
+
+[connection signal="pressed" from="ColorRect/VBoxContainer/Button" to="." method="_on_button_pressed"]

@@ -27,6 +27,7 @@ public partial class GameManager : Node
     public void StartGame(int difficulty)
     {
         _difficulty = (GameDifficulty)difficulty;
+        GD.Print("Started game: ", _difficulty);
 
         GameStatus = GameStatus.Started;
         EmitSignal(SignalName.GameStarted, _difficulty.ToString());
