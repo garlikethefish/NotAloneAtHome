@@ -37,6 +37,10 @@ public partial class Bandit : CharacterBody2D, IStateMachine
     public RayCast2D SightRay { get; private set; }
     public AnimatedSprite2D Anim { get; private set; }
     public AudioStreamPlayer2D Gunshot { get; private set; }
+    private NoiseReciever _noiseReceiver;
+    private Area2D _visionArea;
+
+    private readonly HashSet<Node2D> _visionTargets = [];
 
     // Vision cone node (MUST be child of bandit)
     private Node2D _visionCone;
@@ -62,8 +66,16 @@ public partial class Bandit : CharacterBody2D, IStateMachine
     // vision FX
     private float _pulseTime;
     private float _scanTime;
+    private void OnVisionEnter(Node2D body)
+    {
+        _visionTargets.Add(body);
+    }
 
-    [Signal] public delegate void NewStateEventHandler(string stateName);
+    private void OnVisionExit(Node2D body)
+    {
+        _visionTargets.Remove(body);
+    }
+
 
     public override void _Ready()
     {
@@ -71,6 +83,13 @@ public partial class Bandit : CharacterBody2D, IStateMachine
         Nav = GetNode<NavigationAgent2D>("NavigationAgent2D");
         SightRay = GetNode<RayCast2D>("SightRay");
         Gunshot = GetNode<AudioStreamPlayer2D>("AudioStreamPlayer2D");
+
+        _noiseReceiver = GetNode<NoiseReciever>("NoiseReciever");
+
+        _visionArea = GetNode<Area2D>("VisionArea");
+
+        _visionArea.BodyEntered += OnVisionEnter;
+        _visionArea.BodyExited += OnVisionExit;
 
         Player = GetTree().GetFirstNodeInGroup("player") as Player;
 
@@ -88,6 +107,7 @@ public partial class Bandit : CharacterBody2D, IStateMachine
 
         ChangeState(States[typeof(BanditRoamState)]);
     }
+    
 
     public override void _PhysicsProcess(double delta)
     {
@@ -186,7 +206,6 @@ public partial class Bandit : CharacterBody2D, IStateMachine
 
         if (_visionMat != null)
         {
-            _visionCone.GlobalPosition = GlobalPosition;
             _visionCone.GlobalRotation = Forward.Angle();
 
             if (_visionMat != null)
@@ -217,26 +236,27 @@ public partial class Bandit : CharacterBody2D, IStateMachine
         Vector2 toPlayer = Player.GlobalPosition - GlobalPosition;
         float dist = toPlayer.Length();
 
-        float speed = Player.Velocity.Length();
-
-        if (speed > 60f)
+        if (_noiseReceiver != null)
         {
-            float hearing = speed / 120f;
-
-            if (dist <= HearingRange * hearing * SprintNoiseMultiplier)
+            if (_noiseReceiver.CurrentNoise > 20f)
             {
                 _lastHeardPosition = Player.GlobalPosition;
                 _memoryTimer = MemoryDuration;
+
+                SetGlobalAlert(true);
             }
         }
 
-        if (dist <= VisionRange)
+        if (_visionTargets.Contains(Player))
         {
             Vector2 dir = toPlayer.Normalized();
 
-            float angle = Mathf.RadToDeg(Mathf.Acos(Mathf.Clamp(Forward.Dot(dir), -1f, 1f)));
+            float dot = Forward.Dot(dir);
+            float threshold = Mathf.Cos(
+                Mathf.DegToRad(VisionAngle * 0.5f)
+            );
 
-            if (angle <= VisionAngle * 0.5f)
+            if (dot >= threshold)
             {
                 SightRay.TargetPosition = toPlayer;
                 SightRay.ForceRaycastUpdate();
@@ -245,6 +265,8 @@ public partial class Bandit : CharacterBody2D, IStateMachine
                 {
                     _lastSeenPosition = Player.GlobalPosition;
                     _memoryTimer = MemoryDuration;
+
+                    SetGlobalAlert(true);
                 }
             }
         }
@@ -283,25 +305,30 @@ public partial class Bandit : CharacterBody2D, IStateMachine
         if (Player == null || Player.IsDead)
             return false;
 
+        if (!_visionTargets.Contains(Player))
+            return false;
+
         if (Player.isWearingMask)
             return false;
 
         Vector2 toPlayer = Player.GlobalPosition - GlobalPosition;
 
-        if (toPlayer.Length() > VisionRange)
-            return false;
-
         Vector2 dir = toPlayer.Normalized();
 
-        float angle = Mathf.RadToDeg(Mathf.Acos(Mathf.Clamp(Forward.Dot(dir), -1f, 1f)));
+        float dot = Forward.Dot(dir);
 
-        if (angle > VisionAngle * 0.5f)
+        float threshold = Mathf.Cos(
+            Mathf.DegToRad(VisionAngle * 0.5f)
+        );
+
+        if (dot < threshold)
             return false;
 
         SightRay.TargetPosition = toPlayer;
         SightRay.ForceRaycastUpdate();
 
-        return !SightRay.IsColliding() || SightRay.GetCollider() == Player;
+        return !SightRay.IsColliding()
+            || SightRay.GetCollider() == Player;
     }
 
     // ---------------- ANIMATION ----------------
@@ -351,8 +378,6 @@ public partial class Bandit : CharacterBody2D, IStateMachine
         CurrentState?.Exit();
         CurrentState = next;
         CurrentState?.Enter();
-
-        EmitSignal(SignalName.NewState, CurrentState?.GetType().Name ?? "None");
     }
 
     public void Update(double delta) => CurrentState?.Update(delta);

@@ -10,6 +10,7 @@
 [ext_resource type="AudioStream" uid="uid://c5mgu2784a6dr" path="res://sounds/sound effects/bandit_footstep4.wav" id="8_atxhn"]
 [ext_resource type="AudioStream" uid="uid://djh3kwdicro7r" path="res://sounds/sound effects/bandit_breathe.mp3" id="9_1skd5"]
 [ext_resource type="Shader" uid="uid://dpdnijikycsbw" path="res://characters/plain_thief/BanditVisionCone.gdshader" id="10_q0mqt"]
+[ext_resource type="PackedScene" uid="uid://dim6u5hasqq78" path="res://components/noise/reciever/NoiseReciever.tscn" id="11_cvag4"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_1skd5"]
 radius = 17.0
@@ -279,6 +280,7 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_so3fp"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_1v8oq"]
+radius = 1.0401922
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_r7hq3"]
 random_pitch = 1.0905077
@@ -383,3 +385,5 @@ offset_right = 101.3556
 offset_bottom = 101.35559
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="NoiseReciever" parent="." unique_id=1454098766 instance=ExtResource("11_cvag4")]
