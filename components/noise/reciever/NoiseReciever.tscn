@@ -2,25 +2,16 @@
 
 [ext_resource type="Script" uid="uid://c2m8g1ru66iq4" path="res://components/noise/reciever/NoiseReciever.cs" id="1_x1k5v"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_x1k5v"]
-radius = 200.0
-
 [sub_resource type="CircleShape2D" id="CircleShape2D_mt0p5"]
 
-[node name="NoiseReciever" type="StaticBody2D" unique_id=260435047]
+[node name="NoiseReciever" type="Area2D" unique_id=558709519]
+collision_layer = 512
 script = ExtResource("1_x1k5v")
 _maxNoiseDisturbance = 10.0
 stiffness = 300.0
 damping = 10.0
-RecieverRadius = 200.0
 PickupRadius = 10.0
 
-[node name="MaxRecieverRange" type="CollisionShape2D" parent="." unique_id=412004832]
-shape = SubResource("CircleShape2D_x1k5v")
-debug_color = Color(0.9480807, 0.04362105, 0.5613124, 0.41960785)
-
-[node name="NoiseDetector" type="Area2D" parent="." unique_id=703187449]
-
-[node name="PickupRange" type="CollisionShape2D" parent="NoiseDetector" unique_id=1564899267]
+[node name="PickupRange" type="CollisionShape2D" parent="." unique_id=1564899267]
 shape = SubResource("CircleShape2D_mt0p5")
 debug_color = Color(0.44150147, 0.9271154, 3.85046e-07, 0.41960785)

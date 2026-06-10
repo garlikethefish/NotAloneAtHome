@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 [Scene][Tool]
-public partial class NoiseReciever : StaticBody2D
+public partial class NoiseReciever : Area2D
 {
     public float CurrentNoise;
     private float _targetNoise;
@@ -24,19 +24,17 @@ public partial class NoiseReciever : StaticBody2D
         set
         {
             _pickupRadius = value;
-            var shape = GetNodeOrNull<CollisionShape2D>("NoiseDetector/PickupRange");
+            var shape = GetNodeOrNull<CollisionShape2D>("PickupRange");
             if (shape?.Shape is CircleShape2D circle) circle.Radius = _pickupRadius;
         }
     }
-    [Node("NoiseDetector")] private Area2D _noiseDetectorArea;
-    private float _noiseTimer = 0f;
     private float _noiseVelocity = 0f;
     private HashSet<NoiseMaker> _passiveNoiseMakers = [];
 
     public override void _Ready()
     {
-        _noiseDetectorArea.BodyEntered += OnAreaEnter;
-        _noiseDetectorArea.BodyExited += OnAreaExit;
+        BodyEntered += OnAreaEnter;
+        BodyExited += OnAreaExit;
     }
 
     public override void _Process(double delta)

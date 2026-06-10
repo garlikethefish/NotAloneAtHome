@@ -305,6 +305,7 @@ shader_parameter/noise_strength = 0.12
 [node name="Bandit" type="CharacterBody2D" unique_id=136410527]
 safe_margin = 0.2
 script = ExtResource("1_beyja")
+DebugVision = true
 
 [node name="Area2D" type="Area2D" parent="." unique_id=2139388755]
 monitoring = false
@@ -341,7 +342,6 @@ neighbor_distance = 7763.51
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=88663116]
 stream = ExtResource("4_q0mqt")
 volume_db = -3.916
-bus = &"Pew Pew"
 
 [node name="SightRay" type="RayCast2D" parent="." unique_id=112610399]
 rotation = -1.5707964
