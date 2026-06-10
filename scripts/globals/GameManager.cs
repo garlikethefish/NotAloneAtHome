@@ -12,7 +12,10 @@ public partial class GameManager : Node
 {
     [Signal] public delegate void GameStartedEventHandler(string dificulty);
     [Signal] public delegate void GameEndedEventHandler();
+    [Signal] public delegate void MoneyChangedEventHandler(double value);
     [Signal] public delegate void MaxItemsStolenEventHandler();
+    [Signal] public delegate void SuspicionChangedEventHandler(float value);
+    [Signal] public delegate void StolenStuffChangedEventHandler(int value);
     public static GameManager Instance { get; private set; }
     
     public GameStatus GameStatus = GameStatus.Ended;
@@ -21,6 +24,7 @@ public partial class GameManager : Node
     public double MoneyStolen = 0;
     public int MaxStealableItems = 10;
     public override void _Ready() => Instance = this; 
+    
 
     private GameDifficulty _difficulty = GameDifficulty.Easy;
     public GameDifficulty Difficulty => _difficulty;
@@ -30,11 +34,17 @@ public partial class GameManager : Node
         GD.Print("Started game: ", _difficulty);
 
         GameStatus = GameStatus.Started;
+        Suspicion = 0;
+        StolenStuffAmount = 0;
+        MoneyStolen = 0;
         EmitSignal(SignalName.GameStarted, _difficulty.ToString());
     }
     public void EndGame()
     {
         GameStatus = GameStatus.Ended;
+        Suspicion = 0;
+        StolenStuffAmount = 0;
+        MoneyStolen = 0;
         EmitSignal(SignalName.GameEnded);
     }
 
@@ -42,12 +52,21 @@ public partial class GameManager : Node
     {
         StolenStuffAmount++;
         MoneyStolen += valuable.value;
-        Suspicion -= 15;
+        RemoveSuspicion(15);
+        EmitSignal(SignalName.MoneyChanged, MoneyStolen);
+        EmitSignal(SignalName.StolenStuffChanged, StolenStuffAmount);
+        EmitSignal(SignalName.SuspicionChanged, Suspicion);
+    }
+    public void AddSuspicion(float value)
+    {
+        Suspicion = Mathf.Clamp(Suspicion + value, 0, 100);
+        EmitSignal(SignalName.SuspicionChanged, Suspicion);
+    }
 
-        if (StolenStuffAmount >= MaxStealableItems)
-        {
-            EmitSignal(SignalName.MaxItemsStolen);
-        }
+    public void RemoveSuspicion(float value)
+    {
+        Suspicion = Mathf.Clamp(Suspicion - value, 0, 100);
+        EmitSignal(SignalName.SuspicionChanged, Suspicion); 
     }
 }
 

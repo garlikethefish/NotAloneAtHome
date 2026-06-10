@@ -1,5 +1,6 @@
 using Godot;
 using NotAloneAtHome.state_machines.interfaces;
+using NotAloneAtHome.Scripts.Globals;
 
 public class BanditChaseState : IState
 {
@@ -15,18 +16,22 @@ public class BanditChaseState : IState
         _b.SetGlobalAlert(true);
     }
 
-    public void Exit() { }
-
+    public void Exit()
+    {
+        _b.SetGlobalAlert(false);
+    }
     public void Update(double delta) { }
 
     public void PhysicsUpdate(double delta)
     {
+        
         if (_b.Player == null || _b.Player.IsDead)
         {
             _b.SetGlobalAlert(false);
             _b.ChangeState(_b.States[typeof(BanditRoamState)]);
             return;
         }
+        GameManager.Instance.AddSuspicion(18f * (float)delta);
 
         // ----------------------------
         // PRIORITY 1: direct vision chase

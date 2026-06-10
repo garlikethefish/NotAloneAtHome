@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using NotAloneAtHome.state_machines.interfaces;
 using NotAloneAtHome.Characters.Player;
+using NotAloneAtHome.Scripts.Globals;
 
 public partial class Bandit : CharacterBody2D, IStateMachine
 {
@@ -25,6 +26,11 @@ public partial class Bandit : CharacterBody2D, IStateMachine
     [ExportGroup("Hearing")]
     [Export] public float HearingRange = 260f;
     [Export] public float SprintNoiseMultiplier = 1.8f;
+    [ExportGroup("Suspicion")]
+    [Export] public float RoamingSuspicionRate = 0.5f;
+    [Export] public float SeenSuspicionRate = 6f;
+    [Export] public float ChaseSuspicionRate = 12f;
+    [Export] public float MaskReductionMultiplier = 0.4f;
 
     [ExportGroup("Debug")]
     [Export] public bool DebugVision = false;
@@ -45,6 +51,15 @@ public partial class Bandit : CharacterBody2D, IStateMachine
     // Vision cone node (MUST be child of bandit)
     private Node2D _visionCone;
     private ShaderMaterial _visionMat;
+    private enum SuspicionMode
+    {
+        Roam,
+        Alert,
+        Investigate,
+        Chase
+    }
+
+    private SuspicionMode _mode;
 
     public float ShootTimer { get; set; }
     public bool IsGlobalAlert { get; private set; }
@@ -116,6 +131,7 @@ public partial class Bandit : CharacterBody2D, IStateMachine
         CurrentState?.PhysicsUpdate(delta);
 
         UpdatePerception(dt);
+        UpdateSuspicion(dt);
         UpdateMovement(dt);
         MoveAndSlide();
 
@@ -171,7 +187,28 @@ public partial class Bandit : CharacterBody2D, IStateMachine
             ).Normalized();
         }
     }
+    private void UpdateSuspicion(float dt)
+    {
+        if (GameManager.Instance == null || Player == null)
+            return;
 
+        UpdateSuspicionMode();
+
+        float rate = _mode switch
+        {
+            SuspicionMode.Roam => RoamingSuspicionRate,
+            SuspicionMode.Alert => SeenSuspicionRate,
+            SuspicionMode.Investigate => SeenSuspicionRate * 1.5f,
+            SuspicionMode.Chase => ChaseSuspicionRate,
+            _ => RoamingSuspicionRate
+        };
+
+        if (Player.isWearingMask)
+            rate *= MaskReductionMultiplier;
+
+        GameManager.Instance.AddSuspicion(rate * dt);
+        GD.Print("sus: ", rate*dt);
+    }
     // ---------------- VISION CONE (STABLE + NO PLAYER LOCK) ----------------
 
     private void UpdateVisionCone(float dt)
@@ -270,6 +307,28 @@ public partial class Bandit : CharacterBody2D, IStateMachine
                 }
             }
         }
+    }
+    private void UpdateSuspicionMode()
+    {
+        if (CurrentState == States[typeof(BanditChaseState)])
+        {
+            _mode = SuspicionMode.Chase;
+            return;
+        }
+
+        if (CurrentState == States[typeof(BanditInvestigateState)])
+        {
+            _mode = SuspicionMode.Investigate;
+            return;
+        }
+
+        if (CurrentState == States[typeof(BanditAlertState)])
+        {
+            _mode = SuspicionMode.Alert;
+            return;
+        }
+
+        _mode = SuspicionMode.Roam;
     }
 
     private void UpdateMemory(float dt)
@@ -371,7 +430,10 @@ public partial class Bandit : CharacterBody2D, IStateMachine
     // ---------------- STATE ----------------
 
     public void SetNavTarget(Vector2 pos) => Nav.TargetPosition = pos;
-    public void SetGlobalAlert(bool value) => IsGlobalAlert = value;
+    public void SetGlobalAlert(bool value)
+    {
+        IsGlobalAlert = value;
+    }
 
     public void ChangeState(IState next)
     {

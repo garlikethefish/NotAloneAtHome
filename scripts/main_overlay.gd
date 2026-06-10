@@ -3,6 +3,7 @@ extends Control
 @onready var objective_content_label = $ObjectivePanel/ObjectiveContentLabel
 @onready var stolen_progress_bar = $StolenStuffPanel/StolenLabel/ProgressBar
 @onready var suspicious_progress_bar = $ImportantInfoPanel/SuspiciousLabel/ProgressBar
+@onready var money_lost_count_label = $StolenStuffPanel/MoneyLostCountLabel
 
 @export var MaskKeyTexture: TextureRect
 @export var SprintKeyTexture: TextureRect
@@ -19,7 +20,13 @@ var _sprint_original_y: float
 var current_difficulty
 
 func _ready() -> void:
+	initialize("Easy") # duct tape fix because shit dont want to initialize otherwise idk why
 	GameManager.GameStarted.connect(initialize)
+	GameManager.GameEnded.connect(initialize)
+	
+	GameManager.MoneyChanged.connect(updateMoney)
+	GameManager.SuspicionChanged.connect(updateSuspision)
+	GameManager.StolenStuffChanged.connect(upadteItemStealed)
 
 	TaskManager.TaskStepNameChanged.connect(task_step_name_changed)
 	TaskManager.TaskNameChanged.connect(task_name_changed)
@@ -64,15 +71,13 @@ func _process(_delta: float) -> void:
 func initialize(difficulty):
 	current_difficulty = difficulty
 
-	# if your C# sends "Easy/Medium/Hard"
-	# you can still display it if needed
 	objective_content_label.text = ""
 
 	stolen_progress_bar.max_value = GameManager.MaxStealableItems
 	stolen_progress_bar.value = GameManager.StolenStuffAmount
+	money_lost_count_label.text = str(0)
 
 	suspicious_progress_bar.value = GameManager.Suspicion
-
 
 func task_step_name_changed(_name: String) -> void:
 	task_step_name.value = _name
@@ -82,9 +87,8 @@ func task_name_changed(_name: String) -> void:
 	task_name.value = _name
 
 
-func updateSuspision():
-	suspicious_progress_bar.value = GameManager.Suspicion
-
+func updateSuspision(value: float) -> void:
+	suspicious_progress_bar.value = value
 
 func updateLinesDone():
 	pass
@@ -97,6 +101,8 @@ func finishTrashColection():
 func updateTrashCollected():
 	pass
 
+func updateMoney(value: float) -> void:
+	money_lost_count_label.text = str(value)
 
-func upadteItemStealed():
-	stolen_progress_bar.value = GameManager.StolenStuffAmount
+func upadteItemStealed(value: int) -> void:
+	stolen_progress_bar.value = value
