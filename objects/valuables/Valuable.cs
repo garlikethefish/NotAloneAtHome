@@ -16,6 +16,11 @@ public partial class Valuable : RigidBody2D
     public event Action OnSold;
     private bool _isSelling;
 
+    public override void _Ready()
+    {
+        
+    }
+
     public void Sell()
     {
         if (_isSelling) return;
