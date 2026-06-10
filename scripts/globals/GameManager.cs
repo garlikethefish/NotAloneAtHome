@@ -1,6 +1,7 @@
 namespace NotAloneAtHome.Scripts.Globals;
 
 using Godot;
+using System;
 using NotAloneAtHome.Tasks;
 using NotAloneAtHome.Valuables;
 
@@ -13,7 +14,7 @@ public partial class GameManager : Node
     [Signal] public delegate void GameEndedEventHandler();
     [Signal] public delegate void MaxItemsStolenEventHandler();
     public static GameManager Instance { get; private set; }
-    private GameDifficulty _difficulty = GameDifficulty.Easy;
+    
     public GameStatus GameStatus = GameStatus.Ended;
     public float Suspicion = 0;
     public int StolenStuffAmount = 0;
@@ -21,13 +22,15 @@ public partial class GameManager : Node
     public int MaxStealableItems = 10;
     public override void _Ready() => Instance = this; 
 
-    public void StartGame(string difficulty)
+    private GameDifficulty _difficulty = GameDifficulty.Easy;
+    public GameDifficulty Difficulty => _difficulty;
+    public void StartGame(int difficulty)
     {
-        //Enum.Parse<GameDifficulty>(difficulty, ignoreCase: true);
-        GameStatus = GameStatus.Started;
-        EmitSignal(SignalName.GameStarted);
-    }
+        _difficulty = (GameDifficulty)difficulty;
 
+        GameStatus = GameStatus.Started;
+        EmitSignal(SignalName.GameStarted, _difficulty.ToString());
+    }
     public void EndGame()
     {
         GameStatus = GameStatus.Ended;

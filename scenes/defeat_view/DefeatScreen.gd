@@ -11,4 +11,4 @@ func set_defeat_reason(text: String):
 func _on_retry_pressed():
 	Engine.time_scale = 1.0
 	get_tree().reload_current_scene()
-	GameManager.start(GameManager.gameDificulty)
+	GameManager.StartGame("Easy")
