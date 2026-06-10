@@ -240,7 +240,7 @@ metadata/_edit_vertical_guides_ = [-1302.0, -145.0, 887.0, -3874.0]
 
 [node name="UIOverlay" parent="UILayers" unique_id=466827575 instance=ExtResource("1_vcsgt")]
 
-[node name="ColorRect" type="ColorRect" parent="UILayers/UIOverlay" unique_id=961030738]
+[node name="VHSFilter" type="ColorRect" parent="UILayers/UIOverlay" unique_id=961030738]
 material = SubResource("ShaderMaterial_ebg2g")
 anchors_preset = 15
 anchor_right = 1.0
@@ -328,11 +328,6 @@ position = Vector2(474, 302)
 VisionShrinkSpeed = 100.0
 VisionExpandSpeed = 100.0
 defaultUnmaskedVisionRadiuss = 200.0
-DebugState = null
-
-[node name="CastedAreaDetectorComponent" parent="Player" index="13" unique_id=145267381]
-RaycastCollisionMasks = null
-ShowDebug = null
 
 [node name="Rooms" type="Node" parent="." unique_id=761107786]
 
@@ -929,13 +924,6 @@ max_active_lights = 7
 
 [node name="Cat" parent="." unique_id=722993762 instance=ExtResource("4_nxtc6")]
 position = Vector2(365, 399)
-Speed = null
-RoamWaitTime = null
-MinX = null
-MaxX = null
-MinY = null
-MaxY = null
-DoCatTimes = null
 
 [node name="- TaskNodes" type="Node" parent="." unique_id=448653341]
 

@@ -2,6 +2,7 @@ using Godot;
 
 public partial class RaycastedPolygon2D : Polygon2D
 {
+    [Export] private Color _initColor = new Color(0, 0, 0, 0);
     [Export] private CollisionObject2D[] excludedColliders = [];
     [Export] private float reach = 150f;
     [Export] private float startOffset = 20f;
@@ -10,7 +11,7 @@ public partial class RaycastedPolygon2D : Polygon2D
 
     public override void _Ready()
     {
-        Color = new Color(0, 0, 0, 0);
+        Color = _initColor;
     }
 
     public override void _Process(double delta)

@@ -623,7 +623,9 @@ one_shot = true
 process_material = SubResource("ParticleProcessMaterial_jjyn6")
 
 [node name="RaycastedShape" parent="." unique_id=876828578 instance=ExtResource("17_67shi")]
+startOffset = 0.0
 rayCount = 128
+collisionMasks = PackedInt32Array(3)
 
 [node name="ThrowerComponent" parent="." unique_id=2059326990 instance=ExtResource("17_u7nq2")]
 
