@@ -5,9 +5,48 @@
 [ext_resource type="PackedScene" uid="uid://bfxah7yut2ec0" path="res://components/cariable/CarriableComponent.tscn" id="3_1fsfd"]
 [ext_resource type="PackedScene" uid="uid://k2k1j0y25ebx" path="res://components/interactable/InteractableComponent.tscn" id="4_1fsfd"]
 [ext_resource type="Texture2D" uid="uid://cthin8wf24dcc" path="res://sprites/bandit_dead.png" id="4_gqoa0"]
+[ext_resource type="PackedScene" uid="uid://ddh3xe8ve8hvx" path="res://components/health/HealthComponent.tscn" id="6_fb6m6"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_cgu5o"]
 size = Vector2(13, 27)
+
+[sub_resource type="Animation" id="Animation_fb6m6"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_yatmd"]
+resource_name = "death"
+length = 0.3
+capture_included = true
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.0985),
+"transitions": PackedFloat32Array(1.6245037),
+"update": 2,
+"values": [Vector2(0.01, 0.01)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_i5xy7"]
+_data = {
+&"RESET": SubResource("Animation_fb6m6"),
+&"death": SubResource("Animation_yatmd")
+}
 
 [node name="DeadBandit" type="RigidBody2D" unique_id=843662598]
 collision_mask = 2
@@ -27,3 +66,10 @@ texture = ExtResource("4_gqoa0")
 CollisionShape2D = NodePath("../CollisionShape2D")
 
 [node name="InteractableComponent" parent="." unique_id=1999549239 instance=ExtResource("4_1fsfd")]
+
+[node name="HealthComponent" parent="." unique_id=1054366147 node_paths=PackedStringArray("DeathAnimationPlayer") instance=ExtResource("6_fb6m6")]
+DeathAnimationPlayer = NodePath("../DeathAnimationPlayer")
+DeathAnimation = "death"
+
+[node name="DeathAnimationPlayer" type="AnimationPlayer" parent="." unique_id=1929738893]
+libraries/ = SubResource("AnimationLibrary_i5xy7")

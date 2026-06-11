@@ -6,7 +6,7 @@ using System.Linq;
 using Godot;
 public abstract partial class TaskNode : ITask
 {
-    public SceneTree Context { get; protected set; }
+    public SceneTree Ctx { get; protected set; }
     public List<ITaskStep> Steps { get; } = [];
     public ITaskStep CurrentStep { get; set; }
     public bool IsCompleted { get; }
@@ -18,7 +18,7 @@ public abstract partial class TaskNode : ITask
 
     public TaskNode(SceneTree ctx)
     {
-        Context = ctx;
+        Ctx = ctx;
         IsCompleted = false;
     }
 

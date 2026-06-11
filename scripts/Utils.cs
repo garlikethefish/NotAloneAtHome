@@ -11,6 +11,21 @@ public static class NodeExtensions
 {
     public static int checks = 0;
 
+    public static Action OnDestroyed(this Node node, Action callback)
+    {
+        void wrapper()
+        {
+            if (node.IsQueuedForDeletion())
+                callback();
+        }
+        node.TreeExiting += wrapper;
+        return () =>
+        {
+            if (GodotObject.IsInstanceValid(node))
+                node.TreeExiting -= wrapper;
+        };
+    }
+
     public static T? GetChild<T>(this Node node) where T : Node =>
         node.GetChildren().OfType<T>().FirstOrDefault();
     public static bool HasChild<T>(this Node node, [NotNullWhen(true)] out T? child) where T : Node

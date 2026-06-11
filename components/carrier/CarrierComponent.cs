@@ -4,6 +4,7 @@ using Godot;
 using System;
 using System.Linq;
 
+#nullable enable
 [Tool]
 public partial class CarrierComponent : Node2D, ICarrierComponent
 {
@@ -14,31 +15,33 @@ public partial class CarrierComponent : Node2D, ICarrierComponent
     [Export] public int RayCount = 16;
     [Export] public bool ShowDebug = true;
     [Export] public int[] CollisionMasks = [];
-    [Export] public Node2D CarryPointNode { get; private set; }
-    public event Action<CarriableComponent> OnCarriableAssigned;
-    public event Action<CarriableComponent> OnCarriableRemoved;
-    public event Action<CarriableComponent> OnDrop;
-    public event Action<CarriableComponent> OnPickup;
-    public bool IsAnimating => IsPickingUp || IsDropping;
+    [Export] public Node2D CarryPointNode { get; private set; } = default!;
+    public event Action<CarriableComponent>? OnCarriableAssigned;
+    public event Action<CarriableComponent>? OnCarriableRemoved;
+    public event Action? OnDrop;
+    public event Action<CarriableComponent>? OnPickup;
     public bool IsCarrying  => CarriableComp != null;
-    private CarriableComponent _carriableComponent;
-    public CarriableComponent CarriableComp {
+    private CarriableComponent? _carriableComponent;
+    public CarriableComponent? CarriableComp {
         get => _carriableComponent;
         private set
         {
             if (value == null)
             {
-                OnCarriableRemoved?.Invoke(_carriableComponent);
+                _unsubFromCarriable?.Invoke();
+                _unsubFromCarriable = null;
+                if (_carriableComponent != null) OnCarriableRemoved?.Invoke(_carriableComponent);
             }
             else
             {
+                _unsubFromCarriable?.Invoke();
+                _unsubFromCarriable = value.OnDestroyed(OnCarriableExitTree);
                 OnCarriableAssigned?.Invoke(value);
             }
             _carriableComponent = value;
-        } 
+        }
     }
-    public bool IsPickingUp = false;
-    public bool IsDropping = false;
+    private Action? _unsubFromCarriable;
     public Vector2 FacingDirection = Vector2.Inf;
     Vector2 _validCarriableDropPosition = Vector2.Inf;
    
@@ -61,7 +64,7 @@ public partial class CarrierComponent : Node2D, ICarrierComponent
     public override void _Process(double delta)
     {
         if (ShowDebug) QueueRedraw();
-        if (CarriableComp == null) return;
+        if (!IsInstanceValid(CarriableComp)) return;
 
         _validCarriableDropPosition = Casters.RadialyFindAValidLocationWhichFitsGivenShape(
             GetWorld2D().DirectSpaceState,
@@ -79,7 +82,6 @@ public partial class CarrierComponent : Node2D, ICarrierComponent
     public void HandlePickup(CarriableComponent carriableComponent)
     {
         CarriableComp = carriableComponent;
-        IsPickingUp = true;
         CarriableComp.HandlePickedUpBy(this);
         OnPickup?.Invoke(CarriableComp);
 
@@ -94,18 +96,24 @@ public partial class CarrierComponent : Node2D, ICarrierComponent
 
     public void HandleDrop()
     {
-        var carriable = CarriableComp;
-        CarriableComp = null;
-        IsDropping = true;
-        carriable.HandleDropedAt(_validCarriableDropPosition);
-        OnDrop?.Invoke(carriable);
+        if (!IsInstanceValid(CarriableComp)) return;
+        CarriableComp.HandleDropedAt(_validCarriableDropPosition);
+        OnDrop?.Invoke();
 
-        if (carriable.ParentHas<DetectableComponent>(out var detectable)
+        if (CarriableComp.ParentHas<DetectableComponent>(out var detectable)
             && this.ParentHas<AreaDetectorComponent>(out var detector)
         ) {
             detectable.IsDetectable = true;
             detectable.HandleUnblacklistDetector(detector);
             detector.ExcludedRids.Remove(detectable.HandleGetRid());
         }
+
+        CarriableComp = null;
+    }
+
+    void OnCarriableExitTree()
+    {
+        CarriableComp = null;
+        OnDrop?.Invoke();
     }
 }

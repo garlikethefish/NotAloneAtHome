@@ -13,6 +13,7 @@
 [ext_resource type="Script" uid="uid://c8citj2m8ikhk" path="res://scenes/RoomLight.cs" id="7_xa025"]
 [ext_resource type="PackedScene" uid="uid://cah3urn1fwd1d" path="res://zones/sell_zone/SellZone.tscn" id="8_jlsqs"]
 [ext_resource type="PackedScene" uid="uid://djmsje8kmaa6o" path="res://objects/valuables/valuable_Bed.tscn" id="11_1iba3"]
+[ext_resource type="AudioStream" uid="uid://cnk2deqtcg6p1" path="res://scenes/main_bg_music.mp3" id="13_fs0b5"]
 [ext_resource type="PackedScene" uid="uid://blm3resaadrtl" path="res://characters/closet_thief/DeadBanditCloset.tscn" id="13_mwfav"]
 [ext_resource type="PackedScene" uid="uid://q27ik5xajev6" path="res://components/spawner/Spawner.tscn" id="15_3p2gp"]
 [ext_resource type="PackedScene" uid="uid://b2xpj2tshxe1h" path="res://objects/dead_bandit/DeadBandit.tscn" id="16_cvmbd"]
@@ -239,7 +240,7 @@ metadata/_edit_vertical_guides_ = [-1302.0, -145.0, 887.0, -3874.0]
 [node name="UILayers" type="Node" parent="." unique_id=1785141639]
 
 [node name="UIOverlay" parent="UILayers" unique_id=466827575 instance=ExtResource("1_vcsgt")]
-layer = 3
+layer = 2
 
 [node name="VHSFilter" type="ColorRect" parent="UILayers/UIOverlay" unique_id=961030738]
 material = SubResource("ShaderMaterial_ebg2g")
@@ -902,9 +903,11 @@ shape = SubResource("SegmentShape2D_hyu0y")
 environment = SubResource("Environment_1iba3")
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1737393139]
-volume_db = -80.0
+stream = ExtResource("13_fs0b5")
+volume_db = -25.218
 autoplay = true
-bus = &"Sounds"
+bus = &"Music"
+parameters/looping = true
 
 [node name="AudioListener2D" type="AudioListener2D" parent="." unique_id=212106023]
 
@@ -917,10 +920,14 @@ player = NodePath("../Player")
 max_active_lights = 7
 
 [node name="Player" parent="." unique_id=1993068751 instance=ExtResource("1_rgh2o")]
-position = Vector2(474, 302)
+position = Vector2(424, 145)
 
 [node name="Cat" parent="." unique_id=722993762 instance=ExtResource("4_nxtc6")]
 position = Vector2(365, 399)
+FollowChance = 0.25
+FollowDistance = 140.0
+MeowSoftVolumeDb = 2.0
+MeowLoudVolumeDb = 8.0
 
 [node name="- TaskNodes" type="Node" parent="." unique_id=448653341]
 
@@ -953,6 +960,7 @@ position = Vector2(548, 251)
 
 [node name="CatBowl" parent="- TaskNodes/FeedCat" unique_id=472273701 groups=["task_feed_cat"] instance=ExtResource("17_ebg2g")]
 position = Vector2(550, 361)
+EmptyTexture = null
 
 [node name="Valuable2" parent="." unique_id=351684464 instance=ExtResource("11_1iba3")]
 position = Vector2(379, 285)

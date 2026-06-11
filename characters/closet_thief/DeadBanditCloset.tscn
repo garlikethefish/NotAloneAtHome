@@ -11,6 +11,67 @@ polygon = PackedVector2Array(-16, -32, -16, 32, -12, 32, -12, 31, 12, 31, 12, 32
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_px37c"]
 size = Vector2(32, 42)
 
+[sub_resource type="Animation" id="Animation_7tqx2"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_frrag"]
+resource_name = "wiggle"
+length = 0.53333336
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.13333334, 0.3, 0.40000004, 0.53333336),
+"transitions": PackedFloat32Array(1, 0.47796023, 0.2588166, 1.8467165, 2.7320805),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(-4, -2), Vector2(0, 0), Vector2(2.62, -1.12), Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.13333334, 0.3, 0.40000004, 0.53333336),
+"transitions": PackedFloat32Array(1, 0.47796023, 0.2588166, 1.8467165, 2.7320805),
+"update": 0,
+"values": [0.0, -0.1308997, 0.0, 0.07907352, 0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_bo1g4"]
+_data = {
+&"RESET": SubResource("Animation_7tqx2"),
+&"wiggle": SubResource("Animation_frrag")
+}
+
 [node name="DeadBanditCloset" type="Node2D" unique_id=1749090602]
 script = ExtResource("1_neiu5")
 
@@ -31,3 +92,7 @@ shape = SubResource("RectangleShape2D_px37c")
 [node name="InteractableComponent" parent="." unique_id=1999549239 instance=ExtResource("3_hlty2")]
 
 [node name="DetectableComponent" parent="." unique_id=2037387284 instance=ExtResource("4_7tqx2")]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=166387111]
+libraries/ = SubResource("AnimationLibrary_bo1g4")
+speed_scale = 1.5

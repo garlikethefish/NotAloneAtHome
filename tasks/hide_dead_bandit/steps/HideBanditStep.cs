@@ -5,46 +5,33 @@ using Godot;
 using NotAloneAtHome.Characters.DeadThiefCloset;
 using NotAloneAtHome.Components;
 
-#nullable enable
 public partial class HideDeadBanditTask
 {
     public class HideBanditStep(HideDeadBanditTask task) : TaskStepBase(task), ITaskStep<HideDeadBanditTask>
     {
         public new HideDeadBanditTask Task { get; private set; } = task;
-
-        DeadBanditCloset? closet;
+        private InteractableComponent _closetInteractable;
 
         public override void OnStart()
         {
             UpdateName("Put thief into closet");
-            closet = Ctx.GetNodesInGroup("task_hide_dead_bandit").OfType<DeadBanditCloset>().FirstOrDefault();
-
-            if (closet == null)
+            if (!Task.closet.HasChild(out _closetInteractable))
             {
-                Log("Didnt find DeadBanditCloset");
-                return;
+                Log("Closet doesnt have Interactable");
             }
 
-            if (closet.HasChild<InteractableComponent>(out var interactable))
-            {
-                interactable.OnInteractionFrom += OnInteractionFrom;
-            }
+            _closetInteractable.OnInteractionFrom += OnInteractionFrom;
         }
 
         public override void OnStepEnd()
         {
-            if (closet?.HasChild<InteractableComponent>(out var interactable) == true)
-            {
-                interactable.OnInteractionFrom -= OnInteractionFrom;
-            }
+            _closetInteractable.OnInteractionFrom -= OnInteractionFrom;
         }
 
         public override void OnTaskEnd()
         {
-            if (closet?.HasChild<InteractableComponent>(out var interactable) == true)
-            {
-                interactable.OnInteractionFrom -= OnInteractionFrom;
-            }
+            _closetInteractable.OnInteractionFrom -= OnInteractionFrom;
+            Task.bandit.PlayShoweThatFatFuckIntoGrannysClosetAnimation(Task.closet);
         }
 
         void OnInteractionFrom(InteractorComponent interactor)

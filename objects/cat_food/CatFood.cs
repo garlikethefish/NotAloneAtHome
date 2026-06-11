@@ -1,7 +1,8 @@
+namespace NotAloneAtHome.Characters;
+
 using Godot;
 using NotAloneAtHome.Components;
 using NotAloneAtHome.Tasks;
-using System;
 
 [Scene]
 public partial class CatFood : Node2D
@@ -12,7 +13,6 @@ public partial class CatFood : Node2D
 	public override void _Ready()
     {
         _detectableComponent.CustomCanBeDetectedBy = CanBeDetectedBy;
-        HealthComponent.OnDeath += QueueFree;
     }
 
     bool CanBeDetectedBy(AreaDetectorComponent detector)

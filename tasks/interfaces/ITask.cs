@@ -13,7 +13,7 @@ public interface ITask
     /// <summary>
     /// Context to scene where task should look for all its dependencies
     /// </summary>
-    public SceneTree Context { get; }
+    public SceneTree Ctx { get; }
     /// <summary>
     /// All steps in this task
     /// </summary>

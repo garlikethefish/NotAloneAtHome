@@ -599,14 +599,13 @@ texture_scale = 1.93
 
 [node name="Shadow" type="Sprite2D" parent="." unique_id=243085117]
 modulate = Color(1, 1, 1, 0.26666668)
-z_index = 2
 position = Vector2(-1.1473894e-05, 15)
 scale = Vector2(0.8437493, 0.9375)
 texture = ExtResource("6_sderm")
 
 [node name="FootstepSound" type="AudioStreamPlayer2D" parent="." unique_id=402278477]
 stream = SubResource("AudioStreamRandomizer_jjyn6")
-volume_db = -15.0
+volume_db = -25.0
 bus = &"Sounds"
 
 [node name="Breathe" type="AudioStreamPlayer2D" parent="." unique_id=723728142]
@@ -624,7 +623,6 @@ one_shot = true
 process_material = SubResource("ParticleProcessMaterial_jjyn6")
 
 [node name="RaycastedShape" parent="." unique_id=876828578 instance=ExtResource("17_67shi")]
-startOffset = 0.0
 rayCount = 128
 collisionMasks = PackedInt32Array(3)
 

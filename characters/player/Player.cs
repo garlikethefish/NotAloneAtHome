@@ -62,7 +62,6 @@ public partial class Player : CharacterBody2D, IStateMachine
 			EmitSignal(SignalName.CanToggleMaskChanged, value);
 		}
 	}
-	private bool _canCarry = true;
 	public bool isWearingMask = false;
 	public Vector2 FacingDirection;
 	public Vector2 CameraTargetPosition;
@@ -119,7 +118,7 @@ public partial class Player : CharacterBody2D, IStateMachine
 
 		_targetVisionRadius = defaultUnmaskedVisionRadiuss;
 
-        CarrierComponent.OnDrop += async _ =>
+        CarrierComponent.OnDrop += async () =>
         {
             await Task.Delay(330);
             NoiseMaker.MakeNoise(20, .1f);  
@@ -173,7 +172,8 @@ public partial class Player : CharacterBody2D, IStateMachine
 
 			// GD.Print($"Interacting with {detectableComp.GetParent().Name} ");
 			if (detectableComp.ParentHas<CarriableComponent>(out var carriable) 
-				&& carriable.CanBeCarriedBy(CarrierComponent) && _canCarry
+				&& carriable.CanBeCarriedBy(CarrierComponent)
+                && !IsInstanceValid(CarrierComponent.CarriableComp)
 			) {
 				Pickup(carriable);
 				ChangeState(States[typeof(CarryingState)]);
@@ -306,19 +306,16 @@ public partial class Player : CharacterBody2D, IStateMachine
 
 	public void Pickup(CarriableComponent carriable)
 	{
-		_canCarry = false;
 		CarrierComponent.HandlePickup(carriable);
 	}
 
 	public void Drop()
 	{
-		_canCarry = true;
 		CarrierComponent.HandleDrop();
 	}
 
 	public void Throw(ThrowableComponent throwable)
 	{
-		_canCarry = true;
 		ThrowerComponent.HandleThrow(throwable);
 	}
 

@@ -7,7 +7,7 @@ using Godot;
 public abstract class TaskStepBase : ITaskStep
 {
     public string Name { get; private set; }
-    public SceneTree Ctx => Task.Context;
+    public SceneTree Ctx => Task.Ctx;
     public ITask Task { get; }
     public event Action<string> OnTaskStepNameChanged;
 

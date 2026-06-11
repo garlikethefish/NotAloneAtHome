@@ -7,6 +7,7 @@
 
 [node name="CatBowl" type="Node2D" unique_id=472273701]
 script = ExtResource("1_qssht")
+EmptyTexture = ExtResource("2_4g67d")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=229711321]
 texture = ExtResource("2_4g67d")

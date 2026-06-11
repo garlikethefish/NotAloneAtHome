@@ -17,16 +17,24 @@ public partial class Player
 
         public void Update(double delta)
         {
+            if (!IsInstanceValid(Ctx.CarrierComponent.CarriableComp))
+            {
+                Ctx.ChangeState(Ctx.States[typeof(IdleState)]);
+                return;
+            }
+
             if (Input.IsActionPressed("throw") && Ctx.CarrierComponent.CarriableComp.ParentHas<ThrowableComponent>())
             {
                 Ctx.StartAiming();
                 Ctx.ChangeState(Ctx.States[typeof(AimingState)]);
+                return;
             }
 
             if (Input.IsActionJustPressed("drop"))
             {
                 Ctx.Drop();
                 Ctx.ChangeState(Ctx.States[typeof(IdleState)]);
+                return;
             }
         }
 
