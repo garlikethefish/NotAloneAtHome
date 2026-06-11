@@ -207,7 +207,6 @@ public partial class Bandit : CharacterBody2D, IStateMachine
             rate *= MaskReductionMultiplier;
 
         GameManager.Instance.AddSuspicion(rate * dt);
-        GD.Print("sus: ", rate*dt);
     }
     // ---------------- VISION CONE (STABLE + NO PLAYER LOCK) ----------------
 

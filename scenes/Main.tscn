@@ -14,6 +14,7 @@
 [ext_resource type="Script" uid="uid://c8citj2m8ikhk" path="res://scenes/RoomLight.cs" id="7_xa025"]
 [ext_resource type="PackedScene" uid="uid://cah3urn1fwd1d" path="res://zones/sell_zone/SellZone.tscn" id="8_jlsqs"]
 [ext_resource type="PackedScene" uid="uid://djmsje8kmaa6o" path="res://objects/valuables/valuable_Bed.tscn" id="11_1iba3"]
+[ext_resource type="AudioStream" uid="uid://cnk2deqtcg6p1" path="res://scenes/main_bg_music.mp3" id="13_fs0b5"]
 [ext_resource type="PackedScene" uid="uid://blm3resaadrtl" path="res://characters/closet_thief/DeadBanditCloset.tscn" id="13_mwfav"]
 [ext_resource type="PackedScene" uid="uid://q27ik5xajev6" path="res://components/spawner/Spawner.tscn" id="15_3p2gp"]
 [ext_resource type="PackedScene" uid="uid://b2xpj2tshxe1h" path="res://objects/dead_bandit/DeadBandit.tscn" id="16_cvmbd"]
@@ -240,7 +241,7 @@ metadata/_edit_vertical_guides_ = [-1302.0, -145.0, 887.0, -3874.0]
 [node name="UILayers" type="Node" parent="." unique_id=1785141639]
 
 [node name="UIOverlay" parent="UILayers" unique_id=466827575 instance=ExtResource("1_vcsgt")]
-layer = 3
+layer = 2
 
 [node name="VHSFilter" type="ColorRect" parent="UILayers/UIOverlay" unique_id=961030738]
 material = SubResource("ShaderMaterial_ebg2g")
@@ -325,13 +326,17 @@ script = ExtResource("7_36rkl")
 _source = NodePath("../../../../Player/RaycastedShape")
 
 [node name="Bandit" parent="." unique_id=136410527 instance=ExtResource("7_fs0b5")]
-position = Vector2(401, 342)
+position = Vector2(75, -41)
 
 [node name="Player" parent="." unique_id=1993068751 instance=ExtResource("1_rgh2o")]
 position = Vector2(474, 302)
 VisionShrinkSpeed = 100.0
 VisionExpandSpeed = 100.0
 defaultUnmaskedVisionRadiuss = 200.0
+
+[node name="CastedAreaDetectorComponent" parent="Player" index="13" unique_id=145267381]
+RaycastCollisionMasks = PackedInt32Array(10, 2)
+ShowDebug = true
 
 [node name="Rooms" type="Node" parent="." unique_id=761107786]
 
@@ -912,9 +917,11 @@ shape = SubResource("SegmentShape2D_hyu0y")
 environment = SubResource("Environment_1iba3")
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1737393139]
-volume_db = -80.0
+stream = ExtResource("13_fs0b5")
+volume_db = -25.218
 autoplay = true
-bus = &"Sounds"
+bus = &"Music"
+parameters/looping = true
 
 [node name="AudioListener2D" type="AudioListener2D" parent="." unique_id=212106023]
 
@@ -925,9 +932,6 @@ position = Vector2(504, 312)
 script = ExtResource("24_2ofn6")
 player = NodePath("../Player")
 max_active_lights = 7
-
-[node name="Cat" parent="." unique_id=722993762 instance=ExtResource("4_nxtc6")]
-position = Vector2(365, 399)
 
 [node name="- TaskNodes" type="Node" parent="." unique_id=448653341]
 
@@ -975,6 +979,9 @@ position = Vector2(398, 439)
 
 [node name="Valuable6" parent="." unique_id=570696452 instance=ExtResource("20_ebg2g")]
 position = Vector2(469, 251)
+
+[node name="Cat" parent="." unique_id=722993762 instance=ExtResource("4_nxtc6")]
+position = Vector2(365, 399)
 
 [node name="ZoneWrapper" type="Node2D" parent="." unique_id=1387019317]
 position = Vector2(658.00006, 237.00002)

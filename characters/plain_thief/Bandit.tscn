@@ -305,7 +305,6 @@ shader_parameter/noise_strength = 0.12
 [node name="Bandit" type="CharacterBody2D" unique_id=136410527]
 safe_margin = 0.2
 script = ExtResource("1_beyja")
-DebugVision = true
 
 [node name="Area2D" type="Area2D" parent="." unique_id=2139388755]
 monitoring = false
@@ -315,7 +314,7 @@ shape = SubResource("CircleShape2D_1skd5")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=99042333]
 modulate = Color(0.76206994, 0.17606321, 0.008382548, 1)
-z_index = 1
+z_index = 2
 sprite_frames = SubResource("SpriteFrames_ywp03")
 animation = &"walk_side"
 frame_progress = 0.7469453
@@ -355,24 +354,22 @@ shape = SubResource("CircleShape2D_1v8oq")
 
 [node name="FootstepSound" type="AudioStreamPlayer2D" parent="." unique_id=1851210468]
 stream = SubResource("AudioStreamRandomizer_r7hq3")
-volume_db = 3.0
-max_distance = 400.0
-panning_strength = 5.0
+max_distance = 500.0
 bus = &"Sounds"
 
 [node name="Breathe" type="AudioStreamPlayer2D" parent="." unique_id=540973784]
 stream = ExtResource("9_1skd5")
-volume_db = -5.0
+volume_db = -20.936
 pitch_scale = 0.44
 autoplay = true
-max_distance = 100.0
-panning_strength = 5.0
+max_distance = 500.0
 bus = &"Sounds"
 parameters/looping = true
 
 [node name="VisionCone" type="Node2D" parent="." unique_id=341125178]
 
 [node name="ColorRect" type="ColorRect" parent="VisionCone" unique_id=1220078462]
+z_index = 1
 material = SubResource("ShaderMaterial_q0mqt")
 anchors_preset = 8
 anchor_left = 0.5

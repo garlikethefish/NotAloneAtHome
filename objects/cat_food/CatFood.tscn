@@ -2,7 +2,8 @@
 
 [ext_resource type="Script" uid="uid://cahvoblxxso5f" path="res://objects/cat_food/CatFood.cs" id="1_olsoj"]
 [ext_resource type="PackedScene" uid="uid://bfxah7yut2ec0" path="res://components/cariable/CarriableComponent.tscn" id="2_53650"]
-[ext_resource type="Texture2D" uid="uid://b3yccx18x5opa" path="res://sprites/projectiles/proj6.png" id="2_m3hn4"]
+[ext_resource type="Texture2D" uid="uid://c27480eqiub7x" path="res://sprites/catbow_emptyl.png" id="2_h3kr8"]
+[ext_resource type="Texture2D" uid="uid://c40mclur82e47" path="res://sprites/catfood.png" id="2_m3hn4"]
 [ext_resource type="PackedScene" uid="uid://b8odej7420g54" path="res://components/detectable/DetectableComponent.tscn" id="3_m3hn4"]
 [ext_resource type="PackedScene" uid="uid://k2k1j0y25ebx" path="res://components/interactable/InteractableComponent.tscn" id="4_h3kr8"]
 
@@ -10,11 +11,14 @@
 
 [node name="CatFood" type="Node2D" unique_id=302419767]
 script = ExtResource("1_olsoj")
+EmptyTexture = ExtResource("2_h3kr8")
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="." unique_id=1374512433]
 shape = SubResource("RectangleShape2D_1q8s8")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1042491809]
+position = Vector2(-4.7683716e-07, -4.7683716e-07)
+scale = Vector2(0.625, 0.625)
 texture = ExtResource("2_m3hn4")
 
 [node name="CarriableComponent" parent="." unique_id=883810070 node_paths=PackedStringArray("CollisionShape2D") instance=ExtResource("2_53650")]

@@ -1,5 +1,5 @@
 namespace NotAloneAtHome.Tasks;
-
+using NotAloneAtHome.Characters; 
 using System.Linq;
 using Godot;
 using NotAloneAtHome.Components;

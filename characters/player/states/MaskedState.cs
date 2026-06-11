@@ -14,19 +14,6 @@ public partial class Player
             Ctx = ctx;
         }
 
-        public void Update(double delta)
-        {
-            if (Input.IsActionJustPressed("toggle_mask"))
-            {
-                Ctx.ChangeState(Ctx.States[typeof(IdleState)]);
-            }
-
-            if (!Ctx._breathingParticles.Emitting)
-                Ctx.PlayBreathingParticles();
-            if (!Ctx._maskSound.Playing)
-                Ctx._maskSound.Play();
-        }
-
         public void Enter()
         {
             Ctx.isWearingMask = true;
@@ -35,19 +22,38 @@ public partial class Player
 
             Ctx._currentSpeed = Ctx.NormalSpeed * Ctx.MaskSpeedMultiplier;
             Ctx._targetVisionRadius = Ctx.defaultMaskedVisionRadiuss;
+
+            if (!Ctx._maskSound.Playing)
+                Ctx._maskSound.Play();
+
+            if (!Ctx._breathingParticles.Emitting)
+                Ctx._breathingParticles.Emitting = true;
+        }
+
+        public void Update(double delta)
+        {
+            if (Input.IsActionJustPressed("toggle_mask"))
+            {
+                Ctx.ChangeState(Ctx.States[typeof(IdleState)]);
+            }
+        }
+
+        public void PhysicsUpdate(double delta)
+        {
         }
 
         public void Exit()
         {
             Ctx.isWearingMask = false;
-            Ctx._maskSound.Stop();
+            Ctx.CanSprint = true;
+
             Ctx._currentSpeed = Ctx.NormalSpeed;
             Ctx._targetVisionRadius = Ctx.defaultUnmaskedVisionRadiuss;
-        }
 
-        public void PhysicsUpdate(double delta)
-        {
-           
+            if (Ctx._maskSound.Playing)
+                Ctx._maskSound.Stop();
+
+            Ctx._breathingParticles.Emitting = false;
         }
     }
 }

@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://b8ew567boha65"
+path="res://.godot/imported/purr.mp3-81c32f0d4657e904e23b1588e098745b.mp3str"
+
+[deps]
+
+source_file="res://sounds/sound effects/purr.mp3"
+dest_files=["res://.godot/imported/purr.mp3-81c32f0d4657e904e23b1588e098745b.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4
