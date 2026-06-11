@@ -2,8 +2,8 @@ namespace NotAloneAtHome.Characters.Player;
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Godot;
-using GTweensGodot.Extensions;
 using NotAloneAtHome.Components;
 using NotAloneAtHome.state_machines.interfaces;
 
@@ -95,6 +95,7 @@ public partial class Player : CharacterBody2D, IStateMachine
 	[Node] public CarrierComponent CarrierComponent;
 	[Node] public CastedAreaDetectorComponent CastedAreaDetectorComponent;
 	[Node] public Node2D RaycastedShape;
+	[Node] public NoiseMaker NoiseMaker;
 	[Node("Camera2D")] private Camera2D _camera;
 	[Signal] public delegate void ShakeCameraEventHandler();
 	[Signal] public delegate void StopCameraShakeEventHandler();
@@ -117,6 +118,12 @@ public partial class Player : CharacterBody2D, IStateMachine
 		ChangeState(States[typeof(IdleState)]);
 
 		_targetVisionRadius = defaultUnmaskedVisionRadiuss;
+
+        CarrierComponent.OnDrop += async _ =>
+        {
+            await Task.Delay(330);
+            NoiseMaker.MakeNoise(20, .1f);  
+        };
 	}
 
 	public override void _Process(double delta)

@@ -17,6 +17,8 @@ public partial class CarrierComponent : Node2D, ICarrierComponent
     [Export] public Node2D CarryPointNode { get; private set; }
     public event Action<CarriableComponent> OnCarriableAssigned;
     public event Action<CarriableComponent> OnCarriableRemoved;
+    public event Action<CarriableComponent> OnDrop;
+    public event Action<CarriableComponent> OnPickup;
     public bool IsAnimating => IsPickingUp || IsDropping;
     public bool IsCarrying  => CarriableComp != null;
     private CarriableComponent _carriableComponent;
@@ -79,6 +81,7 @@ public partial class CarrierComponent : Node2D, ICarrierComponent
         CarriableComp = carriableComponent;
         IsPickingUp = true;
         CarriableComp.HandlePickedUpBy(this);
+        OnPickup?.Invoke(CarriableComp);
 
         if (CarriableComp.ParentHas<DetectableComponent>(out var detectable)
             && this.ParentHas<AreaDetectorComponent>(out var detector)
@@ -95,6 +98,7 @@ public partial class CarrierComponent : Node2D, ICarrierComponent
         CarriableComp = null;
         IsDropping = true;
         carriable.HandleDropedAt(_validCarriableDropPosition);
+        OnDrop?.Invoke(carriable);
 
         if (carriable.ParentHas<DetectableComponent>(out var detectable)
             && this.ParentHas<AreaDetectorComponent>(out var detector)

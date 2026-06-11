@@ -49,6 +49,14 @@ public partial class CarriableComponent : Node2D, ICarriableComponent
 		UpdateConfigurationWarnings();
 	}
 
+    public override void _Notification(int what)
+    {
+        if (what == NotificationPredelete)
+        {
+            HandleDropedAt(Vector2.Zero);
+        }
+    }
+
 	private SignalAwaiter PlayDropAnimation(Vector2 landPos)
 	{
 		var tween  = CreateTween();

@@ -25,7 +25,6 @@ FogShapes="*uid://bcvmd3sqn3lwm"
 GameManager="*uid://cid1uama0hiub"
 TaskManager="*uid://6by5ogm5p27v"
 Animations="*uid://diplwldmjsrvt"
-GTweensGodotUpdater="*uid://bktlm28fjt5f8"
 
 [display]
 

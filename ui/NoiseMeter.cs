@@ -1,13 +1,15 @@
 using Godot;
 using NotAloneAtHome.Characters.Player;
-using System;
-using System.Runtime.CompilerServices;
-
 public partial class NoiseMeter : TextureProgressBar
 {
     NoiseReciever _noiseReciever;
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
+    {
+        CallDeferred(MethodName.LinkPlayer);
+    }
+
+    void LinkPlayer()
     {
         _noiseReciever = GetTree().GetNodeFromGroup<Player>("player").GetChild<NoiseReciever>();
         if (_noiseReciever == null)

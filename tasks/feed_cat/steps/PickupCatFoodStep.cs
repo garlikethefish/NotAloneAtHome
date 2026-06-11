@@ -33,6 +33,11 @@ public partial class FeedCatTask
         {
             _catFoodCarriable.OnPickedUpBy -= OnPickupFood;
             _catFoodCarriable.OnDropedAt -= OnDropFood;
+
+            if (_catFood.HasChild<HealthComponent>(out var health))
+            {
+                health.TakeDamage(10000000);
+            }
         }
 
         void OnPickupFood(CarrierComponent carrier)

@@ -1,7 +1,4 @@
 using Godot;
-using GTweens.Easings;
-using GTweens.Tweens;
-using GTweensGodot.Extensions;
 using NotAloneAtHome.Characters.Player;
 using System;
 using System.Linq;
@@ -11,7 +8,7 @@ public partial class RoomLight : Area2D
 {
     [Export] Polygon2D _lightPolygon;
     [Node] CollisionPolygon2D CollisionPolygon2D; 
-    private GTween _currentTween;
+    private Tween _currentTween;
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
     {
@@ -29,9 +26,10 @@ public partial class RoomLight : Area2D
 	private void TweenToAlpha(float alpha)
     {
         _currentTween?.Kill();
-        _currentTween = _lightPolygon.TweenModulate(new Color(1, 1, 1, alpha), .3f)
-            .SetEasing(Easing.OutSine);
-        _currentTween.Play();
+        _currentTween = CreateTween();
+        _currentTween.TweenProperty(_lightPolygon, "modulate:a", alpha, 0.3f)
+            .SetTrans(Tween.TransitionType.Sine)
+            .SetEase(Tween.EaseType.Out);
     }
 
     private void OnBodyEntered(Node2D body)

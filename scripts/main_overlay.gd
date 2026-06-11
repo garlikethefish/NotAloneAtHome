@@ -90,19 +90,10 @@ func task_name_changed(_name: String) -> void:
 func updateSuspision(value: float) -> void:
 	suspicious_progress_bar.value = value
 
-func updateLinesDone():
-	pass
-
-
-func finishTrashColection():
-	pass
-
-
-func updateTrashCollected():
-	pass
 
 func updateMoney(value: float) -> void:
 	money_lost_count_label.text = str(value)
+
 
 func upadteItemStealed(value: int) -> void:
 	stolen_progress_bar.value = value

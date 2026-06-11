@@ -40,7 +40,7 @@ public partial class NoiseMaker : StaticBody2D
         }
     }
 
-    public void MakeNoise(float noiseDB, float duration = 0)
+    public void MakeNoise(float noiseDB, float duration)
     {
         _targetNoise = noiseDB;
         _duration = duration;
