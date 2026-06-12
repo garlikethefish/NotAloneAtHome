@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://brr113cq5hhql"]
+
+[ext_resource type="Script" uid="uid://bld3h8hbxae7g" path="res://objects/rooms/Room.cs" id="1_liqgt"]
+
+[node name="Room" type="Node2D" unique_id=169850214 node_paths=PackedStringArray("_lightPolygons")]
+script = ExtResource("1_liqgt")
+_lightPolygons = [NodePath("")]

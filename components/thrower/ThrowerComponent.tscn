@@ -17,15 +17,6 @@ shader_parameter/speed = 2.0
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_0ql0c"]
 blend_mode = 2
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_c7u40"]
-shader = ExtResource("4_kuosw")
-shader_parameter/radius = 40.0
-shader_parameter/thickness = 50.0
-shader_parameter/color = Color(1, 1, 1, 1)
-shader_parameter/dash_count = 2.7630000837425
-shader_parameter/dash_ratio = 0.48800002318
-shader_parameter/speed = 2.0
-
 [node name="ThrowerComponent" type="Node2D" unique_id=2059326990 node_paths=PackedStringArray("_targetSpriteNode")]
 script = ExtResource("1_holk5")
 ShowDebug = true
@@ -35,8 +26,6 @@ _targetSpriteNode = NodePath("TargetNode/CanvasGroup")
 z_index = -1
 
 [node name="CanvasGroup" type="CanvasGroup" parent="TargetNode" unique_id=974008832]
-position = Vector2(0, 4)
-scale = Vector2(0.824, 0.31700003)
 
 [node name="Spri" type="Sprite2D" parent="TargetNode/CanvasGroup" unique_id=1600998479]
 material = SubResource("ShaderMaterial_ewrlu")
@@ -44,20 +33,12 @@ scale = Vector2(0.23, 0.23)
 texture = ExtResource("3_bjqyu")
 
 [node name="Circl" type="Sprite2D" parent="TargetNode/CanvasGroup" unique_id=1791280107]
+visible = false
 scale = Vector2(0.03, 0.03)
 texture = ExtResource("3_ewrlu")
 
 [node name="Sub" type="Sprite2D" parent="TargetNode/CanvasGroup" unique_id=1100050190]
+visible = false
 material = SubResource("CanvasItemMaterial_0ql0c")
 scale = Vector2(0.03, 0.03)
 texture = ExtResource("3_ewrlu")
-
-[node name="SubViewport" type="SubViewport" parent="TargetNode" unique_id=370484573]
-transparent_bg = true
-size = Vector2i(256, 256)
-
-[node name="ColorRect" type="ColorRect" parent="TargetNode/SubViewport" unique_id=964239515]
-material = SubResource("ShaderMaterial_c7u40")
-clip_contents = true
-offset_right = 256.0
-offset_bottom = 256.0

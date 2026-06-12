@@ -1,35 +1,91 @@
 using Godot;
 
+[Tool]
 public partial class RaycastedPolygon2D : Polygon2D
 {
-    [Export] private Color _initColor = new Color(0, 0, 0, 0);
+    [Signal] public delegate void PolygonReadyEventHandler();
+    [Export] private Color _initColor = new(255, 255, 255, 1);
     [Export] private CollisionObject2D[] excludedColliders = [];
-    [Export] private float reach = 150f;
-    [Export] private float startOffset = 20f;
-    [Export] private int rayCount = 32;
-    [Export] private int[] collisionMasks = [2];
+    private float _reach = 150f;
+    [Export] private float Reach
+    {
+        get => _reach;
+        set { _reach = value; ShootRays(); QueueRedraw(); }
+    }
+
+    private int _rayCount = 32;
+    [Export] private int RayCount
+    {
+        get => _rayCount;
+        set { _rayCount = value; ShootRays(); QueueRedraw(); }
+    }
+    [Export] private bool _refresh
+    {
+        get => false;
+        set { ShootRays(); QueueRedraw(); }
+    }
+    [Export] private bool _drawDebug = false;
+    [Export] private float startOffset = 0;
+    [Export] private int[] collisionMasks = [];
+    [Export] private bool _castOnlyOnce;
 
     public override void _Ready()
     {
         Color = _initColor;
+        if (!Engine.IsEditorHint())
+            ShootRays();
+        else
+        {
+            CallDeferred(MethodName.ShootRays);
+            CallDeferred(MethodName.ShootRays);
+        }
     }
 
     public override void _Process(double delta)
     {
-        var spaceState = GetWorld2D().DirectSpaceState;
-        var excludedRids = new Godot.Collections.Array<Rid>();
+        if (Engine.IsEditorHint())
+        {
+            ShootRays();
+            QueueRedraw();
+            return;
+        }
+        if (_castOnlyOnce) return;
+        ShootRays();
+    }
+
+    public override void _Draw()
+    {
+        if (!Engine.IsEditorHint() || !_drawDebug) return;
+        DrawArc(Vector2.Zero, _reach, 0, Mathf.Tau, 32, Colors.Yellow, 1.0f);
+        if (Polygon == null || Polygon.Length == 0) return;
+        for (int i = 0; i < Polygon.Length; i++)
+        {
+            DrawLine(Vector2.Zero, Polygon[i], Colors.Green, 2.0f);
+            DrawCircle(Polygon[i], 3.0f, Colors.Red);
+        }
+    }
+
+    void ShootRays()
+    {
+        if (!IsInsideTree()) return;
+        var world = GetWorld2D();
+        if (world == null) return;
+        var spaceState = world.DirectSpaceState;
+        if (spaceState == null) return;  // can still be null in editor
+
+        var excludedRids = new RidArray();
         foreach (var collider in excludedColliders)
             excludedRids.Add(collider.GetRid());
 
         uint combinedMask = Utils.GetCombinedMask(collisionMasks);
-        var endPoints = new Vector2[rayCount];
+        var endPoints = new Vector2[_rayCount];
 
-        for (int i = 0; i < rayCount; i++)
+        for (int i = 0; i < _rayCount; i++)
         {
-            float angle = i * (Mathf.Tau / rayCount);
+            float angle = i * (Mathf.Tau / _rayCount);
             var dir = Vector2.Right.Rotated(angle);
             var rayStart = GlobalPosition + dir * startOffset;
-            var rayEnd = GlobalPosition + dir * reach;
+            var rayEnd = GlobalPosition + dir * _reach;
 
             var query = PhysicsRayQueryParameters2D.Create(rayStart, rayEnd, combinedMask, excludedRids);
             query.HitFromInside = true;

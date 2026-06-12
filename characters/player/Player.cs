@@ -26,6 +26,7 @@ public partial class Player : CharacterBody2D, IStateMachine
 	// player vision
 	//
 	[ExportGroup("Vision")]
+	[Export] private Polygon2D _mutableVisionPolygon;
 	[Export] public double VisionShrinkSpeed = 50;
 	[Export] public double VisionExpandSpeed = 25;
 	[Export] public double defaultUnmaskedVisionRadiuss = 75;

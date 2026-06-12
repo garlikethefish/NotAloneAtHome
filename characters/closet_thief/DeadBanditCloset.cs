@@ -18,7 +18,8 @@ public partial class DeadBanditCloset : Node2D
 
     bool CanBeDetectedBy(AreaDetectorComponent detector)
     {
-        return TaskManager.Instance.CurrentTask.CurrentStep is HideDeadBanditTask.HideBanditStep;
+        var task = TaskManager.Instance.CurrentTask;
+        return task?.CurrentStep is HideDeadBanditTask.HideBanditStep;
     }
     // private void HideDeadThief(ICarrier carrier)
     // {
