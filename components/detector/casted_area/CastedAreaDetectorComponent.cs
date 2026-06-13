@@ -8,7 +8,7 @@ using System.Linq;
 #nullable enable
 public partial class CastedAreaDetectorComponent : AreaDetectorComponent, ICastedAreaDetectorComponent
 {
-    [Export] public int[] RaycastCollisionMasks = [10, 2];
+    [Export] public int[] RaycastCollisionMasks = [];
     public Color IsInSightColor  = Colors.Azure;
     public Color NotInSightColor = Colors.Crimson;
     public Color ClosestColor    = Colors.LimeGreen;

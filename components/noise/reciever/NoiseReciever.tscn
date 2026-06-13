@@ -6,7 +6,7 @@
 
 [node name="NoiseReciever" type="Area2D" unique_id=558709519]
 collision_layer = 0
-collision_mask = 1024
+collision_mask = 16
 script = ExtResource("1_x1k5v")
 _maxNoiseDisturbance = 10.0
 stiffness = 300.0

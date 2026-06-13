@@ -303,6 +303,8 @@ shader_parameter/focus = 0.0
 shader_parameter/noise_strength = 0.12
 
 [node name="Bandit" type="CharacterBody2D" unique_id=136410527]
+collision_layer = 32
+collision_mask = 2
 safe_margin = 0.2
 script = ExtResource("1_beyja")
 

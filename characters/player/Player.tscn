@@ -641,6 +641,7 @@ position = Vector2(0, -11.71)
 [node name="InteractorComponent" parent="." unique_id=1379903148 instance=ExtResource("15_ir81o")]
 
 [node name="CastedAreaDetectorComponent" parent="." unique_id=145267381 instance=ExtResource("15_ohrde")]
+RaycastCollisionMasks = PackedInt32Array(2, 4)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CastedAreaDetectorComponent" unique_id=673846074]
 shape = SubResource("CircleShape2D_po6sa")
