@@ -35,7 +35,6 @@ public partial class Room : Node2D
             .Select(p => GetPolygonTransform(_areasCollisionPoly) * p)
             .ToArray();
         _areaMirror.Polygon = points;
-        _areaMirror.Color = new(0,0,0,1);
         _darkWorld.AddChild(_areaMirror);
 
         TweenMirrorsToAlpha(0);

@@ -6,10 +6,10 @@
 [ext_resource type="PackedScene" uid="uid://cbcifivthchns" path="res://ui/ui_overlay.tscn" id="1_vcsgt"]
 [ext_resource type="Texture2D" uid="uid://brf0nnjvb6xuc" path="res://lighting/light1.tres" id="3_cvmbd"]
 [ext_resource type="PackedScene" uid="uid://c0jnnsxohge3o" path="res://lighting/mask_light.tscn" id="3_yxlcp"]
-[ext_resource type="Shader" uid="uid://bxjfrheethfun" path="res://scenes/Canvas blur - test.gdshader" id="4_dg70y"]
 [ext_resource type="Shader" uid="uid://vb6qxgdi2kl5" path="res://shaders/cut_out_for_fogofwar.gdshader" id="5_dg70y"]
 [ext_resource type="Script" uid="uid://dkm22x3bgkdak" path="res://scenes/MirrorCamera.cs" id="6_2ofn6"]
 [ext_resource type="Script" uid="uid://cmja5kkw6npgr" path="res://scenes/DrawPoligon.cs" id="7_36rkl"]
+[ext_resource type="Shader" uid="uid://dqxgvmytrj0qo" path="res://shaders/color_invertor.gdshader" id="7_dg70y"]
 [ext_resource type="PackedScene" uid="uid://brr113cq5hhql" path="res://objects/rooms/Room.tscn" id="7_v0vrg"]
 [ext_resource type="PackedScene" uid="uid://cah3urn1fwd1d" path="res://zones/sell_zone/SellZone.tscn" id="8_jlsqs"]
 [ext_resource type="Script" uid="uid://dkrpwgp1jjoh6" path="res://scenes/LightSwitch.cs" id="9_v0vrg"]
@@ -39,15 +39,49 @@ shader_parameter/black_offset_multiplier = 0.062000002945
 shader_parameter/color_offset = 0.00100000330737999
 shader_parameter/blur_amount = 1.20000001788144
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_pnhog"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_dg70y"]
+viewport_path = NodePath("UILayers/PlayerVision/DarkMap")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_2c4at"]
 viewport_path = NodePath("UILayers/PlayerVision/LightMap")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_dg70y"]
 shader = ExtResource("5_dg70y")
 
+[sub_resource type="ViewportTexture" id="ViewportTexture_v0vrg"]
+viewport_path = NodePath("UILayers/PlayerVision/DarkMap")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_pnhog"]
+viewport_path = NodePath("UILayers/PlayerVision/LightMap")
+
+[sub_resource type="Shader" id="Shader_dg70y"]
+code = "shader_type canvas_item;
+uniform float blur_amount : hint_range(0.0, 8.0) = 2.0;
+uniform sampler2D screen_texture : hint_screen_texture, repeat_disable, filter_linear_mipmap;
+
+void fragment() {
+    COLOR = textureLod(screen_texture, SCREEN_UV, blur_amount);
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2c4at"]
+shader = SubResource("Shader_dg70y")
+shader_parameter/blur_amount = 2.000000095
+
+[sub_resource type="Shader" id="Shader_v0vrg"]
+code = "shader_type canvas_item;
+uniform float blur_amount : hint_range(0.0, 8.0) = 2.0;
+uniform sampler2D screen_texture : hint_screen_texture, repeat_disable, filter_linear_mipmap;
+
+void fragment() {
+    COLOR = textureLod(screen_texture, SCREEN_UV, blur_amount);
+}"
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_v0vrg"]
-shader = ExtResource("4_dg70y")
-shader_parameter/blur_amount = 2.0
+shader = SubResource("Shader_v0vrg")
+shader_parameter/blur_amount = 2.000000095
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_pnhog"]
+shader = ExtResource("7_dg70y")
 
 [sub_resource type="Gradient" id="Gradient_1nqs0"]
 colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
@@ -257,7 +291,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="CutThroughTextureDebug" type="TextureRect" parent="UILayers/UIOverlay" unique_id=1567529237]
+[node name="DarkWorldDebug" type="TextureRect" parent="UILayers/UIOverlay" unique_id=1567529237]
 visible = false
 anchors_preset = 15
 anchor_right = 1.0
@@ -269,15 +303,44 @@ offset_bottom = 212.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.35, 0.35)
-texture = SubResource("ViewportTexture_pnhog")
+texture = SubResource("ViewportTexture_dg70y")
+
+[node name="LightWorldDebug" type="TextureRect" parent="UILayers/UIOverlay" unique_id=139937360]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 111.0
+offset_top = 661.0
+offset_right = 111.0
+offset_bottom = 661.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.35, 0.35)
+texture = SubResource("ViewportTexture_2c4at")
 
 [node name="PlayerVision" type="CanvasLayer" parent="UILayers" unique_id=1765145660]
 
-[node name="CutThroughTexture" type="TextureRect" parent="UILayers/PlayerVision" unique_id=1677476261]
+[node name="Combined texture" type="CanvasGroup" parent="UILayers/PlayerVision" unique_id=1434340129]
+
+[node name="CutThroughDarknessTexture" type="TextureRect" parent="UILayers/PlayerVision/Combined texture" unique_id=1013722002]
 material = SubResource("ShaderMaterial_dg70y")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_right = 1920.0
+offset_bottom = 1080.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("ViewportTexture_v0vrg")
+
+[node name="CutThroughLightTexture" type="TextureRect" parent="UILayers/PlayerVision/Combined texture" unique_id=1677476261]
+material = SubResource("ShaderMaterial_dg70y")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 1920.0
+offset_bottom = 1080.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("ViewportTexture_pnhog")
@@ -302,8 +365,6 @@ color = Color(0, 0, 0, 1)
 
 [node name="Lights" type="Node2D" parent="UILayers/PlayerVision/LightMap" unique_id=1984382991]
 
-[node name="ForcedDarkness" type="Node2D" parent="UILayers/PlayerVision/LightMap" unique_id=1606684276]
-
 [node name="Camera2D" type="Camera2D" parent="UILayers/PlayerVision/LightMap" unique_id=1450985412 node_paths=PackedStringArray("_cameraToMirror", "_subvp")]
 process_callback = 0
 script = ExtResource("6_2ofn6")
@@ -311,12 +372,59 @@ _cameraToMirror = NodePath("../../../../Player/Camera2D")
 _subvp = NodePath("..")
 
 [node name="PlayerVision" type="Polygon2D" parent="UILayers/PlayerVision/LightMap" unique_id=1536641351 node_paths=PackedStringArray("_source")]
-color = Color(1, 1, 1, 0.32156864)
+color = Color(1, 1, 1, 0.31764707)
 script = ExtResource("7_36rkl")
 _source = NodePath("../../../../Player/RaycastedShape")
 
-[node name="BlurShader" type="ColorRect" parent="UILayers/PlayerVision/LightMap" unique_id=1294086727]
+[node name="CanvasLayer" type="CanvasLayer" parent="UILayers/PlayerVision/LightMap" unique_id=1459380110]
+
+[node name="BlurShader" type="ColorRect" parent="UILayers/PlayerVision/LightMap/CanvasLayer" unique_id=2100936073]
+material = SubResource("ShaderMaterial_2c4at")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="DarkMap" type="SubViewport" parent="UILayers/PlayerVision" unique_id=1996701286]
+size = Vector2i(1920, 1080)
+
+[node name="BlackBackgroundLayer" type="CanvasLayer" parent="UILayers/PlayerVision/DarkMap" unique_id=1226847815]
+layer = -1
+
+[node name="BlackScreen" type="ColorRect" parent="UILayers/PlayerVision/DarkMap/BlackBackgroundLayer" unique_id=612806489]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="ForcedDarkness" type="Node2D" parent="UILayers/PlayerVision/DarkMap" unique_id=1606684276]
+
+[node name="Camera2D" type="Camera2D" parent="UILayers/PlayerVision/DarkMap" unique_id=1716950895 node_paths=PackedStringArray("_cameraToMirror", "_subvp")]
+process_callback = 0
+script = ExtResource("6_2ofn6")
+_cameraToMirror = NodePath("../../../../Player/Camera2D")
+_subvp = NodePath("../../LightMap")
+
+[node name="PlayerVision" type="Polygon2D" parent="UILayers/PlayerVision/DarkMap" unique_id=1227602548 node_paths=PackedStringArray("_source")]
+color = Color(0, 0, 0, 1)
+script = ExtResource("7_36rkl")
+_source = NodePath("../../../../Player/RaycastedShape")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="UILayers/PlayerVision/DarkMap" unique_id=821937464]
+
+[node name="BlurShader" type="ColorRect" parent="UILayers/PlayerVision/DarkMap/CanvasLayer" unique_id=1294086727]
 material = SubResource("ShaderMaterial_v0vrg")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorInvert" type="ColorRect" parent="UILayers/PlayerVision/DarkMap/CanvasLayer" unique_id=169156994]
+material = SubResource("ShaderMaterial_pnhog")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -328,7 +436,7 @@ grow_vertical = 2
 [node name="GoonRoom" parent="Rooms" unique_id=169850214 node_paths=PackedStringArray("_lightPolygons", "_lightWorld", "_darkWorld", "_areasCollisionPoly") instance=ExtResource("7_v0vrg")]
 _lightPolygons = [NodePath("Lights/RaycastedPolygon2D2")]
 _lightWorld = NodePath("../../UILayers/PlayerVision/LightMap/Lights")
-_darkWorld = NodePath("../../UILayers/PlayerVision/LightMap/ForcedDarkness")
+_darkWorld = NodePath("../../UILayers/PlayerVision/DarkMap/ForcedDarkness")
 _areasCollisionPoly = NodePath("Area2D/CollisionPolygon2D")
 
 [node name="Area2D" type="Area2D" parent="Rooms/GoonRoom" unique_id=60405390]
@@ -368,7 +476,7 @@ _castOnlyOnce = true
 [node name="Hallway" parent="Rooms" unique_id=954819346 node_paths=PackedStringArray("_lightPolygons", "_lightWorld", "_darkWorld", "_areasCollisionPoly") instance=ExtResource("7_v0vrg")]
 _lightPolygons = [NodePath("Lights/RaycastedPolygon2D7"), NodePath("Lights/RaycastedPolygon2D5"), NodePath("Lights/RaycastedPolygon2D2"), NodePath("Lights/RaycastedPolygon2D4"), NodePath("Lights/RaycastedPolygon2D6"), NodePath("Lights/RaycastedPolygon2D3"), NodePath("Lights/RaycastedPolygon2D9"), NodePath("Lights/RaycastedPolygon2D8"), NodePath("Lights/RaycastedPolygon2D10")]
 _lightWorld = NodePath("../../UILayers/PlayerVision/LightMap/Lights")
-_darkWorld = NodePath("../../UILayers/PlayerVision/LightMap/ForcedDarkness")
+_darkWorld = NodePath("../../UILayers/PlayerVision/DarkMap/ForcedDarkness")
 _areasCollisionPoly = NodePath("Area2D/CollisionPolygon2D")
 
 [node name="Area2D" type="Area2D" parent="Rooms/Hallway" unique_id=1214656202]
@@ -496,7 +604,7 @@ _castOnlyOnce = true
 [node name="StorageRoom" parent="Rooms" unique_id=1228042038 node_paths=PackedStringArray("_lightPolygons", "_lightWorld", "_darkWorld", "_areasCollisionPoly") instance=ExtResource("7_v0vrg")]
 _lightPolygons = [NodePath("Lights/RaycastedPolygon2D8")]
 _lightWorld = NodePath("../../UILayers/PlayerVision/LightMap/Lights")
-_darkWorld = NodePath("../../UILayers/PlayerVision/LightMap/ForcedDarkness")
+_darkWorld = NodePath("../../UILayers/PlayerVision/DarkMap/ForcedDarkness")
 _areasCollisionPoly = NodePath("Area2D/CollisionPolygon2D")
 
 [node name="Area2D" type="Area2D" parent="Rooms/StorageRoom" unique_id=1029930049]
@@ -535,7 +643,7 @@ _castOnlyOnce = true
 [node name="Kitchen" parent="Rooms" unique_id=809023607 node_paths=PackedStringArray("_lightPolygons", "_lightWorld", "_darkWorld", "_areasCollisionPoly") instance=ExtResource("7_v0vrg")]
 _lightPolygons = [NodePath("Lights/RaycastedPolygon2D7")]
 _lightWorld = NodePath("../../UILayers/PlayerVision/LightMap/Lights")
-_darkWorld = NodePath("../../UILayers/PlayerVision/LightMap/ForcedDarkness")
+_darkWorld = NodePath("../../UILayers/PlayerVision/DarkMap/ForcedDarkness")
 _areasCollisionPoly = NodePath("Area2D/CollisionPolygon2D")
 
 [node name="Area2D" type="Area2D" parent="Rooms/Kitchen" unique_id=801335807]
@@ -574,7 +682,7 @@ _castOnlyOnce = true
 [node name="Bedroom1" parent="Rooms" unique_id=1731706473 node_paths=PackedStringArray("_lightPolygons", "_lightWorld", "_darkWorld", "_areasCollisionPoly") instance=ExtResource("7_v0vrg")]
 _lightPolygons = [NodePath("Lights/RaycastedPolygon2D9"), NodePath("Lights/RaycastedPolygon2D8"), NodePath("Lights/RaycastedPolygon2D7"), NodePath("Lights/RaycastedPolygon2D10")]
 _lightWorld = NodePath("../../UILayers/PlayerVision/LightMap/Lights")
-_darkWorld = NodePath("../../UILayers/PlayerVision/LightMap/ForcedDarkness")
+_darkWorld = NodePath("../../UILayers/PlayerVision/DarkMap/ForcedDarkness")
 _areasCollisionPoly = NodePath("Area2D/CollisionPolygon2D")
 
 [node name="Area2D" type="Area2D" parent="Rooms/Bedroom1" unique_id=353695288]
@@ -643,7 +751,7 @@ _castOnlyOnce = true
 [node name="Bedroom2" parent="Rooms" unique_id=2146805221 node_paths=PackedStringArray("_lightPolygons", "_lightWorld", "_darkWorld", "_areasCollisionPoly") instance=ExtResource("7_v0vrg")]
 _lightPolygons = [NodePath("Lights/RaycastedPolygon2D9"), NodePath("Lights/RaycastedPolygon2D8"), NodePath("Lights/RaycastedPolygon2D7")]
 _lightWorld = NodePath("../../UILayers/PlayerVision/LightMap/Lights")
-_darkWorld = NodePath("../../UILayers/PlayerVision/LightMap/ForcedDarkness")
+_darkWorld = NodePath("../../UILayers/PlayerVision/DarkMap/ForcedDarkness")
 _areasCollisionPoly = NodePath("Area2D/CollisionPolygon2D")
 
 [node name="Area2D" type="Area2D" parent="Rooms/Bedroom2" unique_id=1093331664]
@@ -701,7 +809,7 @@ _castOnlyOnce = true
 [node name="Livingroom" parent="Rooms" unique_id=1354650421 node_paths=PackedStringArray("_lightPolygons", "_lightWorld", "_darkWorld", "_areasCollisionPoly") instance=ExtResource("7_v0vrg")]
 _lightPolygons = [NodePath("Lights/RaycastedPolygon2D9"), NodePath("Lights/RaycastedPolygon2D8"), NodePath("Lights/RaycastedPolygon2D7"), NodePath("Lights/RaycastedPolygon2D10"), NodePath("Lights/RaycastedPolygon2D11"), NodePath("Lights/RaycastedPolygon2D12"), NodePath("Lights/RaycastedPolygon2D13"), NodePath("Lights/RaycastedPolygon2D14")]
 _lightWorld = NodePath("../../UILayers/PlayerVision/LightMap/Lights")
-_darkWorld = NodePath("../../UILayers/PlayerVision/LightMap/ForcedDarkness")
+_darkWorld = NodePath("../../UILayers/PlayerVision/DarkMap/ForcedDarkness")
 _areasCollisionPoly = NodePath("Area2D/CollisionPolygon2D")
 
 [node name="Area2D" type="Area2D" parent="Rooms/Livingroom" unique_id=1854674585]
@@ -818,7 +926,7 @@ _castOnlyOnce = true
 [node name="Bathroom" parent="Rooms" unique_id=1278014348 node_paths=PackedStringArray("_lightPolygons", "_lightWorld", "_darkWorld", "_areasCollisionPoly") instance=ExtResource("7_v0vrg")]
 _lightPolygons = [NodePath("Lights/RaycastedPolygon2D10"), NodePath("Lights/RaycastedPolygon2D11"), NodePath("Lights/RaycastedPolygon2D12")]
 _lightWorld = NodePath("../../UILayers/PlayerVision/LightMap/Lights")
-_darkWorld = NodePath("../../UILayers/PlayerVision/LightMap/ForcedDarkness")
+_darkWorld = NodePath("../../UILayers/PlayerVision/DarkMap/ForcedDarkness")
 _areasCollisionPoly = NodePath("Area2D/CollisionPolygon2D")
 
 [node name="Area2D" type="Area2D" parent="Rooms/Bathroom" unique_id=1279994882]
@@ -872,7 +980,7 @@ RayCount = 276
 collisionMasks = PackedInt32Array(3)
 _castOnlyOnce = true
 
-[node name="Lights" type="Node" parent="." unique_id=1159113441]
+[node name="Lights" type="Node2D" parent="." unique_id=591670563]
 
 [node name="DirectionalLight2D" type="DirectionalLight2D" parent="Lights" unique_id=1073051661]
 z_index = 4
