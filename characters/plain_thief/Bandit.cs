@@ -1,9 +1,9 @@
-using Godot;
 using System;
 using System.Collections.Generic;
 using NotAloneAtHome.state_machines.interfaces;
 using NotAloneAtHome.Characters.Player;
 using NotAloneAtHome.Scripts.Globals;
+using Godot;
 
 public partial class Bandit : CharacterBody2D, IStateMachine
 {
@@ -26,6 +26,7 @@ public partial class Bandit : CharacterBody2D, IStateMachine
     [ExportGroup("Hearing")]
     [Export] public float HearingRange = 260f;
     [Export] public float SprintNoiseMultiplier = 1.8f;
+    
     [ExportGroup("Suspicion")]
     [Export] public float RoamingSuspicionRate = 0.5f;
     [Export] public float SeenSuspicionRate = 6f;
@@ -48,7 +49,6 @@ public partial class Bandit : CharacterBody2D, IStateMachine
 
     private readonly HashSet<Node2D> _visionTargets = [];
 
-    // Vision cone node (MUST be child of bandit)
     private Node2D _visionCone;
     private ShaderMaterial _visionMat;
     private enum SuspicionMode
@@ -63,34 +63,30 @@ public partial class Bandit : CharacterBody2D, IStateMachine
 
     public float ShootTimer { get; set; }
     public bool IsGlobalAlert { get; private set; }
-
-    // REQUIRED for investigate state
     public bool IsInvestigating { get; set; }
 
-    // movement
+    // Movement tracking
     public Vector2 Forward { get; private set; } = Vector2.Down;
     private Vector2 _smoothedForward = Vector2.Down;
     private Vector2 _velocity = Vector2.Zero;
 
-    // memory
+    // Memory
     private Vector2? _lastSeenPosition;
     private Vector2? _lastHeardPosition;
     private float _memoryTimer;
     private const float MemoryDuration = 6f;
 
-    // vision FX
+    // Vision FX
     private float _pulseTime;
     private float _scanTime;
-    private void OnVisionEnter(Node2D body)
-    {
-        _visionTargets.Add(body);
-    }
 
-    private void OnVisionExit(Node2D body)
-    {
-        _visionTargets.Remove(body);
-    }
+    // --- NEW: Cat-like Stuck Detection variables ---
+    private Vector2 _stuckCheckPos;
+    private float _stuckTimer;
+    private RandomNumberGenerator _rng = new();
 
+    private void OnVisionEnter(Node2D body) => _visionTargets.Add(body);
+    private void OnVisionExit(Node2D body) => _visionTargets.Remove(body);
 
     public override void _Ready()
     {
@@ -98,9 +94,7 @@ public partial class Bandit : CharacterBody2D, IStateMachine
         Nav = GetNode<NavigationAgent2D>("NavigationAgent2D");
         SightRay = GetNode<RayCast2D>("SightRay");
         Gunshot = GetNode<AudioStreamPlayer2D>("AudioStreamPlayer2D");
-
         _noiseReceiver = GetNode<NoiseReciever>("NoiseReciever");
-
         _visionArea = GetNode<Area2D>("VisionArea");
 
         _visionArea.BodyEntered += OnVisionEnter;
@@ -114,6 +108,24 @@ public partial class Bandit : CharacterBody2D, IStateMachine
 
         SightRay.AddException(this);
 
+        // --- NEW: Configure Bandit Navigation to match the Cat's settings ---
+        Nav.PathDesiredDistance = 6f;
+        Nav.TargetDesiredDistance = 16f; 
+        Nav.AvoidanceEnabled = true;
+        
+        // This stops the bandit from clipping wall corners or trying to squeeze 
+        // through gaps smaller than its collision shape. Adjust slightly if the sprite is bulky.
+        Nav.Radius = 16f; 
+        Nav.MaxSpeed = ChaseSpeed * 1.5f;
+
+        Nav.TimeHorizonAgents = 1.5f;
+        Nav.TimeHorizonObstacles = 2.5f;
+        Nav.NeighborDistance = 100f;
+        Nav.MaxNeighbors = 12;
+
+        _stuckCheckPos = GlobalPosition;
+
+        // State setups
         States[typeof(BanditRoamState)] = new BanditRoamState(this);
         States[typeof(BanditChaseState)] = new BanditChaseState(this);
         States[typeof(BanditInvestigateState)] = new BanditInvestigateState(this);
@@ -122,7 +134,6 @@ public partial class Bandit : CharacterBody2D, IStateMachine
 
         ChangeState(States[typeof(BanditRoamState)]);
     }
-    
 
     public override void _PhysicsProcess(double delta)
     {
@@ -130,9 +141,15 @@ public partial class Bandit : CharacterBody2D, IStateMachine
 
         CurrentState?.PhysicsUpdate(delta);
 
-        UpdatePerception(dt);
+        // UpdatePerception(dt);
         UpdateSuspicion(dt);
+        
+        // Process core velocity calculations
         UpdateMovement(dt);
+        CheckIfStuck(dt);
+
+        // --- FIXED: Fetch the calculated safe avoidance velocity from the NavAgent ---
+        Velocity = Nav.GetVelocity();
         MoveAndSlide();
 
         UpdateForward(dt);
@@ -160,33 +177,75 @@ public partial class Bandit : CharacterBody2D, IStateMachine
             ? Acceleration
             : Deceleration;
 
+        // Apply internal acceleration smoothing
         _velocity = _velocity.Lerp(targetVelocity, accel * dt);
-        Velocity = _velocity;
+        
+        // --- FIXED: Instead of pushing directly to the body, pass it to the Nav system 
+        // so it recalculates paths around obstacles.
+        Nav.Velocity = _velocity;
     }
+
+    // ---------------- STUCK DETECTION ----------------
+
+    private void CheckIfStuck(float dt)
+    {
+        // Don't care if we've already arrived at our destination
+        if (Nav.IsNavigationFinished())
+        {
+            _stuckTimer = 0f;
+            _stuckCheckPos = GlobalPosition;
+            return;
+        }
+
+        _stuckTimer += dt;
+        if (_stuckTimer < 0.8f) return;
+
+        float moved = GlobalPosition.DistanceTo(_stuckCheckPos);
+
+        // If the bandit has barely moved despite wanting to walk, force a recalibration
+        if (moved < 6f)
+        {
+            Unstick();
+        }
+
+        _stuckCheckPos = GlobalPosition;
+        _stuckTimer = 0f;
+    }
+
+    private void Unstick()
+    {
+        // For a Bandit, breaking state into a random wander might break a pursuit. 
+        // Instead, we nudge the current target slightly or force-clear the current path 
+        // segment to force the NavigationServer to re-route around whatever edge it's catching on.
+        Vector2 currentTarget = Nav.TargetPosition;
+        float nudgeAngle = _rng.RandfRange(0f, Mathf.Tau);
+        Vector2 nudge = new Vector2(Mathf.Cos(nudgeAngle), Mathf.Sin(nudgeAngle)) * 15f;
+
+        Nav.TargetPosition = currentTarget + nudge;
+        Nav.Velocity = Vector2.Zero;
+    }
+
+    // ---------------- FORWARD & ROTATION ----------------
 
     private void UpdateForward(float dt)
     {
         Vector2 target = _velocity.Normalized();
-
         float t = 1f - Mathf.Exp(-TurnSmoothing * dt);
+        
         if (!Nav.IsNavigationFinished())
         {
             _smoothedForward = _smoothedForward.Lerp(target, t).Normalized();
-            Vector2 next =
-                GlobalPosition.DirectionTo(
-                    Nav.GetNextPathPosition()
-                );
-
+            Vector2 next = GlobalPosition.DirectionTo(Nav.GetNextPathPosition());
             Forward = Forward.Lerp(next, t).Normalized();
         }
         else if (_velocity.LengthSquared() > 0.001f)
         {
-            Forward = Forward.Lerp(
-                _velocity.Normalized(),
-                t
-            ).Normalized();
+            Forward = Forward.Lerp(_velocity.Normalized(), t).Normalized();
         }
     }
+
+    // ---------------- SUSPICION ----------------
+
     private void UpdateSuspicion(float dt)
     {
         if (GameManager.Instance == null || Player == null)
@@ -208,7 +267,8 @@ public partial class Bandit : CharacterBody2D, IStateMachine
 
         GameManager.Instance.AddSuspicion(rate * dt);
     }
-    // ---------------- VISION CONE (STABLE + NO PLAYER LOCK) ----------------
+
+    // ---------------- VISION CONE ----------------
 
     private void UpdateVisionCone(float dt)
     {
@@ -216,14 +276,11 @@ public partial class Bandit : CharacterBody2D, IStateMachine
             return;
 
         _pulseTime += dt;
-
         float angle = Forward.Angle();
 
-        // ALWAYS attached to bandit (never player drift)
         _visionCone.GlobalPosition = GlobalPosition + Forward * VisionConeOffset;
         _visionCone.Rotation = angle;
 
-        // SCAN SWEEP WHEN SEARCHING
         if (IsGlobalAlert && !CanSeePlayer())
         {
             _scanTime += dt;
@@ -234,99 +291,127 @@ public partial class Bandit : CharacterBody2D, IStateMachine
         }
 
         float scanOffset = Mathf.Sin(_scanTime * 2.0f) * 0.15f;
-
         float dynamicAngle = VisionAngle;
 
         if (IsGlobalAlert)
-            dynamicAngle *= 0.75f; // narrowing cone when alert
+            dynamicAngle *= 0.75f;
 
         if (_visionMat != null)
         {
             _visionCone.GlobalRotation = Forward.Angle();
-
-            if (_visionMat != null)
-            {
-                _visionMat.SetShaderParameter("forward", Vector2.Right);
-            }
+            _visionMat.SetShaderParameter("forward", Vector2.Right);
             _visionMat.SetShaderParameter("vision_angle", dynamicAngle);
             _visionMat.SetShaderParameter("vision_range", VisionRange);
-
             _visionMat.SetShaderParameter("pulse", _pulseTime);
             _visionMat.SetShaderParameter("scan_offset", scanOffset);
-
             _visionMat.SetShaderParameter("alert_strength", IsGlobalAlert ? 1f : 0f);
             _visionMat.SetShaderParameter("focus", CanSeePlayer() ? 1f : 0f);
         }
     }
 
+    // // ---------------- PERCEPTION ----------------
+    // private void UpdateAcousticPerception(float dt)
+    // {
+    //     if (_noiseReceiver == null || Player == null || Player.IsDead) 
+    //         return;
+
+    //     // Check if ambient/direct sound picked up by the Area2D crosses our threshold
+    //     if (_noiseReceiver.CurrentNoise > 30f)
+    //     {
+    //         Vector2? acousticTarget = _noiseReceiver.GetLoudestNoisePosition();
+
+    //         if (acousticTarget.HasValue)
+    //         {
+    //             // Lock onto where the sound wave was created without cheating coordinates
+    //             _lastHeardPosition = acousticTarget.Value;
+    //             _memoryTimer = MemoryDuration;
+    //             SetGlobalAlert(true);
+
+    //             // Interrupt normal roaming paths if not actively engaged in gunfights/direct chasing
+    //             if (CurrentState != States[typeof(BanditChaseState)] && CurrentState != States[typeof(BanditShootState)])
+    //             {
+    //                 if (CurrentState != States[typeof(BanditInvestigateState)])
+    //                 {
+    //                     IsInvestigating = true;
+                        
+    //                     // Route pathfinding directly towards the noise node vector location
+    //                     SetNavTarget(acousticTarget.Value);
+                        
+    //                     // Drop current state to process sound coordinates
+    //                     ChangeState(States[typeof(BanditInvestigateState)]);
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
     // ---------------- PERCEPTION ----------------
 
-    private void UpdatePerception(float dt)
-    {
-        if (Player == null || Player.IsDead)
-            return;
+    // private void UpdatePerception(float dt)
+    // {
+    //     if (Player == null || Player.IsDead)
+    //         return;
 
-        if (Player.isWearingMask)
-            return;
+    //     // --- CAT-LIKE NOISE REACTION SYSTEM ---
+    //     if (_noiseReceiver != null && _noiseReceiver.CurrentNoise > 30f) // Matches Cat threshold
+    //     {
+    //         Vector2? noiseSourcePos = _noiseReceiver.GetLoudestNoisePosition();
+            
+    //         if (noiseSourcePos.HasValue)
+    //         {
+    //             // Assign the actual sound footprint coordinates instead of cheating to find the player
+    //             _lastHeardPosition = noiseSourcePos.Value;
+    //             _memoryTimer = MemoryDuration;
+    //             SetGlobalAlert(true);
 
-        Vector2 toPlayer = Player.GlobalPosition - GlobalPosition;
-        float dist = toPlayer.Length();
+    //             // Only distract the bandit if they aren't already actively fighting or chasing the player
+    //             if (CurrentState != States[typeof(BanditChaseState)] && CurrentState != States[typeof(BanditShootState)])
+    //             {
+    //                 if (CurrentState != States[typeof(BanditInvestigateState)])
+    //                 {
+    //                     IsInvestigating = true;
+                        
+    //                     // Pass the position straight to the pathfinding node
+    //                     SetNavTarget(noiseSourcePos.Value);
+                        
+    //                     // Trigger state change via State Machine
+    //                     ChangeState(States[typeof(BanditInvestigateState)]);
+    //                 }
+    //             }
+    //         }
+    //     }
 
-        if (_noiseReceiver != null)
-        {
-            if (_noiseReceiver.CurrentNoise > 20f)
-            {
-                _lastHeardPosition = Player.GlobalPosition;
-                _memoryTimer = MemoryDuration;
+    //     // Keep normal visual processing alive if player isn't hidden by a mask
+    //     if (Player.isWearingMask)
+    //         return;
 
-                SetGlobalAlert(true);
-            }
-        }
+    //     Vector2 toPlayer = Player.GlobalPosition - GlobalPosition;
 
-        if (_visionTargets.Contains(Player))
-        {
-            Vector2 dir = toPlayer.Normalized();
+    //     if (_visionTargets.Contains(Player))
+    //     {
+    //         Vector2 dir = toPlayer.Normalized();
+    //         float dot = Forward.Dot(dir);
+    //         float threshold = Mathf.Cos(Mathf.DegToRad(VisionAngle * 0.5f));
 
-            float dot = Forward.Dot(dir);
-            float threshold = Mathf.Cos(
-                Mathf.DegToRad(VisionAngle * 0.5f)
-            );
+    //         if (dot >= threshold)
+    //         {
+    //             SightRay.TargetPosition = toPlayer;
+    //             SightRay.ForceRaycastUpdate();
 
-            if (dot >= threshold)
-            {
-                SightRay.TargetPosition = toPlayer;
-                SightRay.ForceRaycastUpdate();
+    //             if (!SightRay.IsColliding() || SightRay.GetCollider() == Player)
+    //             {
+    //                 _lastSeenPosition = Player.GlobalPosition;
+    //                 _memoryTimer = MemoryDuration;
+    //                 SetGlobalAlert(true);
+    //             }
+    //         }
+    //     }
+    // }
 
-                if (!SightRay.IsColliding() || SightRay.GetCollider() == Player)
-                {
-                    _lastSeenPosition = Player.GlobalPosition;
-                    _memoryTimer = MemoryDuration;
-
-                    SetGlobalAlert(true);
-                }
-            }
-        }
-    }
     private void UpdateSuspicionMode()
     {
-        if (CurrentState == States[typeof(BanditChaseState)])
-        {
-            _mode = SuspicionMode.Chase;
-            return;
-        }
-
-        if (CurrentState == States[typeof(BanditInvestigateState)])
-        {
-            _mode = SuspicionMode.Investigate;
-            return;
-        }
-
-        if (CurrentState == States[typeof(BanditAlertState)])
-        {
-            _mode = SuspicionMode.Alert;
-            return;
-        }
-
+        if (CurrentState == States[typeof(BanditChaseState)]) { _mode = SuspicionMode.Chase; return; }
+        if (CurrentState == States[typeof(BanditInvestigateState)]) { _mode = SuspicionMode.Investigate; return; }
+        if (CurrentState == States[typeof(BanditAlertState)]) { _mode = SuspicionMode.Alert; return; }
         _mode = SuspicionMode.Roam;
     }
 
@@ -339,7 +424,6 @@ public partial class Bandit : CharacterBody2D, IStateMachine
             _lastSeenPosition = null;
             _lastHeardPosition = null;
 
-            // start scan when losing target
             if (IsGlobalAlert)
                 _scanTime = 0f;
         }
@@ -347,12 +431,8 @@ public partial class Bandit : CharacterBody2D, IStateMachine
 
     public Vector2? GetMemoryTarget()
     {
-        if (_lastSeenPosition.HasValue)
-            return _lastSeenPosition;
-
-        if (_lastHeardPosition.HasValue)
-            return _lastHeardPosition;
-
+        if (_lastSeenPosition.HasValue) return _lastSeenPosition;
+        if (_lastHeardPosition.HasValue) return _lastHeardPosition;
         return null;
     }
 
@@ -360,33 +440,20 @@ public partial class Bandit : CharacterBody2D, IStateMachine
 
     public bool CanSeePlayer()
     {
-        if (Player == null || Player.IsDead)
-            return false;
-
-        if (!_visionTargets.Contains(Player))
-            return false;
-
-        if (Player.isWearingMask)
+        if (Player == null || Player.IsDead || !_visionTargets.Contains(Player) || Player.isWearingMask)
             return false;
 
         Vector2 toPlayer = Player.GlobalPosition - GlobalPosition;
-
         Vector2 dir = toPlayer.Normalized();
-
         float dot = Forward.Dot(dir);
+        float threshold = Mathf.Cos(Mathf.DegToRad(VisionAngle * 0.5f));
 
-        float threshold = Mathf.Cos(
-            Mathf.DegToRad(VisionAngle * 0.5f)
-        );
-
-        if (dot < threshold)
-            return false;
+        if (dot < threshold) return false;
 
         SightRay.TargetPosition = toPlayer;
         SightRay.ForceRaycastUpdate();
 
-        return !SightRay.IsColliding()
-            || SightRay.GetCollider() == Player;
+        return !SightRay.IsColliding() || SightRay.GetCollider() == Player;
     }
 
     // ---------------- ANIMATION ----------------
@@ -395,11 +462,7 @@ public partial class Bandit : CharacterBody2D, IStateMachine
 
     private void UpdateAnimation()
     {
-        if (Anim == null)
-            return;
-
-        // Don't override shoot animation
-        if (CurrentState == States[typeof(BanditShootState)])
+        if (Anim == null || CurrentState == States[typeof(BanditShootState)])
             return;
 
         Vector2 v = Velocity;
@@ -417,10 +480,8 @@ public partial class Bandit : CharacterBody2D, IStateMachine
         {
             _lastFacing = "down";
         }
-        string anim =
-            v.LengthSquared() > 0.01f
-            ? $"walk_{_lastFacing}"
-            : $"idle_{_lastFacing}";
+
+        string anim = v.LengthSquared() > 0.01f ? $"walk_{_lastFacing}" : $"idle_{_lastFacing}";
 
         if (Anim.Animation != anim)
             Anim.Play(anim);
@@ -429,10 +490,7 @@ public partial class Bandit : CharacterBody2D, IStateMachine
     // ---------------- STATE ----------------
 
     public void SetNavTarget(Vector2 pos) => Nav.TargetPosition = pos;
-    public void SetGlobalAlert(bool value)
-    {
-        IsGlobalAlert = value;
-    }
+    public void SetGlobalAlert(bool value) => IsGlobalAlert = value;
 
     public void ChangeState(IState next)
     {

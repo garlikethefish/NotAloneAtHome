@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://ee0n1jjwavli"
+path="res://.godot/imported/catfoodpour.mp3-e6fc30671c75f9f1b7019e8ca3570f31.mp3str"
+
+[deps]
+
+source_file="res://sounds/sound effects/catfoodpour.mp3"
+dest_files=["res://.godot/imported/catfoodpour.mp3-e6fc30671c75f9f1b7019e8ca3570f31.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4
