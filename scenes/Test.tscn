@@ -1,44 +1,58 @@
 [gd_scene format=3 uid="uid://45b72bnlu6ms"]
 
-[ext_resource type="PackedScene" uid="uid://cbcifivthchns" path="res://ui/ui_overlay.tscn" id="1_qca6q"]
-[ext_resource type="PackedScene" uid="uid://be8qbmt0fe144" path="res://characters/player/Player.tscn" id="1_w8un3"]
-[ext_resource type="Shader" uid="uid://cuielptcsyeb5" path="res://shaders/vhs_filter.gdshader" id="2_2loec"]
 [ext_resource type="PackedScene" uid="uid://dq60rr28wyibf" path="res://objects/valuables/ValuableCabinet.tscn" id="2_iscks"]
 [ext_resource type="PackedScene" uid="uid://djmsje8kmaa6o" path="res://objects/valuables/valuable_Bed.tscn" id="3_amo3t"]
 [ext_resource type="PackedScene" uid="uid://cfsot4oxbkssw" path="res://objects/valuables/Valuable_Sink.tscn" id="4_qca6q"]
 [ext_resource type="PackedScene" uid="uid://dyuyf26s3aqqs" path="res://objects/valuables/Valuable_Sofa.tscn" id="5_2loec"]
+[ext_resource type="PackedScene" uid="uid://u0mnqyu6x1q3" path="res://objects/raycasted_shape/RaycastedPolygon2D.tscn" id="7_fu3ou"]
+[ext_resource type="Script" uid="uid://3foby3fr1wl4" path="res://scenes/DummyPlayer.cs" id="7_qca6q"]
+[ext_resource type="Texture2D" uid="uid://dx7a3vsyhub7w" path="res://sprites/balkan.jpg" id="8_2loec"]
+[ext_resource type="Script" uid="uid://b0vm5vnf5yqoo" path="res://scenes/SuperFlexibleVision.cs" id="10_bhwsq"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_jbd4l"]
-shader = ExtResource("2_2loec")
-shader_parameter/color_offset_multiplier = 0.0010000000475
-shader_parameter/black_offset_multiplier = 0.062000002945
-shader_parameter/color_offset = 0.00100000330737999
-shader_parameter/blur_amount = 1.20000001788144
+[sub_resource type="CircleShape2D" id="CircleShape2D_jbd4l"]
 
 [node name="Test" type="Node2D" unique_id=705430855]
 
-[node name="UIOverlay" parent="." unique_id=466827575 instance=ExtResource("1_qca6q")]
-layer = 3
-
-[node name="VHSFilter" type="ColorRect" parent="UIOverlay" unique_id=1610660356]
-material = SubResource("ShaderMaterial_jbd4l")
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Player" parent="." unique_id=1993068751 instance=ExtResource("1_w8un3")]
-position = Vector2(37, 44)
-
 [node name="Valuable" parent="." unique_id=2061310895 instance=ExtResource("2_iscks")]
 position = Vector2(170, -40)
+collision_layer = 2
 
 [node name="Valuable2" parent="." unique_id=653923159 instance=ExtResource("3_amo3t")]
 position = Vector2(176, 122)
+collision_layer = 2
 
 [node name="Valuable3" parent="." unique_id=379608039 instance=ExtResource("4_qca6q")]
 position = Vector2(-35, 143)
+collision_layer = 2
 
 [node name="Valuable4" parent="." unique_id=148048893 instance=ExtResource("5_2loec")]
 position = Vector2(-43, -37)
+collision_layer = 2
+
+[node name="RaycastedPolygon2D" parent="." unique_id=1836596359 instance=ExtResource("7_fu3ou")]
+position = Vector2(241, 10)
+polygon = PackedVector2Array(150, 0, 146.4931, 32.245567, 136.13629, 62.983368, 119.41394, 90.77614, 97.10791, 114.32431, 70.26126, 132.52681, 40.129242, 144.5325, 8.120819, 149.78, -24.267334, 148.02399, -49, 122.98065, -55.59738, 82, -108.89935, 103.1549, -128.52861, 77.33307, -142.14798, 47.895226, -149.12068, 16.21783, -149.12068, -16.217894, -62.325745, -21, -43, -25.872246, -43, -40.73177, -84.17801, -124.15337, -55.520676, -139.34651, -24.267258, -148.02399, 8.120926, -149.78, 40.129333, -144.53249, 70.26132, -132.5268, 97.10797, -114.324295, 119.41397, -90.77613, 136.13635, -62.98331, 146.4931, -32.245525)
+RayCount = 29
+collisionMasks = PackedInt32Array(2)
+
+[node name="DummyPlayer" type="CharacterBody2D" parent="." unique_id=471592730]
+script = ExtResource("7_qca6q")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DummyPlayer" unique_id=633511232]
+shape = SubResource("CircleShape2D_jbd4l")
+
+[node name="Sprite2D" type="Sprite2D" parent="DummyPlayer" unique_id=215234396]
+scale = Vector2(0.08, 0.08)
+texture = ExtResource("8_2loec")
+
+[node name="Camera2D" type="Camera2D" parent="DummyPlayer" unique_id=1846959696]
+zoom = Vector2(2.605, 2.605)
+
+[node name="SuperFlexibleVision" type="Polygon2D" parent="DummyPlayer" unique_id=1658254073]
+script = ExtResource("10_bhwsq")
+Mode = 1
+_reach = 122.685
+_rayCount = 22
+collisionMasks = PackedInt32Array(2)
+_coneAngle = 20.52
+_backRange = 11.32

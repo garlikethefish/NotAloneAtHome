@@ -3,8 +3,7 @@ using Godot;
 [Tool]
 public partial class RaycastedPolygon2D : Polygon2D
 {
-    [Signal] public delegate void PolygonReadyEventHandler();
-    [Export] private Color _initColor = new(255, 255, 255, 1);
+    [Export] private Color _initColor = new(1, 1, 1, 1);
     [Export] private CollisionObject2D[] excludedColliders = [];
     private float _reach = 150f;
     [Export] private float Reach
@@ -24,7 +23,6 @@ public partial class RaycastedPolygon2D : Polygon2D
         get => false;
         set { ShootRays(); QueueRedraw(); }
     }
-    [Export] private bool _drawDebug = false;
     [Export] private float startOffset = 0;
     [Export] private int[] collisionMasks = [];
     [Export] private bool _castOnlyOnce;
@@ -46,23 +44,10 @@ public partial class RaycastedPolygon2D : Polygon2D
         if (Engine.IsEditorHint())
         {
             ShootRays();
-            QueueRedraw();
             return;
         }
         if (_castOnlyOnce) return;
         ShootRays();
-    }
-
-    public override void _Draw()
-    {
-        if (!Engine.IsEditorHint() || !_drawDebug) return;
-        DrawArc(Vector2.Zero, _reach, 0, Mathf.Tau, 32, Colors.Yellow, 1.0f);
-        if (Polygon == null || Polygon.Length == 0) return;
-        for (int i = 0; i < Polygon.Length; i++)
-        {
-            DrawLine(Vector2.Zero, Polygon[i], Colors.Green, 2.0f);
-            DrawCircle(Polygon[i], 3.0f, Colors.Red);
-        }
     }
 
     void ShootRays()
