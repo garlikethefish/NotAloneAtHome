@@ -9,7 +9,7 @@
 [ext_resource type="AudioStream" uid="uid://cfsfletqwk7r2" path="res://sounds/sound effects/bandit_footstep3.wav" id="7_ers6e"]
 [ext_resource type="AudioStream" uid="uid://c5mgu2784a6dr" path="res://sounds/sound effects/bandit_footstep4.wav" id="8_atxhn"]
 [ext_resource type="AudioStream" uid="uid://djh3kwdicro7r" path="res://sounds/sound effects/bandit_breathe.mp3" id="9_1skd5"]
-[ext_resource type="Shader" uid="uid://dpdnijikycsbw" path="res://characters/plain_thief/BanditVisionCone.gdshader" id="10_q0mqt"]
+[ext_resource type="Shader" uid="uid://b3nlyt4u5suxs" path="res://characters/plain_thief/BanditNewVision.gdshader" id="10_cvag4"]
 [ext_resource type="PackedScene" uid="uid://dim6u5hasqq78" path="res://components/noise/reciever/NoiseReciever.tscn" id="11_cvag4"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_1skd5"]
@@ -291,22 +291,18 @@ stream_1/stream = ExtResource("6_1skd5")
 stream_2/stream = ExtResource("7_ers6e")
 stream_3/stream = ExtResource("8_atxhn")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_q0mqt"]
-shader = ExtResource("10_q0mqt")
-shader_parameter/forward = Vector2(0, 1)
-shader_parameter/vision_angle = 70.0
-shader_parameter/vision_range = 220.0
-shader_parameter/scan_offset = 0.0
-shader_parameter/pulse = 0.0
-shader_parameter/alert_strength = 0.0
-shader_parameter/focus = 0.0
-shader_parameter/noise_strength = 0.12
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_slu1t"]
+shader = ExtResource("10_cvag4")
+shader_parameter/cone_color = Color(1, 0, 0, 0.25)
+shader_parameter/worn_mask_alpha_multiplier = 0.4
+shader_parameter/is_player_wearing_mask = false
 
 [node name="Bandit" type="CharacterBody2D" unique_id=136410527]
 collision_layer = 32
 collision_mask = 2
 safe_margin = 0.2
 script = ExtResource("1_beyja")
+VisionRange = 103.14
 
 [node name="Area2D" type="Area2D" parent="." unique_id=2139388755]
 monitoring = false
@@ -370,19 +366,7 @@ parameters/looping = true
 
 [node name="VisionCone" type="Node2D" parent="." unique_id=341125178]
 
-[node name="ColorRect" type="ColorRect" parent="VisionCone" unique_id=1220078462]
-z_index = 1
-material = SubResource("ShaderMaterial_q0mqt")
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -101.3556
-offset_top = -101.35559
-offset_right = 101.3556
-offset_bottom = 101.35559
-grow_horizontal = 2
-grow_vertical = 2
+[node name="Polygon2D" type="Polygon2D" parent="VisionCone" unique_id=827541680]
+material = SubResource("ShaderMaterial_slu1t")
 
 [node name="NoiseReciever" parent="." unique_id=1454098766 instance=ExtResource("11_cvag4")]

@@ -27,6 +27,7 @@
 [ext_resource type="PackedScene" uid="uid://bqall3c1irqec" path="res://objects/cat_bowl/CatBowl.tscn" id="17_ebg2g"]
 [ext_resource type="PackedScene" uid="uid://3pms5s3tmqpj" path="res://objects/valuables/Valuable_Chair2.tscn" id="18_1iba3"]
 [ext_resource type="PackedScene" uid="uid://d3rn5wbx4px5w" path="res://objects/valuables/Valuable_Closet.tscn" id="19_yxlcp"]
+[ext_resource type="PackedScene" uid="uid://bmvgwyelxjr6q" path="res://characters/plain_thief/Bandit.tscn" id="20_dg70y"]
 [ext_resource type="PackedScene" uid="uid://cg7krccbajseo" path="res://objects/valuables/Valuable_Fridge.tscn" id="20_ebg2g"]
 [ext_resource type="PackedScene" uid="uid://4qlmy32o1i1f" path="res://zones/escape_zone/EscapeZone.tscn" id="21_1iba3"]
 [ext_resource type="Shader" uid="uid://cuielptcsyeb5" path="res://shaders/vhs_filter.gdshader" id="22_yxlcp"]
@@ -1524,6 +1525,8 @@ position = Vector2(504, 312)
 script = ExtResource("24_2ofn6")
 player = NodePath("../Player")
 max_active_lights = 7
+
+[node name="Bandit" parent="." unique_id=136410527 instance=ExtResource("20_dg70y")]
 
 [node name="Player" parent="." unique_id=1993068751 node_paths=PackedStringArray("_mutableVisionPolygon") instance=ExtResource("1_rgh2o")]
 position = Vector2(650, 278)
