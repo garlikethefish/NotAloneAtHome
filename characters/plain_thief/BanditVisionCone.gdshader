@@ -2,8 +2,7 @@ shader_type canvas_item;
 
 uniform vec2 forward = vec2(0.0, 1.0);
 
-uniform float vision_angle = 70.0;
-uniform float vision_range = 220.0;
+uniform float vision_angle = 70.0;uniform float vision_range = 220.0;
 uniform float scan_offset = 0.0;
 
 uniform float pulse;

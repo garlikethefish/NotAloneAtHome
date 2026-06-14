@@ -66,7 +66,25 @@ public partial class NoiseReciever : Area2D
         }
         return combinedNoise;
     }
+    /// Returns the world position of whichever NoiseMaker in range is currently the loudest,
+    /// or null if there are no active noise sources.
+    public Vector2? GetLoudestNoisePosition()
+    {
+        NoiseMaker loudest  = null;
+        float      maxNoise = 0f;
 
+        foreach (var maker in _passiveNoiseMakers)
+        {
+            float noise = maker.GetReceivedNoise(GlobalPosition);
+            if (noise > maxNoise)
+            {
+                maxNoise = noise;
+                loudest  = maker;
+            }
+        }
+
+        return loudest != null ? loudest.GlobalPosition : (Vector2?)null;
+    }
     public float TransitionNoiseArea(
         double delta,
         float currentNoise,
