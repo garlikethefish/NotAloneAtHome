@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://8f5bbrevswgt"]
+
+[ext_resource type="Script" uid="uid://dkrpwgp1jjoh6" path="res://objects/lightswitch/LightSwitch.cs" id="1_61lfc"]
+[ext_resource type="Texture2D" uid="uid://bdjvl4463ms2u" path="res://sprites/lightswitch_front_off.png" id="2_pss0x"]
+[ext_resource type="PackedScene" uid="uid://b8odej7420g54" path="res://components/detectable/DetectableComponent.tscn" id="3_kei8u"]
+[ext_resource type="PackedScene" uid="uid://k2k1j0y25ebx" path="res://components/interactable/InteractableComponent.tscn" id="4_528fh"]
+
+[node name="LightSwitch" type="Node2D" unique_id=1046270523]
+z_index = 1
+script = ExtResource("1_61lfc")
+detectableRadius = 40.0
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1639604136]
+texture = ExtResource("2_pss0x")
+offset = Vector2(0.535, 1.06)
+
+[node name="DetectableComponent" parent="." unique_id=1660920776 instance=ExtResource("3_kei8u")]
+z_index = 1
+
+[node name="InteractableComponent" parent="." unique_id=1999549239 instance=ExtResource("4_528fh")]

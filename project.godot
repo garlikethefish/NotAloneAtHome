@@ -115,6 +115,15 @@ mouse_left={
 ]
 }
 
+[layer_names]
+
+2d_physics/layer_1="collidables"
+2d_physics/layer_2="walls"
+2d_physics/layer_3="player vision"
+2d_physics/layer_4="detectables"
+2d_physics/layer_5="sound makers"
+2d_physics/layer_6="npcs"
+
 [physics]
 
 common/physics_ticks_per_second=200

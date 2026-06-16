@@ -9,7 +9,7 @@ using Godot;
 public partial class AreaDetectorComponent : Area2D, IAreaDetectorComponent
 {
     [Node] public CollisionShape2D CollisionShape2D { get; private set; } = default!;
-    [Export] public bool ShowDebug = true;    
+    [Export] public bool ShowDebug = false;    
     public List<Rid> ExcludedRids { get; set; } = [];
     public List<DetectableComponentModel> DetectablesInArea { get; } = [];
     public event Action<DetectableComponent>? OnBodyEntered;

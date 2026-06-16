@@ -3,15 +3,12 @@
 [ext_resource type="Script" uid="uid://b7iah78ghhrj5" path="res://components/interactable/InteractableComponent.cs" id="1_m7v26"]
 [ext_resource type="Texture2D" uid="uid://drlnlgvgspjqk" path="res://sprites/ui/e_button_ui.png" id="2_3arj4"]
 
-[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_3arj4"]
-light_mode = 1
-
 [sub_resource type="Animation" id="Animation_m7v26"]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("InteractionKey:position")
+tracks/0/path = NodePath("ScreenAnchor/KeyAnchor/InteractionKey:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -23,7 +20,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("InteractionKey:visible")
+tracks/1/path = NodePath("ScreenAnchor/KeyAnchor/InteractionKey:visible")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -35,7 +32,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("InteractionKey:scale")
+tracks/2/path = NodePath("ScreenAnchor/KeyAnchor/InteractionKey:scale")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -52,7 +49,7 @@ capture_included = true
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("InteractionKey:position")
+tracks/0/path = NodePath("ScreenAnchor/KeyAnchor/InteractionKey:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -64,7 +61,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("InteractionKey:visible")
+tracks/1/path = NodePath("ScreenAnchor/KeyAnchor/InteractionKey:visible")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -76,7 +73,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("InteractionKey:scale")
+tracks/2/path = NodePath("ScreenAnchor/KeyAnchor/InteractionKey:scale")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -93,7 +90,7 @@ capture_included = true
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("InteractionKey:visible")
+tracks/0/path = NodePath("ScreenAnchor/KeyAnchor/InteractionKey:visible")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -105,7 +102,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("InteractionKey:position")
+tracks/1/path = NodePath("ScreenAnchor/KeyAnchor/InteractionKey:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -117,7 +114,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("InteractionKey:scale")
+tracks/2/path = NodePath("ScreenAnchor/KeyAnchor/InteractionKey:scale")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -134,7 +131,7 @@ capture_included = true
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("InteractionKey:position")
+tracks/0/path = NodePath("ScreenAnchor/KeyAnchor/InteractionKey:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -146,7 +143,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("InteractionKey:visible")
+tracks/1/path = NodePath("ScreenAnchor/KeyAnchor/InteractionKey:visible")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -158,7 +155,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("InteractionKey:scale")
+tracks/2/path = NodePath("ScreenAnchor/KeyAnchor/InteractionKey:scale")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -176,19 +173,28 @@ _data = {
 &"interact": SubResource("Animation_o7bav")
 }
 
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_3arj4"]
+light_mode = 1
+
 [node name="InteractableComponent" type="Node2D" unique_id=1999549239 node_paths=PackedStringArray("AnimationPlayer")]
 light_mask = 2
 script = ExtResource("1_m7v26")
 AnimationPlayer = NodePath("AnimationPlayer")
-
-[node name="InteractionKey" type="Sprite2D" parent="." unique_id=1457446261]
-visible = false
-light_mask = 2
-z_index = 5
-material = SubResource("CanvasItemMaterial_3arj4")
-texture = ExtResource("2_3arj4")
+_screenOffset = Vector2(0, 5)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1038444833]
 libraries/ = SubResource("AnimationLibrary_ptbw1")
 playback_auto_capture_transition_type = 7
 speed_scale = 2.0
+
+[node name="ScreenAnchor" type="CanvasLayer" parent="." unique_id=193966114]
+layer = 3
+
+[node name="KeyAnchor" type="Node2D" parent="ScreenAnchor" unique_id=1578622203]
+
+[node name="InteractionKey" type="Sprite2D" parent="ScreenAnchor/KeyAnchor" unique_id=1457446261]
+visible = false
+light_mask = 2
+z_index = 5
+material = SubResource("CanvasItemMaterial_3arj4")
+texture = ExtResource("2_3arj4")

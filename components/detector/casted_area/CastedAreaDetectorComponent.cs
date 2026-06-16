@@ -70,30 +70,30 @@ public partial class CastedAreaDetectorComponent : AreaDetectorComponent, ICaste
     //     return [];
     // }
 
-    public override void _Draw()
-    {
-        if (!ShowDebug) return;
+    // public override void _Draw()
+    // {
+    //     if (!ShowDebug) return;
 
-        if (CollisionShape2D?.Shape is CircleShape2D circle)
-            DrawCircle(CollisionShape2D.Position, circle.Radius, new Color(1, 0, 0, 0.12f));
+    //     if (CollisionShape2D?.Shape is CircleShape2D circle)
+    //         DrawCircle(CollisionShape2D.Position, circle.Radius, new Color(1, 0, 0, 0.12f));
 
-        foreach (DetectableComponentModel model in DetectablesInArea.ToList())
-        {
-            DetectableComponent detectable  = model.Detectable;
-            var localTarget = ToLocal(detectable.GlobalPosition);
+    //     foreach (DetectableComponentModel model in DetectablesInArea.ToList())
+    //     {
+    //         DetectableComponent detectable  = model.Detectable;
+    //         var localTarget = ToLocal(detectable.GlobalPosition);
 
-            Color color;
-            if (detectable == ClosestDetectable)
-                color = ClosestColor;
-            else if (model.IsInLineOfSight)
-                color = IsInSightColor;
-            else
-                color = NotInSightColor;
+    //         Color color;
+    //         if (detectable == ClosestDetectable)
+    //             color = ClosestColor;
+    //         else if (model.IsInLineOfSight)
+    //             color = IsInSightColor;
+    //         else
+    //             color = NotInSightColor;
 
-            DrawCircle(localTarget, 2f, color);
-            DrawLine(Vector2.Zero, localTarget, color, 0.5f);
-        }
-    }
+    //         DrawCircle(localTarget, 2f, color);
+    //         DrawLine(Vector2.Zero, localTarget, color, 0.5f);
+    //     }
+    // }
 
     private void ValidateDetectables()
     {
