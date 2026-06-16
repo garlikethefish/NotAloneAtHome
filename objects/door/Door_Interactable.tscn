@@ -1,0 +1,34 @@
+[gd_scene format=3 uid="uid://v467gjmgs1uf"]
+
+[ext_resource type="Script" uid="uid://bogxfh06c27ye" path="res://objects/door/DoorInteractable.cs" id="1_wxfxk"]
+[ext_resource type="Texture2D" uid="uid://bh6m8rxe0jjw1" path="res://sprites/sidedoor.png" id="2_wxfxk"]
+[ext_resource type="PackedScene" uid="uid://k2k1j0y25ebx" path="res://components/interactable/InteractableComponent.tscn" id="4_psg1d"]
+[ext_resource type="PackedScene" uid="uid://b8odej7420g54" path="res://components/detectable/DetectableComponent.tscn" id="4_wxfxk"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wxfxk"]
+size = Vector2(10.75, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_by2yn"]
+size = Vector2(32, 32)
+
+[node name="DoorInteractable" type="Node2D" unique_id=545934438]
+script = ExtResource("1_wxfxk")
+OpenDistance = 20.0
+Speed = 1.0
+
+[node name="DoorBody" type="AnimatableBody2D" parent="." unique_id=1681670942]
+
+[node name="CollisionShape2D_Side" type="CollisionShape2D" parent="DoorBody" unique_id=383767414]
+position = Vector2(10.625, 0)
+shape = SubResource("RectangleShape2D_wxfxk")
+
+[node name="CollisionShape2D_Front" type="CollisionShape2D" parent="DoorBody" unique_id=1194681267]
+shape = SubResource("RectangleShape2D_by2yn")
+disabled = true
+
+[node name="Sprite2D" type="Sprite2D" parent="DoorBody" unique_id=1493940634]
+texture = ExtResource("2_wxfxk")
+
+[node name="InteractableComponent" parent="." unique_id=1999549239 instance=ExtResource("4_psg1d")]
+
+[node name="DetectableComponent" parent="." unique_id=1660920776 instance=ExtResource("4_wxfxk")]

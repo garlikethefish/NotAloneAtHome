@@ -271,6 +271,7 @@ public partial class Bandit : CharacterBody2D, IStateMachine
             _lastMaskState = pWearingMask;
         }
     }
+    
 
     private void UpdateVisionPolygon()
     {

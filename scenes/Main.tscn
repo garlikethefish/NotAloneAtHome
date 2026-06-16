@@ -14,6 +14,7 @@
 [ext_resource type="PackedScene" uid="uid://cah3urn1fwd1d" path="res://zones/sell_zone/SellZone.tscn" id="8_jlsqs"]
 [ext_resource type="PackedScene" uid="uid://8f5bbrevswgt" path="res://objects/lightswitch/light_switch.tscn" id="9_pnhog"]
 [ext_resource type="PackedScene" uid="uid://djmsje8kmaa6o" path="res://objects/valuables/valuable_Bed.tscn" id="11_1iba3"]
+[ext_resource type="PackedScene" uid="uid://v467gjmgs1uf" path="res://objects/door/Door_Interactable.tscn" id="11_gsxep"]
 [ext_resource type="AudioStream" uid="uid://cnk2deqtcg6p1" path="res://scenes/main_bg_music.mp3" id="13_fs0b5"]
 [ext_resource type="PackedScene" uid="uid://blm3resaadrtl" path="res://characters/closet_thief/DeadBanditCloset.tscn" id="13_mwfav"]
 [ext_resource type="PackedScene" uid="uid://q27ik5xajev6" path="res://components/spawner/Spawner.tscn" id="15_3p2gp"]
@@ -463,6 +464,16 @@ RayCount = 252
 collisionMasks = PackedInt32Array(3)
 _castOnlyOnce = true
 
+[node name="DoorInteractable2" parent="Rooms/GoonRoom" unique_id=545934438 instance=ExtResource("11_gsxep")]
+position = Vector2(80, 432)
+Direction = 2
+Style = 1
+
+[node name="DoorInteractable" parent="Rooms/GoonRoom" unique_id=1284420478 instance=ExtResource("11_gsxep")]
+position = Vector2(272, 464)
+Direction = 2
+Style = 1
+
 [node name="Hallway" parent="Rooms" unique_id=954819346 node_paths=PackedStringArray("_lightPolygons", "_lightWorld", "_darkWorld", "_areasCollisionPoly") instance=ExtResource("7_v0vrg")]
 _lightPolygons = [NodePath("Lights/RaycastedPolygon2D7"), NodePath("Lights/RaycastedPolygon2D5"), NodePath("Lights/RaycastedPolygon2D2"), NodePath("Lights/RaycastedPolygon2D4"), NodePath("Lights/RaycastedPolygon2D6"), NodePath("Lights/RaycastedPolygon2D3"), NodePath("Lights/RaycastedPolygon2D9"), NodePath("Lights/RaycastedPolygon2D8"), NodePath("Lights/RaycastedPolygon2D10")]
 _lightWorld = NodePath("../../UILayers/PlayerVision/LightMap/Lights")
@@ -604,6 +615,11 @@ polygon = PackedVector2Array(-179.64587, 166.32678, -182.86946, 166.32678, -182.
 position = Vector2(45, 210)
 room = NodePath("..")
 
+[node name="DoorInteractable" parent="Rooms/StorageRoom" unique_id=165910626 instance=ExtResource("11_gsxep")]
+position = Vector2(16, 208)
+Direction = 2
+Style = 1
+
 [node name="Lights" type="Node2D" parent="Rooms/StorageRoom" unique_id=1037239081]
 
 [node name="RaycastedPolygon2D8" parent="Rooms/StorageRoom/Lights" unique_id=13864622 instance=ExtResource("15_v0vrg")]
@@ -636,6 +652,14 @@ position = Vector2(437, 15)
 room = NodePath("..")
 useSideTextures = true
 
+[node name="DoorInteractable2" parent="Rooms/Kitchen" unique_id=1970480801 instance=ExtResource("11_gsxep")]
+position = Vector2(219, 47)
+Direction = 0
+
+[node name="DoorInteractable" parent="Rooms/Kitchen" unique_id=1087042007 instance=ExtResource("11_gsxep")]
+position = Vector2(432, 47)
+Direction = 0
+
 [node name="Lights" type="Node2D" parent="Rooms/Kitchen" unique_id=1264076786]
 
 [node name="RaycastedPolygon2D7" parent="Rooms/Kitchen/Lights" unique_id=294562735 instance=ExtResource("15_v0vrg")]
@@ -666,6 +690,11 @@ polygon = PackedVector2Array(-1.1627502, 150.24657, -193.59735, 150.24657, -193.
 [node name="LightSwitch" parent="Rooms/Bedroom1" unique_id=442730382 node_paths=PackedStringArray("room") instance=ExtResource("9_pnhog")]
 position = Vector2(650, 83)
 room = NodePath("..")
+
+[node name="DoorInteractable" parent="Rooms/Bedroom1" unique_id=535398985 instance=ExtResource("11_gsxep")]
+position = Vector2(624, 80)
+Direction = 2
+Style = 1
 
 [node name="Lights" type="Node2D" parent="Rooms/Bedroom1" unique_id=1901017812]
 
@@ -728,6 +757,16 @@ polygon = PackedVector2Array(-179.4345, 167.24088, -182.9034, 167.24088, -182.90
 position = Vector2(555, 403)
 room = NodePath("..")
 
+[node name="DoorInteractable2" parent="Rooms/Bedroom2" unique_id=1437606267 instance=ExtResource("11_gsxep")]
+position = Vector2(656, 347)
+rotation = 1.5707964
+Direction = 0
+
+[node name="DoorInteractable" parent="Rooms/Bedroom2" unique_id=1246511438 instance=ExtResource("11_gsxep")]
+position = Vector2(528, 400)
+Direction = 2
+Style = 1
+
 [node name="Lights" type="Node2D" parent="Rooms/Bedroom2" unique_id=143666039]
 
 [node name="RaycastedPolygon2D9" parent="Rooms/Bedroom2/Lights" unique_id=1120894460 instance=ExtResource("15_v0vrg")]
@@ -778,6 +817,10 @@ polygon = PackedVector2Array(-536.36975, 179.68706, -536.36975, 296.9713, -670.6
 position = Vector2(575, 334)
 room = NodePath("..")
 useSideTextures = true
+
+[node name="Door" parent="Rooms/Livingroom" unique_id=1592072477 instance=ExtResource("11_gsxep")]
+position = Vector2(571, 304)
+Direction = 0
 
 [node name="Lights" type="Node2D" parent="Rooms/Livingroom" unique_id=1243524513]
 
@@ -885,6 +928,11 @@ polygon = PackedVector2Array(-150.22641, 167.12419, -184.27011, 167.12419, -184.
 [node name="LightSwitch" parent="Rooms/Bathroom" unique_id=1125153085 node_paths=PackedStringArray("room") instance=ExtResource("9_pnhog")]
 position = Vector2(108, 83)
 room = NodePath("..")
+
+[node name="DoorInteractable" parent="Rooms/Bathroom" unique_id=289706723 instance=ExtResource("11_gsxep")]
+position = Vector2(80, 80)
+Direction = 2
+Style = 1
 
 [node name="Lights" type="Node2D" parent="Rooms/Bathroom" unique_id=729396268]
 
