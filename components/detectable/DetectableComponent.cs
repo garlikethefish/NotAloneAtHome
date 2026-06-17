@@ -50,7 +50,7 @@ public partial class DetectableComponent : AnimatableBody2D, IDetectableComponen
 
     public override void _PhysicsProcess(double delta)
     {
-        Position = _startingPosition; // FUCK GODOT
+        // Position = _startingPosition; // FUCK GODOT
     }
 
     public override void _Notification(int what)

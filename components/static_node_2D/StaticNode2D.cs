@@ -10,7 +10,7 @@ public partial class StaticNode2D : Node2D
         _startingGlobalPos = node.GlobalPosition;
     }
 
-	public override void _Process(double delta)
+    public override void _PhysicsProcess(double delta)
     {
         node.GlobalPosition = _startingGlobalPos;
     }

@@ -61,39 +61,30 @@ public partial class CastedAreaDetectorComponent : AreaDetectorComponent, ICaste
         base.HandleUndetectDetectable(detectable);
     }
 
-    // public override string[] _GetConfigurationWarnings()
-    // {
-    //     GD.Print("warnings called, has child: " + this.HasChild<CollisionShape2D>());
-    //     if (!this.HasChild<CollisionShape2D>())
-    //         return ["A CollisionShape2D child is required."];
+    public override void _Draw()
+    {
+        if (!ShowDebug) return;
 
-    //     return [];
-    // }
+        if (CollisionShape2D?.Shape is CircleShape2D circle)
+            DrawCircle(CollisionShape2D.Position, circle.Radius, new Color(1, 0, 0, 0.12f));
 
-    // public override void _Draw()
-    // {
-    //     if (!ShowDebug) return;
+        foreach (DetectableComponentModel model in DetectablesInArea.ToList())
+        {
+            DetectableComponent detectable  = model.Detectable;
+            var localTarget = ToLocal(detectable.GlobalPosition);
 
-    //     if (CollisionShape2D?.Shape is CircleShape2D circle)
-    //         DrawCircle(CollisionShape2D.Position, circle.Radius, new Color(1, 0, 0, 0.12f));
+            Color color;
+            if (detectable == ClosestDetectable)
+                color = ClosestColor;
+            else if (model.IsInLineOfSight)
+                color = IsInSightColor;
+            else
+                color = NotInSightColor;
 
-    //     foreach (DetectableComponentModel model in DetectablesInArea.ToList())
-    //     {
-    //         DetectableComponent detectable  = model.Detectable;
-    //         var localTarget = ToLocal(detectable.GlobalPosition);
-
-    //         Color color;
-    //         if (detectable == ClosestDetectable)
-    //             color = ClosestColor;
-    //         else if (model.IsInLineOfSight)
-    //             color = IsInSightColor;
-    //         else
-    //             color = NotInSightColor;
-
-    //         DrawCircle(localTarget, 2f, color);
-    //         DrawLine(Vector2.Zero, localTarget, color, 0.5f);
-    //     }
-    // }
+            DrawCircle(localTarget, 2f, color);
+            DrawLine(Vector2.Zero, localTarget, color, 0.5f);
+        }
+    }
 
     private void ValidateDetectables()
     {
