@@ -16,5 +16,6 @@ offset = Vector2(0.535, 1.06)
 
 [node name="DetectableComponent" parent="." unique_id=1660920776 instance=ExtResource("3_kei8u")]
 z_index = 1
+scale = Vector2(0.185, 0.185)
 
 [node name="InteractableComponent" parent="." unique_id=1999549239 instance=ExtResource("4_528fh")]

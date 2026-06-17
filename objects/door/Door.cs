@@ -1,9 +1,10 @@
 using Godot;
 using System;
 using NotAloneAtHome.Components;
+using Godot.Collections;
 
 [Tool]
-public partial class DoorInteractable : Node2D
+public partial class Door : AnimatableBody2D
 {
     public enum DoorDirection
     {
@@ -19,14 +20,13 @@ public partial class DoorInteractable : Node2D
         Front
     }
 
-    [Export] public DoorDirection Direction = DoorDirection.Right;
+    [Export] public DoorDirection OpenDirection = DoorDirection.Right;
     [Export] public DoorStyle Style = DoorStyle.Side;
 
-    [Export] public float OpenDistance = 48f;
+    [Export] public float OpenDistance = 25;
     [Export] public float Speed = 6f;
 
     private InteractableComponent _interactable;
-    private AnimatableBody2D _doorBody;
     private Sprite2D _sprite;
 
     private CollisionShape2D _sideShape;
@@ -40,29 +40,26 @@ public partial class DoorInteractable : Node2D
 
     private float _t;
 
+    public override void _ValidateProperty(Dictionary property)
+	{
+		if (Engine.IsEditorHint())
+            Setup();
+	}
+
     public override void _Ready()
     {
         Setup();
     }
 
-    public override void _Process(double delta)
-    {
-        if (Engine.IsEditorHint())
-            Setup();
-    }
-
     public override void _PhysicsProcess(double delta)
     {
-        if (_doorBody == null)
-            return;
-
         if (_isMoving)
         {
             _t += (float)delta * Speed;
             float p = Mathf.Clamp(_t, 0f, 1f);
 
             Vector2 target = _isOpen ? _openPos : _closedPos;
-            _doorBody.Position = _doorBody.Position.Lerp(target, p);
+            Position = Position.Lerp(target, p);
 
             if (_t >= 1f)
                 _isMoving = false;
@@ -71,7 +68,7 @@ public partial class DoorInteractable : Node2D
 
     private void HandleInteraction(InteractorComponent interactor)
     {
-        if (_isMoving || _doorBody == null)
+        if (_isMoving)
             return;
 
         _isOpen = !_isOpen;
@@ -85,12 +82,11 @@ public partial class DoorInteractable : Node2D
 
     private void Setup()
     {
-        _interactable = FindInteractable(this);
-        _doorBody = FindDoorBody(this);
-        _sprite = FindSprite(this);
+        _interactable = this.GetChild<InteractableComponent>();
+        _sprite = this.GetChild<Sprite2D>();
 
-        _sideShape = _doorBody?.GetNodeOrNull<CollisionShape2D>("CollisionShape2D_Side");
-        _frontShape = _doorBody?.GetNodeOrNull<CollisionShape2D>("CollisionShape2D_Front");
+        _sideShape = GetNodeOrNull<CollisionShape2D>("CollisionShape2D_Side");
+        _frontShape = GetNodeOrNull<CollisionShape2D>("CollisionShape2D_Front");
 
         if (_interactable != null)
         {
@@ -98,8 +94,7 @@ public partial class DoorInteractable : Node2D
             _interactable.OnInteractionFrom += HandleInteraction;
         }
 
-        if (_doorBody != null)
-            _closedPos = _doorBody.Position;
+        _closedPos = Position;
 
         CalculateOpenPosition();
         ApplyVisuals();
@@ -108,12 +103,9 @@ public partial class DoorInteractable : Node2D
 
     private void CalculateOpenPosition()
     {
-        if (_doorBody == null)
-            return;
+        _closedPos = Position;
 
-        _closedPos = _doorBody.Position;
-
-        Vector2 dir = Direction switch
+        Vector2 dir = OpenDirection switch
         {
             DoorDirection.Up => Vector2.Up,
             DoorDirection.Down => Vector2.Down,
@@ -148,51 +140,5 @@ public partial class DoorInteractable : Node2D
 
         if (_frontShape != null)
             _frontShape.Disabled = Style != DoorStyle.Front;
-    }
-
-    // -----------------------------
-    // FINDERS
-    // -----------------------------
-
-    private InteractableComponent FindInteractable(Node root)
-    {
-        foreach (Node child in root.GetChildren())
-        {
-            if (child is InteractableComponent i)
-                return i;
-
-            var r = FindInteractable(child);
-            if (r != null)
-                return r;
-        }
-        return null;
-    }
-
-    private AnimatableBody2D FindDoorBody(Node root)
-    {
-        foreach (Node child in root.GetChildren())
-        {
-            if (child is AnimatableBody2D b)
-                return b;
-
-            var r = FindDoorBody(child);
-            if (r != null)
-                return r;
-        }
-        return null;
-    }
-
-    private Sprite2D FindSprite(Node root)
-    {
-        foreach (Node child in root.GetChildren())
-        {
-            if (child is Sprite2D s)
-                return s;
-
-            var r = FindSprite(child);
-            if (r != null)
-                return r;
-        }
-        return null;
     }
 }

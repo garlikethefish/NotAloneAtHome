@@ -47,7 +47,7 @@ public partial class Room : Node2D
 
     public override void _ExitTree()
     {
-        if (!IsInstanceValid(_roomArea)) return;
+        if (!IsInstanceValid(_roomArea) || Engine.IsEditorHint()) return;
         _roomArea.BodyEntered -= HandleBodyEntered;
         _roomArea.BodyExited -= HandleBodyExited;
     }

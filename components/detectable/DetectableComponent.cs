@@ -40,6 +40,7 @@ public partial class DetectableComponent : AnimatableBody2D, IDetectableComponen
         base._Ready();
         _startingPosition = Position; // FUCK GODOT
         // don't be mean to poor little godot :(
+        // godot must suffer, like I do when using it!!!
 
         if (this.ParentHas<AreaDetectorComponent>(out var areaDetector))
         {

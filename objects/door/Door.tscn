@@ -1,0 +1,39 @@
+[gd_scene format=3 uid="uid://cknym5m1msnqw"]
+
+[ext_resource type="Script" uid="uid://c3gea6ymog3mc" path="res://objects/door/Door.cs" id="1_wxfxk"]
+[ext_resource type="Texture2D" uid="uid://bh6m8rxe0jjw1" path="res://sprites/sidedoor.png" id="2_wxfxk"]
+[ext_resource type="PackedScene" uid="uid://k2k1j0y25ebx" path="res://components/interactable/InteractableComponent.tscn" id="4_psg1d"]
+[ext_resource type="PackedScene" uid="uid://b8odej7420g54" path="res://components/detectable/DetectableComponent.tscn" id="4_wxfxk"]
+[ext_resource type="PackedScene" uid="uid://bcmat5neechg7" path="res://components/static_node_2D/StaticNode2D.tscn" id="5_fck6x"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wxfxk"]
+size = Vector2(10.75, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_by2yn"]
+size = Vector2(32, 32)
+
+[node name="Door" type="AnimatableBody2D" unique_id=1681670942]
+script = ExtResource("1_wxfxk")
+
+[node name="CollisionShape2D_Side" type="CollisionShape2D" parent="." unique_id=383767414]
+position = Vector2(10.625, 0)
+shape = SubResource("RectangleShape2D_wxfxk")
+
+[node name="CollisionShape2D_Front" type="CollisionShape2D" parent="." unique_id=1194681267]
+shape = SubResource("RectangleShape2D_by2yn")
+disabled = true
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1493940634]
+texture = ExtResource("2_wxfxk")
+
+[node name="InteractableComponent" parent="." unique_id=1999549239 instance=ExtResource("4_psg1d")]
+
+[node name="DetectableComponent" parent="." unique_id=1660920776 instance=ExtResource("4_wxfxk")]
+
+[node name="StaticPositions" type="Node" parent="." unique_id=673089713]
+
+[node name="StaticDetectableNode2D" parent="StaticPositions" unique_id=763745941 node_paths=PackedStringArray("node") instance=ExtResource("5_fck6x")]
+node = NodePath("../../DetectableComponent")
+
+[node name="StaticInteractableNode2D" parent="StaticPositions" unique_id=1278723610 node_paths=PackedStringArray("node") instance=ExtResource("5_fck6x")]
+node = NodePath("../../InteractableComponent")
