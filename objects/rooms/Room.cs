@@ -4,14 +4,27 @@ using NotAloneAtHome.Characters.Player;
 using System;
 using System.Linq;
 
+public enum Rooms {
+    GoonRoom,
+    LivingRoom,
+    Bathroom,
+    Kitchen,
+    StorageRoom,
+    Bedroom1,
+    Bedroom2,
+    Hallway,
+    None,
+}
+
 [Scene][Tool]
 public partial class Room : Node2D
 {
-    [Export] Array<RoomLight> _lights = [];
-    [Export] SubViewport RoomVision;
+    [Export] Rooms RoomName = Rooms.None;
+    [Export] Node RoomOcluders;
     [Export] bool _darkenRoomIfPlayerExits = true;
     [Export] private CollisionPolygon2D _areasCollisionPoly;
     [Node("Area2D")] private Area2D _roomArea;
+    Array<RoomLight> _lights = [];
     public bool IsLightOn;
     private Polygon2D _roomOcluderPoly;
     public event Action OnRoomUpdated;
@@ -23,10 +36,11 @@ public partial class Room : Node2D
 	public override void _Ready()
     {
         if (Engine.IsEditorHint()) return;
-        
-        TurnLightsOff();
 
-        GD.Print(_lights);
+        var lightContainer = GetTree().GetNodeFromGroup<RoomLightContainer>(RoomName.ToString());
+        _lights = [.. lightContainer.GetChildren().OfType<RoomLight>()];
+
+        TurnLightsOn();
 
         _roomOcluderPoly = new Polygon2D();
         var points = GetPolygonPoints(_areasCollisionPoly)
@@ -34,22 +48,10 @@ public partial class Room : Node2D
             .ToArray();
         _roomOcluderPoly.Polygon = points;
         _roomOcluderPoly.Color = new(0,0,0);
-        RoomVision.AddChild(_roomOcluderPoly);
+        RoomOcluders.AddChild(_roomOcluderPoly);
 
         _roomArea.BodyEntered += HandleBodyEntered;
         _roomArea.BodyExited += HandleBodyExited;
-    }
-
-    public override void _Process(double delta)
-    {
-        // foreach (var (source, mirror) in _mirrors)
-        // {
-        //     if (source is not RaycastedPolygon2D raycasted) continue;
-        //     var xform = raycasted.GlobalTransform;
-        //     mirror.Polygon = raycasted.Polygon
-        //         .Select(p => xform * p)
-        //         .ToArray();
-        // }
     }
 
     public override void _ExitTree()
@@ -143,6 +145,8 @@ public partial class Room : Node2D
 
 	public override void _ValidateProperty(Dictionary property)
 	{
+        if (!Engine.IsEditorHint()) return;
+
 		UpdateConfigurationWarnings();
 	}
 }
