@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://stt0e68qvudy"]
+
+[ext_resource type="Texture2D" uid="uid://cbkwtimdgajkk" path="res://sprites/rug_big.png" id="1_q1u2c"]
+
+[node name="RugLarge" type="Node2D" unique_id=818618920]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=955681171]
+texture = ExtResource("1_q1u2c")
