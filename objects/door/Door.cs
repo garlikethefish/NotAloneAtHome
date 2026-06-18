@@ -22,6 +22,7 @@ public partial class Door : AnimatableBody2D
 
     [Export] public DoorDirection OpenDirection = DoorDirection.Right;
     [Export] public DoorStyle Style = DoorStyle.Side;
+    [Export] public bool FlipSprite = false;
 
     [Export] public float OpenDistance = 25;
     [Export] public float Speed = 6f;
@@ -127,6 +128,8 @@ public partial class Door : AnimatableBody2D
                 ? "res://sprites/frontdoor.png"
                 : "res://sprites/sidedoor.png"
         );
+
+        _sprite.FlipH = FlipSprite;
     }
 
     // -----------------------------

@@ -6,9 +6,8 @@
 [ext_resource type="PackedScene" uid="uid://k2k1j0y25ebx" path="res://components/interactable/InteractableComponent.tscn" id="4_528fh"]
 
 [node name="LightSwitch" type="Node2D" unique_id=1046270523]
-z_index = 1
+z_index = 2
 script = ExtResource("1_61lfc")
-detectableRadius = 40.0
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1639604136]
 texture = ExtResource("2_pss0x")

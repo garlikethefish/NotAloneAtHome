@@ -24,6 +24,7 @@ shape = SubResource("RectangleShape2D_by2yn")
 disabled = true
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1493940634]
+z_index = 1
 texture = ExtResource("2_wxfxk")
 
 [node name="InteractableComponent" parent="." unique_id=1999549239 instance=ExtResource("4_psg1d")]
