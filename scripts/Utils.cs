@@ -111,6 +111,15 @@ public static class Extensions
         previous = default;
         return false;
     }
+
+    public static void RefreshTween(this Node node, ref Tween tween)
+    {
+        if (tween != null && tween.IsValid())
+        {
+            tween.Kill();
+        }
+        tween = node.CreateTween();
+    }
 }
 
 public static class Utils

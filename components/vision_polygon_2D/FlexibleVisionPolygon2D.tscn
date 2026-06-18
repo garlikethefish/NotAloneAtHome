@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://caf5603guu7ru"]
+
+[ext_resource type="Script" uid="uid://b0vm5vnf5yqoo" path="res://components/vision_polygon_2D/FlexibleVisionPolygon2D.cs" id="1_0n5j7"]
+
+[node name="FlexibleVisionPolygon2D" type="Polygon2D" unique_id=650221140]
+script = ExtResource("1_0n5j7")

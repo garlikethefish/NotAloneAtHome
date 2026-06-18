@@ -7,42 +7,49 @@ using System.Linq;
 [Scene][Tool]
 public partial class Room : Node2D
 {
-    [Export] Array<Polygon2D> _lightPolygons = [];
-    [Export] Node _lightWorld;
-    [Export] Node _darkWorld;
+    [Export] Array<RoomLight> _lights = [];
+    [Export] SubViewport RoomVision;
     [Export] bool _darkenRoomIfPlayerExits = true;
-    [Node("Area2D")] private Area2D _roomArea;
-    private Dictionary<GodotObject, Polygon2D> _mirrors = [];
     [Export] private CollisionPolygon2D _areasCollisionPoly;
-    private Polygon2D _areaMirror;
-    
-    private Tween _currentTween;
+    [Node("Area2D")] private Area2D _roomArea;
     public bool IsLightOn;
+    private Polygon2D _roomOcluderPoly;
     public event Action OnRoomUpdated;
     public event Action<Node2D> OnBodyEntered;
     public event Action<Node2D> OnBodyExited;
-    
+
+    private Tween _ocluderTween;
     
 	public override void _Ready()
     {
-        foreach (var poly in _lightPolygons)
-        {
-            AddMirror(poly);
-        }
+        if (Engine.IsEditorHint()) return;
         
-        _areaMirror = new Polygon2D();
+        TurnLightsOff();
+
+        GD.Print(_lights);
+
+        _roomOcluderPoly = new Polygon2D();
         var points = GetPolygonPoints(_areasCollisionPoly)
             .Select(p => GetPolygonTransform(_areasCollisionPoly) * p)
             .ToArray();
-        _areaMirror.Polygon = points;
-        _darkWorld.AddChild(_areaMirror);
-
-        TweenMirrorsToAlpha(0);
-        IsLightOn = false;
-        TweenAreaToAlpha(1);
+        _roomOcluderPoly.Polygon = points;
+        _roomOcluderPoly.Color = new(0,0,0);
+        RoomVision.AddChild(_roomOcluderPoly);
 
         _roomArea.BodyEntered += HandleBodyEntered;
         _roomArea.BodyExited += HandleBodyExited;
+    }
+
+    public override void _Process(double delta)
+    {
+        // foreach (var (source, mirror) in _mirrors)
+        // {
+        //     if (source is not RaycastedPolygon2D raycasted) continue;
+        //     var xform = raycasted.GlobalTransform;
+        //     mirror.Polygon = raycasted.Polygon
+        //         .Select(p => xform * p)
+        //         .ToArray();
+        // }
     }
 
     public override void _ExitTree()
@@ -56,7 +63,7 @@ public partial class Room : Node2D
     {
         if (body is Player)
         {
-            TweenAreaToAlpha(1);
+            EnableOcluder();
         }
         OnBodyExited?.Invoke(body);
     }
@@ -65,21 +72,9 @@ public partial class Room : Node2D
     {
         if (body is Player)
         {
-            TweenAreaToAlpha(0);
+            DisableOcluder();
         }
         OnBodyEntered?.Invoke(body);
-    }
-
-    private void AddMirror(Node2D source)
-    {
-        var mirror = new Polygon2D();
-        mirror.Position = Vector2.Zero;
-        var points = GetPolygonPoints(source)
-            .Select(p => GetPolygonTransform(source) * p)
-            .ToArray();
-        mirror.Polygon = points;
-        _lightWorld.AddChild(mirror);
-        _mirrors[source] = mirror;
     }
 
     private Vector2[] GetPolygonPoints(Node2D node) => node switch
@@ -96,59 +91,44 @@ public partial class Room : Node2D
         _ => Transform2D.Identity
     };
 
-    public override void _Process(double delta)
+    void EnableOcluder()
     {
-        foreach (var (source, mirror) in _mirrors)
+        this.RefreshTween(ref _ocluderTween);
+        _ocluderTween.TweenProperty(_roomOcluderPoly, "modulate:a", 1, 0.3f)
+            .SetTrans(Tween.TransitionType.Sine)
+            .SetEase(Tween.EaseType.Out);
+    }
+
+    void DisableOcluder()
+    {
+        this.RefreshTween(ref _ocluderTween);
+        _ocluderTween.TweenProperty(_roomOcluderPoly, "modulate:a", 0, 0.3f)
+            .SetTrans(Tween.TransitionType.Sine)
+            .SetEase(Tween.EaseType.Out);
+    }
+
+    public void TurnLightsOn()
+    {
+        IsLightOn = true;
+        foreach (var light in _lights)
         {
-            if (source is not RaycastedPolygon2D raycasted) continue;
-            var xform = raycasted.GlobalTransform;
-            mirror.Polygon = raycasted.Polygon
-                .Select(p => xform * p)
-                .ToArray();
+            light.TurnOn();
+        }
+    }
+
+    public void TurnLightsOff()
+    {
+        IsLightOn = false;
+        foreach (var light in _lights)
+        {
+            light.TurnOff();
         }
     }
 
     public void ToggleLight()
     {
-        if (IsLightOn) 
-        {
-            TweenMirrorsToAlpha(0); 
-        } 
-        else 
-        {
-            TweenMirrorsToAlpha(1);
-        }  
-        IsLightOn = !IsLightOn;
-    }
-
-	private Tween _lightTween;
-    private Tween _areaTween;
-
-    private void TweenMirrorsToAlpha(float alpha)
-    {
-        if (IsInstanceValid(_lightTween) && _lightTween.IsRunning())
-            _lightTween.Stop();
-
-        _lightTween = CreateTween();
-        _lightTween.SetParallel();
-        foreach (var mirror in _mirrors.Values)
-        {
-            _lightTween.TweenProperty(mirror, "modulate:a", alpha, 0.3f)
-                .SetTrans(Tween.TransitionType.Sine)
-                .SetEase(Tween.EaseType.Out);
-        }
-        OnRoomUpdated?.Invoke();
-    }
-
-    private void TweenAreaToAlpha(float alpha)
-    {
-        if (IsInstanceValid(_areaTween) && _areaTween.IsRunning())
-            _areaTween.Stop();
-
-        _areaTween = CreateTween();
-        _areaTween.TweenProperty(_areaMirror, "modulate:a", alpha, 0.3f)
-            .SetTrans(Tween.TransitionType.Sine)
-            .SetEase(Tween.EaseType.Out);
+        if (IsLightOn) TurnLightsOff();
+        else TurnLightsOn();
     }
 
     public override string[] _GetConfigurationWarnings()

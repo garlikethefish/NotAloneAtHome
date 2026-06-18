@@ -22,7 +22,6 @@ public partial class Player : CharacterBody2D, IStateMachine
     float _currentSpeed = 100.0f;
 
     [ExportGroup("Vision")]
-    [Export] private Polygon2D _mutableVisionPolygon;
     [Export] public double VisionShrinkSpeed = 50;
     [Export] public double VisionExpandSpeed = 25;
     [Export] public double defaultUnmaskedVisionRadiuss = 75;
@@ -88,7 +87,7 @@ public partial class Player : CharacterBody2D, IStateMachine
     [Node] public ThrowerComponent ThrowerComponent;
     [Node] public CarrierComponent CarrierComponent;
     [Node] public CastedAreaDetectorComponent CastedAreaDetectorComponent;
-    [Node] public Node2D RaycastedShape;
+    // [Node("FlexibleVisionPolygon2D")] public FlexibleVisionPolygon2D VisionPolygon;
     [Node] public NoiseMaker NoiseMaker;
     [Node("Camera2D")] private Camera2D _camera;
     [Signal] public delegate void ShakeCameraEventHandler();
@@ -219,14 +218,14 @@ public partial class Player : CharacterBody2D, IStateMachine
 
     public void TransitionVisionRadius(double delta, double targetRadius)
     {
-        if (RaycastedShape == null || _currentVisionRadius == targetRadius) return;
+        // if (VisionPolygon == null || _currentVisionRadius == targetRadius) return;
 
         double transitionSpeed = targetRadius > _currentVisionRadius  
             ? VisionExpandSpeed
             : VisionShrinkSpeed;
         _currentVisionRadius =  Mathf.MoveToward(_currentVisionRadius, targetRadius, transitionSpeed * delta);
 
-        RaycastedShape.Set("reach", _currentVisionRadius);
+        // VisionPolygon.Reach = (float)_currentVisionRadius;
     }
 
     private void UpdateAnimation(Vector2 dir)

@@ -1,18 +1,19 @@
 shader_type canvas_item;
 
-uniform sampler2D screen_texture : hint_screen_texture, filter_linear;
-
 void fragment() {
-    // 1. Grab the pixels from the screen
-    vec4 screen_color = texture(screen_texture, SCREEN_UV);
+    // 1. Grab the pixels from the SubViewport's texture
+    vec4 screen_color = texture(TEXTURE, UV);
     
-    // 2. Calculate the brightness (1.0 means pure white)
-    float brightness = dot(screen_color.rgb, vec3(0.333, 0.333, 0.333));
+    // 2. Calculate the brightness (1.0 = pure white, 0.0 = pure black)
+    float brightness = dot(screen_color.rgb, vec3(0.299, 0.587, 0.114));
     
-    // 3. Keep the original colors, but multiply the original alpha by the inverse brightness
-    // If it's pure white (brightness = 1.0), alpha becomes 0.0 (completely transparent)
-    // If it's any other color, it keeps its original colors and alpha
+    // 3. Inverse brightness becomes the alpha.
+    // Pure white (1.0) -> Alpha 0.0 (fully transparent)
+    // Mid gray (0.5)    -> Alpha 0.5 (semi-transparent)
+    // Pure black (0.0)  -> Alpha 1.0 (fully opaque)
     float new_alpha = screen_color.a * (1.0 - brightness);
     
-    COLOR = vec4(screen_color.rgb, new_alpha);
+    // 4. Force the RGB to be pure black (vec3(0.0)).
+    // This removes the "white/gray" tint from the semi-transparent areas.
+    COLOR = vec4(vec3(0.0), new_alpha);
 }
