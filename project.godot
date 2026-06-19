@@ -26,6 +26,10 @@ GameManager="*uid://cid1uama0hiub"
 TaskManager="*uid://6by5ogm5p27v"
 Animations="*uid://diplwldmjsrvt"
 
+[debug]
+
+settings/stdout/print_fps=true
+
 [display]
 
 window/size/viewport_width=1920

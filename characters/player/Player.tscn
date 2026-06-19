@@ -507,16 +507,6 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_5vbvs"]
 radius = 230.3671
 
-[sub_resource type="Gradient" id="Gradient_seukq"]
-offsets = PackedFloat32Array(0, 0.42771083, 0.52409637, 1)
-colors = PackedColorArray(1, 1, 1, 1, 0.31431594, 0.31431618, 0.31431603, 1, 0.28784722, 0.28784746, 0.2878473, 1, 0, 0, 0, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_sderm"]
-gradient = SubResource("Gradient_seukq")
-fill = 1
-fill_from = Vector2(0.5, 0.5)
-fill_to = Vector2(0.8086957, 0.07826087)
-
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_jjyn6"]
 random_pitch = 1.0905077
 random_volume_offset_db = 1.1
@@ -567,9 +557,7 @@ position = Vector2(-0.5, 10.644989)
 shape = SubResource("CircleShape2D_seukq")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1807232928]
-scale = Vector2(90, 1)
-zoom = Vector2(3.49, 3.49)
-process_callback = 0
+zoom = Vector2(3.5, 3.5)
 script = ExtResource("2_jjyn6")
 NOISE_SHAKE_SPEED = 10.0
 NOISE_SHAKE_STRENGTH = 30.0
@@ -587,14 +575,6 @@ monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BanditNearnessDetector" unique_id=651217859]
 shape = SubResource("CircleShape2D_5vbvs")
-
-[node name="PointLight2D" type="PointLight2D" parent="." unique_id=465774789]
-z_index = 4
-energy = 0.25
-range_z_max = 4
-shadow_enabled = true
-texture = SubResource("GradientTexture2D_sderm")
-texture_scale = 1.93
 
 [node name="Shadow" type="Sprite2D" parent="." unique_id=243085117]
 modulate = Color(1, 1, 1, 0.26666668)

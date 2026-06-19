@@ -1,8 +1,10 @@
 shader_type canvas_item;
 
-uniform sampler2D screen_tex : hint_screen_texture, filter_linear_mipmap;
+uniform float intensity : hint_range(1.0, 10.0) = 1.0;
 
 void fragment() {
-    vec3 screen_color = texture(screen_tex, SCREEN_UV).rgb;
-    COLOR = vec4(1.0 - screen_color, 1.0);
+    vec4 src = texture(TEXTURE, UV);
+    vec3 inverted = vec3(1.0 - src.r, 1.0 - src.g, 1.0 - src.b);
+    vec3 boosted = vec3(1.0) - clamp((vec3(1.0) - inverted) * intensity, 0.0, 1.0);
+    COLOR = vec4(boosted, 1.0);
 }

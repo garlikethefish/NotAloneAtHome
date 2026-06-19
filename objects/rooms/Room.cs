@@ -41,14 +41,14 @@ public partial class Room : Node2D
         _lights = [.. lightContainer.GetChildren().OfType<RoomLight>()];
 
         TurnLightsOn();
-
         _roomOcluderPoly = new Polygon2D();
         var points = GetPolygonPoints(_areasCollisionPoly)
             .Select(p => GetPolygonTransform(_areasCollisionPoly) * p)
             .ToArray();
         _roomOcluderPoly.Polygon = points;
-        _roomOcluderPoly.Color = new(0,0,0);
+        _roomOcluderPoly.Color = new(1,1,1);
         RoomOcluders.AddChild(_roomOcluderPoly);
+
 
         _roomArea.BodyEntered += HandleBodyEntered;
         _roomArea.BodyExited += HandleBodyExited;

@@ -124,7 +124,6 @@ public partial class Player : CharacterBody2D, IStateMachine
         HandleInteraction();
         HandleShaking();
         TransitionVisionRadius(delta, _targetVisionRadius);
-        MoveCamera(CameraTargetPosition);
     }
 
     public override void _PhysicsProcess(double delta)
@@ -140,14 +139,14 @@ public partial class Player : CharacterBody2D, IStateMachine
         // Automatically update internal sprinting flag based on active state machine layer
         _sprinting = CurrentState?.GetType().Name == "SprintingState";
 
+        Velocity = _moveDirection * _currentSpeed;
+        MoveAndSlide();
+        UpdateAnimation(_moveDirection);
+
         if (!IsAiming) {
             FacingDirection = Velocity.Normalized();
             CameraTargetPosition = FacingDirection * 10;
         }
-
-        Velocity = _moveDirection * _currentSpeed;
-        MoveAndSlide();
-        UpdateAnimation(_moveDirection);
 
         // ENHANCEMENT: Triggers acoustic sound waves and particle looping automatically while walking/sprinting
         if (_moveDirection.LengthSquared() > 0.01f)
@@ -161,12 +160,16 @@ public partial class Player : CharacterBody2D, IStateMachine
 
         if (_shakingCamera)
             EmitSignal(SignalName.StopCameraShake);
+
+        // MoveCamera(CameraTargetPosition);
     }
 
     public void MoveCamera(Vector2 position)
     {
         _positionSpring.Tick(position, (float)GetProcessDeltaTime());
         _camera.Position = _positionSpring.Current;
+
+       
     }
 
     public void HandleInteraction()
