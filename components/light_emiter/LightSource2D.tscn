@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://dwhgxi8doi0sr"]
+
+[ext_resource type="Script" path="res://components/light_emiter/LightSource2D.cs" id="2_m8ftg"]
+
+[node name="LightSource2D" type="Sprite2D" unique_id=758644754]
+light_mask = 0
+visibility_layer = 2
+scale = Vector2(0.235, 0.235)
+script = ExtResource("2_m8ftg")
