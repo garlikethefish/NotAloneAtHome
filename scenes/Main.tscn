@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://be8qbmt0fe144" path="res://characters/player/Player.tscn" id="1_rgh2o"]
 [ext_resource type="PackedScene" uid="uid://cbcifivthchns" path="res://ui/ui_overlay.tscn" id="1_vcsgt"]
 [ext_resource type="Shader" uid="uid://vb6qxgdi2kl5" path="res://shaders/cut_out_for_fogofwar.gdshader" id="4_cobve"]
-[ext_resource type="Shader" uid="uid://bocrcia3aduav" path="res://scenes/overlay_only_blacks.gdshader" id="4_kxyth"]
+[ext_resource type="Shader" uid="uid://bocrcia3aduav" path="res://shaders/overlay_only_blacks.gdshader" id="4_kxyth"]
 [ext_resource type="Script" uid="uid://dkm22x3bgkdak" path="res://scenes/MirrorCamera.cs" id="6_2ofn6"]
 [ext_resource type="Script" uid="uid://cn3pku13tvbsy" path="res://scenes/RoomLight.cs" id="6_e2s0e"]
 [ext_resource type="Script" uid="uid://dy2ylxkmnmlnl" path="res://scenes/RoomLightContainer.cs" id="6_gsxep"]
@@ -90,7 +90,7 @@ polygon = PackedVector2Array(96, 68, 608, 68)
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_dg70y"]
 closed = false
-polygon = PackedVector2Array(707, 70, 708, 355, 672, 355, 708, 355, 708, 389, 890, 389, 889, 602, 453, 602, 454, 388, 511, 388)
+polygon = PackedVector2Array(707, 70, 708, 355, 672, 355, 708, 355, 708, 389, 890, 389, 889, 602, 453, 602, 454, 388, 412, 388, 511, 388)
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_pnhog"]
 closed = false
@@ -98,7 +98,7 @@ polygon = PackedVector2Array(545, 388, 581, 388, 581, 353, 581, 321, 581, 353, 6
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_2c4at"]
 closed = false
-polygon = PackedVector2Array(582, 287, 582, 196, 325, 196, 325, 356, 228, 356, 228, 452, 255, 452, 228, 452, 228, 419, 97, 419, 228, 419, 228, 356, 325, 356, 325, 452, 289, 452)
+polygon = PackedVector2Array(582, 287, 582, 196, 229, 196, 228, 356, 228, 356, 228, 452, 255, 452, 228, 452, 228, 419, 97, 419, 228, 419, 228, 356, 325, 356, 325, 388, 356, 388, 325, 388, 325, 452, 289, 452)
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_g6wdg"]
 closed = false
@@ -961,7 +961,7 @@ scale = Vector2(76.62296, 8.387104)
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Rooms/Hallway/Area2D" unique_id=1361838807]
 position = Vector2(-190.0249, 209.02852)
 scale = Vector2(0.01711644, 0.13618012)
-polygon = PackedVector2Array(160.83478, -56.373394, 161.59723, 197.5322, 63.23752, 197.5322, 63.23752, 54.819748, -133.48193, 54.819748, -133.48193, 195.78113, -205.91739, 195.78113, -205.91739, 251.81546, -401.11188, 251.81546, -401.11188, 187.9013, -311.1394, 187.9013, -311.1394, 55.695282, -385.09982, 55.695282, -385.09982, -56.373394)
+polygon = PackedVector2Array(160.83478, -56.373394, 161.59723, 197.5322, 63.23752, 197.5322, 63.23752, 54.819748, -205.15437, 54.81978, -205.91739, 251.81546, -401.11188, 251.81546, -401.11188, 187.9013, -311.1394, 187.9013, -311.1394, 55.695282, -385.09982, 55.695282, -385.09982, -56.373394)
 
 [node name="LightSwitch" parent="Rooms/Hallway" unique_id=1895717921 node_paths=PackedStringArray("room") instance=ExtResource("9_pnhog")]
 position = Vector2(588, 243)
@@ -1081,7 +1081,7 @@ scale = Vector2(8.753454, 2.8960497)
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Rooms/Livingroom/Area2D" unique_id=176859974]
 position = Vector2(-44.6006, 241.56845)
 scale = Vector2(0.19650127, 0.45044884)
-polygon = PackedVector2Array(-536.36975, 179.68706, -536.36975, 296.9713, -670.667, 296.9713, -670.667, 104.56377, -537.5325, 104.56377, -537.5325, 128.32726, -482.302, 128.32726, -482.302, -67.91316, -332.30768, -67.91316, -332.30768, 80.03371, -407.30484, 80.03371, -407.30484, 179.68706)
+polygon = PackedVector2Array(-536.36975, 179.68706, -536.36975, 296.9713, -670.667, 296.9713, -670.667, 104.56377, -537.5325, 104.56377, -537.5325, 128.32726, -482.302, 128.32726, -482.30206, 55.503647, -538.6953, 55.503647, -538.1139, -67.91316, -332.30768, -67.91316, -332.30768, 80.03371, -407.30484, 80.03371, -407.30484, 179.68706)
 
 [node name="LightSwitch" parent="Rooms/Livingroom" unique_id=1183811476 node_paths=PackedStringArray("room") instance=ExtResource("9_pnhog")]
 position = Vector2(575, 334)
