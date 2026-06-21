@@ -1,35 +1,48 @@
 using Godot;
 using Godot.Collections;
+using NotAloneAtHome.Characters.Player;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 #nullable enable
-public partial class RoomManager : Node2D
+public partial class RoomManager : Node
 {
     [Export] Array<Room> rooms = [];
     public static RoomManager Instance { get; private set; } = default!;
-    public event Action<Node2D, Room>? OnRoomEntered;
-    public event Action<Room>? OnRoomUpdated;
+    public List<Room> RoomsPlayerIsIn = [];
 
-	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
     {
         Instance = this;
         foreach (var room in rooms)
         {
-            room.OnBodyEntered += body => OnRoomEntered?.Invoke(body, room);
-            room.OnRoomUpdated += () => OnRoomUpdated?.Invoke(room);
+            room.OnBodyEntered += body => HandleRoomEnter(body, room);
+            room.OnBodyExited  += body => HandleRoomExit(body, room);
         }
     }
 
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
-	{
-	}
-
-    public Room? FindRoomWhereIsNode(Node2D node)
+    void HandleRoomEnter(Node2D body, Room room)
     {
-        return null; //rooms.FirstOrDefault(area => area.GetOverlappingBodies().Contains(node));
+        if (body is Player)
+        {
+            RoomsPlayerIsIn.Add(room);
+        }
+
+        // if (room.IsLightOn)
+        // {
+        //     foreach (var adjecentRoom in rooms)
+        //     {
+                
+        //     }
+        // }
+    }
+
+    void HandleRoomExit(Node2D body, Room room)
+    {
+        if (body is Player)
+        {
+            RoomsPlayerIsIn.Remove(room);
+        }   
     }
 }

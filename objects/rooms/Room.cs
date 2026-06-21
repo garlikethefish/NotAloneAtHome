@@ -20,6 +20,7 @@ public enum Rooms {
 public partial class Room : Node2D
 {
     [Export] Rooms RoomName = Rooms.None;
+    [Export] Room[] AdjecentRooms = [];
     [Export] Node RoomOcluders;
     [Export] bool _darkenRoomIfPlayerExits = true;
     [Export] private CollisionPolygon2D _areasCollisionPoly;
