@@ -1325,9 +1325,6 @@ script = ExtResource("13_cmqll")
 position = Vector2(650, 278)
 collision_mask = 3
 
-[node name="CollisionShape2D" parent="Player/BanditNearnessDetector" parent_id_path=PackedInt32Array(1993068751, 2046794680) index="0" unique_id=651217859]
-position = Vector2(415, -20)
-
 [node name="CastedAreaDetectorComponent" parent="Player" index="11" unique_id=145267381]
 ShowDebug = true
 
@@ -1470,6 +1467,7 @@ scale = Vector2(0.60236263, 0.5799344)
 [node name="EscapeZone" parent="ZoneWrapper2" unique_id=1530702801 instance=ExtResource("21_1iba3")]
 
 [node name="FuckassSubviewportUpdater" type="Node" parent="." unique_id=1732338423 node_paths=PackedStringArray("Subs")]
+process_mode = 4
 script = ExtResource("38_cobve")
 Subs = [NodePath("../UILayers/WorkingButBuggyVision/1_VisionReveal"), NodePath("../UILayers/WorkingButBuggyVision/2_RoomLight"), NodePath("../UILayers/WorkingButBuggyVision/3_RoomOcluders"), NodePath("../UILayers/WorkingButBuggyVision/4_RespectiveRoomOcluders"), NodePath("../UILayers/WorkingButBuggyVision/5_InvertedRoomOcluders"), NodePath("../UILayers/WorkingButBuggyVision/FinalMerge")]
 
