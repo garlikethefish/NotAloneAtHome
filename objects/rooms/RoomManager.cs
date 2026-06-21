@@ -43,6 +43,7 @@ public partial class RoomManager : Node
         if (body is Player)
         {
             RoomsPlayerIsIn.Remove(room);
+            GD.Print("Exited room: ", room.Name);
         }   
     }
 }

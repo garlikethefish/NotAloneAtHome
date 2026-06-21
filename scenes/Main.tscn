@@ -7,8 +7,7 @@
 [ext_resource type="Shader" uid="uid://vb6qxgdi2kl5" path="res://shaders/cut_out_for_fogofwar.gdshader" id="4_cobve"]
 [ext_resource type="Shader" uid="uid://bocrcia3aduav" path="res://shaders/overlay_only_blacks.gdshader" id="4_kxyth"]
 [ext_resource type="Script" uid="uid://dkm22x3bgkdak" path="res://scenes/MirrorCamera.cs" id="6_2ofn6"]
-[ext_resource type="Script" uid="uid://cn3pku13tvbsy" path="res://scenes/RoomLight.cs" id="6_e2s0e"]
-[ext_resource type="Script" uid="uid://dy2ylxkmnmlnl" path="res://scenes/RoomLightContainer.cs" id="6_gsxep"]
+[ext_resource type="Script" uid="uid://c8a4bnyi0m80x" path="res://objects/rooms/RoomLightContainer.cs" id="6_gsxep"]
 [ext_resource type="PackedScene" uid="uid://brr113cq5hhql" path="res://objects/rooms/Room.tscn" id="7_v0vrg"]
 [ext_resource type="PackedScene" uid="uid://cah3urn1fwd1d" path="res://zones/sell_zone/SellZone.tscn" id="8_jlsqs"]
 [ext_resource type="Shader" uid="uid://dqxgvmytrj0qo" path="res://shaders/color_invertor.gdshader" id="9_cobve"]
@@ -18,7 +17,9 @@
 [ext_resource type="Script" uid="uid://bk8pktmsic2gx" path="res://objects/rooms/RoomManager.cs" id="13_cmqll"]
 [ext_resource type="AudioStream" uid="uid://cnk2deqtcg6p1" path="res://scenes/main_bg_music.mp3" id="13_fs0b5"]
 [ext_resource type="PackedScene" uid="uid://blm3resaadrtl" path="res://characters/closet_thief/DeadBanditCloset.tscn" id="13_mwfav"]
+[ext_resource type="Script" uid="uid://dyuuh8wvxcbif" path="res://objects/rooms/RoomLightPointLight2D.cs" id="14_8b871"]
 [ext_resource type="PackedScene" uid="uid://q27ik5xajev6" path="res://components/spawner/Spawner.tscn" id="15_3p2gp"]
+[ext_resource type="Script" uid="uid://b2wo0i6ylnm3x" path="res://objects/rooms/RoomLightPolygon2D.cs" id="15_pdwbg"]
 [ext_resource type="PackedScene" uid="uid://b2xpj2tshxe1h" path="res://objects/dead_bandit/DeadBandit.tscn" id="16_cvmbd"]
 [ext_resource type="PackedScene" uid="uid://bva37215cgaym" path="res://objects/cat_food/CatFood.tscn" id="16_yxlcp"]
 [ext_resource type="PackedScene" uid="uid://dfttis2qx6job" path="res://objects/valuables/Valuable_Chair1.tscn" id="17_1nqs0"]
@@ -204,7 +205,6 @@ grow_vertical = 2
 
 [node name="WorkingButBuggyVision" type="CanvasLayer" parent="UILayers" unique_id=1229609621]
 process_mode = 4
-visible = false
 
 [node name="TextureRect" type="TextureRect" parent="UILayers/WorkingButBuggyVision" unique_id=1283919640]
 visible = false
@@ -366,42 +366,42 @@ position = Vector2(525, 307)
 scale = Vector2(4.505, 4.505)
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_5dd86")
-script = ExtResource("6_e2s0e")
+script = ExtResource("14_8b871")
 
 [node name="PointLight2D2" type="PointLight2D" parent="UILayers/WorkingButBuggyVision/2_RoomLight/RoomsLights/LivingRoom" unique_id=1695826137]
 position = Vector2(408, 294.00003)
 scale = Vector2(4.505, 4.505)
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_5dd86")
-script = ExtResource("6_e2s0e")
+script = ExtResource("14_8b871")
 
 [node name="PointLight2D3" type="PointLight2D" parent="UILayers/WorkingButBuggyVision/2_RoomLight/RoomsLights/LivingRoom" unique_id=1876674282]
 position = Vector2(383.00003, 487)
 scale = Vector2(4.505, 4.505)
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_5dd86")
-script = ExtResource("6_e2s0e")
+script = ExtResource("14_8b871")
 
 [node name="PointLight2D4" type="PointLight2D" parent="UILayers/WorkingButBuggyVision/2_RoomLight/RoomsLights/LivingRoom" unique_id=465776815]
 position = Vector2(272, 498)
 scale = Vector2(4.505, 4.505)
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_5dd86")
-script = ExtResource("6_e2s0e")
+script = ExtResource("14_8b871")
 
 [node name="PointLight2D5" type="PointLight2D" parent="UILayers/WorkingButBuggyVision/2_RoomLight/RoomsLights/LivingRoom" unique_id=1235053675]
 position = Vector2(80, 461.00006)
 scale = Vector2(4.505, 4.505)
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_5dd86")
-script = ExtResource("6_e2s0e")
+script = ExtResource("14_8b871")
 
 [node name="PointLight2D6" type="PointLight2D" parent="UILayers/WorkingButBuggyVision/2_RoomLight/RoomsLights/LivingRoom" unique_id=1363667378]
 position = Vector2(116, 561.00006)
 scale = Vector2(8.265, 8.265)
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_5dd86")
-script = ExtResource("6_e2s0e")
+script = ExtResource("14_8b871")
 
 [node name="Hallway" type="Node2D" parent="UILayers/WorkingButBuggyVision/2_RoomLight/RoomsLights" unique_id=1033339754]
 script = ExtResource("6_gsxep")
@@ -412,49 +412,49 @@ position = Vector2(650, 305.00003)
 scale = Vector2(4.505, 4.505)
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_5dd86")
-script = ExtResource("6_e2s0e")
+script = ExtResource("14_8b871")
 
 [node name="PointLight2D2" type="PointLight2D" parent="UILayers/WorkingButBuggyVision/2_RoomLight/RoomsLights/Hallway" unique_id=133332910]
 position = Vector2(622, 126.000046)
 scale = Vector2(4.505, 4.505)
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_5dd86")
-script = ExtResource("6_e2s0e")
+script = ExtResource("14_8b871")
 
 [node name="PointLight2D3" type="PointLight2D" parent="UILayers/WorkingButBuggyVision/2_RoomLight/RoomsLights/Hallway" unique_id=589519885]
 position = Vector2(447.00003, 131)
 scale = Vector2(4.505, 4.505)
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_5dd86")
-script = ExtResource("6_e2s0e")
+script = ExtResource("14_8b871")
 
 [node name="PointLight2D4" type="PointLight2D" parent="UILayers/WorkingButBuggyVision/2_RoomLight/RoomsLights/Hallway" unique_id=1359177633]
 position = Vector2(81.000046, 384)
 scale = Vector2(3.79, 3.79)
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_5dd86")
-script = ExtResource("6_e2s0e")
+script = ExtResource("14_8b871")
 
 [node name="PointLight2D5" type="PointLight2D" parent="UILayers/WorkingButBuggyVision/2_RoomLight/RoomsLights/Hallway" unique_id=1145154450]
 position = Vector2(78, 123)
 scale = Vector2(4.505, 4.505)
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_5dd86")
-script = ExtResource("6_e2s0e")
+script = ExtResource("14_8b871")
 
 [node name="PointLight2D6" type="PointLight2D" parent="UILayers/WorkingButBuggyVision/2_RoomLight/RoomsLights/Hallway" unique_id=858888452]
 position = Vector2(217, 209)
 scale = Vector2(8.265, 8.265)
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_5dd86")
-script = ExtResource("6_e2s0e")
+script = ExtResource("14_8b871")
 
 [node name="PointLight2D7" type="PointLight2D" parent="UILayers/WorkingButBuggyVision/2_RoomLight/RoomsLights/Hallway" unique_id=1927054181]
 position = Vector2(17.000011, 165)
 scale = Vector2(4.505, 4.505)
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_5dd86")
-script = ExtResource("6_e2s0e")
+script = ExtResource("14_8b871")
 
 [node name="Bedroom1" type="Node2D" parent="UILayers/WorkingButBuggyVision/2_RoomLight/RoomsLights" unique_id=69680660]
 script = ExtResource("6_gsxep")
@@ -465,21 +465,21 @@ position = Vector2(82, 12.999998)
 scale = Vector2(4.505, 4.505)
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_5dd86")
-script = ExtResource("6_e2s0e")
+script = ExtResource("14_8b871")
 
 [node name="PointLight2D2" type="PointLight2D" parent="UILayers/WorkingButBuggyVision/2_RoomLight/RoomsLights/Bedroom1" unique_id=1777198266]
 position = Vector2(188.00005, 43.000046)
 scale = Vector2(4.505, 4.505)
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_5dd86")
-script = ExtResource("6_e2s0e")
+script = ExtResource("14_8b871")
 
 [node name="PointLight2D6" type="PointLight2D" parent="UILayers/WorkingButBuggyVision/2_RoomLight/RoomsLights/Bedroom1" unique_id=157336503]
 position = Vector2(80, -93)
 scale = Vector2(8.265, 8.265)
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_5dd86")
-script = ExtResource("6_e2s0e")
+script = ExtResource("14_8b871")
 
 [node name="Bedroom2" type="Node2D" parent="UILayers/WorkingButBuggyVision/2_RoomLight/RoomsLights" unique_id=1239064795]
 script = ExtResource("6_gsxep")
@@ -490,21 +490,21 @@ position = Vector2(657.99994, 414.99997)
 scale = Vector2(4.505, 4.505)
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_5dd86")
-script = ExtResource("6_e2s0e")
+script = ExtResource("14_8b871")
 
 [node name="PointLight2D2" type="PointLight2D" parent="UILayers/WorkingButBuggyVision/2_RoomLight/RoomsLights/Bedroom2" unique_id=256076821]
 position = Vector2(517.99994, 454.99994)
 scale = Vector2(4.505, 4.505)
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_5dd86")
-script = ExtResource("6_e2s0e")
+script = ExtResource("14_8b871")
 
 [node name="PointLight2D6" type="PointLight2D" parent="UILayers/WorkingButBuggyVision/2_RoomLight/RoomsLights/Bedroom2" unique_id=1655880353]
 position = Vector2(693.00006, 535)
 scale = Vector2(8.78, 8.78)
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_5dd86")
-script = ExtResource("6_e2s0e")
+script = ExtResource("14_8b871")
 
 [node name="Kitchen" type="Node2D" parent="UILayers/WorkingButBuggyVision/2_RoomLight/RoomsLights" unique_id=1833441044]
 script = ExtResource("6_gsxep")
@@ -515,21 +515,21 @@ position = Vector2(274.00003, 42.00003)
 scale = Vector2(4.505, 4.505)
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_5dd86")
-script = ExtResource("6_e2s0e")
+script = ExtResource("14_8b871")
 
 [node name="PointLight2D2" type="PointLight2D" parent="UILayers/WorkingButBuggyVision/2_RoomLight/RoomsLights/Kitchen" unique_id=1104915413]
 position = Vector2(407.00006, 43.00006)
 scale = Vector2(4.505, 4.505)
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_5dd86")
-script = ExtResource("6_e2s0e")
+script = ExtResource("14_8b871")
 
 [node name="PointLight2D6" type="PointLight2D" parent="UILayers/WorkingButBuggyVision/2_RoomLight/RoomsLights/Kitchen" unique_id=1845092575]
 position = Vector2(339, -29)
 scale = Vector2(5.425, 5.425)
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_5dd86")
-script = ExtResource("6_e2s0e")
+script = ExtResource("14_8b871")
 
 [node name="Bathroom" type="Node2D" parent="UILayers/WorkingButBuggyVision/2_RoomLight/RoomsLights" unique_id=809789557]
 script = ExtResource("6_gsxep")
@@ -540,21 +540,21 @@ position = Vector2(486, 43.000004)
 scale = Vector2(4.44, 4.44)
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_5dd86")
-script = ExtResource("6_e2s0e")
+script = ExtResource("14_8b871")
 
 [node name="PointLight2D2" type="PointLight2D" parent="UILayers/WorkingButBuggyVision/2_RoomLight/RoomsLights/Bathroom" unique_id=593841743]
 position = Vector2(624, 24.000002)
 scale = Vector2(4.955, 4.955)
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_5dd86")
-script = ExtResource("6_e2s0e")
+script = ExtResource("14_8b871")
 
 [node name="PointLight2D6" type="PointLight2D" parent="UILayers/WorkingButBuggyVision/2_RoomLight/RoomsLights/Bathroom" unique_id=326194672]
 position = Vector2(600, -122)
 scale = Vector2(10.3, 10.3)
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_5dd86")
-script = ExtResource("6_e2s0e")
+script = ExtResource("14_8b871")
 
 [node name="Goonroom" type="Node2D" parent="UILayers/WorkingButBuggyVision/2_RoomLight/RoomsLights" unique_id=1047711585]
 script = ExtResource("6_gsxep")
@@ -565,7 +565,7 @@ position = Vector2(279, 400)
 scale = Vector2(3.42, 3.42)
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_5dd86")
-script = ExtResource("6_e2s0e")
+script = ExtResource("14_8b871")
 
 [node name="StorageRoom" type="Node2D" parent="UILayers/WorkingButBuggyVision/2_RoomLight/RoomsLights" unique_id=2076452803]
 script = ExtResource("6_gsxep")
@@ -576,14 +576,14 @@ position = Vector2(17, 252)
 scale = Vector2(3.42, 3.42)
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_5dd86")
-script = ExtResource("6_e2s0e")
+script = ExtResource("14_8b871")
 
 [node name="PointLight2D7" type="PointLight2D" parent="UILayers/WorkingButBuggyVision/2_RoomLight/RoomsLights/StorageRoom" unique_id=640613324]
 position = Vector2(-41, 281)
 scale = Vector2(6.475, 6.475)
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_5dd86")
-script = ExtResource("6_e2s0e")
+script = ExtResource("14_8b871")
 
 [node name="3_RoomOcluders" type="SubViewport" parent="UILayers/WorkingButBuggyVision" unique_id=776575264]
 disable_3d = true
@@ -711,42 +711,42 @@ position = Vector2(525, 307)
 scale = Vector2(4.505, 4.505)
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_5dd86")
-script = ExtResource("6_e2s0e")
+script = ExtResource("14_8b871")
 
 [node name="PointLight2D2" type="PointLight2D" parent="UILayers/Will need to cook with shader (doesnt work)/SubViewportContainer/SubViewport/RoomsLights/LivingRoom" unique_id=625387303]
 position = Vector2(408, 294.00003)
 scale = Vector2(4.505, 4.505)
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_5dd86")
-script = ExtResource("6_e2s0e")
+script = ExtResource("14_8b871")
 
 [node name="PointLight2D3" type="PointLight2D" parent="UILayers/Will need to cook with shader (doesnt work)/SubViewportContainer/SubViewport/RoomsLights/LivingRoom" unique_id=1791631494]
 position = Vector2(383.00003, 487)
 scale = Vector2(4.505, 4.505)
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_5dd86")
-script = ExtResource("6_e2s0e")
+script = ExtResource("14_8b871")
 
 [node name="PointLight2D4" type="PointLight2D" parent="UILayers/Will need to cook with shader (doesnt work)/SubViewportContainer/SubViewport/RoomsLights/LivingRoom" unique_id=741452972]
 position = Vector2(272, 498)
 scale = Vector2(4.505, 4.505)
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_5dd86")
-script = ExtResource("6_e2s0e")
+script = ExtResource("14_8b871")
 
 [node name="PointLight2D5" type="PointLight2D" parent="UILayers/Will need to cook with shader (doesnt work)/SubViewportContainer/SubViewport/RoomsLights/LivingRoom" unique_id=2119577124]
 position = Vector2(80, 461.00006)
 scale = Vector2(4.505, 4.505)
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_5dd86")
-script = ExtResource("6_e2s0e")
+script = ExtResource("14_8b871")
 
 [node name="PointLight2D6" type="PointLight2D" parent="UILayers/Will need to cook with shader (doesnt work)/SubViewportContainer/SubViewport/RoomsLights/LivingRoom" unique_id=1896701994]
 position = Vector2(116, 561.00006)
 scale = Vector2(8.265, 8.265)
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_5dd86")
-script = ExtResource("6_e2s0e")
+script = ExtResource("14_8b871")
 
 [node name="Hallway" type="Node2D" parent="UILayers/Will need to cook with shader (doesnt work)/SubViewportContainer/SubViewport/RoomsLights" unique_id=270871115]
 script = ExtResource("6_gsxep")
@@ -757,49 +757,49 @@ position = Vector2(650, 305.00003)
 scale = Vector2(4.505, 4.505)
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_5dd86")
-script = ExtResource("6_e2s0e")
+script = ExtResource("14_8b871")
 
 [node name="PointLight2D2" type="PointLight2D" parent="UILayers/Will need to cook with shader (doesnt work)/SubViewportContainer/SubViewport/RoomsLights/Hallway" unique_id=1538493331]
 position = Vector2(622, 126.000046)
 scale = Vector2(4.505, 4.505)
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_5dd86")
-script = ExtResource("6_e2s0e")
+script = ExtResource("14_8b871")
 
 [node name="PointLight2D3" type="PointLight2D" parent="UILayers/Will need to cook with shader (doesnt work)/SubViewportContainer/SubViewport/RoomsLights/Hallway" unique_id=1816867868]
 position = Vector2(447.00003, 131)
 scale = Vector2(4.505, 4.505)
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_5dd86")
-script = ExtResource("6_e2s0e")
+script = ExtResource("14_8b871")
 
 [node name="PointLight2D4" type="PointLight2D" parent="UILayers/Will need to cook with shader (doesnt work)/SubViewportContainer/SubViewport/RoomsLights/Hallway" unique_id=1126552844]
 position = Vector2(81.000046, 384)
 scale = Vector2(3.79, 3.79)
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_5dd86")
-script = ExtResource("6_e2s0e")
+script = ExtResource("14_8b871")
 
 [node name="PointLight2D5" type="PointLight2D" parent="UILayers/Will need to cook with shader (doesnt work)/SubViewportContainer/SubViewport/RoomsLights/Hallway" unique_id=1960754678]
 position = Vector2(78, 123)
 scale = Vector2(4.505, 4.505)
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_5dd86")
-script = ExtResource("6_e2s0e")
+script = ExtResource("14_8b871")
 
 [node name="PointLight2D6" type="PointLight2D" parent="UILayers/Will need to cook with shader (doesnt work)/SubViewportContainer/SubViewport/RoomsLights/Hallway" unique_id=242010737]
 position = Vector2(217, 209)
 scale = Vector2(8.265, 8.265)
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_5dd86")
-script = ExtResource("6_e2s0e")
+script = ExtResource("14_8b871")
 
 [node name="PointLight2D7" type="PointLight2D" parent="UILayers/Will need to cook with shader (doesnt work)/SubViewportContainer/SubViewport/RoomsLights/Hallway" unique_id=1850462278]
 position = Vector2(17.000011, 165)
 scale = Vector2(4.505, 4.505)
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_5dd86")
-script = ExtResource("6_e2s0e")
+script = ExtResource("14_8b871")
 
 [node name="Bedroom1" type="Node2D" parent="UILayers/Will need to cook with shader (doesnt work)/SubViewportContainer/SubViewport/RoomsLights" unique_id=59355439]
 script = ExtResource("6_gsxep")
@@ -810,21 +810,21 @@ position = Vector2(82, 12.999998)
 scale = Vector2(4.505, 4.505)
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_5dd86")
-script = ExtResource("6_e2s0e")
+script = ExtResource("14_8b871")
 
 [node name="PointLight2D2" type="PointLight2D" parent="UILayers/Will need to cook with shader (doesnt work)/SubViewportContainer/SubViewport/RoomsLights/Bedroom1" unique_id=696617018]
 position = Vector2(188.00005, 43.000046)
 scale = Vector2(4.505, 4.505)
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_5dd86")
-script = ExtResource("6_e2s0e")
+script = ExtResource("14_8b871")
 
 [node name="PointLight2D6" type="PointLight2D" parent="UILayers/Will need to cook with shader (doesnt work)/SubViewportContainer/SubViewport/RoomsLights/Bedroom1" unique_id=1156241327]
 position = Vector2(80, -93)
 scale = Vector2(8.265, 8.265)
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_5dd86")
-script = ExtResource("6_e2s0e")
+script = ExtResource("14_8b871")
 
 [node name="Bedroom2" type="Node2D" parent="UILayers/Will need to cook with shader (doesnt work)/SubViewportContainer/SubViewport/RoomsLights" unique_id=110248250]
 script = ExtResource("6_gsxep")
@@ -835,21 +835,21 @@ position = Vector2(657.99994, 414.99997)
 scale = Vector2(4.505, 4.505)
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_5dd86")
-script = ExtResource("6_e2s0e")
+script = ExtResource("14_8b871")
 
 [node name="PointLight2D2" type="PointLight2D" parent="UILayers/Will need to cook with shader (doesnt work)/SubViewportContainer/SubViewport/RoomsLights/Bedroom2" unique_id=1450022845]
 position = Vector2(517.99994, 454.99994)
 scale = Vector2(4.505, 4.505)
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_5dd86")
-script = ExtResource("6_e2s0e")
+script = ExtResource("14_8b871")
 
 [node name="PointLight2D6" type="PointLight2D" parent="UILayers/Will need to cook with shader (doesnt work)/SubViewportContainer/SubViewport/RoomsLights/Bedroom2" unique_id=1436886379]
 position = Vector2(693.00006, 535)
 scale = Vector2(8.78, 8.78)
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_5dd86")
-script = ExtResource("6_e2s0e")
+script = ExtResource("14_8b871")
 
 [node name="Kitchen" type="Node2D" parent="UILayers/Will need to cook with shader (doesnt work)/SubViewportContainer/SubViewport/RoomsLights" unique_id=1426751362]
 script = ExtResource("6_gsxep")
@@ -860,21 +860,21 @@ position = Vector2(274.00003, 42.00003)
 scale = Vector2(4.505, 4.505)
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_5dd86")
-script = ExtResource("6_e2s0e")
+script = ExtResource("14_8b871")
 
 [node name="PointLight2D2" type="PointLight2D" parent="UILayers/Will need to cook with shader (doesnt work)/SubViewportContainer/SubViewport/RoomsLights/Kitchen" unique_id=1401697928]
 position = Vector2(407.00006, 43.00006)
 scale = Vector2(4.505, 4.505)
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_5dd86")
-script = ExtResource("6_e2s0e")
+script = ExtResource("14_8b871")
 
 [node name="PointLight2D6" type="PointLight2D" parent="UILayers/Will need to cook with shader (doesnt work)/SubViewportContainer/SubViewport/RoomsLights/Kitchen" unique_id=585853213]
 position = Vector2(339, -29)
 scale = Vector2(5.425, 5.425)
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_5dd86")
-script = ExtResource("6_e2s0e")
+script = ExtResource("14_8b871")
 
 [node name="Bathroom" type="Node2D" parent="UILayers/Will need to cook with shader (doesnt work)/SubViewportContainer/SubViewport/RoomsLights" unique_id=1891838448]
 script = ExtResource("6_gsxep")
@@ -885,21 +885,21 @@ position = Vector2(486, 43.000004)
 scale = Vector2(4.44, 4.44)
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_5dd86")
-script = ExtResource("6_e2s0e")
+script = ExtResource("14_8b871")
 
 [node name="PointLight2D2" type="PointLight2D" parent="UILayers/Will need to cook with shader (doesnt work)/SubViewportContainer/SubViewport/RoomsLights/Bathroom" unique_id=835060294]
 position = Vector2(624, 24.000002)
 scale = Vector2(4.955, 4.955)
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_5dd86")
-script = ExtResource("6_e2s0e")
+script = ExtResource("14_8b871")
 
 [node name="PointLight2D6" type="PointLight2D" parent="UILayers/Will need to cook with shader (doesnt work)/SubViewportContainer/SubViewport/RoomsLights/Bathroom" unique_id=543370631]
 position = Vector2(600, -122)
 scale = Vector2(10.3, 10.3)
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_5dd86")
-script = ExtResource("6_e2s0e")
+script = ExtResource("14_8b871")
 
 [node name="Goonroom" type="Node2D" parent="UILayers/Will need to cook with shader (doesnt work)/SubViewportContainer/SubViewport/RoomsLights" unique_id=887933210]
 script = ExtResource("6_gsxep")
@@ -910,7 +910,7 @@ position = Vector2(279, 400)
 scale = Vector2(3.42, 3.42)
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_5dd86")
-script = ExtResource("6_e2s0e")
+script = ExtResource("14_8b871")
 
 [node name="StorageRoom" type="Node2D" parent="UILayers/Will need to cook with shader (doesnt work)/SubViewportContainer/SubViewport/RoomsLights" unique_id=1702215632]
 script = ExtResource("6_gsxep")
@@ -921,14 +921,14 @@ position = Vector2(17, 252)
 scale = Vector2(3.42, 3.42)
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_5dd86")
-script = ExtResource("6_e2s0e")
+script = ExtResource("14_8b871")
 
 [node name="PointLight2D7" type="PointLight2D" parent="UILayers/Will need to cook with shader (doesnt work)/SubViewportContainer/SubViewport/RoomsLights/StorageRoom" unique_id=1635149582]
 position = Vector2(-41, 281)
 scale = Vector2(6.475, 6.475)
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_5dd86")
-script = ExtResource("6_e2s0e")
+script = ExtResource("14_8b871")
 
 [node name="RoomOcluders" type="Node2D" parent="UILayers/Will need to cook with shader (doesnt work)/SubViewportContainer/SubViewport" unique_id=648625328]
 
@@ -962,10 +962,15 @@ color = Color(0.08215607, 0.07442988, 0.023605691, 1)
 
 [node name="Rooms" type="Node2D" parent="." unique_id=33986346]
 
-[node name="GoonRoom" parent="Rooms" unique_id=169850214 node_paths=PackedStringArray("RoomOcluders", "_areasCollisionPoly") instance=ExtResource("7_v0vrg")]
+[node name="RoomManager" type="Node" parent="Rooms" unique_id=446449337 node_paths=PackedStringArray("rooms")]
+script = ExtResource("13_cmqll")
+rooms = [NodePath("../GoonRoom"), NodePath("../Hallway"), NodePath("../StorageRoom"), NodePath("../Kitchen"), NodePath("../Bathroom"), NodePath("../BedroomBottom"), NodePath("../Livingroom"), NodePath("../BedroomTop"), NodePath("../GreenRoom")]
+
+[node name="GoonRoom" parent="Rooms" unique_id=169850214 node_paths=PackedStringArray("RoomOcluders", "_areasCollisionPoly", "_roomLightPoly2D") instance=ExtResource("7_v0vrg")]
 RoomName = 0
 RoomOcluders = NodePath("../../UILayers/WorkingButBuggyVision/3_RoomOcluders/RoomOcluders")
 _areasCollisionPoly = NodePath("Area2D/CollisionPolygon2D")
+_roomLightPoly2D = NodePath("Lights/PolyLight")
 
 [node name="Area2D" type="Area2D" parent="Rooms/GoonRoom" unique_id=60405390]
 position = Vector2(1544.0001, -416)
@@ -998,11 +1003,19 @@ scale = Vector2(2.984375, 3.046875)
 range_layer_max = 8
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_30oxl")
+script = ExtResource("14_8b871")
 
-[node name="Hallway" parent="Rooms" unique_id=954819346 node_paths=PackedStringArray("RoomOcluders", "_areasCollisionPoly") instance=ExtResource("7_v0vrg")]
+[node name="PolyLight" type="Polygon2D" parent="Rooms/GoonRoom/Lights" unique_id=1876477697]
+position = Vector2(4.7916718, 0)
+scale = Vector2(0.9791667, 1)
+polygon = PackedVector2Array(230, 357, 326, 357, 326, 450, 230, 450)
+script = ExtResource("15_pdwbg")
+
+[node name="Hallway" parent="Rooms" unique_id=954819346 node_paths=PackedStringArray("RoomOcluders", "_areasCollisionPoly", "_roomLightPoly2D") instance=ExtResource("7_v0vrg")]
 RoomName = 7
 RoomOcluders = NodePath("../../UILayers/WorkingButBuggyVision/3_RoomOcluders/RoomOcluders")
 _areasCollisionPoly = NodePath("Area2D/CollisionPolygon2D")
+_roomLightPoly2D = NodePath("Lights/PolyLight")
 
 [node name="Area2D" type="Area2D" parent="Rooms/Hallway" unique_id=1214656202]
 position = Vector2(15059.334, -1620.7567)
@@ -1027,6 +1040,7 @@ scale = Vector2(2.984375, 3.046875)
 range_layer_max = 8
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_30oxl")
+script = ExtResource("14_8b871")
 
 [node name="Light2" type="PointLight2D" parent="Rooms/Hallway/Lights" unique_id=1063619073]
 position = Vector2(80, 90.00001)
@@ -1034,6 +1048,7 @@ scale = Vector2(2.984375, 3.046875)
 range_layer_max = 8
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_30oxl")
+script = ExtResource("14_8b871")
 
 [node name="Light3" type="PointLight2D" parent="Rooms/Hallway/Lights" unique_id=664123391]
 position = Vector2(15, 179)
@@ -1041,6 +1056,7 @@ scale = Vector2(2.984375, 3.046875)
 range_layer_max = 8
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_30oxl")
+script = ExtResource("14_8b871")
 
 [node name="Light4" type="PointLight2D" parent="Rooms/Hallway/Lights" unique_id=1478232935]
 position = Vector2(657, 344)
@@ -1048,6 +1064,7 @@ scale = Vector2(2.984375, 3.046875)
 range_layer_max = 8
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_30oxl")
+script = ExtResource("14_8b871")
 
 [node name="Light5" type="PointLight2D" parent="Rooms/Hallway/Lights" unique_id=816903764]
 position = Vector2(591, 305)
@@ -1055,6 +1072,7 @@ scale = Vector2(2.984375, 3.046875)
 range_layer_max = 8
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_30oxl")
+script = ExtResource("14_8b871")
 
 [node name="Light6" type="PointLight2D" parent="Rooms/Hallway/Lights" unique_id=1555281707]
 position = Vector2(80, 406)
@@ -1062,11 +1080,20 @@ scale = Vector2(2.984375, 3.046875)
 range_layer_max = 8
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_30oxl")
+script = ExtResource("14_8b871")
 
-[node name="StorageRoom" parent="Rooms" unique_id=1228042038 node_paths=PackedStringArray("RoomOcluders", "_areasCollisionPoly") instance=ExtResource("7_v0vrg")]
+[node name="PolyLight" type="Polygon2D" parent="Rooms/Hallway/Lights" unique_id=798272942]
+position = Vector2(4.7916718, 0)
+scale = Vector2(0.9791667, 1)
+polygon = PackedVector2Array(-7.9574523, 68, 717.1489, 68, 717.1489, 355, 590.5106, 355, 590.5106, 195, 226.93617, 195, 226.93617, 418, -31.446815, 418, -31.446815, 347, 90.0851, 347, 90.0851, 194, -7.9574523, 194)
+script = ExtResource("15_pdwbg")
+metadata/_edit_lock_ = true
+
+[node name="StorageRoom" parent="Rooms" unique_id=1228042038 node_paths=PackedStringArray("RoomOcluders", "_areasCollisionPoly", "_roomLightPoly2D") instance=ExtResource("7_v0vrg")]
 RoomName = 4
 RoomOcluders = NodePath("../../UILayers/WorkingButBuggyVision/3_RoomOcluders/RoomOcluders")
 _areasCollisionPoly = NodePath("Area2D/CollisionPolygon2D")
+_roomLightPoly2D = NodePath("Lights/PolyLight")
 
 [node name="Area2D" type="Area2D" parent="Rooms/StorageRoom" unique_id=1029930049]
 position = Vector2(1544.0001, -416)
@@ -1076,6 +1103,7 @@ scale = Vector2(8.753454, 2.8960497)
 position = Vector2(1406.5303, -218.22829)
 scale = Vector2(8.753454, 2.8960497)
 polygon = PackedVector2Array(-179.64587, 166.32678, -182.86946, 166.32678, -182.86946, 148.32295, -179.64587, 148.32295)
+metadata/_edit_lock_ = true
 
 [node name="LightSwitch" parent="Rooms/StorageRoom" unique_id=509699901 node_paths=PackedStringArray("room") instance=ExtResource("9_pnhog")]
 position = Vector2(45, 210)
@@ -1094,11 +1122,19 @@ scale = Vector2(2.984375, 3.046875)
 range_layer_max = 8
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_30oxl")
+script = ExtResource("14_8b871")
 
-[node name="Kitchen" parent="Rooms" unique_id=809023607 node_paths=PackedStringArray("RoomOcluders", "_areasCollisionPoly") instance=ExtResource("7_v0vrg")]
+[node name="PolyLight" type="Polygon2D" parent="Rooms/StorageRoom/Lights" unique_id=1421374977]
+position = Vector2(4.7916718, 0)
+scale = Vector2(0.9791667, 1)
+polygon = PackedVector2Array(85.99999, 196, -163.19148, 196, -163.19148, 345, 85.99999, 345)
+script = ExtResource("15_pdwbg")
+
+[node name="Kitchen" parent="Rooms" unique_id=809023607 node_paths=PackedStringArray("RoomOcluders", "_areasCollisionPoly", "_roomLightPoly2D") instance=ExtResource("7_v0vrg")]
 RoomName = 3
 RoomOcluders = NodePath("../../UILayers/WorkingButBuggyVision/3_RoomOcluders/RoomOcluders")
 _areasCollisionPoly = NodePath("Area2D/CollisionPolygon2D")
+_roomLightPoly2D = NodePath("Lights/PolyLight")
 
 [node name="Area2D" type="Area2D" parent="Rooms/Kitchen" unique_id=801335807]
 position = Vector2(1544.0001, -416)
@@ -1130,6 +1166,7 @@ scale = Vector2(2.984375, 3.046875)
 range_layer_max = 8
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_30oxl")
+script = ExtResource("14_8b871")
 
 [node name="Light2" type="PointLight2D" parent="Rooms/Kitchen/Lights" unique_id=658351874]
 position = Vector2(435, 47.000004)
@@ -1137,11 +1174,18 @@ scale = Vector2(2.984375, 3.046875)
 range_layer_max = 8
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_30oxl")
+script = ExtResource("14_8b871")
 
-[node name="Bathroom" parent="Rooms" unique_id=1731706473 node_paths=PackedStringArray("RoomOcluders", "_areasCollisionPoly") instance=ExtResource("7_v0vrg")]
+[node name="PolyLight" type="Polygon2D" parent="Rooms/Kitchen/Lights" unique_id=1043216830]
+scale = Vector2(0.9791667, 1)
+polygon = PackedVector2Array(234.89362, 67, 451.40427, 67, 451.40427, -92, 234.89362, -92)
+script = ExtResource("15_pdwbg")
+
+[node name="Bathroom" parent="Rooms" unique_id=1731706473 node_paths=PackedStringArray("RoomOcluders", "_areasCollisionPoly", "_roomLightPoly2D") instance=ExtResource("7_v0vrg")]
 RoomName = 5
 RoomOcluders = NodePath("../../UILayers/WorkingButBuggyVision/3_RoomOcluders/RoomOcluders")
 _areasCollisionPoly = NodePath("Area2D/CollisionPolygon2D")
+_roomLightPoly2D = NodePath("Lights/PolyLight")
 
 [node name="Area2D" type="Area2D" parent="Rooms/Bathroom" unique_id=353695288]
 position = Vector2(1544.0001, -416)
@@ -1170,6 +1214,7 @@ scale = Vector2(2.984375, 3.046875)
 range_layer_max = 8
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_30oxl")
+script = ExtResource("14_8b871")
 
 [node name="Light2" type="PointLight2D" parent="Rooms/Bathroom/Lights" unique_id=1258664035]
 position = Vector2(624, 57.000004)
@@ -1177,11 +1222,17 @@ scale = Vector2(2.984375, 3.046875)
 range_layer_max = 8
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_30oxl")
+script = ExtResource("14_8b871")
 
-[node name="BedroomBottom" parent="Rooms" unique_id=2146805221 node_paths=PackedStringArray("RoomOcluders", "_areasCollisionPoly") instance=ExtResource("7_v0vrg")]
+[node name="PolyLight" type="Polygon2D" parent="Rooms/Bathroom/Lights" unique_id=349414172]
+polygon = PackedVector2Array(444, -227, 772, -227, 772, 67, 444, 67)
+script = ExtResource("15_pdwbg")
+
+[node name="BedroomBottom" parent="Rooms" unique_id=2146805221 node_paths=PackedStringArray("RoomOcluders", "_areasCollisionPoly", "_roomLightPoly2D") instance=ExtResource("7_v0vrg")]
 RoomName = 6
 RoomOcluders = NodePath("../../UILayers/WorkingButBuggyVision/3_RoomOcluders/RoomOcluders")
 _areasCollisionPoly = NodePath("Area2D/CollisionPolygon2D")
+_roomLightPoly2D = NodePath("Lights/PolyLight")
 
 [node name="Area2D" type="Area2D" parent="Rooms/BedroomBottom" unique_id=1093331664]
 position = Vector2(1544.0001, -416)
@@ -1214,6 +1265,7 @@ scale = Vector2(2.984375, 3.046875)
 range_layer_max = 8
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_30oxl")
+script = ExtResource("14_8b871")
 
 [node name="Light2" type="PointLight2D" parent="Rooms/BedroomBottom/Lights" unique_id=394246863]
 position = Vector2(528, 413.00003)
@@ -1221,11 +1273,17 @@ scale = Vector2(2.984375, 3.046875)
 range_layer_max = 8
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_30oxl")
+script = ExtResource("14_8b871")
 
-[node name="Livingroom" parent="Rooms" unique_id=1354650421 node_paths=PackedStringArray("RoomOcluders", "_areasCollisionPoly") instance=ExtResource("7_v0vrg")]
+[node name="PolyLight" type="Polygon2D" parent="Rooms/BedroomBottom/Lights" unique_id=428629694]
+polygon = PackedVector2Array(455, 388, 582, 388, 582, 357, 706, 357, 706, 388, 893, 386, 891, 600, 456, 601)
+script = ExtResource("15_pdwbg")
+
+[node name="Livingroom" parent="Rooms" unique_id=1354650421 node_paths=PackedStringArray("RoomOcluders", "_areasCollisionPoly", "_roomLightPoly2D") instance=ExtResource("7_v0vrg")]
 RoomName = 1
 RoomOcluders = NodePath("../../UILayers/WorkingButBuggyVision/3_RoomOcluders/RoomOcluders")
 _areasCollisionPoly = NodePath("Area2D/CollisionPolygon2D")
+_roomLightPoly2D = NodePath("Lights/PolyLight2D")
 
 [node name="Area2D" type="Area2D" parent="Rooms/Livingroom" unique_id=1854674585]
 position = Vector2(1544.0001, -416)
@@ -1234,7 +1292,7 @@ scale = Vector2(8.753454, 2.8960497)
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Rooms/Livingroom/Area2D" unique_id=176859974]
 position = Vector2(-44.6006, 241.56845)
 scale = Vector2(0.19650127, 0.45044884)
-polygon = PackedVector2Array(-536.36975, 179.68706, -536.36975, 296.9713, -670.667, 296.9713, -670.667, 104.56377, -537.5325, 104.56377, -537.5325, 128.32726, -482.302, 128.32726, -482.30206, 55.503647, -538.6953, 55.503647, -538.1139, -67.91316, -332.30768, -67.91316, -332.30768, 80.03371, -407.30484, 80.03371, -407.30484, 179.68706)
+polygon = PackedVector2Array(-482.30206, 55.503647, -538.6953, 55.503647, -538.1139, -67.91316, -332.30768, -67.91316, -332.30768, 80.03371, -482.30206, 80.03371)
 metadata/_edit_lock_ = true
 
 [node name="LightSwitch" parent="Rooms/Livingroom" unique_id=1183811476 node_paths=PackedStringArray("room") instance=ExtResource("9_pnhog")]
@@ -1264,6 +1322,7 @@ scale = Vector2(2.984375, 3.046875)
 range_layer_max = 8
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_30oxl")
+script = ExtResource("14_8b871")
 
 [node name="Light2" type="PointLight2D" parent="Rooms/Livingroom/Lights" unique_id=164077029]
 position = Vector2(528, 381.00003)
@@ -1271,6 +1330,7 @@ scale = Vector2(2.984375, 3.046875)
 range_layer_max = 8
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_30oxl")
+script = ExtResource("14_8b871")
 
 [node name="Light3" type="PointLight2D" parent="Rooms/Livingroom/Lights" unique_id=2123005051]
 position = Vector2(384, 378)
@@ -1278,11 +1338,17 @@ scale = Vector2(2.984375, 3.046875)
 range_layer_max = 8
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_30oxl")
+script = ExtResource("14_8b871")
 
-[node name="BedroomTop" parent="Rooms" unique_id=1278014348 node_paths=PackedStringArray("RoomOcluders", "_areasCollisionPoly") instance=ExtResource("7_v0vrg")]
+[node name="PolyLight2D" type="Polygon2D" parent="Rooms/Livingroom/Lights" unique_id=1676991467]
+polygon = PackedVector2Array(230, 195, 581, 196, 581, 386, 327, 386, 327, 354, 230, 354)
+script = ExtResource("15_pdwbg")
+
+[node name="BedroomTop" parent="Rooms" unique_id=1278014348 node_paths=PackedStringArray("RoomOcluders", "_areasCollisionPoly", "_roomLightPoly2D") instance=ExtResource("7_v0vrg")]
 RoomName = 2
 RoomOcluders = NodePath("../../UILayers/WorkingButBuggyVision/3_RoomOcluders/RoomOcluders")
 _areasCollisionPoly = NodePath("Area2D/CollisionPolygon2D")
+_roomLightPoly2D = NodePath("Lights/PolyLight2D")
 
 [node name="Area2D" type="Area2D" parent="Rooms/BedroomTop" unique_id=1279994882]
 position = Vector2(1544.0001, -416)
@@ -1310,6 +1376,8 @@ scale = Vector2(2.984375, 3.046875)
 range_layer_max = 8
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_30oxl")
+script = ExtResource("14_8b871")
+metadata/_edit_lock_ = true
 
 [node name="Light2" type="PointLight2D" parent="Rooms/BedroomTop/Lights" unique_id=1187337086]
 position = Vector2(221, 45)
@@ -1317,9 +1385,67 @@ scale = Vector2(2.984375, 3.046875)
 range_layer_max = 8
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_30oxl")
+script = ExtResource("14_8b871")
+metadata/_edit_lock_ = true
 
-[node name="RoomManager" type="Node" parent="Rooms" unique_id=446449337]
-script = ExtResource("13_cmqll")
+[node name="PolyLight2D" type="Polygon2D" parent="Rooms/BedroomTop/Lights" unique_id=1156938496]
+polygon = PackedVector2Array(228, 66, -66, 66, -66, -196, 228, -196)
+script = ExtResource("15_pdwbg")
+metadata/_edit_lock_ = true
+
+[node name="GreenRoom" parent="Rooms" unique_id=550008491 node_paths=PackedStringArray("RoomOcluders", "_areasCollisionPoly", "_roomLightPoly2D") instance=ExtResource("7_v0vrg")]
+RoomName = 2
+RoomOcluders = NodePath("../../UILayers/WorkingButBuggyVision/3_RoomOcluders/RoomOcluders")
+_areasCollisionPoly = NodePath("Area2D/CollisionPolygon2D")
+_roomLightPoly2D = NodePath("Lights/PolyLight2D")
+
+[node name="Area2D" type="Area2D" parent="Rooms/GreenRoom" unique_id=1491384267]
+position = Vector2(1544.0001, -416)
+scale = Vector2(8.753454, 2.8960497)
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Rooms/GreenRoom/Area2D" unique_id=774694588]
+position = Vector2(-44.6006, 241.56845)
+scale = Vector2(0.19650127, 0.45044884)
+polygon = PackedVector2Array(-536.36975, 179.68706, -536.36975, 296.9713, -670.667, 296.9713, -670.667, 104.56377, -537.5325, 104.56377, -537.5325, 128.32726, -482.302, 128.32726, -482.30206, 80.03371, -407.30484, 80.03371, -407.30484, 179.68706)
+metadata/_edit_lock_ = true
+
+[node name="LightSwitch" parent="Rooms/GreenRoom" unique_id=2010056798 node_paths=PackedStringArray("room") instance=ExtResource("9_pnhog")]
+position = Vector2(423, 402)
+room = NodePath("..")
+
+[node name="Lights" type="Node2D" parent="Rooms/GreenRoom" unique_id=1964180997]
+
+[node name="Light" type="PointLight2D" parent="Rooms/GreenRoom/Lights" unique_id=2127524229]
+position = Vector2(386, 404.00003)
+scale = Vector2(2.984375, 3.046875)
+range_layer_max = 8
+shadow_enabled = true
+texture = SubResource("GradientTexture2D_30oxl")
+script = ExtResource("14_8b871")
+metadata/_edit_lock_ = true
+
+[node name="Light2" type="PointLight2D" parent="Rooms/GreenRoom/Lights" unique_id=1994110575]
+position = Vector2(270, 466)
+scale = Vector2(2.984375, 3.046875)
+range_layer_max = 8
+shadow_enabled = true
+texture = SubResource("GradientTexture2D_30oxl")
+script = ExtResource("14_8b871")
+metadata/_edit_lock_ = true
+
+[node name="Light3" type="PointLight2D" parent="Rooms/GreenRoom/Lights" unique_id=742477344]
+position = Vector2(81.00003, 433)
+scale = Vector2(2.984375, 3.046875)
+range_layer_max = 8
+shadow_enabled = true
+texture = SubResource("GradientTexture2D_30oxl")
+script = ExtResource("14_8b871")
+metadata/_edit_lock_ = true
+
+[node name="PolyLight2D" type="Polygon2D" parent="Rooms/GreenRoom/Lights" unique_id=1234967176]
+polygon = PackedVector2Array(1, 666, 227, 666, 227, 516, 453, 516, 453, 388, 326, 388, 326, 452, 228, 452, 228, 420, 1, 420)
+script = ExtResource("15_pdwbg")
+metadata/_edit_lock_ = true
 
 [node name="Player" parent="." unique_id=1993068751 instance=ExtResource("1_rgh2o")]
 position = Vector2(650, 278)

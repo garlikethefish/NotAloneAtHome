@@ -1,12 +1,15 @@
 using Godot;
 using Godot.Collections;
 using NotAloneAtHome.Characters.Player;
+using NotAloneAtHome.Rooms;
 using System;
+using System.Drawing;
 using System.Linq;
 
 public enum Rooms {
     GoonRoom,
     LivingRoom,
+    GreenRoom,
     Bathroom,
     Kitchen,
     StorageRoom,
@@ -24,10 +27,12 @@ public partial class Room : Node2D
     [Export] Node RoomOcluders;
     [Export] bool _darkenRoomIfPlayerExits = true;
     [Export] private CollisionPolygon2D _areasCollisionPoly;
+    [Export] private Polygon2D _roomLightPoly2D;
     [Node("Area2D")] private Area2D _roomArea;
-    Array<RoomLight> _lights = [];
+    [Node("Lights")] private Node2D _lightContainer;
+    private Polygon2D _roomOcluderPoly2D;
+    IRoomLight[] _lights = [];
     public bool IsLightOn;
-    private Polygon2D _roomOcluderPoly;
     public event Action OnRoomUpdated;
     public event Action<Node2D> OnBodyEntered;
     public event Action<Node2D> OnBodyExited;
@@ -38,18 +43,10 @@ public partial class Room : Node2D
     {
         if (Engine.IsEditorHint()) return;
 
-        var lightContainer = GetTree().GetNodeFromGroup<RoomLightContainer>(RoomName.ToString());
-        _lights = [.. lightContainer.GetChildren().OfType<RoomLight>()];
+        _lights = [.. _lightContainer.GetChildren().OfType<IRoomLight>()];
 
-        TurnLightsOn();
-        _roomOcluderPoly = new Polygon2D();
-        var points = GetPolygonPoints(_areasCollisionPoly)
-            .Select(p => GetPolygonTransform(_areasCollisionPoly) * p)
-            .ToArray();
-        _roomOcluderPoly.Polygon = points;
-        _roomOcluderPoly.Color = new(1,1,1);
-        RoomOcluders.AddChild(_roomOcluderPoly);
-
+        InitializeOcluderPoly2D(_roomLightPoly2D);
+        TurnLightsOff(true, true);
 
         _roomArea.BodyEntered += HandleBodyEntered;
         _roomArea.BodyExited += HandleBodyExited;
@@ -67,6 +64,11 @@ public partial class Room : Node2D
         if (body is Player)
         {
             EnableOcluder();
+
+            if (IsLightOn)
+            {
+                TurnOnlyPointLightsOn();
+            }
         }
         OnBodyExited?.Invoke(body);
     }
@@ -76,6 +78,7 @@ public partial class Room : Node2D
         if (body is Player)
         {
             DisableOcluder();
+            TurnOnlyPointLightsOff();
         }
         OnBodyEntered?.Invoke(body);
     }
@@ -96,42 +99,93 @@ public partial class Room : Node2D
 
     void EnableOcluder()
     {
+        if (!IsInstanceValid(_roomOcluderPoly2D)) return;
+
         this.RefreshTween(ref _ocluderTween);
-        _ocluderTween.TweenProperty(_roomOcluderPoly, "modulate:a", 1, 0.3f)
+        _ocluderTween.TweenProperty(_roomOcluderPoly2D, "modulate:a", 1, 0.3f)
             .SetTrans(Tween.TransitionType.Sine)
             .SetEase(Tween.EaseType.Out);
     }
 
     void DisableOcluder()
     {
+        if (!IsInstanceValid(_roomOcluderPoly2D)) return;
+
         this.RefreshTween(ref _ocluderTween);
-        _ocluderTween.TweenProperty(_roomOcluderPoly, "modulate:a", 0, 0.3f)
+        _ocluderTween.TweenProperty(_roomOcluderPoly2D, "modulate:a", 0, 0.3f)
             .SetTrans(Tween.TransitionType.Sine)
             .SetEase(Tween.EaseType.Out);
     }
 
-    public void TurnLightsOn()
+    public void TurnLightsOn(bool turnPolys, bool turnPoints)
     {
-        IsLightOn = true;
         foreach (var light in _lights)
         {
-            light.TurnOn();
+            if (turnPoints && light is PointLight2D) light.TurnOn();
+            if (turnPolys && light is Polygon2D) light.TurnOn();
+        }
+        IsLightOn = true;
+    }
+
+    public void TurnLightsOff(bool turnPolys, bool turnPoints)
+    {
+        foreach (var light in _lights)
+        {
+            if (turnPoints && light is PointLight2D) light.TurnOff();
+            if (turnPolys && light is Polygon2D) light.TurnOff();
+        }
+        IsLightOn = false;
+    }
+
+    public void TurnOnlyPolyLightsOn()
+    {
+        foreach (var light in _lights)
+        {
+            if (light is Polygon2D) light.TurnOn();
         }
     }
 
-    public void TurnLightsOff()
+    public void TurnOnlyPolyLightsOff()
     {
-        IsLightOn = false;
         foreach (var light in _lights)
         {
-            light.TurnOff();
+            if (light is Polygon2D) light.TurnOff();
+        }
+    }
+
+    public void TurnOnlyPointLightsOn()
+    {
+        foreach (var light in _lights)
+        {
+            if (light is PointLight2D) light.TurnOn();
+        }
+    }
+
+    public void TurnOnlyPointLightsOff()
+    {
+        foreach (var light in _lights)
+        {
+            if (light is PointLight2D) light.TurnOff();
         }
     }
 
     public void ToggleLight()
     {
-        if (IsLightOn) TurnLightsOff();
-        else TurnLightsOn();
+        var turnPointlightsOn = !RoomManager.Instance.RoomsPlayerIsIn.Contains(this);
+        if (IsLightOn) TurnLightsOff(true, turnPointlightsOn);
+        else TurnLightsOn(true, turnPointlightsOn);
+    }
+
+    void InitializeOcluderPoly2D(Polygon2D poly)
+    {
+        if (poly is null) return;
+
+        _roomOcluderPoly2D = new Polygon2D();
+        AddChild(_roomOcluderPoly2D);
+        _roomOcluderPoly2D.Polygon = _roomLightPoly2D.Polygon;
+        _roomOcluderPoly2D.TopLevel = true;
+        _roomOcluderPoly2D.Color = new(0,0,0);
+        _roomOcluderPoly2D.ZIndex = 2;
     }
 
     public override string[] _GetConfigurationWarnings()

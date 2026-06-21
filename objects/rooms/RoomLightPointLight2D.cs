@@ -1,7 +1,8 @@
+namespace NotAloneAtHome.Rooms;
 using Godot;
 using System;
 
-public partial class RoomLight : PointLight2D
+public partial class RoomLightPointLight2D : PointLight2D, IRoomLight
 {
     Tween tween;
 
@@ -10,14 +11,9 @@ public partial class RoomLight : PointLight2D
         AddToGroup("dynamic_lights");
     }
 	
-	public override void _Ready()
-    {
-        
-    }
-
     public override void _ExitTree()
     {
-        tween.Kill();
+        tween?.Kill();
     }
 
 	public void TurnOn()
