@@ -12,6 +12,7 @@
 [ext_resource type="PackedScene" uid="uid://cah3urn1fwd1d" path="res://zones/sell_zone/SellZone.tscn" id="8_jlsqs"]
 [ext_resource type="Shader" uid="uid://dqxgvmytrj0qo" path="res://shaders/color_invertor.gdshader" id="9_cobve"]
 [ext_resource type="PackedScene" uid="uid://8f5bbrevswgt" path="res://objects/lightswitch/light_switch.tscn" id="9_pnhog"]
+[ext_resource type="Script" uid="uid://big42gm0vlsfy" path="res://scenes/Polygon2DTextureBaker.cs" id="10_8b871"]
 [ext_resource type="PackedScene" uid="uid://djmsje8kmaa6o" path="res://objects/valuables/valuable_Bed.tscn" id="11_1iba3"]
 [ext_resource type="PackedScene" uid="uid://cknym5m1msnqw" path="res://objects/door/Door.tscn" id="11_gsxep"]
 [ext_resource type="Script" uid="uid://bk8pktmsic2gx" path="res://objects/rooms/RoomManager.cs" id="13_cmqll"]
@@ -19,17 +20,25 @@
 [ext_resource type="PackedScene" uid="uid://blm3resaadrtl" path="res://characters/closet_thief/DeadBanditCloset.tscn" id="13_mwfav"]
 [ext_resource type="Script" uid="uid://dyuuh8wvxcbif" path="res://objects/rooms/RoomLightPointLight2D.cs" id="14_8b871"]
 [ext_resource type="PackedScene" uid="uid://q27ik5xajev6" path="res://components/spawner/Spawner.tscn" id="15_3p2gp"]
-[ext_resource type="Script" uid="uid://b2wo0i6ylnm3x" path="res://objects/rooms/RoomLightPolygon2D.cs" id="15_pdwbg"]
+[ext_resource type="Texture2D" uid="uid://dwmfbrta8bsq6" path="res://sprites/goon_room_light.png" id="15_gdcyb"]
+[ext_resource type="Texture2D" uid="uid://pba4oea4mu2c" path="res://sprites/hallway_light.png" id="16_8b871"]
 [ext_resource type="PackedScene" uid="uid://b2xpj2tshxe1h" path="res://objects/dead_bandit/DeadBandit.tscn" id="16_cvmbd"]
 [ext_resource type="PackedScene" uid="uid://bva37215cgaym" path="res://objects/cat_food/CatFood.tscn" id="16_yxlcp"]
 [ext_resource type="PackedScene" uid="uid://dfttis2qx6job" path="res://objects/valuables/Valuable_Chair1.tscn" id="17_1nqs0"]
 [ext_resource type="PackedScene" uid="uid://bqall3c1irqec" path="res://objects/cat_bowl/CatBowl.tscn" id="17_ebg2g"]
+[ext_resource type="Texture2D" uid="uid://bpowusdatq8sg" path="res://sprites/storage_room_light.png" id="17_gdcyb"]
 [ext_resource type="PackedScene" uid="uid://3pms5s3tmqpj" path="res://objects/valuables/Valuable_Chair2.tscn" id="18_1iba3"]
+[ext_resource type="Texture2D" uid="uid://b1yjaav21bwew" path="res://sprites/kitchen_light.png" id="18_oa6sj"]
+[ext_resource type="Texture2D" uid="uid://bljvxor6ct3be" path="res://sprites/bathroom_light.png" id="19_0f1tp"]
 [ext_resource type="PackedScene" uid="uid://d3rn5wbx4px5w" path="res://objects/valuables/Valuable_Closet.tscn" id="19_yxlcp"]
+[ext_resource type="Texture2D" uid="uid://b4ymw57vwtnw8" path="res://sprites/bedroom_bottom_light.png" id="20_0qimb"]
 [ext_resource type="PackedScene" uid="uid://bmvgwyelxjr6q" path="res://characters/plain_thief/Bandit.tscn" id="20_dg70y"]
 [ext_resource type="PackedScene" uid="uid://cg7krccbajseo" path="res://objects/valuables/Valuable_Fridge.tscn" id="20_ebg2g"]
 [ext_resource type="PackedScene" uid="uid://4qlmy32o1i1f" path="res://zones/escape_zone/EscapeZone.tscn" id="21_1iba3"]
+[ext_resource type="Texture2D" uid="uid://bp6agvaek4u2o" path="res://sprites/livingroom_light.png" id="21_in2eo"]
+[ext_resource type="Texture2D" uid="uid://bwol4r5v0cph0" path="res://sprites/bedroom_top_light.png" id="22_dyyw8"]
 [ext_resource type="Shader" uid="uid://cuielptcsyeb5" path="res://shaders/vhs_filter.gdshader" id="22_yxlcp"]
+[ext_resource type="Texture2D" uid="uid://c1yhbo64am2iw" path="res://sprites/green_room_light.png" id="23_gjpm3"]
 [ext_resource type="Script" uid="uid://psn8bmpins46" path="res://scripts/light_manager.gd" id="24_2ofn6"]
 [ext_resource type="PackedScene" uid="uid://ceom8536eev0a" path="res://objects/valuables/Valuable_Table.tscn" id="26_pnhog"]
 [ext_resource type="PackedScene" uid="uid://dnxsv0ddhec2w" path="res://objects/decor/rug_small.tscn" id="29_dg70y"]
@@ -39,14 +48,14 @@
 [ext_resource type="PackedScene" uid="uid://b3bhbeampby6v" path="res://objects/valuables/Valuable_TV.tscn" id="31_cmqll"]
 [ext_resource type="PackedScene" uid="uid://ccoqy3cvndo7p" path="res://objects/valuables/Valuable_Vase.tscn" id="32_8cp6k"]
 [ext_resource type="PackedScene" uid="uid://dq60rr28wyibf" path="res://objects/valuables/ValuableCabinet.tscn" id="33_cobve"]
-[ext_resource type="Script" uid="uid://dd0khe6ue6ru8" path="res://scenes/FuckassSubviewportUpdater.cs" id="38_cobve"]
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_gsxep"]
-polygon = PackedVector2Array(64, 69, -68, 69, -68, -200, 232, -200, 232.00006, -95.06915, 443, -94, 443, -231, 774, -231, 774, 71, 640, 71, 640, 66, 769, 66, 769, -221, 446, -221, 446, 31, 439, 31, 439, -89, 233, -89, 233, 31, 226, 31, 226, -195, -65, -195, -65, 66, 64, 66)
+closed = false
+polygon = PackedVector2Array(64, 66, -66, 66, -66, -185, 227, -185, 227, 31, 227, -90, 443, -90, 443, 31, 443, -217, 771, -217, 771, 67, 640, 67)
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_v0vrg"]
 closed = false
-polygon = PackedVector2Array(96, 68, 608, 68)
+polygon = PackedVector2Array(96, 66, 608, 66)
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_dg70y"]
 closed = false
@@ -205,6 +214,7 @@ grow_vertical = 2
 
 [node name="WorkingButBuggyVision" type="CanvasLayer" parent="UILayers" unique_id=1229609621]
 process_mode = 4
+visible = false
 
 [node name="TextureRect" type="TextureRect" parent="UILayers/WorkingButBuggyVision" unique_id=1283919640]
 visible = false
@@ -328,6 +338,7 @@ grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
 [node name="LightOcluders" type="Node2D" parent="UILayers/WorkingButBuggyVision/2_RoomLight" unique_id=1068409924]
+visible = false
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="UILayers/WorkingButBuggyVision/2_RoomLight/LightOcluders" unique_id=548925845]
 occluder = SubResource("OccluderPolygon2D_gsxep")
@@ -960,6 +971,11 @@ texture = SubResource("GradientTexture2D_5dd86")
 [node name="CanvasModulate" type="CanvasModulate" parent="UILayers/Will need to cook with shader (doesnt work)/SubViewportContainer/SubViewport" unique_id=33927860]
 color = Color(0.08215607, 0.07442988, 0.023605691, 1)
 
+[node name="PolyTextureBaker" type="Node2D" parent="." unique_id=2040523840 node_paths=PackedStringArray("SourcePolygon")]
+script = ExtResource("10_8b871")
+SourcePolygon = NodePath("../Rooms/GreenRoom/Lights/PolyLight2D")
+SavePath = "res://sprites/green_room_light.png"
+
 [node name="Rooms" type="Node2D" parent="." unique_id=33986346]
 
 [node name="RoomManager" type="Node" parent="Rooms" unique_id=446449337 node_paths=PackedStringArray("rooms")]
@@ -1006,10 +1022,18 @@ texture = SubResource("GradientTexture2D_30oxl")
 script = ExtResource("14_8b871")
 
 [node name="PolyLight" type="Polygon2D" parent="Rooms/GoonRoom/Lights" unique_id=1876477697]
-position = Vector2(4.7916718, 0)
-scale = Vector2(0.9791667, 1)
-polygon = PackedVector2Array(230, 357, 326, 357, 326, 450, 230, 450)
-script = ExtResource("15_pdwbg")
+visible = false
+z_index = 10
+polygon = PackedVector2Array(227.95744, 355, 326, 355, 326, 452, 227.95744, 452)
+metadata/_edit_lock_ = true
+
+[node name="Light3" type="PointLight2D" parent="Rooms/GoonRoom/Lights" unique_id=585103411]
+position = Vector2(276, 404.25)
+scale = Vector2(1.0212766, 1.0268817)
+range_layer_max = 8
+texture = ExtResource("15_gdcyb")
+script = ExtResource("14_8b871")
+IsDoorLight = false
 
 [node name="Hallway" parent="Rooms" unique_id=954819346 node_paths=PackedStringArray("RoomOcluders", "_areasCollisionPoly", "_roomLightPoly2D") instance=ExtResource("7_v0vrg")]
 RoomName = 7
@@ -1031,6 +1055,7 @@ metadata/_edit_lock_ = true
 position = Vector2(588, 243)
 room = NodePath("..")
 useSideTextures = true
+flipSideSpriteHorizontally = true
 
 [node name="Lights" type="Node2D" parent="Rooms/Hallway" unique_id=1011876306]
 
@@ -1083,11 +1108,16 @@ texture = SubResource("GradientTexture2D_30oxl")
 script = ExtResource("14_8b871")
 
 [node name="PolyLight" type="Polygon2D" parent="Rooms/Hallway/Lights" unique_id=798272942]
-position = Vector2(4.7916718, 0)
-scale = Vector2(0.9791667, 1)
-polygon = PackedVector2Array(-7.9574523, 68, 717.1489, 68, 717.1489, 355, 590.5106, 355, 590.5106, 195, 226.93617, 195, 226.93617, 418, -31.446815, 418, -31.446815, 347, 90.0851, 347, 90.0851, 194, -7.9574523, 194)
-script = ExtResource("15_pdwbg")
+visible = false
+z_index = 10
+polygon = PackedVector2Array(-8, 64, 711, 64, 711, 355, 582, 355, 582, 195, 228, 195, 228, 418, -32, 418, -32, 345, 91, 345, 91, 194, -7.9574523, 194)
 metadata/_edit_lock_ = true
+
+[node name="Light7" type="PointLight2D" parent="Rooms/Hallway/Lights" unique_id=731668898]
+position = Vector2(340, 242)
+texture = ExtResource("16_8b871")
+script = ExtResource("14_8b871")
+IsDoorLight = false
 
 [node name="StorageRoom" parent="Rooms" unique_id=1228042038 node_paths=PackedStringArray("RoomOcluders", "_areasCollisionPoly", "_roomLightPoly2D") instance=ExtResource("7_v0vrg")]
 RoomName = 4
@@ -1125,10 +1155,17 @@ texture = SubResource("GradientTexture2D_30oxl")
 script = ExtResource("14_8b871")
 
 [node name="PolyLight" type="Polygon2D" parent="Rooms/StorageRoom/Lights" unique_id=1421374977]
-position = Vector2(4.7916718, 0)
-scale = Vector2(0.9791667, 1)
-polygon = PackedVector2Array(85.99999, 196, -163.19148, 196, -163.19148, 345, 85.99999, 345)
-script = ExtResource("15_pdwbg")
+visible = false
+z_index = 10
+polygon = PackedVector2Array(91, 194, -163.79167, 194, -163.79167, 345, 91, 345)
+metadata/_edit_lock_ = true
+
+[node name="Light2" type="PointLight2D" parent="Rooms/StorageRoom/Lights" unique_id=1468362743]
+position = Vector2(-31, 270)
+range_layer_max = 8
+texture = ExtResource("17_gdcyb")
+script = ExtResource("14_8b871")
+IsDoorLight = false
 
 [node name="Kitchen" parent="Rooms" unique_id=809023607 node_paths=PackedStringArray("RoomOcluders", "_areasCollisionPoly", "_roomLightPoly2D") instance=ExtResource("7_v0vrg")]
 RoomName = 3
@@ -1177,9 +1214,16 @@ texture = SubResource("GradientTexture2D_30oxl")
 script = ExtResource("14_8b871")
 
 [node name="PolyLight" type="Polygon2D" parent="Rooms/Kitchen/Lights" unique_id=1043216830]
-scale = Vector2(0.9791667, 1)
-polygon = PackedVector2Array(234.89362, 67, 451.40427, 67, 451.40427, -92, 234.89362, -92)
-script = ExtResource("15_pdwbg")
+visible = false
+z_index = 10
+polygon = PackedVector2Array(229, 64, 443, 64, 443, -92, 229, -92)
+metadata/_edit_lock_ = true
+
+[node name="Light3" type="PointLight2D" parent="Rooms/Kitchen/Lights" unique_id=1270781478]
+texture = ExtResource("18_oa6sj")
+offset = Vector2(336, -12.5)
+script = ExtResource("14_8b871")
+IsDoorLight = false
 
 [node name="Bathroom" parent="Rooms" unique_id=1731706473 node_paths=PackedStringArray("RoomOcluders", "_areasCollisionPoly", "_roomLightPoly2D") instance=ExtResource("7_v0vrg")]
 RoomName = 5
@@ -1225,8 +1269,18 @@ texture = SubResource("GradientTexture2D_30oxl")
 script = ExtResource("14_8b871")
 
 [node name="PolyLight" type="Polygon2D" parent="Rooms/Bathroom/Lights" unique_id=349414172]
-polygon = PackedVector2Array(444, -227, 772, -227, 772, 67, 444, 67)
-script = ExtResource("15_pdwbg")
+visible = false
+z_index = 10
+polygon = PackedVector2Array(443, -227, 773, -227, 773, 64, 443, 64)
+metadata/_edit_lock_ = true
+
+[node name="Light3" type="PointLight2D" parent="Rooms/Bathroom/Lights" unique_id=1961556121]
+position = Vector2(-1, -3)
+blend_mode = 2
+texture = ExtResource("19_0f1tp")
+offset = Vector2(608, -80)
+script = ExtResource("14_8b871")
+IsDoorLight = false
 
 [node name="BedroomBottom" parent="Rooms" unique_id=2146805221 node_paths=PackedStringArray("RoomOcluders", "_areasCollisionPoly", "_roomLightPoly2D") instance=ExtResource("7_v0vrg")]
 RoomName = 6
@@ -1276,8 +1330,16 @@ texture = SubResource("GradientTexture2D_30oxl")
 script = ExtResource("14_8b871")
 
 [node name="PolyLight" type="Polygon2D" parent="Rooms/BedroomBottom/Lights" unique_id=428629694]
-polygon = PackedVector2Array(455, 388, 582, 388, 582, 357, 706, 357, 706, 388, 893, 386, 891, 600, 456, 601)
-script = ExtResource("15_pdwbg")
+visible = false
+z_index = 10
+polygon = PackedVector2Array(455, 387, 582, 387, 582, 355, 711, 355, 711, 386, 893, 386, 893, 601, 455, 601)
+metadata/_edit_lock_ = true
+
+[node name="Light3" type="PointLight2D" parent="Rooms/BedroomBottom/Lights" unique_id=897533798]
+texture = ExtResource("20_0qimb")
+offset = Vector2(674, 479)
+script = ExtResource("14_8b871")
+IsDoorLight = false
 
 [node name="Livingroom" parent="Rooms" unique_id=1354650421 node_paths=PackedStringArray("RoomOcluders", "_areasCollisionPoly", "_roomLightPoly2D") instance=ExtResource("7_v0vrg")]
 RoomName = 1
@@ -1341,8 +1403,16 @@ texture = SubResource("GradientTexture2D_30oxl")
 script = ExtResource("14_8b871")
 
 [node name="PolyLight2D" type="Polygon2D" parent="Rooms/Livingroom/Lights" unique_id=1676991467]
-polygon = PackedVector2Array(230, 195, 581, 196, 581, 386, 327, 386, 327, 354, 230, 354)
-script = ExtResource("15_pdwbg")
+visible = false
+z_index = 10
+polygon = PackedVector2Array(228, 195, 582, 195, 582, 387, 326, 387, 326, 355, 228, 355)
+metadata/_edit_lock_ = true
+
+[node name="Light4" type="PointLight2D" parent="Rooms/Livingroom/Lights" unique_id=1056147294]
+texture = ExtResource("21_in2eo")
+offset = Vector2(405.5, 290.5)
+script = ExtResource("14_8b871")
+IsDoorLight = false
 
 [node name="BedroomTop" parent="Rooms" unique_id=1278014348 node_paths=PackedStringArray("RoomOcluders", "_areasCollisionPoly", "_roomLightPoly2D") instance=ExtResource("7_v0vrg")]
 RoomName = 2
@@ -1389,9 +1459,17 @@ script = ExtResource("14_8b871")
 metadata/_edit_lock_ = true
 
 [node name="PolyLight2D" type="Polygon2D" parent="Rooms/BedroomTop/Lights" unique_id=1156938496]
-polygon = PackedVector2Array(228, 66, -66, 66, -66, -196, 228, -196)
-script = ExtResource("15_pdwbg")
+visible = false
+z_index = 10
+polygon = PackedVector2Array(229, 64, -66, 64, -66, -196, 229, -196)
 metadata/_edit_lock_ = true
+
+[node name="Light3" type="PointLight2D" parent="Rooms/BedroomTop/Lights" unique_id=1061961935]
+position = Vector2(1, -2)
+texture = ExtResource("22_dyyw8")
+offset = Vector2(81, -65)
+script = ExtResource("14_8b871")
+IsDoorLight = false
 
 [node name="GreenRoom" parent="Rooms" unique_id=550008491 node_paths=PackedStringArray("RoomOcluders", "_areasCollisionPoly", "_roomLightPoly2D") instance=ExtResource("7_v0vrg")]
 RoomName = 2
@@ -1443,9 +1521,16 @@ script = ExtResource("14_8b871")
 metadata/_edit_lock_ = true
 
 [node name="PolyLight2D" type="Polygon2D" parent="Rooms/GreenRoom/Lights" unique_id=1234967176]
-polygon = PackedVector2Array(1, 666, 227, 666, 227, 516, 453, 516, 453, 388, 326, 388, 326, 452, 228, 452, 228, 420, 1, 420)
-script = ExtResource("15_pdwbg")
+visible = false
+z_index = 10
+polygon = PackedVector2Array(1, 666, 227, 666, 227, 516, 455, 516, 455, 387, 326, 387, 326, 452, 228, 452, 228, 418, 1, 418)
 metadata/_edit_lock_ = true
+
+[node name="Light4" type="PointLight2D" parent="Rooms/GreenRoom/Lights" unique_id=1097142026]
+texture = ExtResource("23_gjpm3")
+offset = Vector2(227, 527)
+script = ExtResource("14_8b871")
+IsDoorLight = false
 
 [node name="Player" parent="." unique_id=1993068751 instance=ExtResource("1_rgh2o")]
 position = Vector2(650, 278)
@@ -1457,11 +1542,8 @@ ShowDebug = true
 [node name="Lights" type="Node2D" parent="." unique_id=591670563]
 
 [node name="DirectionalLight2D" type="DirectionalLight2D" parent="Lights" unique_id=1073051661]
-z_index = 4
-color = Color(0.09776529, 0.12232088, 0.2989085, 1)
-energy = 0.75
+color = Color(0.07321342, 0.08914407, 0.17198831, 1)
 blend_mode = 2
-range_z_max = 4
 metadata/_edit_lock_ = true
 
 [node name="Tilemaps" parent="." unique_id=1506363308 instance=ExtResource("1_rarhs")]
@@ -1578,7 +1660,7 @@ position = Vector2(656, 351)
 position = Vector2(272, 485)
 
 [node name="RugLarge" parent="." unique_id=818618920 instance=ExtResource("30_pnhog")]
-position = Vector2(141, 290)
+position = Vector2(143, 269)
 
 [node name="ZoneWrapper" type="Node2D" parent="." unique_id=1387019317]
 position = Vector2(658.00006, 237.00002)
@@ -1591,11 +1673,6 @@ position = Vector2(48.000008, 562)
 scale = Vector2(0.60236263, 0.5799344)
 
 [node name="EscapeZone" parent="ZoneWrapper2" unique_id=1530702801 instance=ExtResource("21_1iba3")]
-
-[node name="FuckassSubviewportUpdater" type="Node" parent="." unique_id=1732338423 node_paths=PackedStringArray("Subs")]
-process_mode = 4
-script = ExtResource("38_cobve")
-Subs = [NodePath("../UILayers/WorkingButBuggyVision/1_VisionReveal"), NodePath("../UILayers/WorkingButBuggyVision/2_RoomLight"), NodePath("../UILayers/WorkingButBuggyVision/3_RoomOcluders"), NodePath("../UILayers/WorkingButBuggyVision/4_RespectiveRoomOcluders"), NodePath("../UILayers/WorkingButBuggyVision/5_InvertedRoomOcluders"), NodePath("../UILayers/WorkingButBuggyVision/FinalMerge")]
 
 [editable path="Player"]
 [editable path="Player/CarrierComponent"]

@@ -4,6 +4,7 @@ using System;
 
 public partial class RoomLightPointLight2D : PointLight2D, IRoomLight
 {
+    [Export] public bool IsDoorLight { get; private set; }= true;
     Tween tween;
 
     public override void _EnterTree()

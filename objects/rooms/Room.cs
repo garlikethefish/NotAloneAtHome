@@ -64,10 +64,11 @@ public partial class Room : Node2D
         if (body is Player)
         {
             EnableOcluder();
+            TurnOnlyRoomLights(false);
 
             if (IsLightOn)
             {
-                TurnOnlyPointLightsOn();
+                TurnOnlyDoorLights(true);
             }
         }
         OnBodyExited?.Invoke(body);
@@ -78,7 +79,10 @@ public partial class Room : Node2D
         if (body is Player)
         {
             DisableOcluder();
-            TurnOnlyPointLightsOff();
+            TurnOnlyDoorLights(false);
+
+            if (IsLightOn)
+                TurnOnlyRoomLights(true);
         }
         OnBodyEntered?.Invoke(body);
     }
@@ -117,56 +121,46 @@ public partial class Room : Node2D
             .SetEase(Tween.EaseType.Out);
     }
 
-    public void TurnLightsOn(bool turnPolys, bool turnPoints)
+    public void TurnOnlyRoomLights(bool value)
     {
         foreach (var light in _lights)
         {
-            if (turnPoints && light is PointLight2D) light.TurnOn();
-            if (turnPolys && light is Polygon2D) light.TurnOn();
+            if (light.IsDoorLight) continue;
+
+            if (value) light.TurnOn();
+            else light.TurnOff();
+        }
+    }
+
+    public void TurnOnlyDoorLights(bool value)
+    {
+        foreach (var light in _lights)
+        {
+            if (!light.IsDoorLight) continue;
+
+            if (value) light.TurnOn();
+            else light.TurnOff();
+        }
+    }
+
+    public void TurnLightsOn(bool turnRoomLight, bool turnDoorLights)
+    {
+        foreach (var light in _lights)
+        {
+            if (turnDoorLights && light.IsDoorLight) light.TurnOn();
+            if (turnRoomLight && !light.IsDoorLight) light.TurnOn();
         }
         IsLightOn = true;
     }
 
-    public void TurnLightsOff(bool turnPolys, bool turnPoints)
+    public void TurnLightsOff(bool turnRoomLight, bool turnDoorLights)
     {
         foreach (var light in _lights)
         {
-            if (turnPoints && light is PointLight2D) light.TurnOff();
-            if (turnPolys && light is Polygon2D) light.TurnOff();
+            if (turnDoorLights && light.IsDoorLight) light.TurnOff();
+            if (turnRoomLight && !light.IsDoorLight) light.TurnOff();
         }
         IsLightOn = false;
-    }
-
-    public void TurnOnlyPolyLightsOn()
-    {
-        foreach (var light in _lights)
-        {
-            if (light is Polygon2D) light.TurnOn();
-        }
-    }
-
-    public void TurnOnlyPolyLightsOff()
-    {
-        foreach (var light in _lights)
-        {
-            if (light is Polygon2D) light.TurnOff();
-        }
-    }
-
-    public void TurnOnlyPointLightsOn()
-    {
-        foreach (var light in _lights)
-        {
-            if (light is PointLight2D) light.TurnOn();
-        }
-    }
-
-    public void TurnOnlyPointLightsOff()
-    {
-        foreach (var light in _lights)
-        {
-            if (light is PointLight2D) light.TurnOff();
-        }
     }
 
     public void ToggleLight()
@@ -185,7 +179,7 @@ public partial class Room : Node2D
         _roomOcluderPoly2D.Polygon = _roomLightPoly2D.Polygon;
         _roomOcluderPoly2D.TopLevel = true;
         _roomOcluderPoly2D.Color = new(0,0,0);
-        _roomOcluderPoly2D.ZIndex = 2;
+        _roomOcluderPoly2D.ZIndex = 10;
     }
 
     public override string[] _GetConfigurationWarnings()

@@ -9,9 +9,10 @@ outlines = Array[PackedVector2Array]([PackedVector2Array(768, -200, 768, 64, 704
 source_geometry_mode = 1
 source_geometry_group_name = &"navigation"
 
-[node name="Tilemaps" type="Node" unique_id=34827215]
+[node name="Tilemaps" type="Node2D" unique_id=2036920555]
 
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="." unique_id=746200397]
+visible = false
 navigation_polygon = SubResource("NavigationPolygon_5840l")
 
 [node name="BackgroundTilemap" type="TileMapLayer" parent="." unique_id=423113075]

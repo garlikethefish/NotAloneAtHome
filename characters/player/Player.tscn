@@ -279,7 +279,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_reqkl")
 }],
-"loop": true,
+"loop": 1,
 "name": &"idle_down",
 "speed": 5.0
 }, {
@@ -299,7 +299,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_5vbvs")
 }],
-"loop": true,
+"loop": 1,
 "name": &"idle_down_mask",
 "speed": 5.0
 }, {
@@ -322,7 +322,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_tn8uu")
 }],
-"loop": true,
+"loop": 1,
 "name": &"idle_side",
 "speed": 5.0
 }, {
@@ -345,7 +345,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_8mnpj")
 }],
-"loop": true,
+"loop": 1,
 "name": &"idle_side_mask",
 "speed": 5.0
 }, {
@@ -365,7 +365,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_67shi")
 }],
-"loop": true,
+"loop": 1,
 "name": &"idle_up",
 "speed": 5.0
 }, {
@@ -385,7 +385,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_ex6cc")
 }],
-"loop": true,
+"loop": 1,
 "name": &"idle_up_mask",
 "speed": 5.0
 }, {
@@ -405,7 +405,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_tofef")
 }],
-"loop": true,
+"loop": 1,
 "name": &"walk_down",
 "speed": 5.0
 }, {
@@ -425,7 +425,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_waadk")
 }],
-"loop": true,
+"loop": 1,
 "name": &"walk_down_mask",
 "speed": 5.0
 }, {
@@ -442,7 +442,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_tdevj")
 }],
-"loop": true,
+"loop": 1,
 "name": &"walk_side",
 "speed": 5.0
 }, {
@@ -459,7 +459,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_nvfka")
 }],
-"loop": true,
+"loop": 1,
 "name": &"walk_side_mask",
 "speed": 5.0
 }, {
@@ -479,7 +479,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_lvkxb")
 }],
-"loop": true,
+"loop": 1,
 "name": &"walk_up",
 "speed": 5.0
 }, {
@@ -499,7 +499,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_3dv8e")
 }],
-"loop": true,
+"loop": 1,
 "name": &"walk_up_mask",
 "speed": 5.0
 }]
@@ -541,6 +541,15 @@ color_ramp = SubResource("GradientTexture1D_5vbvs")
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_po6sa"]
 radius = 52.03845
+
+[sub_resource type="Gradient" id="Gradient_7aoru"]
+offsets = PackedFloat32Array(0, 0.69375)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_30oxl"]
+gradient = SubResource("Gradient_7aoru")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
 
 [node name="Player" type="CharacterBody2D" unique_id=1993068751 groups=["player"]]
 z_index = 3
@@ -621,5 +630,10 @@ shape = SubResource("CircleShape2D_po6sa")
 [node name="NoiseMaker" parent="." unique_id=129743411 instance=ExtResource("17_ohrde")]
 
 [node name="NoiseReciever" parent="." unique_id=558709519 instance=ExtResource("17_5dd86")]
+
+[node name="PointLight2D" type="PointLight2D" parent="." unique_id=991211481]
+scale = Vector2(4, 4)
+blend_mode = 2
+texture = SubResource("GradientTexture2D_30oxl")
 
 [editable path="CarrierComponent"]
